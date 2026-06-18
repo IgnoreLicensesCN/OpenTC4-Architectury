@@ -70,7 +70,7 @@ public class PrimePearlItem extends Item {
             player.swing(useOnContext.getHand(), true);
             var itemstack = useOnContext.getItemInHand();
             itemstack.shrink(1);
-            boolean research = PRIME_PEARL_NODE_CONTROL.isPlayerCompletedResearch(player);
+            boolean research = PRIME_PEARL_NODE_CONTROL.isLivingEntityCompletedResearch(player);
 
             for(Aspect a : node.getAspects().keySet()) {
                 int m = node.getNodeVisBase(a);

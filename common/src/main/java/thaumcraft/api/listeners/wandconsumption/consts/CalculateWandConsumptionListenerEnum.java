@@ -1,6 +1,5 @@
 package thaumcraft.api.listeners.wandconsumption.consts;
 
-import net.minecraft.world.entity.player.Player;
 import thaumcraft.common.items.abstracts.IVisDiscountGearItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.effects.VisCostAddEffectWithCategory;
@@ -44,7 +43,6 @@ public enum CalculateWandConsumptionListenerEnum {
     DISCOUNT_GEAR(new CalculateWandConsumptionListener(10) {
         @Override
         public void onCalculation(ConsumptionModifierCalculationContext context) {
-            var casting = context.casting;
             var user = context.user;
             if (user == null) {
                 return;

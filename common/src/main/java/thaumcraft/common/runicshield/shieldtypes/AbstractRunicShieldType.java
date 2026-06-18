@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -20,7 +20,7 @@ import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.lib.network.fx.PacketFXShieldS2C;
 import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;
-import thaumcraft.common.runicshield.EntityRunicShieldInfo;
+import thaumcraft.common.runicshield.RunicShieldInfo;
 
 import java.util.Collections;
 import java.util.Map;
@@ -58,14 +58,14 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
         return rechargeCost;
     }
 
-    public int getTickCooldownAfterRegen(Entity entity, EntityRunicShieldInfo shieldInfo) {
-        //TODO:[maybe wont finished]also "Vote in democracy" to decide if change to chargedShield's own feature
+    public int getTickCooldownAfterRegen(LivingEntity living, RunicShieldInfo shieldInfo) {
+        //TODO:[maybe wont finished]also "Vote in democracy" to decide if change to chargedShield's own feature(recharge tick random decrease)
         int chargedTypeCapacity = Math.clamp(shieldInfo.shieldCapacity.getInt(CHARGED), 0, 4);
         return 40 - (10 * chargedTypeCapacity);
     }
 
     //called every tick
-    public void rechargeTickForEntity(Entity entity, EntityRunicShieldInfo shieldInfo) {
+    public void rechargeTickForLiving(LivingEntity living, RunicShieldInfo shieldInfo) {
         if (shieldInfo.rechargeDelay > 0) {
             return;
         }
@@ -73,9 +73,9 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
         var shieldMap = shieldInfo.shieldCharged;
         int capacity = shieldCapacityMap.getInt(this);
         if (capacity > shieldMap.getInt(this)) {
-            if (WandManager.consumeCentiVisFromInventory(entity, getRechargeCost())) {
+            if (WandManager.consumeCentiVisFromInventory(living, getRechargeCost())) {
                 shieldMap.mergeInt(this, 1, Integer::sum);
-                shieldInfo.rechargeDelay += getTickCooldownAfterRegen(entity, shieldInfo);
+                shieldInfo.rechargeDelay += getTickCooldownAfterRegen(living, shieldInfo);
                 shieldInfo.shouldSyncCharge = true;
             }
         } else if (capacity < shieldMap.getInt(this)) {
@@ -93,10 +93,10 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
      * @return damage wants to change to.
      */
     public float beforeActuallyHurt(
-            Entity victim /*only for player in vanilla TC4*/,
+            LivingEntity victim /*only for player in vanilla TC4*/,
             DamageSource source,
             float damage, /*may decreased by shields before*/
-            EntityRunicShieldInfo shieldInfo) {
+            RunicShieldInfo shieldInfo) {
         if (damage < 0) {
             return damage;
         }
@@ -109,10 +109,10 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
         return onDamagingShield(victim, source, damage, shieldInfo);
     }
     public float onDamagingShield(
-            Entity victim /*only for player in vanilla TC4*/,
+            LivingEntity victim /*only for player in vanilla TC4*/,
             DamageSource source,
             float damage, /*may decreased by shields before*/
-            EntityRunicShieldInfo shieldInfo
+            RunicShieldInfo shieldInfo
     ){
         int owningShield = shieldInfo.getShieldChargedFor(this);
         if (owningShield <= 0) {
@@ -131,11 +131,11 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
         return damage - damageToReduce;
     }
     public void onDamagedShield(
-            Entity victim /*only for player in vanilla TC4*/,
+            LivingEntity victim /*only for player in vanilla TC4*/,
             DamageSource source,
             float damage, /*may decreased by shields before*/
             float damaged, /* shield value damaged */
-            EntityRunicShieldInfo shieldInfo
+            RunicShieldInfo shieldInfo
     ){
         if (victim.level() instanceof ServerLevel serverLevel) {
             var entityCausedDamage = source.getEntity();
@@ -164,7 +164,7 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
     }
 
     //oh this is a kind of feature change--called when this type of shield is running out not all running out
-    public void onShieldRunningOut(Entity victim,DamageSource source,EntityRunicShieldInfo shieldInfo) {
+    public void onShieldRunningOut(LivingEntity victim, DamageSource source, RunicShieldInfo shieldInfo) {
 
     }
 

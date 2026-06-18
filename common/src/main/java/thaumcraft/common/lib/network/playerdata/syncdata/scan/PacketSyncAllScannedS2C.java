@@ -70,7 +70,7 @@ public class PacketSyncAllScannedS2C extends ThaumcraftBaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         var player = context.getPlayer();
         if (player != null) {
-            var info = ResearchAndScannedInfo.getFromPlayer(player);
+            var info = ResearchAndScannedInfo.getFromLiving(player);
             info.syncScannedClientSide(scanneds);
         }
     }

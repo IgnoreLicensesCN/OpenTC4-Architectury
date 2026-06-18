@@ -15,8 +15,6 @@ import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.List;
 
-import static thaumcraft.api.listeners.warp.WarpEventManager.addResearchWarpToPlayer;
-
 public class ResearchMasteryResearch
         extends ResearchNoteUnlockedResearchWithParentsAndWarp
     implements IThemedAspectOwner, IResearchNoteCopyable

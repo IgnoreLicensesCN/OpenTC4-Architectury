@@ -61,7 +61,7 @@ public class PacketUpdateAspectS2C extends ThaumcraftBaseS2CMessage {
         Aspect aspect = Aspect.getAspect(this.key);
         var player = Minecraft.getInstance().player;
         if (aspect != null && player != null) {
-            var info = ResearchAndScannedInfo.getFromPlayer(player);
+            var info = ResearchAndScannedInfo.getFromLiving(player);
             info.setResearchAspect(
                     aspect,
                     this.total

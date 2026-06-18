@@ -10,12 +10,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import thaumcraft.api.listeners.warp.consts.WarpEvents;
-import thaumcraft.common.config.Config;
-import thaumcraft.common.lib.events.RunicShieldHandler;
+import thaumcraft.common.runicshield.RunicShieldHandler;
 
-import static thaumcraft.api.listeners.warp.WarpEventManager.getWarpEventDelayForPlayer;
 import static thaumcraft.common.lib.events.EventHandlerEntity.repairInventoryItemsForPlayer;
-import static thaumcraft.common.lib.events.EventHandlerEntity.updateSpeedForHasteEnchantment;
 
 @Mixin(ServerPlayer.class)
 public class ServerPlayerMixin {
@@ -36,7 +33,7 @@ public class ServerPlayerMixin {
     @Unique
     private void opentc4$runicShieldTickForPlayer(){
         ServerPlayer player = (ServerPlayer)(Object)this;
-        RunicShieldHandler.updateRunicShieldForPlayer(player);
+        RunicShieldHandler.updateRunicShieldFor(player);
     }
 
     @StoleFrom("architectury")

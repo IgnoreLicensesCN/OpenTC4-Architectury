@@ -9,7 +9,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;
-import thaumcraft.common.runicshield.EntityRunicShieldInfo;
+import thaumcraft.common.runicshield.RunicShieldInfo;
 import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
 public class PacketUpdateRunicChargeS2C extends ThaumcraftBaseS2CMessage {
@@ -57,7 +57,7 @@ public class PacketUpdateRunicChargeS2C extends ThaumcraftBaseS2CMessage {
     @Override
     public void handle(NetworkManager.PacketContext context) {
         Player player = context.getPlayer();
-        EntityRunicShieldInfo.getFromPlayer(player).syncChargeClientSide(
+        RunicShieldInfo.getFromLiving(player).syncChargeClientSide(
                 this.shieldCharged
         );
     }

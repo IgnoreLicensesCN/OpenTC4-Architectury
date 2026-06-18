@@ -2,7 +2,7 @@
 package thaumcraft.api.research.interfaces;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.api.research.ResearchAndScannedInfo;
 
@@ -13,12 +13,16 @@ import thaumcraft.api.research.ResearchAndScannedInfo;
 public interface IStringBasedSingleResearchClueOwner extends IResearchClueOwner {
     ClueResourceLocation getNeededClue();
     @Override
-    default boolean playerHasClue(Player player){
-        return ResearchAndScannedInfo.getFromPlayer(player).hasClue(getNeededClue());
+    default boolean livingHasClue(LivingEntity living){
+        var info = ResearchAndScannedInfo.getFromLiving(living);
+        if (info == null) return false;
+        return info.hasClue(getNeededClue());
     }
 
     @Override
-    default void giveClueToPlayer(Player player){
-        ResearchAndScannedInfo.getFromPlayer(player).addClue(getNeededClue());
+    default void giveClueToLiving(LivingEntity living){
+        var info = ResearchAndScannedInfo.getFromLiving(living);
+        if (info == null) return;
+        info.addClue(getNeededClue());
     }
 }

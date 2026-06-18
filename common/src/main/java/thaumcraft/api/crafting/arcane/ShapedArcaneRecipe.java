@@ -264,7 +264,7 @@ public class ShapedArcaneRecipe extends AbstractArcaneRecipe {
 
     @Override
     public boolean matches(IArcaneWorkbenchContainer inv, Level world, Player player) {
-        if (research.isPlayerCompletedResearch(player)) {
+        if (research.isLivingEntityCompletedResearch(player)) {
             return false;
         }
 

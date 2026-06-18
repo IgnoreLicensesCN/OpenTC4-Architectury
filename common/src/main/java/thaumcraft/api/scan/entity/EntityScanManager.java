@@ -2,8 +2,8 @@ package thaumcraft.api.scan.entity;
 
 import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.utils.collectionlike.ListenerManager;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import thaumcraft.api.research.ResearchAndScannedInfo;
 
 public class EntityScanManager {
@@ -14,11 +14,12 @@ public class EntityScanManager {
         }
     }
 
-    public static void onPlayerScanEntity(ServerPlayer player, Entity entity) {
-        ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromPlayer(player);
-        if (!info.playerScanning){
-            var context = new EntityScanContext(player,entity);
-            info.playerScanning = true;
+    public static void onScanEntity(LivingEntity living, Entity entity) {
+        ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromLiving(living);
+        if (info == null) return;
+        if (!info.infoOwnerScanning){
+            var context = new EntityScanContext(living,entity);
+            info.infoOwnerScanning = true;
             try {
                 for (var listener: ENTITY_SCAN_LISTENERS.getListeners()){
                     listener.onEntityScan(context);
@@ -27,9 +28,9 @@ public class EntityScanManager {
                     }
                 }
             }catch (Exception e){
-                OpenTC4.LOGGER.error("Error while trying to scan entity for player "+player.getName(),e);
+                OpenTC4.LOGGER.error("Error while trying to scan entity for {} {} {}", living.getName(), living.getUUID(), living.position(), e);
             }
-            info.playerScanning = false;
+            info.infoOwnerScanning = false;
         }
 
     }

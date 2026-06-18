@@ -6,8 +6,6 @@ import thaumcraft.api.nodes.INodeInfoProviderBlockEntity;
 import thaumcraft.api.scan.ScanManager;
 import thaumcraft.api.scan.itemstack.ItemStackScanListeners;
 
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
-
 public enum BlockPosScanListeners {
     BLOCK_ITEM_SCAN(
             new BlockPosScanListener(0) {
@@ -15,7 +13,7 @@ public enum BlockPosScanListeners {
                 public void onBlockScan(BlockPosScanContext context) {
                     var item = context.bState.getBlock().asItem();
                     if (item != Items.AIR) {
-                        if (ItemStackScanListeners.scanItemCommon(context.playerScanning,item)){
+                        if (ItemStackScanListeners.scanItemCommon(context.livingScanning,item)){
                             context.shouldBreak = true;
                         }
                     }
@@ -25,9 +23,9 @@ public enum BlockPosScanListeners {
     NODE_SCAN(new BlockPosScanListener(100) {
         @Override
         public void onBlockScan(BlockPosScanContext context) {
-            var level = context.playerScanning.level();
+            var level = context.livingScanning.level();
             if (LevelBlockEntityAccessing.getExistingBlockEntity(level, context.pos) instanceof INodeInfoProviderBlockEntity nodeInfoProvider){
-                if (ScanManager.NodeScanManager.onScanVisNode(context.playerScanning,nodeInfoProvider.getNodeInfo())){
+                if (ScanManager.NodeScanManager.onScanVisNode(context.livingScanning,nodeInfoProvider.getNodeInfo())){
                     context.shouldBreak = true;
                 }
             }

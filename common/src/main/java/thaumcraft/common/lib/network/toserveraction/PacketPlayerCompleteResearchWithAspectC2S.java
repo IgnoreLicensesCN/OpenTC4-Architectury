@@ -41,20 +41,20 @@ public class PacketPlayerCompleteResearchWithAspectC2S extends BaseC2SMessage {
         if (!(p instanceof ServerPlayer player)){return;}
         var research = ResearchItem.getResearch(researchToCompleteWithAspect);
         if (research == null){return;}
-        if (research.isPlayerCompletedResearch(player)){
+        if (research.isLivingEntityCompletedResearch(player)){
             return;
         }
         if (!(research instanceof IAspectUnlockableResearch aspectUnlockable)){return;}
         if (!aspectUnlockable.canPlayerCompleteResearchWithAspect(player)){return;}
         var aspectsCost = aspectUnlockable.getAspectCost();
-        var info = ResearchAndScannedInfo.getFromPlayer(player);
+        var info = ResearchAndScannedInfo.getFromLiving(player);
         if (aspectsCost.forEachWithBreak(
                 (aspectTypeRequired,aspectsAmountCost) -> info.getResearchAspect(aspectTypeRequired) < aspectsAmountCost
         )){
             return;
         }
         aspectsCost.forEach((aspectTypeRequired,aspectsAmountCost) -> {
-            info.addResearchAspectAndSyncToPlayer(aspectTypeRequired, (-aspectsAmountCost),player);
+            info.addResearchAspectAndTrySyncToPlayer(aspectTypeRequired, (-aspectsAmountCost),player);
         });
         new PacketResearchCompleteS2C(research.key).sendTo(player);
         research.completeResearchFor(player);

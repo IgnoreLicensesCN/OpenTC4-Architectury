@@ -28,15 +28,20 @@ public class PacketSyncWipeS2C extends ThaumcraftBaseS2CMessage {
         Player player = context.getPlayer();
         if (player != null && player.level().isClientSide) {
 
-            var info = ResearchAndScannedInfo.getFromPlayer(player);
-            info.completedResearches.clear();
-            info.completedClues.clear();
-            info.owningResearchAspect.clear();
-            WarpInfo.getFromPlayer(player).setStickyWarp(0);
-            WarpInfo.getFromPlayer(player).setTempWarp(0);
-            WarpInfo.getFromPlayer(player).setPermWarp(0);
-            WarpInfo.getFromPlayer(player).setWarpEventCounter(0);
-            info.scannedThings.clear();
+            var researchAndScannedInfo = ResearchAndScannedInfo.getFromLiving(player);
+            if (researchAndScannedInfo != null) {
+                researchAndScannedInfo.completedResearches.clear();
+                researchAndScannedInfo.completedClues.clear();
+                researchAndScannedInfo.owningResearchAspect.clear();
+                researchAndScannedInfo.scannedThings.clear();
+            }
+            var warpInfo = WarpInfo.getFromLivingEntity(player);
+            if (warpInfo != null) {
+                warpInfo.setStickyWarp(0);
+                warpInfo.setTempWarp(0);
+                warpInfo.setPermWarp(0);
+                warpInfo.setWarpEventCounter(0);
+            }
         }
     }
 

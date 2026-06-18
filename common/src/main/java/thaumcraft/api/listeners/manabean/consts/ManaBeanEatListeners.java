@@ -47,8 +47,8 @@ public enum ManaBeanEatListeners {
                     }
                     var aspect = context.aspectOwning;
                     if (!aspect.isEmpty() && level.random.nextInt(4) == 0){
-                        var info = ResearchAndScannedInfo.getFromPlayer(player);
-                        info.addResearchAspectAndSyncToPlayer(aspect,1,player);
+                        var info = ResearchAndScannedInfo.getFromLiving(player);
+                        info.addResearchAspectAndTrySyncToPlayer(aspect,1,player);
                     }
                 }
             }

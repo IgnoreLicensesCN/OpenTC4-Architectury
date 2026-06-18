@@ -46,6 +46,6 @@ public class BathSaltsResearch
 
     @Override
     public boolean canPlayerResearch(Player player) {
-        return playerHasClue(player);
+        return livingHasClue(player);
     }
 }

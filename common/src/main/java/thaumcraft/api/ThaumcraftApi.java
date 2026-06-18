@@ -153,7 +153,7 @@ public class ThaumcraftApi {
                         for (CrucibleRecipe cr : crs) {
                             if (cr.matchViaOutput(stack)) {
                                 keyCache.put(key, new ResearchKeyAndPage(ri.key, a));
-                                if (ri.isPlayerCompletedResearch(player))
+                                if (ri.isLivingEntityCompletedResearch(player))
                                     return new ResearchKeyAndPage(ri.key, a);
                             }
                         }
@@ -162,7 +162,7 @@ public class ThaumcraftApi {
                             && Objects.equals(page.recipeOutput.getItem(), stack.getItem())
                     ) {
                         keyCache.put(key, new ResearchKeyAndPage(ri.key, a));
-                        if (ri.isPlayerCompletedResearch(player))
+                        if (ri.isLivingEntityCompletedResearch(player))
                             return new ResearchKeyAndPage(ri.key, a);
                         else
                             return null;

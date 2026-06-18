@@ -1,16 +1,15 @@
 package thaumcraft.api.scan.entity;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 
 public class EntityScanContext {
-    public final ServerPlayer playerScanning;
+    public final LivingEntity livingScanning;
     public final Entity entity;
     public boolean shouldBreak = false;
 
-    protected EntityScanContext(ServerPlayer playerScanning, Entity entity) {
-        this.playerScanning = playerScanning;
+    protected EntityScanContext(LivingEntity livingScanning, Entity entity) {
+        this.livingScanning = livingScanning;
         this.entity = entity;
     }
-
 }

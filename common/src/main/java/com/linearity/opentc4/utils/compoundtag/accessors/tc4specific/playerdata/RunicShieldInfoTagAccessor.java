@@ -10,7 +10,7 @@ import it.unimi.dsi.fastutil.Function;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
 import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;
-import thaumcraft.common.runicshield.EntityRunicShieldInfo;
+import thaumcraft.common.runicshield.RunicShieldInfo;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType.RUNIC_SHIELD_TYPES_VIEW;
 
-public class RunicShieldInfoTagAccessor extends CompoundTagAccessor<EntityRunicShieldInfo> {
+public class RunicShieldInfoTagAccessor extends CompoundTagAccessor<RunicShieldInfo> {
     private static final Map<RunicShieldTypeResourceLocation,CompoundTagAccessor<?>> additionalInfoAccessors = new HashMap<>();
     {
         RUNIC_SHIELD_TYPES_VIEW.forEach((key,value)->{
@@ -56,9 +56,9 @@ public class RunicShieldInfoTagAccessor extends CompoundTagAccessor<EntityRunicS
     }
 
     @Override
-    public EntityRunicShieldInfo readFromCompoundTag(CompoundTag tag) {
+    public RunicShieldInfo readFromCompoundTag(CompoundTag tag) {
         tag = warpTagAccessor.readFromCompoundTag(tag);
-        EntityRunicShieldInfo result = new EntityRunicShieldInfo();
+        RunicShieldInfo result = new RunicShieldInfo();
         result.rechargeDelay = rechargeDelayAccessor.readIntFromCompoundTag(tag);
         {
             var capacityMap = shieldCapacityAccessor.readFromCompoundTag(tag);
@@ -91,7 +91,7 @@ public class RunicShieldInfoTagAccessor extends CompoundTagAccessor<EntityRunicS
     }
 
     @Override
-    public void writeToCompoundTag(CompoundTag tagOuter, EntityRunicShieldInfo value) {
+    public void writeToCompoundTag(CompoundTag tagOuter, RunicShieldInfo value) {
         var tag = new CompoundTag();
         rechargeDelayAccessor.writeIntToCompoundTag(tag,value.rechargeDelay);
         {

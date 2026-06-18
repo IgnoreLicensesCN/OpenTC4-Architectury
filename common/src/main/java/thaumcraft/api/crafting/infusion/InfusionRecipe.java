@@ -168,7 +168,7 @@ public abstract class InfusionRecipe extends AbstractResourceLocationIdentifiedR
 			RecipeItemMatcher centralMatcher
 	) {
 		//infusionEnchantment check XP here
-		if (research.isPlayerCompletedResearch(player)) {
+		if (research.isLivingEntityCompletedResearch(player)) {
 			return false;
 		}
 

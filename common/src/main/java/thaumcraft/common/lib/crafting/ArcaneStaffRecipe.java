@@ -48,7 +48,7 @@ public class ArcaneStaffRecipe extends AbstractArcaneRecipe {
 
     @Override
     public boolean matches(IArcaneWorkbenchContainer inv, Level world, Player player) {
-        if (!getResearch().isPlayerCompletedResearch(player)){
+        if (!getResearch().isLivingEntityCompletedResearch(player)){
             return false;
         }
         var stacks = inv.getInputItemStacks();

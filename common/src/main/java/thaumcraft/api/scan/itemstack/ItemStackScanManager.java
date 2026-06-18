@@ -2,7 +2,7 @@ package thaumcraft.api.scan.itemstack;
 
 import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.utils.collectionlike.ListenerManager;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.research.ResearchAndScannedInfo;
 
@@ -14,11 +14,12 @@ public class ItemStackScanManager {
         }
     }
 
-    public static void onPlayerScanItemStack(ServerPlayer player, ItemStack itemStack) {
-        ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromPlayer(player);
-        if (!info.playerScanning){
-            var context = new ItemStackScanContext(player,itemStack);
-            info.playerScanning = true;
+    public static void onScanItemStack(LivingEntity living, ItemStack itemStack) {
+        ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromLiving(living);
+        if (info == null) return;
+        if (!info.infoOwnerScanning){
+            var context = new ItemStackScanContext(living,itemStack);
+            info.infoOwnerScanning = true;
             try {
                 for (var listener:ITEM_STACK_SCAN_LISTENERS.getListeners()){
                     listener.onItemStackScan(context);
@@ -27,9 +28,9 @@ public class ItemStackScanManager {
                     }
                 }
             }catch (Exception e){
-                OpenTC4.LOGGER.error("Error while trying to scan itemStack for player "+player.getName(),e);
+                OpenTC4.LOGGER.error("Error while trying to scan itemStack for living {} {} {}", living.getName(), living.getUUID(), living.position(), e);
             }
-            info.playerScanning = false;
+            info.infoOwnerScanning = false;
         }
 
     }

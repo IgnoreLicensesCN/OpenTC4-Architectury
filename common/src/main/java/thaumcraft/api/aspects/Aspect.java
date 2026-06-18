@@ -158,6 +158,6 @@ public abstract class Aspect {
 	}
 
 	public boolean hasPlayerDiscovered(@NotNull Player player) {
-		return ResearchAndScannedInfo.getFromPlayer(player).hasResearchAspect(this);
+		return ResearchAndScannedInfo.getFromLiving(player).hasResearchAspect(this);
 	}
 }

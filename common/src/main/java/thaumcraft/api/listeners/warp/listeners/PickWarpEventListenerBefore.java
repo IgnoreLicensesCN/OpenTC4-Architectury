@@ -1,5 +1,6 @@
 package thaumcraft.api.listeners.warp.listeners;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.listeners.warp.PickWarpEventContext;
 
@@ -19,9 +20,9 @@ public abstract class PickWarpEventListenerBefore implements Comparable<PickWarp
     /**
      *
      * @param e the context stores warp to calculate which event to pickup.
-     * @param player victim
+     * @param living victim
      */
-    public abstract void beforePickEvent(PickWarpEventContext e, Player player);
+    public abstract void beforePickEvent(PickWarpEventContext e, LivingEntity living);
 
     @Override
     public int compareTo(@NotNull PickWarpEventListenerBefore o) {

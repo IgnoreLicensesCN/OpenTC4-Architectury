@@ -12,10 +12,10 @@ public enum RemoveAspectAfterListenerEnums {
             new RemoveAspectAfterListener(20) {
                 @Override
                 public void onEventTriggered(RemoveAspectContext context) {
-                    if (ThaumcraftResearches.RESEARCH_EXPERTISE.isPlayerCompletedResearch(context.player)) {
+                    if (ThaumcraftResearches.RESEARCH_EXPERTISE.isLivingEntityCompletedResearch(context.player)) {
                         float returnAspectChance = 0.25F;
 
-                        if (ThaumcraftResearches.RESEARCH_MASTERY.isPlayerCompletedResearch(context.player)) {
+                        if (ThaumcraftResearches.RESEARCH_MASTERY.isLivingEntityCompletedResearch(context.player)) {
                             returnAspectChance = 0.5F;
                         }
                         if (!context.doReturnAspect && context.atLevel.random.nextFloat() < returnAspectChance){
@@ -37,8 +37,8 @@ public enum RemoveAspectAfterListenerEnums {
                         SoundSource.BLOCKS,
                         .2F,.9F + context.atLevel.random.nextFloat()*0.2f
                 );
-                var info = ResearchAndScannedInfo.getFromPlayer(context.player);
-                info.addResearchAspectAndSyncToPlayer(context.aspectToRemove,1,context.player);
+                var info = ResearchAndScannedInfo.getFromLiving(context.player);
+                info.addResearchAspectAndTrySyncToPlayer(context.aspectToRemove,1,context.player);
             }
         }
     });

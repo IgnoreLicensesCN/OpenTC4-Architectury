@@ -64,7 +64,7 @@ public class FocalManipulatorBlock extends AbstractExtendedMenuProviderContainer
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (player instanceof ServerPlayer serverPlayer) {
             if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ExtendedMenuProvider menuProvider) {
-                if (ThaumcraftResearches.FOCAL_MANIPULATION.isPlayerCompletedResearch(serverPlayer)) {
+                if (ThaumcraftResearches.FOCAL_MANIPULATION.isLivingEntityCompletedResearch(serverPlayer)) {
                     openExtendedMenu(serverPlayer,menuProvider);
                 }else {
                     Component.translatable("tc.researchmissing").withStyle(ChatFormatting.RED);

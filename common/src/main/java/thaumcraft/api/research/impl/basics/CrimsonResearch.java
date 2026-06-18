@@ -6,7 +6,7 @@ import thaumcraft.api.research.interfaces.IResearchWarpOwner;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
-import static thaumcraft.api.listeners.warp.WarpEventManager.addResearchWarpToPlayer;
+import static thaumcraft.api.listeners.warp.WarpEventManager.addResearchWarpTo;
 
 public final class CrimsonResearch extends ResearchItem implements IResearchWarpOwner {
     public CrimsonResearch(){
@@ -21,6 +21,6 @@ public final class CrimsonResearch extends ResearchItem implements IResearchWarp
     @Override
     public void completeResearchFor(Player player) {
         super.completeResearchFor(player);
-        addResearchWarpToPlayer(player,getWarp());
+        addResearchWarpTo(player,getWarp());
     }
 }

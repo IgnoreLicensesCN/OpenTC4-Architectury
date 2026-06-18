@@ -44,7 +44,7 @@ public abstract class AbstractPacketSyncScannedS2C extends ThaumcraftBaseS2CMess
     public void handle(NetworkManager.PacketContext context) {
         Player player = context.getPlayer();
         if (player != null && player.level().isClientSide) {
-            var info = ResearchAndScannedInfo.getFromPlayer(player);
+            var info = ResearchAndScannedInfo.getFromLiving(player);
             info.syncScannedClientSide(getScannedTypeToSync(),data);
         }
     }

@@ -80,11 +80,11 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
       costAspect(aspectProviderBE,serverPlayer,aspect2, canUseProviderAspect2);
 
       if (!combinationResult.isEmpty()) {
-         ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromPlayer(player);
+         ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromLiving(player);
          if (!info.hasResearchAspect(combinationResult)){
             new PacketAspectDiscoveryS2C(combinationResult).sendTo(serverPlayer);
          }
-         info.addResearchAspectAndSyncToPlayer(combinationResult,1,serverPlayer);
+         info.addResearchAspectAndTrySyncToPlayer(combinationResult,1,serverPlayer);
       }
 
    }
@@ -112,16 +112,16 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
    }
 
    public static boolean playerHasAspect(ServerPlayer player, Aspect aspect, int threshold) {
-      var info = ResearchAndScannedInfo.getFromPlayer(player);
+      var info = ResearchAndScannedInfo.getFromLiving(player);
       return info.getResearchAspect(aspect) >= threshold;
    }
 
    private void costAspect(IResearchAspectProviderBlockEntity aspectProviderBE,ServerPlayer player,Aspect aspect,boolean canUseProviderAspect) {
-      var info = ResearchAndScannedInfo.getFromPlayer(player);
+      var info = ResearchAndScannedInfo.getFromLiving(player);
       if (info.getResearchAspect(aspect) <= 0 && canUseProviderAspect) {
          aspectProviderBE.costAspect(aspect,1);
       } else {
-         info.addResearchAspectAndSyncToPlayer(aspect, (short) -1,player);
+         info.addResearchAspectAndTrySyncToPlayer(aspect, (short) -1,player);
       }
    }
 

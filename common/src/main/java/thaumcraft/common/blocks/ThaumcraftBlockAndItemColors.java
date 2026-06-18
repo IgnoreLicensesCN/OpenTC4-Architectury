@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GrassColor;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.warp.WarpInfo;
@@ -277,13 +276,11 @@ public class ThaumcraftBlockAndItemColors {
 
     private static final Map<LivingEntity,Integer> mappingCache = new MapMaker().weakKeys().makeMap();
     public static int calculateWarpProgressKindStateForLiving(LivingEntity livingEntity) {
-        if (!(livingEntity instanceof Player player)){
-            return 0;
+        var info = WarpInfo.getFromLivingEntity(livingEntity);
+        if (info == null) return 0;
+        if (mappingCache.containsKey(livingEntity) && livingEntity.tickCount%20 != 0){
+            return mappingCache.get(livingEntity);
         }
-        if (mappingCache.containsKey(player) && player.tickCount%20 != 0){
-            return mappingCache.get(player);
-        }
-        var info = WarpInfo.getFromPlayer(player);
         int[] infoNotScaled = new int[4];
         infoNotScaled[0] = info.getPermWarp();
         infoNotScaled[1] = info.getStickyWarp();
@@ -307,7 +304,7 @@ public class ThaumcraftBlockAndItemColors {
             totalScaled[maxReminderIndex] += 1;
         }
         int resultIndex = arrayTo165Index(totalScaled);
-        mappingCache.put(player,resultIndex);
+        mappingCache.put(livingEntity,resultIndex);
         return resultIndex;
     }
     private static int arrayTo165Index(int[] arr) {

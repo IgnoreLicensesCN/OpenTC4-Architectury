@@ -46,7 +46,7 @@ public class PacketClueCompleteS2C extends ThaumcraftBaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         Player player = context.getPlayer();
 
-        ResearchAndScannedInfo.getFromPlayer(player).addClue(this.key);
+        ResearchAndScannedInfo.getFromLiving(player).addClue(this.key);
 
         PlayerNotifications.addNotification(Component.translatable("tc.addclue").withStyle(ChatFormatting.GREEN));
         player.playSound(ThaumcraftSounds.LEARN, 0.2F, 1.0F + player.getRandom().nextFloat() * 0.1F);

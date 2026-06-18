@@ -13,7 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
@@ -23,7 +22,7 @@ import thaumcraft.common.items.abstracts.IFlyingAbilityProviderWearing;
 import thaumcraft.common.items.abstracts.ISwordLikeItem;
 import thaumcraft.api.research.ResearchAndScannedInfo;
 import thaumcraft.common.items.wands.WandCooldownManager;
-import thaumcraft.common.runicshield.EntityRunicShieldInfo;
+import thaumcraft.common.runicshield.RunicShieldInfo;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -52,14 +51,14 @@ public class PlayerMixin
     }
 
     @Unique
-    private EntityRunicShieldInfo opentc4$playerRunicShieldInfo = new EntityRunicShieldInfo();
+    private RunicShieldInfo opentc4$playerRunicShieldInfo = new RunicShieldInfo();
     @Override
-    public EntityRunicShieldInfo opentc4$getPlayerRunicShieldInfo() {
+    public RunicShieldInfo opentc4$getPlayerRunicShieldInfo() {
         return opentc4$playerRunicShieldInfo;
     }
 
     @Override
-    public void opentc4$setPlayerRunicShieldInfo(EntityRunicShieldInfo opentc4$playerRunicShieldInfo) {
+    public void opentc4$setPlayerRunicShieldInfo(RunicShieldInfo opentc4$playerRunicShieldInfo) {
         this.opentc4$playerRunicShieldInfo = opentc4$playerRunicShieldInfo;
     }
 
@@ -76,7 +75,7 @@ public class PlayerMixin
         this.openc4$warpInfo = warpInfo;
     }
     @Unique
-    private @Final @NotNull WandCooldownManager openc4$wandCooldownManager = new WandCooldownManager();
+    private final @NotNull WandCooldownManager openc4$wandCooldownManager = new WandCooldownManager();
 
     @Override
     public WandCooldownManager opentc4$getWandCooldownManager() {
@@ -91,18 +90,20 @@ public class PlayerMixin
     private float opentc4$playerActuallyHurt$modifyDamageWithRunicShield(float f, DamageSource damageSource){
         var player = (Player)(Object)this;
         if (!player.level().isClientSide){
-            var shieldInfo = EntityRunicShieldInfo.getFromPlayer(player);
-            AtomicReference<Float> floatAtomicReference = new AtomicReference<>(f);
-            shieldInfo.shieldCapacity.keySet().forEach(
-                    shieldType ->
-                            floatAtomicReference.updateAndGet(
-                                    finalDamage -> shieldType.beforeActuallyHurt(player, damageSource,finalDamage,shieldInfo))
-            );
-            if (shieldInfo.shouldSyncCharge && player instanceof ServerPlayer serverPlayer){
-                shieldInfo.syncChargeSendPacket(serverPlayer);
+            var shieldInfo = RunicShieldInfo.getFromLiving(player);
+            if (shieldInfo != null){
+                AtomicReference<Float> floatAtomicReference = new AtomicReference<>(f);
+                shieldInfo.shieldCapacity.keySet().forEach(
+                        shieldType ->
+                                floatAtomicReference.updateAndGet(
+                                        finalDamage -> shieldType.beforeActuallyHurt(player, damageSource,finalDamage,shieldInfo))
+                );
+                if (shieldInfo.shouldSyncCharge && player instanceof ServerPlayer serverPlayer){
+                    shieldInfo.syncChargeSendPacket(serverPlayer);
+                }
+                shieldInfo.shouldSyncCharge = false;
+                return floatAtomicReference.get();
             }
-            shieldInfo.shouldSyncCharge = false;
-            return floatAtomicReference.get();
         }
         return f;
     }

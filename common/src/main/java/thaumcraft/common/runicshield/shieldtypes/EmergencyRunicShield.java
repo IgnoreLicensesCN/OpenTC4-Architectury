@@ -4,10 +4,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.UnknownNullability;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;
-import thaumcraft.common.runicshield.EntityRunicShieldInfo;
+import thaumcraft.common.runicshield.RunicShieldInfo;
 
 public class EmergencyRunicShield extends CoolingDownAndTriggerOnShieldDownShieldType {
     public EmergencyRunicShield(RunicShieldTypeResourceLocation shieldTypeResourceLocation,int priority) {
@@ -20,7 +21,7 @@ public class EmergencyRunicShield extends CoolingDownAndTriggerOnShieldDownShiel
     }
 
     @Override
-    public void triggerEventToCooldown(Entity victim, DamageSource source, EntityRunicShieldInfo shieldInfo) {
+    public void triggerEventToCooldown(@UnknownNullability LivingEntity victim, DamageSource source, RunicShieldInfo shieldInfo) {
         int t = 8 * shieldInfo.shieldCapacity.getInt(this);
         shieldInfo.randomCharge(t,victim.level().random);
         shieldInfo.shouldSyncCharge = true;
@@ -30,6 +31,7 @@ public class EmergencyRunicShield extends CoolingDownAndTriggerOnShieldDownShiel
                 1
         );
     }
+    @Override
     public Component getShieldName(){
         if (shieldName == null){
             shieldName = Component.translatable("runic_shield.thaumcraft.runic_emergency").withStyle(ChatFormatting.GREEN);

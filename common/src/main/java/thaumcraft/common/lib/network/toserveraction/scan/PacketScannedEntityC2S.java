@@ -7,7 +7,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.common.Thaumcraft;
 
-import static thaumcraft.api.scan.ScanManager.onPlayerScanEntity;
+import static thaumcraft.api.scan.ScanManager.onScanEntity;
 
 public class PacketScannedEntityC2S extends BaseC2SMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":scanned_entity_2s";
@@ -39,7 +39,7 @@ public class PacketScannedEntityC2S extends BaseC2SMessage {
             var level = player.level();
             var entity = level.getEntity(entityID);
             if (entity != null){
-                onPlayerScanEntity(serverPlayer, entity);
+                onScanEntity(serverPlayer, entity);
             }
         });
     }

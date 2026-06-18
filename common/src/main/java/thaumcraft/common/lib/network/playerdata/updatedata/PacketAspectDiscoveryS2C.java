@@ -43,7 +43,7 @@ public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
         if (player == null) return;
         if (aspect == null) return;
 
-        ResearchAndScannedInfo.getFromPlayer(context.getPlayer()).addResearchAspect(aspect,0);
+        ResearchAndScannedInfo.getFromLiving(context.getPlayer()).addResearchAspect(aspect,0);
 
         Component notification = Component.translatable("tc.addaspectdiscovery", aspect.getImageComponent().copy().append(aspect.getName()))
                 .withStyle(ChatFormatting.GOLD);

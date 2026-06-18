@@ -1,7 +1,7 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.colorannotation.annotation.RGBColor;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -124,8 +124,8 @@ public class CompoundAspect extends Aspect implements
     }
 
     @Override
-    public boolean canPlayerDiscover(Player player) {
-        var info = ResearchAndScannedInfo.getFromPlayer(player);
+    public boolean canLivingDiscover(LivingEntity living) {
+        var info = ResearchAndScannedInfo.getFromLiving(living);
         if (info != null) {
             return info.hasResearchAspect(components.aspectA()) && info.hasResearchAspect(components.aspectB());
         }
@@ -133,8 +133,11 @@ public class CompoundAspect extends Aspect implements
     }
 
     @Override
-    public @Nullable AspectResourceLocation getOneOfAspectRequiredToDiscover(Player player) {
-        var info = ResearchAndScannedInfo.getFromPlayer(player);
+    public @Nullable AspectResourceLocation getOneOfAspectRequiredToDiscover(LivingEntity living) {
+        var info = ResearchAndScannedInfo.getFromLiving(living);
+        if (info == null) {
+            return null;
+        }
         if (!info.hasResearchAspect(components.aspectA())){
             return components.aspectA().aspectKey;
         }

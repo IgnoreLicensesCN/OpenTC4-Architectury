@@ -1,11 +1,10 @@
 package thaumcraft.common.runicshield;
 
 import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.mixinaccessors.PlayerRunicShieldInfoMixinAccessor;
 import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateRunicCapacityS2C;
@@ -19,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 //put into Player
 //for other entities it's not supported yet.for TLM there might be TODO:[maybe wont finished]Make impl for maid(in another mod?)
 //instance should bind to entity
-public class EntityRunicShieldInfo {
+public class RunicShieldInfo {
     public int rechargeDelay = 0;
     @ApiStatus.Internal
     public final @Modifiable Object2IntMap<AbstractRunicShieldType<?>> shieldCharged = new Object2IntOpenHashMap<>();
@@ -92,7 +91,7 @@ public class EntityRunicShieldInfo {
         this.runicShieldAdditionalInfo.put(shieldType, info);
     }
 
-    public EntityRunicShieldInfo() {
+    public RunicShieldInfo() {
         //but if you store that entity instance here i will kick your ass(memory leak).
     }
 
@@ -120,12 +119,17 @@ public class EntityRunicShieldInfo {
         this.shieldCharged.putAll(shieldCharged);
     }
 
-    public static EntityRunicShieldInfo getFromPlayer(Player player) {
-        return ((PlayerRunicShieldInfoMixinAccessor) player).opentc4$getPlayerRunicShieldInfo();
+    public static @Nullable RunicShieldInfo getFromLiving(LivingEntity living) {
+        if (living instanceof IRunicShieldInfoOwnerLivingEntity owner) {
+            return owner.getRunicShieldInfo();
+        }
+        return null;
     }
 
-    public static void setForPlayer(Player player, EntityRunicShieldInfo info) {
-        ((PlayerRunicShieldInfoMixinAccessor) player).opentc4$setPlayerRunicShieldInfo(info);
+    public static void setForLiving(LivingEntity living, RunicShieldInfo info) {
+        if (living instanceof IRunicShieldInfoOwnerLivingEntity owner) {
+            owner.setPlayerRunicShieldInfo(info);
+        }
     }
 
     public void randomCharge(int amountToCharge, RandomSource random) {

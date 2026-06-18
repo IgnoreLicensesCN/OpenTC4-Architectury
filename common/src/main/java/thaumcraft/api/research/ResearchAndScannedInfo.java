@@ -1,11 +1,11 @@
 package thaumcraft.api.research;
 
-import com.linearity.opentc4.mixinaccessors.PlayerResearchAndScannedInfoAccessor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.AspectList;
@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 // (or i may lookup items scanned for resource location) so research is unlocked
 // (or some advancement?like twilight forest)
 public class ResearchAndScannedInfo {
-    public boolean playerScanning = false;
+    public boolean infoOwnerScanning = false;
     @ApiStatus.Internal//idk if use public do you have other ideas than methods below?
     public final Collection<ResearchItemResourceLocation> completedResearches = ConcurrentHashMap.newKeySet();
     @ApiStatus.Internal
@@ -77,9 +77,12 @@ public class ResearchAndScannedInfo {
     public void addResearchAspect(Aspect aspect,int amount){
         owningResearchAspect.addAll(aspect,amount);
     }
-    public void addResearchAspectAndSyncToPlayer(Aspect aspect,int amount, ServerPlayer serverPlayer){
+
+    public void addResearchAspectAndTrySyncToPlayer(Aspect aspect, int amount, LivingEntity living){
         this.addResearchAspect(aspect, amount);
-        new PacketUpdateAspectS2C(aspect, amount, this.getResearchAspect(aspect)).sendTo(serverPlayer);
+        if (living instanceof ServerPlayer serverPlayer){
+            new PacketUpdateAspectS2C(aspect, amount, this.getResearchAspect(aspect)).sendTo(serverPlayer);
+        }
     }
     public void setResearchAspect(Aspect aspect,int amount){
         owningResearchAspect.set(aspect,amount);
@@ -87,9 +90,11 @@ public class ResearchAndScannedInfo {
     public void addScannedForType(ScannedTypeResourceLocation scannedType,ResourceLocation thingsScanned){
         scannedThings.computeIfAbsent(scannedType,k -> ConcurrentHashMap.newKeySet()).add(thingsScanned);
     }
-    public void addScannedForTypeAndSyncToPlayer(ServerPlayer serverPlayer,ScannedTypeResourceLocation scannedType,ResourceLocation thingsScanned){
+    public void addScannedForTypeAndTrySyncToPlayer(LivingEntity living, ScannedTypeResourceLocation scannedType, ResourceLocation thingsScanned){
         addScannedForType(scannedType,thingsScanned);
-        new PacketUpdateScannedS2C(scannedType,thingsScanned).sendTo(serverPlayer);
+        if (living instanceof ServerPlayer serverPlayer){
+            new PacketUpdateScannedS2C(scannedType,thingsScanned).sendTo(serverPlayer);
+        }
     }
     public boolean hasScannedForType(ScannedTypeResourceLocation scannedType,ResourceLocation thingsToKnowIfScanned){
         var scannedSet = scannedThings.get(scannedType);
@@ -100,11 +105,17 @@ public class ResearchAndScannedInfo {
     }
 
 
-    public static ResearchAndScannedInfo getFromPlayer(Player player){
-        return ((PlayerResearchAndScannedInfoAccessor)player).opentc4$getResearchAndScannedInfo();
+    public @Nullable
+    static ResearchAndScannedInfo getFromLiving(LivingEntity living){
+        if (living instanceof IResearchAndScannedInfoOwnerLivingEntity owner){
+            return owner.getResearchAndScannedInfo();
+        }
+        return null;
     }
-    public static void setForPlayer(Player player, ResearchAndScannedInfo researchAndScannedInfo){
-        ((PlayerResearchAndScannedInfoAccessor)player).opentc4$setResearchAndScannedInfo(researchAndScannedInfo);
+    public static void setForLiving(LivingEntity living, ResearchAndScannedInfo researchAndScannedInfo){
+        if (living instanceof IResearchAndScannedInfoOwnerLivingEntity owner){
+            owner.setResearchAndScannedInfo(researchAndScannedInfo);
+        }
     }
     public void syncAllSendPacket(ServerPlayer player){
         syncResearchSendPacket(player);

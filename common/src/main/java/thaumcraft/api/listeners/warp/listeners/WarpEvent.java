@@ -1,6 +1,7 @@
 package thaumcraft.api.listeners.warp.listeners;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.listeners.warp.PickWarpEventContext;
 
@@ -33,11 +34,11 @@ public abstract class WarpEvent implements Comparable<WarpEvent> {
         return warpRequiredCompared;
     }
 
-    public abstract void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player);
+    public abstract void onEventTriggered(PickWarpEventContext warpContext, LivingEntity living);
 
     public static final WarpEvent EMPTY = new WarpEvent(0, 0) {
         @Override
-        public void onEventTriggered(PickWarpEventContext warpContext, ServerPlayer player) {
+        public void onEventTriggered(PickWarpEventContext warpContext, LivingEntity living) {
         }
     };
 }

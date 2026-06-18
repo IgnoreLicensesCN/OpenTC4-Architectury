@@ -24,6 +24,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.NodeIDResourceLocation;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
@@ -46,7 +47,6 @@ import static com.linearity.opentc4.Consts.NodeBlockEntityCompoundTagAccessors.*
 
 import com.linearity.opentc4.Color;
 
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.research.ThaumcraftResearches.*;
 
@@ -111,7 +111,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     public ResourceLocation generateId() {
         var pos = this.getBlockPos();
         var level = this.level;
-        var levelResLoc = level.dimension().location();
+        var levelResLoc = level == null ? new ResourceLocation(Thaumcraft.MOD_ID,"unknown") : level.dimension().location();
         this.id = NodeIDResourceLocation.of(
                 levelResLoc.getNamespace() + "_" + levelResLoc.getPath(),
                 String.valueOf(pos.getX()).replace('-','_')
@@ -220,11 +220,11 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         if (tickCount % 5 == 0) {
             int amountToDrain = 1;
             //TODO:[maybe wont finished]NodeDrainAPI?
-            if (NODE_TAKE_IT_ALL.isPlayerCompletedResearch(player)) {
+            if (NODE_TAKE_IT_ALL.isLivingEntityCompletedResearch(player)) {
                 ++amountToDrain;
             }
 
-            if (MASTER_NODE_TRAPPING.isPlayerCompletedResearch(player)
+            if (MASTER_NODE_TRAPPING.isLivingEntityCompletedResearch(player)
             ) {
                 ++amountToDrain;
             }
@@ -234,7 +234,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
             boolean preserve =
                     !player.isCrouching()
-                            && NODE_PRESERVE.isPlayerCompletedResearch(player)
+                            && NODE_PRESERVE.isLivingEntityCompletedResearch(player)
                             && !isNodeHarmful;
             boolean success = false;
             Aspect aspect;

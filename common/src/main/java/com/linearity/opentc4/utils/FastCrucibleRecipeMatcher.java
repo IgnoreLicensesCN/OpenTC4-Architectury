@@ -43,7 +43,7 @@ public class FastCrucibleRecipeMatcher {
                 List<CrucibleRecipe> recipes = visEntry.getValue();
 
                 for (CrucibleRecipe recipe : recipes) {
-                    if (recipe.research.isPlayerCompletedResearch(player) && recipe.matches(aspectList, stack)) {
+                    if (recipe.research.isLivingEntityCompletedResearch(player) && recipe.matches(aspectList, stack)) {
                         return recipe;
                     }
                 }

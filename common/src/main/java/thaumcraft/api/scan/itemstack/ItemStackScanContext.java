@@ -1,15 +1,15 @@
 package thaumcraft.api.scan.itemstack;
 
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemStackScanContext{
-    public final ServerPlayer playerScanning;
+    public final LivingEntity livingScanning;
     public final ItemStack stack;
     public boolean shouldBreak = false;
 
-    protected ItemStackScanContext(ServerPlayer playerScanning, ItemStack stack) {
-        this.playerScanning = playerScanning;
+    protected ItemStackScanContext(LivingEntity livingScanning, ItemStack stack) {
+        this.livingScanning = livingScanning;
         this.stack = stack;
     }
 
