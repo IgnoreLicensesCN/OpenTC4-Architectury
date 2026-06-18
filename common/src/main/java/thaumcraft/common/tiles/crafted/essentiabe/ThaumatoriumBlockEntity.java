@@ -304,7 +304,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
     }
     
     public boolean addRecipe(CrucibleRecipe recipe,Player player){
-        if (!recipe.research.isPlayerCompletedResearch(player)){
+        if (!recipe.research.isLivingEntityCompletedResearch(player)){
             return false;
         }
         if (rememberedRecipes.size() >= getRecipeSizeLimit()){

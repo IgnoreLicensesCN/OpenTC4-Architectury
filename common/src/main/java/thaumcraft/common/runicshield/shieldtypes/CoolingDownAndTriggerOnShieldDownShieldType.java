@@ -4,10 +4,10 @@ import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;
-import thaumcraft.common.runicshield.EntityRunicShieldInfo;
+import thaumcraft.common.runicshield.RunicShieldInfo;
 
 @UtilityLikeAbstraction
 public abstract class CoolingDownAndTriggerOnShieldDownShieldType extends AbstractRunicShieldType<Integer>{
@@ -18,7 +18,7 @@ public abstract class CoolingDownAndTriggerOnShieldDownShieldType extends Abstra
     public abstract int getAbilityCooldownTicks();
 
     @Override
-    public void rechargeTickForEntity(Entity entity, EntityRunicShieldInfo shieldInfo) {
+    public void rechargeTickForLiving(LivingEntity living, RunicShieldInfo shieldInfo) {
         var cooldownTick = shieldInfo.getAdditionalInfo(this);
         if (cooldownTick == null){
             cooldownTick = 0;
@@ -27,11 +27,11 @@ public abstract class CoolingDownAndTriggerOnShieldDownShieldType extends Abstra
         if (cooldownTick>0){
             shieldInfo.runicShieldAdditionalInfo.put(this,cooldownTick-1);
         }
-        super.rechargeTickForEntity(entity, shieldInfo);
+        super.rechargeTickForLiving(living, shieldInfo);
     }
 
     @Override
-    public void onShieldRunningOut(Entity victim, DamageSource source, EntityRunicShieldInfo shieldInfo) {
+    public void onShieldRunningOut(LivingEntity victim, DamageSource source, RunicShieldInfo shieldInfo) {
         super.onShieldRunningOut(victim, source, shieldInfo);
         var cooldownTick = shieldInfo.getAdditionalInfo(this);
         if (cooldownTick == null || cooldownTick <= 0){
@@ -41,9 +41,9 @@ public abstract class CoolingDownAndTriggerOnShieldDownShieldType extends Abstra
         }
     }
 
-    public void triggerEventToCooldown(Entity victim, DamageSource source, EntityRunicShieldInfo shieldInfo){
+    public void triggerEventToCooldown(LivingEntity victim, DamageSource source, RunicShieldInfo shieldInfo){
         shieldInfo.rechargeDelay = 80;
-    };
+    }
 
     public static final IntTagAccessor COOLDOWN_ACCESSOR = new IntTagAccessor("ability_cooldown");
     @Override

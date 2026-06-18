@@ -38,7 +38,7 @@ public class FocusPrimalResearch
 
     @Override
     public boolean canPlayerResearch(Player player) {
-        return super.canPlayerResearch(player) || playerHasClue(player);
+        return super.canPlayerResearch(player) || livingHasClue(player);
     }
 
     private static final AspectList<Aspect> givenAspects = UnmodifiableAspectList.of(

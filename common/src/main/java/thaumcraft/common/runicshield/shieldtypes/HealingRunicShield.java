@@ -6,11 +6,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;
-import thaumcraft.common.runicshield.EntityRunicShieldInfo;
+import thaumcraft.common.runicshield.RunicShieldInfo;
 
 public class HealingRunicShield extends CoolingDownAndTriggerOnShieldDownShieldType {
     public HealingRunicShield(RunicShieldTypeResourceLocation shieldTypeResourceLocation,int priority) {
@@ -23,7 +22,7 @@ public class HealingRunicShield extends CoolingDownAndTriggerOnShieldDownShieldT
     }
 
     @Override
-    public void triggerEventToCooldown(Entity victim, DamageSource source, EntityRunicShieldInfo shieldInfo) {
+    public void triggerEventToCooldown(LivingEntity victim, DamageSource source, RunicShieldInfo shieldInfo) {
         if (victim instanceof LivingEntity livingVictim){
             var effectInstance = new MobEffectInstance(MobEffects.REGENERATION,240,shieldInfo.getShieldCapacityFor(this));
             livingVictim.addEffect(effectInstance);
@@ -35,6 +34,7 @@ public class HealingRunicShield extends CoolingDownAndTriggerOnShieldDownShieldT
             );
         }
     }
+    @Override
     public Component getShieldName(){
         if (shieldName == null){
             shieldName = Component.translatable("runic_shield.thaumcraft.runic_healing").withStyle(ChatFormatting.BLUE);

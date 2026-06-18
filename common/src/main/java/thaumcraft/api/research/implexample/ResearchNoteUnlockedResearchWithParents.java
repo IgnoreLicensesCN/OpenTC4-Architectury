@@ -39,7 +39,7 @@ public abstract class ResearchNoteUnlockedResearchWithParents
                 OpenTC4.LOGGER.error("Research not found: {}",researchKey);
                 return false;
             }
-            if (!researchParent.isPlayerCompletedResearch(player)) {
+            if (!researchParent.isLivingEntityCompletedResearch(player)) {
                 return false;
             }
         }

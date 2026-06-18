@@ -37,24 +37,26 @@ public class PureFluidBlock extends LiquidBlock {
         if (!level.isClientSide && blockState.getFluidState().isSource()) {
             if (entity instanceof Player player) {
                 if (!player.hasEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.WARP_WARD())){
-                    var info = WarpInfo.getFromPlayer(player);
-                    int warp = info.getPermWarp();
-                    int div = 1;
-                    if (warp > 0) {
-                        div = (int)Math.sqrt(warp);
-                        if (div < 1) {
-                            div = 1;
+                    var info = WarpInfo.getFromLivingEntity(player);
+                    if (info != null) {
+                        int warp = info.getPermWarp();
+                        int div = 1;
+                        if (warp > 0) {
+                            div = (int) Math.sqrt(warp);
+                            if (div < 1) {
+                                div = 1;
+                            }
                         }
-                    }
 
-                    player.addEffect(
-                            new MobEffectInstance(
-                                    ThaumcraftEffects.ThaumcraftEffectTypeInstances.WARP_WARD(),
-                                    Math.min(32000, 200000 / div),
-                                    0
-                            )
-                    );
-                    level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                        player.addEffect(
+                                new MobEffectInstance(
+                                        ThaumcraftEffects.ThaumcraftEffectTypeInstances.WARP_WARD(),
+                                        Math.min(32000, 200000 / div),
+                                        0
+                                )
+                        );
+                        level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                    }
                 }
             }
         }

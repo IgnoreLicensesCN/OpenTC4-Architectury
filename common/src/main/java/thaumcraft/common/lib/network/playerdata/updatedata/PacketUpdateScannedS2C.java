@@ -37,7 +37,7 @@ public class PacketUpdateScannedS2C extends BaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         var player = context.getPlayer();
         if (player != null) {
-            var researchInfo = ResearchAndScannedInfo.getFromPlayer(player);
+            var researchInfo = ResearchAndScannedInfo.getFromLiving(player);
             researchInfo.addScannedForType(scannedType, thingsScanned);
         }
     }

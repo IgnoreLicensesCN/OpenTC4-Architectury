@@ -1,14 +1,13 @@
 package thaumcraft.api.research;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-//TODO:Separate
 public abstract class ResearchItem
 {
 
@@ -157,12 +156,16 @@ public abstract class ResearchItem
                 '}';
     }
 
-    public boolean isPlayerCompletedResearch(Player player){
-        return ResearchAndScannedInfo.getFromPlayer(player).hasResearchID(this.key);
+    public boolean isLivingEntityCompletedResearch(LivingEntity living){
+        var info = ResearchAndScannedInfo.getFromLiving(living);
+        if (info == null) return false;
+        return info.hasResearchID(this.key);
     }
 
-    public void completeResearchFor(Player player){
-        ResearchAndScannedInfo.getFromPlayer(player).addResearchID(this.key);
+    public void completeResearchFor(LivingEntity living){
+        var info = ResearchAndScannedInfo.getFromLiving(living);
+        if (info == null) return;
+        info.addResearchID(this.key);
     }
 
     //keep for interface

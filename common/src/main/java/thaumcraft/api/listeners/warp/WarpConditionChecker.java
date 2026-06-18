@@ -1,5 +1,6 @@
 package thaumcraft.api.listeners.warp;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 public abstract class WarpConditionChecker implements Comparable<WarpConditionChecker> {
@@ -12,10 +13,10 @@ public abstract class WarpConditionChecker implements Comparable<WarpConditionCh
     /**
      *
      * @param context
-     * @param player victim
+     * @param living victim
      * @return true if can trigger wrap event
      */
-    public abstract boolean check(PickWarpEventContext context, Player player);
+    public abstract boolean check(PickWarpEventContext context, LivingEntity living);
 
     @Override
     public int compareTo(WarpConditionChecker o) {

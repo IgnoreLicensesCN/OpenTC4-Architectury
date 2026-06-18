@@ -47,7 +47,7 @@ public class PacketSyncResearchCompletedS2C extends ThaumcraftBaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         var player = Minecraft.getInstance().player;
         if (player != null) {
-            ResearchAndScannedInfo.getFromPlayer(player).syncResearchClientSide(data);
+            ResearchAndScannedInfo.getFromLiving(player).syncResearchClientSide(data);
         }
     }
 

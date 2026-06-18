@@ -1,6 +1,5 @@
 package thaumcraft.common.items.consumable;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,11 +34,14 @@ public class ZombieBrainItem extends Item {
             Level level,
             LivingEntity entity
     ) {
-        if (!level.isClientSide && entity instanceof ServerPlayer player) {
-            if (level.getRandom().nextFloat() < 0.1F) {
-                WarpInfo.getFromPlayer(player).addStickyWarp(1);
-            } else {
-                WarpInfo.getFromPlayer(player).addTempWarp(1 + level.getRandom().nextInt(3));
+        if (!level.isClientSide) {
+            var info = WarpInfo.getFromLivingEntity(entity);
+            if (info != null) {
+                if (level.getRandom().nextFloat() < 0.1F) {
+                    info.addStickyWarp(1);
+                } else {
+                    info.addTempWarp(1 + level.getRandom().nextInt(3));
+                }
             }
         }
 

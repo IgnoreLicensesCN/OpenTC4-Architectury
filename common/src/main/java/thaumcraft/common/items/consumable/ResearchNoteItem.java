@@ -124,7 +124,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
         if (!(researchItem instanceof IResearchNoteCopyable copyable)){return;}
 
         var aspectsToCopy = copyable.getCopyResearchBaseAspects();
-        var info = ResearchAndScannedInfo.getFromPlayer(player);
+        var info = ResearchAndScannedInfo.getFromLiving(player);
 
         //checkToConsume
         var playerInventory = player.getInventory();
@@ -156,7 +156,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
         //consume
         aspectsToCopy.forEach(
                 (aspect,count) -> {
-                    info.addResearchAspectAndSyncToPlayer(aspect, -count, player);
+                    info.addResearchAspectAndTrySyncToPlayer(aspect, -count, player);
                 }
         );
         playerInventory.items.get(paperIndex).shrink(1);
@@ -234,7 +234,7 @@ public class ResearchNoteItem extends Item implements IResearchNoteDataOwnerItem
             var researchID = noteData.key;
             var research =  ResearchItem.getResearch(researchID);
             if (research == null) return InteractionResultHolder.pass(stack);
-            if (research.isPlayerCompletedResearch(player)){return InteractionResultHolder.pass(stack);}
+            if (research.isLivingEntityCompletedResearch(player)){return InteractionResultHolder.pass(stack);}
             if (research instanceof IResearchableResearch researchable) {
                 if (researchable.canPlayerResearch(player)){
                     research.completeResearchFor(player);

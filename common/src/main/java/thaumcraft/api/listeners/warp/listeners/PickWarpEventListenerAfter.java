@@ -1,5 +1,6 @@
 package thaumcraft.api.listeners.warp.listeners;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.listeners.warp.PickWarpEventContext;
@@ -19,10 +20,10 @@ public abstract class PickWarpEventListenerAfter implements Comparable<PickWarpE
     /**
      *
      * @param e the original event
-     * @param player victim
+     * @param living victim
      * @return event to replace with.Do not set null.
      */
-    public abstract @NotNull WarpEvent afterPickEvent(@NotNull PickWarpEventContext context, @NotNull WarpEvent e, @NotNull Player player);
+    public abstract @NotNull WarpEvent afterPickEvent(@NotNull PickWarpEventContext context, @NotNull WarpEvent e, @NotNull LivingEntity living);
 
     @Override
     public int compareTo(@NotNull PickWarpEventListenerAfter o) {

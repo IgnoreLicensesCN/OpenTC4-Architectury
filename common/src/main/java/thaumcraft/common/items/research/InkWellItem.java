@@ -76,7 +76,7 @@ public class InkWellItem extends Item implements IResearchTableAspectEditToolIte
         if (!noteCreatable.canPlayerCreateResearchNote(player)){
             return NO_PREREQUISITES;
         }
-        if (researchItem.isPlayerCompletedResearch(player)){
+        if (researchItem.isLivingEntityCompletedResearch(player)){
             return SUSPICIOUS_CALL;
         }
         if (!durabilityEnough(writeToolStack) || !player.getInventory().hasAnyOf(Set.of(Items.PAPER))){

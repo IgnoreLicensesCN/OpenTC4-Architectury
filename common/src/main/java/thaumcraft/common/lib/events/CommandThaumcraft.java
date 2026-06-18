@@ -285,71 +285,79 @@ public class CommandThaumcraft {
 //   }
 //
     private static void giveAllAspect(CommandSourceStack icommandsender, ServerPlayer player, int i) {
-        var info = ResearchAndScannedInfo.getFromPlayer(player);
-        for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
-            info.addResearchAspect(aspect, i);
-        }
+        var info = ResearchAndScannedInfo.getFromLiving(player);
+        if (info != null) {
+            for (Aspect aspect : Aspects.ALL_ASPECTS.values()) {
+                info.addResearchAspect(aspect, i);
+            }
 
-        player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " of all the aspects."), false);
-        icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
-        info.syncResearchSendPacket(player);
+            player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " of all the aspects."), false);
+            icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
+            info.syncResearchSendPacket(player);
+        }
     }
 
     private static void giveAspect(CommandSourceStack icommandsender, ServerPlayer player, AspectResourceLocation aspectTag, int i) {
-        var info = ResearchAndScannedInfo.getFromPlayer(player);
-        Aspect aspect = Aspect.getAspect(aspectTag);
-        if (aspect == null) {
-            for (var a : Aspects.ALL_ASPECTS.values()) {
-                if (aspectTag.equals(a.getAspectKey())) {
-                    aspect = a;
-                    break;
+        var info = ResearchAndScannedInfo.getFromLiving(player);
+        if (info != null) {
+            Aspect aspect = Aspect.getAspect(aspectTag);
+            if (aspect == null) {
+                for (var a : Aspects.ALL_ASPECTS.values()) {
+                    if (aspectTag.equals(a.getAspectKey())) {
+                        aspect = a;
+                        break;
+                    }
                 }
             }
-        }
 
-        if (aspect != null) {
-            info.addResearchAspectAndSyncToPlayer(aspect, i,player);
-            player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " " + aspect.getName()), false);
-            icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
-        } else {
-            icommandsender.sendSuccess(() -> Component.literal("§cAspect does not exist."), false);
+            if (aspect != null) {
+                info.addResearchAspectAndTrySyncToPlayer(aspect, i,player);
+                player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you " + i + " " + aspect.getName()), false);
+                icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
+            } else {
+                icommandsender.sendSuccess(() -> Component.literal("§cAspect does not exist."), false);
+            }
         }
 
 
     }
 
     private static void setWarp(CommandSourceStack icommandsender, ServerPlayer player, int i, String type) {
-        var warpInfo = WarpInfo.getFromPlayer(player);
-        if (type.equalsIgnoreCase("PERM")) {
-            warpInfo.setPermWarp(i);
-            warpInfo.syncSendPacket(player);
-        } else if (type.equalsIgnoreCase("TEMP")) {
-            warpInfo.setTempWarp(i);
-            warpInfo.syncSendPacket(player);
-        } else {
-            warpInfo.setStickyWarp(i);
-            warpInfo.syncSendPacket(player);
-        }
+        var warpInfo = WarpInfo.getFromLivingEntity(player);
+        if (warpInfo != null) {
+            if (type.equalsIgnoreCase("PERM")) {
+                warpInfo.setPermWarp(i);
+                warpInfo.syncSendPacket(player);
+            } else if (type.equalsIgnoreCase("TEMP")) {
+                warpInfo.setTempWarp(i);
+                warpInfo.syncSendPacket(player);
+            } else {
+                warpInfo.setStickyWarp(i);
+                warpInfo.syncSendPacket(player);
+            }
 
-        player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " set your warp to " + i), false);
-        icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
+            player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " set your warp to " + i), false);
+            icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
+        }
     }
 
     private static void addWarp(CommandSourceStack icommandsender, ServerPlayer player, int i, String type) {
-        var warpInfo = WarpInfo.getFromPlayer(player);
-        if (type.equalsIgnoreCase("PERM")) {
-            warpInfo.addPermWarp(i);
-            warpInfo.syncSendPacket(player);
-        } else if (type.equalsIgnoreCase("TEMP")) {
-            warpInfo.addTempWarp(i);
-            warpInfo.syncSendPacket(player);
-        } else {
-            warpInfo.addStickyWarp(i);
-            warpInfo.syncSendPacket(player);
-        }
+        var warpInfo = WarpInfo.getFromLivingEntity(player);
+        if (warpInfo != null) {
+            if (type.equalsIgnoreCase("PERM")) {
+                warpInfo.addPermWarp(i);
+                warpInfo.syncSendPacket(player);
+            } else if (type.equalsIgnoreCase("TEMP")) {
+                warpInfo.addTempWarp(i);
+                warpInfo.syncSendPacket(player);
+            } else {
+                warpInfo.addStickyWarp(i);
+                warpInfo.syncSendPacket(player);
+            }
 
-        player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " added " + i + " warp to your total."), false);
-        icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
+            player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " added " + i + " warp to your total."), false);
+            icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
+        }
     }
 
     static void listResearch(CommandSourceStack icommandsender) {
@@ -361,8 +369,11 @@ public class CommandThaumcraft {
     }
 
     static void giveClue(CommandSourceStack icommandsender, ServerPlayer player, ClueResourceLocation clueForResearch) {
-
-        ResearchAndScannedInfo.getFromPlayer(player).addClue(clueForResearch);
+        var info = ResearchAndScannedInfo.getFromLiving(player);
+        if (info == null) {
+            return;
+        }
+        info.addClue(clueForResearch);
         new PacketClueCompleteS2C(clueForResearch).sendTo(player);
         player.sendSystemMessage(Component.literal("§5" + icommandsender.getTextName() + " gave you clue " + clueForResearch));
         icommandsender.sendSuccess(() -> Component.literal("§5Success!"), false);
@@ -383,7 +394,7 @@ public class CommandThaumcraft {
         if (research == null) {
             return;
         }
-        if (!research.isPlayerCompletedResearch(player)) {
+        if (!research.isLivingEntityCompletedResearch(player)) {
             if (research instanceof IResearchParentsOwner parentsOwner) {
                 parentsOwner.getParents().forEach(
                         parentResLoc -> giveRecursiveResearch(player, parentResLoc)
@@ -403,7 +414,7 @@ public class CommandThaumcraft {
     static void giveAllResearch(CommandSourceStack icommandsender, ServerPlayer player) {
         for (ResearchCategory cat : ResearchCategory.researchCategories.values()) {
             for (ResearchItem ri : cat.researches.values()) {
-                if (!ri.isPlayerCompletedResearch(player)) {
+                if (!ri.isLivingEntityCompletedResearch(player)) {
                     giveRecursiveResearch(player, ri.getKey());
                 }
             }
@@ -415,7 +426,10 @@ public class CommandThaumcraft {
     }
 
     static void resetResearch(CommandSourceStack icommandsender, ServerPlayer player) {
-        var researchInfo = ResearchAndScannedInfo.getFromPlayer(player);
+        var researchInfo = ResearchAndScannedInfo.getFromLiving(player);
+        if (researchInfo == null) {
+            return;
+        }
         researchInfo.completedResearches.clear();
 
 //      for(ResearchCategory cat : ResearchCategory.researchCategories.values()) {

@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.Thaumcraft;
 
-import static thaumcraft.api.scan.ScanManager.onPlayerScanItemStack;
+import static thaumcraft.api.scan.ScanManager.onScanItemStack;
 
 //oh it's for extension?or for TODO:[maybe wont finished]inventory scan
 public class PacketScannedItemStackC2S extends BaseC2SMessage {
@@ -40,7 +40,7 @@ public class PacketScannedItemStackC2S extends BaseC2SMessage {
             if (!(player instanceof ServerPlayer serverPlayer)) {return;}
             if (stack == null || stack.isEmpty()) {return;}
 
-            onPlayerScanItemStack(serverPlayer, stack);
+            onScanItemStack(serverPlayer, stack);
         });
     }
 }

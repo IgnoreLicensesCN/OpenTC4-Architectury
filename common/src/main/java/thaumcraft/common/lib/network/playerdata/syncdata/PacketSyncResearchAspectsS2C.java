@@ -49,7 +49,7 @@ public class PacketSyncResearchAspectsS2C extends ThaumcraftBaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         var player = context.getPlayer();
         if (player != null) {
-            ResearchAndScannedInfo.getFromPlayer(player).syncResearchAspectClientSide(data);
+            ResearchAndScannedInfo.getFromLiving(player).syncResearchAspectClientSide(data);
         }
     }
 

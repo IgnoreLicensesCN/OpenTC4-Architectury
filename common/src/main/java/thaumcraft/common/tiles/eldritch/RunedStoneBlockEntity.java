@@ -33,7 +33,10 @@ public class RunedStoneBlockEntity extends BlockEntity {
         if (p != null) {
             p.hurt(this.level.damageSources().magic(),2.F);
             if (this.level.random.nextBoolean()) {
-                WarpInfo.getFromPlayer(p).addTempWarp(1 + this.level.random.nextInt(2));
+                var warpInfo = WarpInfo.getFromLivingEntity(p);
+                if (warpInfo != null) {
+                    warpInfo.addTempWarp(1 + this.level.random.nextInt(2));
+                }
             }
 
             new PacketFXBlockZapS2C(

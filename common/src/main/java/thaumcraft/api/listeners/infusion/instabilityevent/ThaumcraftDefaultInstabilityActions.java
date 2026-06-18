@@ -142,11 +142,14 @@ public class ThaumcraftDefaultInstabilityActions {
                 Level.ExplosionInteraction.MOB);
     }
     public static void infusionWarpPlayer(InfusionInstabilityEventListener.InfusionInstabilityEventContext ctx) {
-        getLivingNear(ctx.level,ctx.matrixPos,1, EntityTypeTests.PLAYER_TEST).forEach(player -> {
-            if (ctx.level.random.nextInt(4) == 0) {
-                WarpInfo.getFromPlayer(player).addStickyWarp(1);
-            } else {
-                WarpInfo.getFromPlayer(player).addTempWarp(1 + ctx.level.random.nextInt(5));
+        getLivingNear(ctx.level,ctx.matrixPos,1, EntityTypeTests.LIVING_TEST).forEach(living -> {
+            var warpInfo = WarpInfo.getFromLivingEntity(living);
+            if (warpInfo != null) {
+                if (ctx.level.random.nextInt(4) == 0) {
+                    warpInfo.addStickyWarp(1);
+                } else {
+                    warpInfo.addTempWarp(1 + ctx.level.random.nextInt(5));
+                }
             }
         });
     }

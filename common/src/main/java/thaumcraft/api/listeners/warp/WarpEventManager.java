@@ -2,7 +2,7 @@ package thaumcraft.api.listeners.warp;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +12,6 @@ import thaumcraft.api.IWarpingGear;
 import thaumcraft.api.listeners.warp.consts.WarpEventsEnum;
 import thaumcraft.api.listeners.warp.listeners.*;
 import thaumcraft.api.warp.WarpInfo;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketChangeWarpS2C;
@@ -55,14 +54,14 @@ public class WarpEventManager {
 
     }
 
-    public static WarpEvent pickWarpEventWithListener(PickWarpEventContext warpContext, Player player) {
+    public static WarpEvent pickWarpEventWithListener(PickWarpEventContext warpContext, LivingEntity living) {
         for (PickWarpEventListenerBefore listener : pickWarpEventListenerBeforeManager.getListeners()) {
-            listener.beforePickEvent(warpContext, player);
+            listener.beforePickEvent(warpContext, living);
         }
         if (warpContext.warp <= 0 || warpContext.actualWarp <= 0) {
             return WarpEvent.EMPTY;
         }
-        warpContext.randWithWarp = player.getRandom().nextInt(warpContext.warp);
+        warpContext.randWithWarp = living.getRandom().nextInt(warpContext.warp);
         WarpEvent picked = WarpEvent.EMPTY;
 
         for (WarpEvent pickEvent : warpEventManager.getListeners()) {
@@ -79,65 +78,70 @@ public class WarpEventManager {
         }
 
         for (PickWarpEventListenerAfter listener : pickWarpEventListenerAfterManager.getListeners()) {
-            picked = listener.afterPickEvent(warpContext, picked, player);
+            picked = listener.afterPickEvent(warpContext, picked, living);
         }
         return picked;
     }
 
-    public static void triggerRandomWarpEvent(PickWarpEventContext warpContext, ServerPlayer player) {
-        triggerWarpEvent(warpContext, pickWarpEventWithListener(warpContext, player), player);
+    public static void triggerRandomWarpEvent(PickWarpEventContext warpContext, LivingEntity living) {
+        triggerWarpEvent(warpContext, pickWarpEventWithListener(warpContext, living), living);
     }
 
-    public static void triggerWarpEvent(PickWarpEventContext warpContext, WarpEvent e, ServerPlayer player) {
+    public static void triggerWarpEvent(PickWarpEventContext warpContext, WarpEvent e, LivingEntity living) {
         e.enable();
         for (WarpEventListenerBefore listener : warpEventListenerBeforeManager.getListeners()) {
-            listener.onWarpEvent(warpContext, e, player);
+            listener.onWarpEvent(warpContext, e, living);
         }
         if (e.enabledFlag) {
-            e.onEventTriggered(warpContext, player);
+            e.onEventTriggered(warpContext, living);
             if (e.retryAnotherFlag) {
-                triggerRandomWarpEvent(warpContext, player);
+                triggerRandomWarpEvent(warpContext, living);
                 return;
             }
             for (WarpEventListenerAfter listener : warpEventListenerAfterManager.getListeners()) {
-                listener.onWarpEvent(warpContext, e, player);
+                listener.onWarpEvent(warpContext, e, living);
             }
             if (e.sendMiscPacket) {
-                if (player instanceof ServerPlayer) {
-                    new PacketMiscEventS2C((short) 0).sendTo(player);
+                if (living instanceof ServerPlayer serverPlayer) {
+                    new PacketMiscEventS2C((short) 0).sendTo(serverPlayer);
                 }
             }
-            if (player instanceof ServerPlayer serverPlayer) {
-                WarpInfo.getFromPlayer(player).syncSendPacket(serverPlayer);
+            if (living instanceof ServerPlayer serverPlayer) {
+                var warpInfo =  WarpInfo.getFromLivingEntity(living);
+                if (warpInfo != null) {
+                    warpInfo.syncSendPacket(serverPlayer);
+                }
             }
         }
     }
 
-    public static void tryTriggerRandomWarpEvent(@NotNull ServerPlayer player) {
-        WarpInfo warpInfo = WarpInfo.getFromPlayer(player);
-        PickWarpEventContext warpContext = new PickWarpEventContext(
-                warpInfo.getTotalWarp()
-                        + getWarpFromGear(player),
-                player,
-                warpInfo.getPermWarp()
-                        + warpInfo.getStickyWarp(),
-                warpInfo.getWarpEventCounter()
-        );
-        for (WarpConditionChecker condition : warpConditionCheckerManager.getListeners()) {
-            if (!condition.check(warpContext, player)) {
-                return;
+    public static void tryTriggerRandomWarpEvent(@NotNull LivingEntity living) {
+        WarpInfo warpInfo = WarpInfo.getFromLivingEntity(living);
+        if (warpInfo != null) {
+            PickWarpEventContext warpContext = new PickWarpEventContext(
+                    warpInfo.getTotalWarp()
+                            + getWarpFromGear(living),
+                    living,
+                    warpInfo.getPermWarp()
+                            + warpInfo.getStickyWarp(),
+                    warpInfo.getWarpEventCounter()
+            );
+            for (WarpConditionChecker condition : warpConditionCheckerManager.getListeners()) {
+                if (!condition.check(warpContext, living)) {
+                    return;
+                }
             }
+            triggerRandomWarpEvent(warpContext, living);
         }
-        triggerRandomWarpEvent(warpContext, player);
     }
 
     public static final int defaultCheckWarpEventDelay = 2000;
 
     //unit:tick
-    public static int getWarpEventDelayForPlayer(ServerPlayer player) {
+    public static int getWarpEventDelayForPlayer(LivingEntity living) {
         int result = defaultCheckWarpEventDelay;
         for (GettingWarpDelayListener listener : gettingWarpDelayListenerManager.getListeners()) {
-            result = listener.onGettingWarpEventDelayForPlayer(player);
+            result = listener.onGettingWarpEventDelayForLiving(living);
         }
         return result;
     }
@@ -151,25 +155,28 @@ public class WarpEventManager {
     }
 
 
-    public static void addResearchWarpToPlayer(Player player,int warp) {
-        if (warp > 0 && !Config.wuss && !player.level().isClientSide) {
-            var info = WarpInfo.getFromPlayer(player);
+    public static void addResearchWarpTo(LivingEntity living, int warp) {
+        var info = WarpInfo.getFromLivingEntity(living);
+        if (info == null) {
+            return;
+        }
+        if (warp > 0 && !Config.wuss && !living.level().isClientSide) {
             if (warp > 1) {
                 int w2 = warp / 2;
                 if (warp - w2 > 0) {
                     info.addPermWarp(warp - w2);
-                    if (player instanceof ServerPlayer serverPlayer) {
+                    if (living instanceof ServerPlayer serverPlayer) {
                         new PacketChangeWarpS2C((byte)0, warp - w2).sendTo(serverPlayer);
                     }
                 }
 
                 info.addStickyWarp(warp - w2);
-                if (player instanceof ServerPlayer serverPlayer) {
+                if (living instanceof ServerPlayer serverPlayer) {
                     new PacketChangeWarpS2C((byte) 1, w2).sendTo(serverPlayer);
                 }
             } else {
                 info.addPermWarp(warp);
-                if (player instanceof ServerPlayer serverPlayer) {
+                if (living instanceof ServerPlayer serverPlayer) {
                     new PacketChangeWarpS2C((byte)0, warp).sendTo(serverPlayer);
                 }
             }

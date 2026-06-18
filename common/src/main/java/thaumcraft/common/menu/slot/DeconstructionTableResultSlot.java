@@ -90,8 +90,8 @@ public class DeconstructionTableResultSlot extends Slot {
         }
         if (p instanceof ServerPlayer serverPlayer) {
             deconstructionTable.storingAspect = Aspects.EMPTY;
-            var info = ResearchAndScannedInfo.getFromPlayer(serverPlayer);
-            info.addResearchAspectAndSyncToPlayer(aspect, 1,serverPlayer);
+            var info = ResearchAndScannedInfo.getFromLiving(serverPlayer);
+            info.addResearchAspectAndTrySyncToPlayer(aspect, 1,serverPlayer);
             setChanged();
         }
     }

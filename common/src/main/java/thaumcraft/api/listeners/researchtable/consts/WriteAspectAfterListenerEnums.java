@@ -19,7 +19,7 @@ public enum WriteAspectAfterListenerEnums {
         public void onEventTriggered(WriteAspectContext context) {
 
             if (context.doDrainAspect
-                    && ThaumcraftResearches.RESEARCH_EXPERTISE.isPlayerCompletedResearch(context.player)) {
+                    && ThaumcraftResearches.RESEARCH_EXPERTISE.isLivingEntityCompletedResearch(context.player)) {
                 if (context.atLevel.random.nextDouble() < 0.1) {
                     context.atLevel.playSound(
                             context.player,
@@ -56,8 +56,8 @@ public enum WriteAspectAfterListenerEnums {
         @Override
         public void onEventTriggered(WriteAspectContext context) {
             if (context.doDrainAspect && !context.aspectToWrite.isEmpty()){
-                var info = ResearchAndScannedInfo.getFromPlayer(context.player);
-                info.addResearchAspectAndSyncToPlayer(context.aspectToWrite,-1,context.player);
+                var info = ResearchAndScannedInfo.getFromLiving(context.player);
+                info.addResearchAspectAndTrySyncToPlayer(context.aspectToWrite,-1,context.player);
             }
         }
     }),

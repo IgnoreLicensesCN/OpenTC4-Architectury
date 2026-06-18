@@ -93,7 +93,7 @@ public class ThaumometerItem extends Item {
                     scanningBlockPos = getScanningBlockPos(itemStack, level, player, useRemainingCount);
                     if (scanningBlockPos != null) {
                         if (level.getBlockState(scanningBlockPos).is(REFLECTS_PLAYER)) {
-                            ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromPlayer(player);
+                            ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromLiving(player);
                             var playerName = getSafeStringForResourceLocation(player.getGameProfile().getName());
                             var resLoc = new ResourceLocation("pn",playerName);
                             if(!info.hasScannedForType(PLAYER,resLoc)){
@@ -129,7 +129,7 @@ public class ThaumometerItem extends Item {
 
                             //do scan yourself in TC4 without other mods now!
                             if (level.getBlockState(scanningBlockPos).is(REFLECTS_PLAYER)) {
-                                ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromPlayer(player);
+                                ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromLiving(player);
                                 var playerName = getSafeStringForResourceLocation(player.getGameProfile().getName());
                                 var resLoc = new ResourceLocation("pn",playerName);
                                 if(!info.hasScannedForType(PLAYER,resLoc)){

@@ -36,7 +36,7 @@ public class PacketSyncClueCompletedS2C extends ThaumcraftBaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         Player player = context.getPlayer();
         if (player != null) {
-            ResearchAndScannedInfo.getFromPlayer(player).syncClueClientSide(this.data);
+            ResearchAndScannedInfo.getFromLiving(player).syncClueClientSide(this.data);
         }
     }
 

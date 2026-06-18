@@ -87,18 +87,22 @@ public class SanitySoapItem extends Item {
                 ) {
                     chance += 0.25F;
                 }
-                if (livingEntity instanceof ServerPlayer player) {
-                    var warpInfo = WarpInfo.getFromPlayer(player);
+                var warpInfo = WarpInfo.getFromLivingEntity(livingEntity);
+                if (warpInfo != null) {
 
                     if (level.getRandom().nextFloat() < chance
                             && warpInfo.getStickyWarp() > 0) {
                         warpInfo.addStickyWarp(-1);
-                        warpInfo.syncSendPacket(player);
+                        if (livingEntity instanceof ServerPlayer player) {
+                            warpInfo.syncSendPacket(player);
+                        }
                     }
 
                     if (warpInfo.getTempWarp() > 0) {
                         warpInfo.setTempWarp(0);
-                        warpInfo.syncSendPacket(player);
+                        if (livingEntity instanceof ServerPlayer player) {
+                            warpInfo.syncSendPacket(player);
+                        }
                     }
                 }
             } else {

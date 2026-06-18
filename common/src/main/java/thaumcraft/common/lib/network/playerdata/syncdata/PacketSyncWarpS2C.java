@@ -36,7 +36,7 @@ public class PacketSyncWarpS2C extends ThaumcraftBaseS2CMessage {
     public void handle(NetworkManager.PacketContext context) {
         var player = Minecraft.getInstance().player;
         if (player != null) {
-            WarpInfo.setForPlayer(player,data);
+            WarpInfo.setForLivingEntity(player,data);
         }
     }
 

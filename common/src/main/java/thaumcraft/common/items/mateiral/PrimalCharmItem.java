@@ -1,8 +1,6 @@
 package thaumcraft.common.items.mateiral;
 
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -65,8 +63,8 @@ public class PrimalCharmItem extends Item {
                 }
             } else if (r == 42
                     && entity instanceof ServerPlayer player
-                    && !FOCUS_PRIMAL.isPlayerCompletedResearch(player)
-                    && !FOCUS_PRIMAL.playerHasClue(player)
+                    && !FOCUS_PRIMAL.isLivingEntityCompletedResearch(player)
+                    && !FOCUS_PRIMAL.livingHasClue(player)
             ) {
                 var clueLoc = FOCUS_PRIMAL.key.convertToClueResLoc();
                 player.sendSystemMessage(
@@ -75,7 +73,7 @@ public class PrimalCharmItem extends Item {
                         true //maybe cool?
                 );
                 new PacketClueCompleteS2C(clueLoc).sendTo(player);
-                FOCUS_PRIMAL.giveClueToPlayer(player);
+                FOCUS_PRIMAL.giveClueToLiving(player);
             }
         }
     }

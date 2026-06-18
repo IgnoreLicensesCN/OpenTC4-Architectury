@@ -31,7 +31,7 @@ public class AspectUnlockableResearchWithParents extends SimpleAspectUnlockedRes
         for (var parentKey : getParents()) {
             var parentResearch = ResearchItem.getResearch(parentKey);
             if (parentResearch != null) {
-                if (!parentResearch.isPlayerCompletedResearch(player)) {
+                if (!parentResearch.isLivingEntityCompletedResearch(player)) {
                     return false;
                 }
             }

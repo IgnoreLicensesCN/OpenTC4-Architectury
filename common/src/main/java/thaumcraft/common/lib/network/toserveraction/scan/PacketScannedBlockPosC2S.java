@@ -8,7 +8,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import thaumcraft.common.Thaumcraft;
 
-import static thaumcraft.api.scan.ScanManager.onPlayerScanBlockPos;
+import static thaumcraft.api.scan.ScanManager.onScanBlockPos;
 
 public class PacketScannedBlockPosC2S extends BaseC2SMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":scanned_block_pos_2s";
@@ -38,7 +38,7 @@ public class PacketScannedBlockPosC2S extends BaseC2SMessage {
             var player = context.getPlayer();
             if (!(player instanceof ServerPlayer serverPlayer)) {return;}
 
-            onPlayerScanBlockPos(serverPlayer, pos);
+            onScanBlockPos(serverPlayer, pos);
         });
     }
 }

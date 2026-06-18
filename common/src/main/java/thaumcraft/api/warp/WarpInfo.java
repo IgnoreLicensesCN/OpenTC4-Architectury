@@ -1,8 +1,8 @@
 package thaumcraft.api.warp;
 
-import com.linearity.opentc4.mixinaccessors.PlayerWarpInfoMixinAccessor;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncWarpS2C;
 
 //instance should bind to entity
@@ -59,13 +59,20 @@ public class WarpInfo {
         stickyWarp += amount;
     }
 
-    public static WarpInfo getFromPlayer(Player player){
-        return ((PlayerWarpInfoMixinAccessor)player).opentc4$getWarpInfo();
+    public static @Nullable WarpInfo getFromLivingEntity(LivingEntity livingEntity){
+        if (livingEntity instanceof IWarpInfoOwnerLivingEntity warpInfoOwner){
+            return warpInfoOwner.getWarpInfo();
+        }
+        return null;
     }
-    public static void setForPlayer(Player player, WarpInfo info){
-        ((PlayerWarpInfoMixinAccessor)player).opentc4$setWarpInfo(info);
+    public static void setForLivingEntity(LivingEntity living, WarpInfo info){
+        if (living instanceof IWarpInfoOwnerLivingEntity warpInfoOwner){
+            warpInfoOwner.setWarpInfo(info);
+        }
     }
     public void syncSendPacket(ServerPlayer player){
-        new PacketSyncWarpS2C(getFromPlayer(player)).sendTo(player);
+        var info = getFromLivingEntity(player);
+        if (info == null) return;
+        new PacketSyncWarpS2C(info).sendTo(player);
     }
 }

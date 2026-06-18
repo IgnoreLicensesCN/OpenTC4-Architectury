@@ -27,8 +27,8 @@ public class KnowledgeFragmentItem extends Item {
         if (player instanceof ServerPlayer serverPlayer) {
             for(Aspect a : Aspects.getPrimalAspects()) {
                 short q = (short)(world.getRandom().nextInt(2) + 1);
-                var info = ResearchAndScannedInfo.getFromPlayer(player);
-                info.addResearchAspectAndSyncToPlayer(a,q,serverPlayer);
+                var info = ResearchAndScannedInfo.getFromLiving(player);
+                info.addResearchAspectAndTrySyncToPlayer(a,q,serverPlayer);
             }
         }
         return InteractionResultHolder.sidedSuccess(stack, world.isClientSide());
