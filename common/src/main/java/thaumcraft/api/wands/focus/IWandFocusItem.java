@@ -4,10 +4,12 @@ import com.linearity.opentc4.annotations.ModifiableCopy;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -53,24 +55,20 @@ public interface IWandFocusItem<Asp extends Aspect> {
             }
         }
         return appliedUpgrades;
-    };
+    }
     void storeFocusUpgrades(ItemStack stack, List<FocusUpgradeType> wandUpgrades);
     void addFocusUpgrade(ItemStack stack, FocusUpgradeType type);
 
-    default boolean isUpgradedWith(ItemStack focusstack, FocusUpgradeType focusUpgradetype) {
-        return getAppliedFocusUpgrades(focusstack).containsKey(focusUpgradetype);
-    }
-
-    default boolean canApplyUpgrade(ItemStack focusstack, Player player, FocusUpgradeType type) {
-        return canApplyUpgrade(focusstack, player, type,getRank(focusstack));
+    default boolean isUpgradedWith(ItemStack focusStack, FocusUpgradeType focusUpgradetype) {
+        return getAppliedFocusUpgrades(focusStack).containsKey(focusUpgradetype);
     }
 
     default int getRank(ItemStack focusStack) {
         return getAppliedFocusUpgrades(focusStack).size();
     }
 
-    default boolean canApplyUpgrade(ItemStack focusstack, Player player, FocusUpgradeType type, int rank) {
-        return getPossibleUpgradesByRank(focusstack).contains(type) && type.canApplyTo(focusstack,this);
+    default boolean canApplyUpgrade(ItemStack focusStack, Player player, FocusUpgradeType type) {
+        return getPossibleUpgradesByRank(focusStack).contains(type) && type.canApplyTo(focusStack,this);
     }
 
     /**
@@ -86,19 +84,11 @@ public interface IWandFocusItem<Asp extends Aspect> {
     /**
      * What upgrades can be applied to this focus for ranks 1 to 5
      */
-    List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusstack);
+    default List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack){
+        return getPossibleUpgradesByRank(focusStack,getRank(focusStack));
+    }
+    List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack,int rank);
 
-
-//    /**
-//     * Just insert two alphanumeric characters before this string in your focus item class
-//     */
-//    default String getSortingHelper(ItemStack focusstack) {
-//        StringBuilder out= new StringBuilder();
-//        for (FocusUpgradeType id: getAppliedWandUpgrades(focusstack).keySet()) {
-//            out.append(id.id());
-//        }
-//        return out.toString();
-//    }
 
     //only for displaying
     default boolean isCentiVisCostPerTick(ItemStack focusStack,@Nullable ItemStack wandStack) {
@@ -119,6 +109,11 @@ public interface IWandFocusItem<Asp extends Aspect> {
 
     default void onLeftClickBlock(ItemStack wandStack, ItemStack focusStack, LivingEntity user, InteractionHand interactionHand) {}
 
+    //null -> dont handle it
+    //"onEntitySwing"
+    default @Nullable InteractionResult onFocusUseOn(UseOnContext useOnContext) {
+        return null;
+    }
     default AbstractWandWaveAnimation getWaveAnimation(ItemStack focusStack){
         return ThaumcraftWandWaveAnimations.WAVE;
     }

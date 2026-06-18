@@ -3,6 +3,7 @@ package thaumcraft.common.items.wands.foci;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -12,6 +13,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.api.wands.focus.IWandFocusItem;
+import thaumcraft.common.items.wands.WandCooldownManager;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -81,5 +83,18 @@ public abstract class BasicFocusItem extends Item implements IWandFocusItem<Aspe
             }
         }
         addFocusInformation(focusStack,list);
+    }
+
+    public boolean checkAndSetCooldown(ItemStack focusStack,LivingEntity user){
+        var cooldownManager = WandCooldownManager.getFromLiving(user);
+        if (cooldownManager == null) {
+            return false;
+        }
+        boolean cooldownMeets = !cooldownManager.isOnCooldown(user);
+        if (!cooldownMeets) {
+            return false;
+        }
+        cooldownManager.setCooldown(user,getActivationCooldownTicks(focusStack));
+        return true;
     }
 }

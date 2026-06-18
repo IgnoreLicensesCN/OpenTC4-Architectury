@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 //all method here should check platform
-@SuppressWarnings({"resource","unused"})
+@SuppressWarnings({"unused"})
 public class ClientFXUtils {
 
     public static ClientLevel getClientWorld() {

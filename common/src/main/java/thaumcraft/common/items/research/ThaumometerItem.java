@@ -41,11 +41,12 @@ public class ThaumometerItem extends Item {
 
 
     protected @Nullable Entity getPointedEntity(ItemStack stack, Level world, Player p, int count) {
-        return EntityUtils.getPointedEntity(p, 0.5F, 10.0F, 0.0F, true);
+        var hitResult = EntityUtils.getPointedEntity(p, 10.0F);
+        return hitResult == null?null:hitResult.getEntity();
     }
 
     protected @Nullable BlockPos getScanningBlockPos(ItemStack stack, Level world, Player p, int count) {
-        HitResult mop = EntityUtils.getHitResultFromPlayer(p.level(), p, true);
+        HitResult mop = p.pick(5,0,true);
         if (mop instanceof BlockHitResult blockHitResult) {
             return blockHitResult.getBlockPos();
         }
@@ -96,7 +97,7 @@ public class ThaumometerItem extends Item {
                             ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromLiving(player);
                             var playerName = getSafeStringForResourceLocation(player.getGameProfile().getName());
                             var resLoc = new ResourceLocation("pn",playerName);
-                            if(!info.hasScannedForType(PLAYER,resLoc)){
+                            if(info != null && !info.hasScannedForType(PLAYER,resLoc)){
                                 ClientFXUtils.blockRunes(level,
                                         player.getX() - (double) 0.5F,
                                         player.getY() + (double) (player.getEyeHeight() / 2.0F),
@@ -132,7 +133,7 @@ public class ThaumometerItem extends Item {
                                 ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromLiving(player);
                                 var playerName = getSafeStringForResourceLocation(player.getGameProfile().getName());
                                 var resLoc = new ResourceLocation("pn",playerName);
-                                if(!info.hasScannedForType(PLAYER,resLoc)){
+                                if(info != null && !info.hasScannedForType(PLAYER,resLoc)){
                                     new PacketScannedEntityC2S(player.getId()).sendToServer();
                                 }
                             }

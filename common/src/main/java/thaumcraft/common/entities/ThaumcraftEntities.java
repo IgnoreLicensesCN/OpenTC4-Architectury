@@ -12,6 +12,7 @@ import thaumcraft.common.entities.projectile.AlumentumEntity;
 import thaumcraft.common.entities.projectile.firefocus.EmberEntity;
 import thaumcraft.common.entities.projectile.firefocus.ExplosiveOrbEntity;
 import thaumcraft.common.entities.projectile.TaintBottleEntity;
+import thaumcraft.common.entities.projectile.shockfocus.ShockOrbEntity;
 
 import static thaumcraft.common.entities.ThaumcraftEntities.Registry.ENTITIES;
 
@@ -33,6 +34,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<EmberEntity> EMBER() {
             return Registry.SUPPLIER_EMBER.get();
+        }
+        public static EntityType<ShockOrbEntity> SHOCK_ORB() {
+            return Registry.SUPPLIER_SHOCK_ORB.get();
         }
 
     }
@@ -75,6 +79,13 @@ public class ThaumcraftEntities {
                         .clientTrackingRange(10)
                         .updateInterval(20)
                         .build("ember")
+        );
+        public static final RegistrySupplier<EntityType<ShockOrbEntity>> SUPPLIER_SHOCK_ORB = ENTITIES.register("shock_orb",
+                () -> EntityType.Builder.<ShockOrbEntity>of(ShockOrbEntity::new, MobCategory.MISC)
+                        .sized(0.25F, 0.25F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("shock_orb")
         );
     }
 

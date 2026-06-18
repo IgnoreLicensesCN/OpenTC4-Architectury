@@ -271,6 +271,19 @@ public class WandCastingItem extends Item
 
     @Override
     public @NotNull InteractionResult useOn(UseOnContext useOnContext) {
+        var usingWand = useOnContext.getItemInHand();
+
+        var focusStack = getFocusItemStack(usingWand);
+        if (!focusStack.isEmpty()) {
+            var focusItem = focusStack.getItem();
+            if (focusItem instanceof IWandFocusItem<? extends Aspect> focus) {
+                var result = focus.onFocusUseOn(useOnContext);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+
         var player = useOnContext.getPlayer();
         if (player != null) {
             var onBlockState = player.level()
@@ -316,9 +329,7 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
-                var cooldownManager = WandCooldownManager.getFromLiving(livingEntity);
-                boolean cooldownMeets = (cooldownManager != null && !cooldownManager.isOnCooldown(livingEntity));
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && cooldownMeets) {
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus) {
                     focus.onUsingFocusTick(usingWand, focusStack, livingEntity, useRemainingCount);
                 }
             }
@@ -335,10 +346,7 @@ public class WandCastingItem extends Item
             if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
 
-                var cooldownManager = WandCooldownManager.getFromLiving(player);
-                boolean cooldownMeets = (cooldownManager != null && !cooldownManager.isOnCooldown(player));
-
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && cooldownMeets) {
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus) {
                     return focus.onFocusRightClick(usingWand, focusStack, level, player, interactionHand);
                 }
             }
@@ -364,9 +372,7 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
-                var cooldownManager = WandCooldownManager.getFromLiving(user);
-                boolean cooldownMeets = (cooldownManager != null && !cooldownManager.isOnCooldown(user));
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && cooldownMeets) {
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus) {
                     focus.onStoppedUsingFocus(usingWand, focusStack, level, user, useRemainingTicks);
                 }
             }
@@ -380,9 +386,7 @@ public class WandCastingItem extends Item
             var focusStack = getFocusItemStack(usingWand);
             if (!focusStack.isEmpty()) {
                 var focusItem = focusStack.getItem();
-                var cooldownManager = WandCooldownManager.getFromLiving(user);
-                boolean cooldownMeets = (cooldownManager != null && !cooldownManager.isOnCooldown(user));
-                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus && cooldownMeets) {
+                if (focusItem instanceof IWandFocusItem<? extends Aspect> focus) {
                     focus.onLeftClickBlock(usingWand, focusStack, user, interactionHand);
                 }
             }

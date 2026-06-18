@@ -225,6 +225,7 @@ block_with_item_names = [
     ['item.ItemBottleTaint.name','taint_bottle'],
     ['item.FocusExcavation.name','excavation_focus'],
     ['item.FocusFire.name','fire_focus'],
+    ['item.FocusShock.name','shock_focus'],
 
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],

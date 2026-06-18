@@ -248,8 +248,8 @@ public class ConfigItems {
 //      GameRegistry.registerItem(itemFocusPouch, "FocusPouch", "Thaumcraft");
 //      itemFocusFire = (new ItemFocusFire()).setUnlocalizedName("FocusFire");
 //      GameRegistry.registerItem(itemFocusFire, "FocusFire", "Thaumcraft");
-      itemFocusShock = (new ItemFocusShock()).setUnlocalizedName("FocusShock");
-      GameRegistry.registerItem(itemFocusShock, "FocusShock", "Thaumcraft");
+//      itemFocusShock = (new ItemFocusShock()).setUnlocalizedName("FocusShock");
+//      GameRegistry.registerItem(itemFocusShock, "FocusShock", "Thaumcraft");
       itemFocusHellbat = (new ItemFocusHellbat()).setUnlocalizedName("FocusHellbat");
       GameRegistry.registerItem(itemFocusHellbat, "FocusHellbat", "Thaumcraft");
       itemFocusFrost = (new ItemFocusFrost()).setUnlocalizedName("FocusFrost");

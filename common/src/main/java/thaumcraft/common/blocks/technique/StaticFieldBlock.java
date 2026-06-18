@@ -32,6 +32,7 @@ public class StaticFieldBlock extends SuppressedWarningBlock {
         this(
                 BlockBehaviour.Properties.of()
                         .noCollission()
+                        .air()
                         .replaceable()
                         .randomTicks()
                         .strength(100.0F,50)

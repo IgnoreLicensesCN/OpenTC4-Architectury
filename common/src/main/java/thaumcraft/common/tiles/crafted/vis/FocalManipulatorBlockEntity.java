@@ -129,6 +129,7 @@ public class FocalManipulatorBlockEntity
         return 100;
     }
 
+    //TODO:Activate with GUI/packet in server side
     public void startManipulation(FocusUpgradeTypeResourceLocation upgradeToApply, Player player) {
         if (this.level == null) return;
         if (!this.centiVisRequiring.isEmpty()) return;
@@ -141,7 +142,7 @@ public class FocalManipulatorBlockEntity
         if (player.experienceLevel < getXPLvlNeededForRank(rank)) {
             return;
         }
-        if (!focus.canApplyUpgrade(stack,player,upgrade,rank)){
+        if (!focus.canApplyUpgrade(stack,player,upgrade)){
             return;
         }
         this.centiVisRequiring.addAll(upgrade.getCentiVisRequiring(stack,focus,rank));

@@ -13,23 +13,21 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.world.HolderCache;
 
-import java.util.Objects;
-
 public class ThaumcraftDamageSources
 {
     private static final HolderCache<DamageType> holderCache = HolderCache.of(Registries.DAMAGE_TYPE);
 
     public static final ResourceKey<DamageType> TAINT =
-            ResourceKey.create(Registries.DAMAGE_TYPE, Objects.requireNonNull(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":taint")));
+            ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID , "taint"));
 
     public static final ResourceKey<DamageType> TENTACLE =
-            ResourceKey.create(Registries.DAMAGE_TYPE, Objects.requireNonNull(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":tentacle")));
+            ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID , "tentacle"));
 
     public static final ResourceKey<DamageType> SWARM =
-            ResourceKey.create(Registries.DAMAGE_TYPE, Objects.requireNonNull(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":swarm")));
+            ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID , "swarm"));
 
     public static final ResourceKey<DamageType> DISSOLVE =
-            ResourceKey.create(Registries.DAMAGE_TYPE, Objects.requireNonNull(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":dissolve")));
+            ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID ,"dissolve"));
     public static Holder<DamageType> getHolder(Level level, ResourceKey<DamageType> key) {
         return holderCache.getHolder(level, key);
     }
@@ -44,7 +42,7 @@ public class ThaumcraftDamageSources
     
     public static final class Tags {
         public static final TagKey<DamageType> BYPASS_RUNIC_SHIELD = 
-                TagKey.create(Registries.DAMAGE_TYPE,Objects.requireNonNull(ResourceLocation.tryParse(Thaumcraft.MOD_ID + ":bypass_runic_shield")));
+                TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID , "bypass_runic_shield"));
     }
 
 //    public static DamageSource tentacle(Level level, Entity attacker) {
