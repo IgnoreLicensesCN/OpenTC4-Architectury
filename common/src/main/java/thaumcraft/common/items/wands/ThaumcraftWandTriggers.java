@@ -1,6 +1,6 @@
 package thaumcraft.common.items.wands;
 
-import thaumcraft.api.wands.IWandTriggerManager;
+import thaumcraft.common.items.abstracts.wandabstraction.IWandTriggerManager;
 
 import static thaumcraft.common.multiparts.constructmatch.MultipartMatcherImpls.INFERNAL_FURNACE_CONSTRUCT_MATCHER;
 import static thaumcraft.common.multiparts.placers.MultipartPlacerImpls.INFERNAL_FURNACE_PLACER;

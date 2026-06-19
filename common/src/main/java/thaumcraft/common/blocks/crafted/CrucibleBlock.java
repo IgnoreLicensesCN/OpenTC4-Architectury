@@ -22,7 +22,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.AbstractLiquidFillInBlock;
 import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;

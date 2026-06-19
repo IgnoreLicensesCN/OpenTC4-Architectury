@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.focus.IWandFocusItem;
+import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 import thaumcraft.common.items.wands.WandCooldownManager;
 
 import java.text.DecimalFormat;

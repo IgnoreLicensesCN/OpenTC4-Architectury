@@ -14,14 +14,14 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.wands.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.abstracts.IWandRechargePedestalUpgradeBlock;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 
 public class CompoundRechargeFocusBlock extends SuppressedWarningBlock implements IWandRechargePedestalUpgradeBlock {
     public CompoundRechargeFocusBlock(Properties properties) {

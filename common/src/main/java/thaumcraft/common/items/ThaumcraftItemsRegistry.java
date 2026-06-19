@@ -125,66 +125,66 @@ public class ThaumcraftItemsRegistry {
 
     //wand caps
     public static final RegistrySupplier<CopperWandCapItem> SUPPLIER_COPPER_WAND_CAP = ITEMS.register(
-            "wand_cap_copper", CopperWandCapItem::new);//
+            "copper_wand_cap", CopperWandCapItem::new);//
     public static final RegistrySupplier<GoldWandCapItem> SUPPLIER_GOLD_WAND_CAP = ITEMS.register(
-            "wand_cap_gold", GoldWandCapItem::new);
+            "gold_wand_cap", GoldWandCapItem::new);
     public static final RegistrySupplier<IronWandCapItem> SUPPLIER_IRON_WAND_CAP = ITEMS.register(
-            "wand_cap_iron", IronWandCapItem::new);
+            "iron_wand_cap", IronWandCapItem::new);
     public static final RegistrySupplier<SilverWandCapItem> SUPPLIER_SILVER_WAND_CAP = ITEMS.register(
-            "wand_cap_silver", SilverWandCapItem::new);
+            "silver_wand_cap", SilverWandCapItem::new);
     public static final RegistrySupplier<ThaumiumWandCapItem> SUPPLIER_THAUMIUM_WAND_CAP = ITEMS.register(
-            "wand_cap_thaumium", ThaumiumWandCapItem::new);
+            "thaumium_wand_cap", ThaumiumWandCapItem::new);
     public static final RegistrySupplier<VoidWandCapItem> SUPPLIER_VOID_WAND_CAP = ITEMS.register(
-            "wand_cap_void", VoidWandCapItem::new);
+            "void_wand_cap", VoidWandCapItem::new);
 
 
     //wand caps (inert)
-    public static final RegistrySupplier<Item> SUPPLIER_SILVER_WAND_CAP_INERT = ITEMS.register(
-            "wand_cap_silver_inert", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> SUPPLIER_THAUMIUM_WAND_CAP_INERT = ITEMS.register(
-            "wand_cap_thaumium_inert", () -> new Item(new Item.Properties()));
-    public static final RegistrySupplier<Item> SUPPLIER_VOID_WAND_CAP_INERT = ITEMS.register(
-            "wand_cap_void_inert", () -> new Item(new Item.Properties()));
+    public static final RegistrySupplier<Item> SUPPLIER_SILVER_INERT_WAND_CAP = ITEMS.register(
+            "silver_inert_wand_cap", () -> new Item(new Item.Properties()));
+    public static final RegistrySupplier<Item> SUPPLIER_THAUMIUM_INERT_WAND_CAP = ITEMS.register(
+            "thaumium_inert_wand_cap", () -> new Item(new Item.Properties()));
+    public static final RegistrySupplier<Item> SUPPLIER_VOID_INERT_WAND_CAP = ITEMS.register(
+            "void_inert_wand_cap", () -> new Item(new Item.Properties()));
 
     //wand rods
     public static final RegistrySupplier<BlazeWandRodItem> SUPPLIER_BLAZE_WAND_ROD = ITEMS.register(
-            "wand_rod_blaze", BlazeWandRodItem::new);
+            "blaze_wand_rod", BlazeWandRodItem::new);
     public static final RegistrySupplier<BoneWandRodItem> SUPPLIER_BONE_WAND_ROD = ITEMS.register(
-            "wand_rod_bone", BoneWandRodItem::new);
+            "bone_wand_rod", BoneWandRodItem::new);
     public static final RegistrySupplier<GreatWoodWandRodItem> SUPPLIER_GREATWOOD_WAND_ROD = ITEMS.register(
-            "wand_rod_greatwood", GreatWoodWandRodItem::new);
+            "greatwood_wand_rod", GreatWoodWandRodItem::new);
     public static final RegistrySupplier<IceWandRodItem> SUPPLIER_ICE_WAND_ROD = ITEMS.register(
-            "wand_rod_ice", IceWandRodItem::new);
+            "ice_wand_rod", IceWandRodItem::new);
     public static final RegistrySupplier<ObsidianWandRodItem> SUPPLIER_OBSIDIAN_WAND_ROD = ITEMS.register(
-            "wand_rod_obsidian", ObsidianWandRodItem::new);
+            "obsidian_wand_rod", ObsidianWandRodItem::new);
     public static final RegistrySupplier<QuartzWandRodItem> SUPPLIER_QUARTZ_WAND_ROD = ITEMS.register(
-            "wand_rod_quartz", QuartzWandRodItem::new);
+            "quartz_wand_rod", QuartzWandRodItem::new);
     public static final RegistrySupplier<ReedWandRodItem> SUPPLIER_REED_WAND_ROD = ITEMS.register(
-            "wand_rod_reed", ReedWandRodItem::new);
+            "reed_wand_rod", ReedWandRodItem::new);
     public static final RegistrySupplier<SilverWoodWandRodItem> SUPPLIER_SILVERWOOD_WAND_ROD = ITEMS.register(
-            "wand_rod_silverwood", SilverWoodWandRodItem::new);
+            "silverwood_wand_rod", SilverWoodWandRodItem::new);
     public static final RegistrySupplier<WoodWandRodItem> SUPPLIER_WOOD_WAND_ROD = ITEMS.register(
-            "wand_rod_wood", WoodWandRodItem::new);//fake in fact
+            "wood_wand_rod", WoodWandRodItem::new);
 
     //staff rods
     public static final RegistrySupplier<PrimalStaffRodItem> SUPPLIER_PRIMAL_STAFF_ROD = ITEMS.register(
-            "staff_rod_primal", PrimalStaffRodItem::new);
+            "primal_staff_rod", PrimalStaffRodItem::new);
     public static final RegistrySupplier<BlazeStaffRodItem> SUPPLIER_BLAZE_STAFF_ROD = ITEMS.register(
-            "staff_rod_blaze", BlazeStaffRodItem::new);
+            "blaze_staff_rod", BlazeStaffRodItem::new);
     public static final RegistrySupplier<BoneStaffRodItem> SUPPLIER_BONE_STAFF_ROD = ITEMS.register(
-            "staff_rod_bone", BoneStaffRodItem::new);
+            "bone_staff_rod", BoneStaffRodItem::new);
     public static final RegistrySupplier<GreatWoodStaffRodItem> SUPPLIER_GREATWOOD_STAFF_ROD = ITEMS.register(
-            "staff_rod_greatwood", GreatWoodStaffRodItem::new);
+            "greatwood_staff_rod", GreatWoodStaffRodItem::new);
     public static final RegistrySupplier<IceStaffRodItem> SUPPLIER_ICE_STAFF_ROD = ITEMS.register(
-            "staff_rod_ice", IceStaffRodItem::new);
+            "ice_staff_rod", IceStaffRodItem::new);
     public static final RegistrySupplier<ObsidianStaffRodItem> SUPPLIER_OBSIDIAN_STAFF_ROD = ITEMS.register(
-            "staff_rod_obsidian", ObsidianStaffRodItem::new);
+            "obsidian_staff_rod", ObsidianStaffRodItem::new);
     public static final RegistrySupplier<QuartzStaffRodItem> SUPPLIER_QUARTZ_STAFF_ROD = ITEMS.register(
-            "staff_rod_quartz", QuartzStaffRodItem::new);
+            "quartz_staff_rod", QuartzStaffRodItem::new);
     public static final RegistrySupplier<ReedStaffRodItem> SUPPLIER_REED_STAFF_ROD = ITEMS.register(
-            "staff_rod_reed", ReedStaffRodItem::new);
+            "reed_staff_rod", ReedStaffRodItem::new);
     public static final RegistrySupplier<SilverWoodStaffRodItem> SUPPLIER_SILVERWOOD_STAFF_ROD = ITEMS.register(
-            "staff_rod_silverwood", SilverWoodStaffRodItem::new);
+            "silverwood_staff_rod", SilverWoodStaffRodItem::new);
 
     public static final RegistrySupplier<ZombieBrainItem> SUPPLIER_ZOMBIE_BRAIN = ITEMS.register(
             "zombie_brain", ZombieBrainItem::new);

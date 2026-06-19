@@ -125,7 +125,7 @@ public class WandCap {
 	}
 	
 	//  Some examples:
-	//  WandCap WAND_CAP_IRON = new WandCap("iron", 1.1f, Arrays.asList(Aspect.ORDER),1, new ItemStack(ConfigItems.itemWandCap,1,0),1);
-	//  WandCap WAND_CAP_GOLD = new WandCap("gold", 1f, new ItemStack(ConfigItems.itemWandCap,1,1),3);
+	//  WandCap IRON_WAND_CAP = new WandCap("iron", 1.1f, Arrays.asList(Aspect.ORDER),1, new ItemStack(ConfigItems.itemWandCap,1,0),1);
+	//  WandCap GOLD_WAND_CAP = new WandCap("gold", 1f, new ItemStack(ConfigItems.itemWandCap,1,1),3);
 	
 }

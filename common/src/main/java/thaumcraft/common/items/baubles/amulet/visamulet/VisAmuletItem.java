@@ -20,7 +20,7 @@ import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.ArrayCentiVisList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.visnet.VisNetHandler;
-import thaumcraft.api.wands.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 import thaumcraft.common.runicshield.IAugmentationRunicShieldProviderItem;
 
 import java.math.BigDecimal;

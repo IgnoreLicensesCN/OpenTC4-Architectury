@@ -5,6 +5,9 @@ import com.google.common.util.concurrent.AtomicDouble;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.ArrayCentiVisList;
+import thaumcraft.common.items.abstracts.wandabstraction.component.*;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.*;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 import com.linearity.opentc4.annotations.forvalue.PercentageFloatValue;
 import net.minecraft.client.Minecraft;
@@ -27,8 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.wands.*;
-import thaumcraft.api.wands.focus.IWandFocusItem;
-import thaumcraft.common.items.wands.WandCooldownManager;
+import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 
 import java.util.*;
 
@@ -41,9 +43,8 @@ import static thaumcraft.api.wands.WandUtils.appendWandHoverText;
 public class WandCastingItem extends Item
         implements
         //oh it's too looooooong. but it's reasonable i have to say
-        IWandSpellEventListenableItem,//TODO:Call it in every focus
         IEnchantmentRepairVisProviderItem,//if someone wants
-        IArcaneCraftingVisMultiplierProvider,//Staff should make this not work
+        IArcaneCraftingVisMultiplierProviderItem,//Staff should make this not work
         IVisCostModifierOwnerItem,
         IArcaneCraftingWandItem,//Staff should make this not work
         IWandFocusEngineItem,//SceptreCastingItem should make this not work
@@ -121,14 +122,6 @@ public class WandCastingItem extends Item
         }
         return Collections.unmodifiableList(items);
     }
-    @Override
-    public void onWandSpellEvent(WandSpellEventType event, Player player, ItemStack usingWand, BlockPos atBlockPos, Vec3 atVec3) {
-        wandComponentsForEach(usingWand,component -> {
-            if (component.getItem() instanceof IWandSpellEventListenableItem listener) {
-                listener.onWandSpellEvent(event, player, usingWand, atBlockPos, atVec3);
-            }
-        });
-    }
 
 
     //a wand wont be component for something in vanilla tc4 
@@ -160,7 +153,7 @@ public class WandCastingItem extends Item
     public float getCraftingVisMultiplier(ItemStack usingWand, Aspect aspect) {
         AtomicDouble result = new AtomicDouble(1);
         wandComponentsForEach(usingWand,component -> {
-            if (component.getItem() instanceof IArcaneCraftingVisMultiplierProviderComponent provider) {
+            if (component.getItem() instanceof IArcaneCraftingVisMultiplierProviderComponentItem provider) {
                 result.updateAndGet(v ->  (v * provider.getCraftingVisMultiplier(usingWand, aspect)));
             }
         });
@@ -223,7 +216,7 @@ public class WandCastingItem extends Item
         final CalcCacheableCentiVisList<Aspect>[] result = new CalcCacheableCentiVisList[]{CalcCacheableCentiVisList.emptySingleton()};
         wandComponentsForEach(usingWand,component -> {
             var componentItem = component.getItem();
-            if (componentItem instanceof IAspectCapacityOwnerComponent<? extends Aspect> owner) {
+            if (componentItem instanceof IAspectCapacityOwnerComponentItem<? extends Aspect> owner) {
                 result[0] = result[0].add(
                         (CalcCacheableCentiVisList<Aspect>) owner.getCentiVisCapacity(),
                         ArrayCentiVisList::new
@@ -246,7 +239,7 @@ public class WandCastingItem extends Item
         var wandComponentNames = Component.empty();
         var components = getWandComponents(itemStack);
         for (var component : components) {
-            if (component.getItem() instanceof IWandComponentNameOwnerItem owner) {
+            if (component.getItem() instanceof IWandComponentNameOwnerComponentItem owner) {
                 wandComponentNames = wandComponentNames.append(owner.getComponentName()
                         .getString());
             }
@@ -434,7 +427,7 @@ public class WandCastingItem extends Item
     @Override
     public @PercentageFloatValue float getCostDiscountForAspect(ItemStack wandStack, Aspect aspect) {
         var cap = getWandComponents(wandStack);
-        if (cap instanceof IVisCostModifierOwnerComponent visCostModifierOwner) {
+        if (cap instanceof IVisCostModifierOwnerComponentItem visCostModifierOwner) {
             return visCostModifierOwner.getSpecialCostModifierAspects().getOrDefault(aspect,visCostModifierOwner.getBaseCostModifier());
         }
         return 0;

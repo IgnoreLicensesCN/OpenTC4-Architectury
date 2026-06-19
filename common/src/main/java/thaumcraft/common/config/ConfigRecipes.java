@@ -41,8 +41,8 @@ public class ConfigRecipes {
    static ItemStack basicWand;
 
    public static void init() {
-      ((WandCastingItem)basicWand.getItem()).setCap(basicWand, ConfigItems.WAND_CAP_IRON);
-      ((WandCastingItem)basicWand.getItem()).setRod(basicWand, ConfigItems.WAND_ROD_WOOD);
+      ((WandCastingItem)basicWand.getItem()).setCap(basicWand, ConfigItems.IRON_WAND_CAP);
+      ((WandCastingItem)basicWand.getItem()).setRod(basicWand, ConfigItems.WOOD_WAND_ROD);
       initializeSmelting();
       initializeNormalRecipes();
       initializeArcaneRecipes();

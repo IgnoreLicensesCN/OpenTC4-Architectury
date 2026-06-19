@@ -32,9 +32,9 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.api.nodes.*;
-import thaumcraft.api.wands.ICentiVisContainerItem;
-import thaumcraft.api.wands.IWandComponentsOwnerItem;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IWandComponentsOwnerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.lib.NodeInfo;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
 import thaumcraft.common.lib.resourcelocations.NodeLockResourceLocation;
@@ -47,7 +47,7 @@ import static com.linearity.opentc4.Consts.NodeBlockEntityCompoundTagAccessors.*
 
 import com.linearity.opentc4.Color;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.research.ThaumcraftResearches.*;
 
 //i think it would be suitable to abstract this since we have 3 types.

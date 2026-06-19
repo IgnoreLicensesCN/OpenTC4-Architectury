@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:copper_wand_cap",
+    "thaumcraft:gold_wand_cap",
+    "thaumcraft:iron_wand_cap",
+    "thaumcraft:silver_wand_cap",
+    "thaumcraft:thaumium_wand_cap",
+    "thaumcraft:void_wand_cap"
+  ]
+}

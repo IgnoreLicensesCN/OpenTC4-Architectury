@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.jars.NodeJarBlockItem;

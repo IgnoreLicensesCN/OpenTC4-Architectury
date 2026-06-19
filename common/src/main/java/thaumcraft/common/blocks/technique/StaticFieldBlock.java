@@ -59,6 +59,7 @@ public class StaticFieldBlock extends SuppressedWarningBlock {
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource random) {
+        if (!level.isClientSide) {return;}
         if (!(level instanceof ClientLevel clientLevel)) {return;}
         var x = blockPos.getX();
         var y = blockPos.getY();

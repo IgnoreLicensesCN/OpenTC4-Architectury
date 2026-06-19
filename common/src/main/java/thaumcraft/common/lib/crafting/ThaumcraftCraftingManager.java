@@ -28,7 +28,7 @@ import thaumcraft.api.crafting.infusion.InfusionRecipe;
 import thaumcraft.api.crafting.infusion.SimpleInfusionEnchantmentRecipe;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectRegistration;
 import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
-import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
+import thaumcraft.common.items.abstracts.wandabstraction.component.ICraftingCostAspectOwnerComponentItem;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.research.ResearchManager;
 
@@ -39,7 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 
 @Deprecated(forRemoval = true)
 public class ThaumcraftCraftingManager {
@@ -188,7 +188,7 @@ public class ThaumcraftCraftingManager {
             for (var componentItem : wand.getWandComponents(itemstack)) {
                 var craftCostTotalCentiVis = 0;
                 var aspectCount = 0;
-                if (componentItem.getItem() instanceof ICraftingCostAspectOwnerComponent<? extends Aspect> costAspectOwner) {
+                if (componentItem.getItem() instanceof ICraftingCostAspectOwnerComponentItem<? extends Aspect> costAspectOwner) {
                     var aspectList = costAspectOwner.getCraftingCostCentiVis();
                     for (var centiVisValue : aspectList.getAspectView().values()) {
                         craftCostTotalCentiVis += centiVisValue;

@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.items.abstracts.wandabstraction.IWandTriggerManager;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * However if you can i prefer something like WandInteractableBlock and write logic there
  * --IgnoreLicensesCN
  */
+//TODO:Rewrite
 public class WandTriggerRegistry {
 
 	//Map<ModID(String),HashMap<>>

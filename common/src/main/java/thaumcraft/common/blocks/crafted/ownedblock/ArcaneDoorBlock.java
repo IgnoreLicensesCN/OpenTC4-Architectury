@@ -21,7 +21,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableOwnedBlock;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableOwnedBlock;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.abstracts.owned.KeyableOwnedBlockEntity;
 

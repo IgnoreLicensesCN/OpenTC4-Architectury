@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.visnet.IVisNetChargeRelayChargeableContainer;
-import thaumcraft.api.wands.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;

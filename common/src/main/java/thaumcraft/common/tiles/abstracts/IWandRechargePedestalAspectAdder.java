@@ -6,9 +6,9 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.wands.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 
 @SuppressWarnings("unchecked")
 @UtilityLikeAbstraction(reason = "easy overriding")

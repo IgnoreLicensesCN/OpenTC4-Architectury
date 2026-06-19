@@ -43,7 +43,7 @@ import thaumcraft.api.crafting.infusion.InfusionRecipe;
 import thaumcraft.api.listeners.infusion.instabilityevent.InfusionInstabilityEventListener;
 import thaumcraft.api.listeners.infusion.instabilityevent.InfusionInstabilityEventManager;
 import thaumcraft.common.tiles.TileThaumcraft;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.abstracts.IInfusionStabilizerBlock;

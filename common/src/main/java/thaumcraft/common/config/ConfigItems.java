@@ -17,30 +17,30 @@ import thaumcraft.common.items.misc.*;
 import thaumcraft.common.items.wands.foci.*;
 
 public class ConfigItems {
-   public static WandCap WAND_CAP_IRON;
-   public static WandCap WAND_CAP_COPPER;
-   public static WandCap WAND_CAP_GOLD;
-   public static WandCap WAND_CAP_SILVER;
-   public static WandCap WAND_CAP_THAUMIUM;
-   public static WandCap WAND_CAP_VOID;
-   public static WandRod WAND_ROD_WOOD;
-   public static WandRod WAND_ROD_GREATWOOD;
-   public static WandRod WAND_ROD_OBSIDIAN;
-   public static WandRod WAND_ROD_BLAZE;
-   public static WandRod WAND_ROD_ICE;
-   public static WandRod WAND_ROD_QUARTZ;
-   public static WandRod WAND_ROD_BONE;
-   public static WandRod WAND_ROD_REED;
-   public static WandRod WAND_ROD_SILVERWOOD;
-   public static StaffRod STAFF_ROD_GREATWOOD;
-   public static StaffRod STAFF_ROD_OBSIDIAN;
-   public static StaffRod STAFF_ROD_BLAZE;
-   public static StaffRod STAFF_ROD_ICE;
-   public static StaffRod STAFF_ROD_QUARTZ;
-   public static StaffRod STAFF_ROD_BONE;
-   public static StaffRod STAFF_ROD_REED;
-   public static StaffRod STAFF_ROD_SILVERWOOD;
-   public static StaffRod STAFF_ROD_PRIMAL;
+   public static WandCap IRON_WAND_CAP;
+   public static WandCap COPPER_WAND_CAP;
+   public static WandCap GOLD_WAND_CAP;
+   public static WandCap SILVER_WAND_CAP;
+   public static WandCap THAUMIUM_WAND_CAP;
+   public static WandCap VOID_WAND_CAP;
+   public static WandRod WOOD_WAND_ROD;
+   public static WandRod GREATWOOD_WAND_ROD;
+   public static WandRod OBSIDIAN_WAND_ROD;
+   public static WandRod BLAZE_WAND_ROD;
+   public static WandRod ICE_WAND_ROD;
+   public static WandRod QUARTZ_WAND_ROD;
+   public static WandRod BONE_WAND_ROD;
+   public static WandRod REED_WAND_ROD;
+   public static WandRod SILVERWOOD_WAND_ROD;
+   public static StaffRod GREATWOOD_STAFF_ROD;
+   public static StaffRod OBSIDIAN_STAFF_ROD;
+   public static StaffRod BLAZE_STAFF_ROD;
+   public static StaffRod ICE_STAFF_ROD;
+   public static StaffRod QUARTZ_STAFF_ROD;
+   public static StaffRod BONE_STAFF_ROD;
+   public static StaffRod REED_STAFF_ROD;
+   public static StaffRod SILVERWOOD_STAFF_ROD;
+   public static StaffRod PRIMAL_STAFF_ROD;
    @Deprecated(forRemoval = true)
    public static Item WandCastingItem;
    public static Item itemWandCap;
@@ -198,42 +198,42 @@ public class ConfigItems {
 //      OreDictionary.registerOre("slabWood", new ItemStack(ConfigBlocks.blockSlabWood, 1, 1));
 //      OreDictionary.registerOre("treeSapling", new ItemStack(ConfigBlocks.blockCustomPlant, 1, 0));
 //      OreDictionary.registerOre("treeSapling", new ItemStack(ConfigBlocks.blockCustomPlant, 1, 1));
-//      WAND_CAP_IRON = new WandCap("iron", 1.1F, new ItemStack(itemWandCap, 1, 0), 1);
-//      WAND_CAP_GOLD = new WandCap("gold", 1.0F, new ItemStack(itemWandCap, 1, 1), 3);
-//      WAND_CAP_THAUMIUM = new WandCap("thaumium", 0.9F, new ItemStack(itemWandCap, 1, 2), 6);
-//      WAND_CAP_VOID = new WandCap("void", 0.8F, new ItemStack(itemWandCap, 1, 7), 9);
-//      WAND_ROD_WOOD = new WandRod("wood", 25, new ItemStack(Items.stick), 1);
+//      IRON_WAND_CAP = new WandCap("iron", 1.1F, new ItemStack(itemWandCap, 1, 0), 1);
+//      GOLD_WAND_CAP = new WandCap("gold", 1.0F, new ItemStack(itemWandCap, 1, 1), 3);
+//      THAUMIUM_WAND_CAP = new WandCap("thaumium", 0.9F, new ItemStack(itemWandCap, 1, 2), 6);
+//      VOID_WAND_CAP = new WandCap("void", 0.8F, new ItemStack(itemWandCap, 1, 7), 9);
+//      WOOD_WAND_ROD = new WandRod("wood", 25, new ItemStack(Items.stick), 1);
 
-//      WAND_ROD_GREATWOOD = new WandRod("greatwood", 50, new ItemStack(itemWandRod, 1, 0), 3);
-//      WAND_ROD_OBSIDIAN = new WandRod("obsidian", 75, new ItemStack(itemWandRod, 1, 1), 6, new WandRodPrimalOnUpdate(Aspect.EARTH));
-//      WAND_ROD_BLAZE = new WandRod("blaze", 75, new ItemStack(itemWandRod, 1, 6), 6, new WandRodPrimalOnUpdate(Aspect.FIRE));
-//      WAND_ROD_ICE = new WandRod("ice", 75, new ItemStack(itemWandRod, 1, 3), 6, new WandRodPrimalOnUpdate(Aspect.WATER));
-//      WAND_ROD_QUARTZ = new WandRod("quartz", 75, new ItemStack(itemWandRod, 1, 4), 6, new WandRodPrimalOnUpdate(Aspect.ORDER));
-//      WAND_ROD_BONE = new WandRod("bone", 75, new ItemStack(itemWandRod, 1, 7), 6, new WandRodPrimalOnUpdate(Aspect.ENTROPY));
-//      WAND_ROD_REED = new WandRod("reed", 75, new ItemStack(itemWandRod, 1, 5), 6, new WandRodPrimalOnUpdate(Aspect.AIR));
-//      WAND_ROD_SILVERWOOD = new WandRod("silverwood", 100, new ItemStack(itemWandRod, 1, 2), 9);
-//      WAND_ROD_BLAZE.setGlowing(true);
+//      GREATWOOD_WAND_ROD = new WandRod("greatwood", 50, new ItemStack(itemWandRod, 1, 0), 3);
+//      OBSIDIAN_WAND_ROD = new WandRod("obsidian", 75, new ItemStack(itemWandRod, 1, 1), 6, new WandRodPrimalOnUpdate(Aspect.EARTH));
+//      BLAZE_WAND_ROD = new WandRod("blaze", 75, new ItemStack(itemWandRod, 1, 6), 6, new WandRodPrimalOnUpdate(Aspect.FIRE));
+//      ICE_WAND_ROD = new WandRod("ice", 75, new ItemStack(itemWandRod, 1, 3), 6, new WandRodPrimalOnUpdate(Aspect.WATER));
+//      QUARTZ_WAND_ROD = new WandRod("quartz", 75, new ItemStack(itemWandRod, 1, 4), 6, new WandRodPrimalOnUpdate(Aspect.ORDER));
+//      BONE_WAND_ROD = new WandRod("bone", 75, new ItemStack(itemWandRod, 1, 7), 6, new WandRodPrimalOnUpdate(Aspect.ENTROPY));
+//      REED_WAND_ROD = new WandRod("reed", 75, new ItemStack(itemWandRod, 1, 5), 6, new WandRodPrimalOnUpdate(Aspect.AIR));
+//      SILVERWOOD_WAND_ROD = new WandRod("silverwood", 100, new ItemStack(itemWandRod, 1, 2), 9);
+//      BLAZE_WAND_ROD.setGlowing(true);
 
-//      STAFF_ROD_GREATWOOD = new StaffRod("greatwood", 125, new ItemStack(itemWandRod, 1, 50), 8);
-//      STAFF_ROD_OBSIDIAN = new StaffRod("obsidian", 175, new ItemStack(itemWandRod, 1, 51), 14, new WandRodPrimalOnUpdate(Aspect.EARTH));
-//      STAFF_ROD_BLAZE = new StaffRod("blaze", 175, new ItemStack(itemWandRod, 1, 56), 14, new WandRodPrimalOnUpdate(Aspect.FIRE));
-//      STAFF_ROD_ICE = new StaffRod("ice", 175, new ItemStack(itemWandRod, 1, 53), 14, new WandRodPrimalOnUpdate(Aspect.WATER));
-//      STAFF_ROD_QUARTZ = new StaffRod("quartz", 175, new ItemStack(itemWandRod, 1, 54), 14, new WandRodPrimalOnUpdate(Aspect.ORDER));
-//      STAFF_ROD_BONE = new StaffRod("bone", 175, new ItemStack(itemWandRod, 1, 57), 14, new WandRodPrimalOnUpdate(Aspect.ENTROPY));
-//      STAFF_ROD_REED = new StaffRod("reed", 175, new ItemStack(itemWandRod, 1, 55), 14, new WandRodPrimalOnUpdate(Aspect.AIR));
-//      STAFF_ROD_SILVERWOOD = new StaffRod("silverwood", 250, new ItemStack(itemWandRod, 1, 52), 24);
-//      STAFF_ROD_PRIMAL = new StaffRod("primal", 250, new ItemStack(itemWandRod, 1, 100), 32, new WandRodPrimalOnUpdate());
-//      STAFF_ROD_PRIMAL.setRunes(true);
-//      STAFF_ROD_BLAZE.setGlowing(true);
+//      GREATWOOD_STAFF_ROD = new StaffRod("greatwood", 125, new ItemStack(itemWandRod, 1, 50), 8);
+//      OBSIDIAN_STAFF_ROD = new StaffRod("obsidian", 175, new ItemStack(itemWandRod, 1, 51), 14, new WandRodPrimalOnUpdate(Aspect.EARTH));
+//      BLAZE_STAFF_ROD = new StaffRod("blaze", 175, new ItemStack(itemWandRod, 1, 56), 14, new WandRodPrimalOnUpdate(Aspect.FIRE));
+//      ICE_STAFF_ROD = new StaffRod("ice", 175, new ItemStack(itemWandRod, 1, 53), 14, new WandRodPrimalOnUpdate(Aspect.WATER));
+//      QUARTZ_STAFF_ROD = new StaffRod("quartz", 175, new ItemStack(itemWandRod, 1, 54), 14, new WandRodPrimalOnUpdate(Aspect.ORDER));
+//      BONE_STAFF_ROD = new StaffRod("bone", 175, new ItemStack(itemWandRod, 1, 57), 14, new WandRodPrimalOnUpdate(Aspect.ENTROPY));
+//      REED_STAFF_ROD = new StaffRod("reed", 175, new ItemStack(itemWandRod, 1, 55), 14, new WandRodPrimalOnUpdate(Aspect.AIR));
+//      SILVERWOOD_STAFF_ROD = new StaffRod("silverwood", 250, new ItemStack(itemWandRod, 1, 52), 24);
+//      PRIMAL_STAFF_ROD = new StaffRod("primal", 250, new ItemStack(itemWandRod, 1, 100), 32, new WandRodPrimalOnUpdate());
+//      PRIMAL_STAFF_ROD.setRunes(true);
+//      BLAZE_STAFF_ROD.setGlowing(true);
    }
 
    public static void postInit() {
       if (Config.foundCopperIngot) {
-//         WAND_CAP_COPPER = new WandCap("copper", 1.1F, Arrays.asList(Aspect.ORDER, Aspect.ENTROPY), 1.0F, new ItemStack(itemWandCap, 1, 3), 2);
+//         COPPER_WAND_CAP = new WandCap("copper", 1.1F, Arrays.asList(Aspect.ORDER, Aspect.ENTROPY), 1.0F, new ItemStack(itemWandCap, 1, 3), 2);
       }
 
       if (Config.foundSilverIngot) {
-//         WAND_CAP_SILVER = new WandCap("silver", 1.0F, Arrays.asList(Aspect.AIR, Aspect.EARTH, Aspect.FIRE, Aspect.WATER), 0.95F, new ItemStack(itemWandCap, 1, 4), 4);
+//         SILVER_WAND_CAP = new WandCap("silver", 1.0F, Arrays.asList(Aspect.AIR, Aspect.EARTH, Aspect.FIRE, Aspect.WATER), 0.95F, new ItemStack(itemWandCap, 1, 4), 4);
       }
    }
 

@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 
 //you can see that i didn't make Asp PrimalAspect,maybe someone wants special cases.Remember TODO:Render as many aspects as possible in some rules in workbench
 public interface CentiVisList<Asp extends Aspect> extends AspectList<Asp> {//just mark we are using centiVis

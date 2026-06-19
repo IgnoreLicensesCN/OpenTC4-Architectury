@@ -4,9 +4,9 @@ import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCenti
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.wands.*;
+import thaumcraft.common.items.abstracts.wandabstraction.component.IWandRodPropertiesOwnerComponentItem;
 
-public class ThaumcraftStaffRodItem extends Item implements IWandRodPropertiesOwnerComponent<Aspect>, WorkAsStaffRod {
+public class ThaumcraftStaffRodItem extends Item implements IWandRodPropertiesOwnerComponentItem<Aspect> {
     public ThaumcraftStaffRodItem(Properties properties) {
         super(properties);
     }

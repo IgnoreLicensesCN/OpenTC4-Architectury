@@ -7,13 +7,13 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.wands.IInventoryTickableComponentItem;
-import thaumcraft.api.wands.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.component.IInventoryTickableComponentItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 
 public abstract class ThaumcraftAspectRegenWandRodItem extends ThaumcraftWandRodItem implements IInventoryTickableComponentItem {
     public ThaumcraftAspectRegenWandRodItem(Properties properties, CentiVisList<Aspect> canRegenCentiVisAndValue) {

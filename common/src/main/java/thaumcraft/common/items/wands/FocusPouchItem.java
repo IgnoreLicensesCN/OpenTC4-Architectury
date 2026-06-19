@@ -9,8 +9,8 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import thaumcraft.api.wands.focus.IWandFocusBagItem;
-import thaumcraft.api.wands.focus.IWandFocusItem;
+import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusBagItem;
+import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 import thaumcraft.common.items.abstracts.IBundleLikeItem;
 
 import java.util.List;

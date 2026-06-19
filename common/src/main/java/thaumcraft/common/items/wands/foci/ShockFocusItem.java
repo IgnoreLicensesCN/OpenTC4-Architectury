@@ -17,7 +17,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
-import thaumcraft.api.wands.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.client.fx.migrated.bolt.FXLightningBolt;
 import thaumcraft.common.ClientFXUtils;

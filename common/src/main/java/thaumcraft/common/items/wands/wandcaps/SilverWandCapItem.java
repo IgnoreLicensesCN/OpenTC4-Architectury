@@ -6,12 +6,12 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
+import thaumcraft.common.items.abstracts.wandabstraction.component.ICraftingCostAspectOwnerComponentItem;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
 
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
 
-public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwnerComponent<Aspect> {//itemWandCap:4
+public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwnerComponentItem<Aspect> {//itemWandCap:4
     public SilverWandCapItem() {
         super(new Properties());
     }

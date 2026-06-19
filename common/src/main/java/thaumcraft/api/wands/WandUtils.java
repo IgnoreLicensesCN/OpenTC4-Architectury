@@ -22,8 +22,10 @@ import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
 import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IWandFocusEngineItem;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.focus.IWandFocusItem;
+import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 
 import java.text.DecimalFormat;
 import java.util.Collection;

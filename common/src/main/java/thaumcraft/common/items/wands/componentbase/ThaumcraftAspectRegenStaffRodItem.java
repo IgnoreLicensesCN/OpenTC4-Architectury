@@ -7,7 +7,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.wands.IInventoryTickableComponentItem;
+import thaumcraft.common.items.abstracts.wandabstraction.component.IInventoryTickableComponentItem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.blocks.abstracts.IEssentiaContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;

@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:blaze_staff_rod",
+    "thaumcraft:bone_staff_rod",
+    "thaumcraft:greatwood_staff_rod",
+    "thaumcraft:ice_staff_rod",
+    "thaumcraft:obsidian_staff_rod",
+    "thaumcraft:quartz_staff_rod",
+    "thaumcraft:reed_staff_rod",
+    "thaumcraft:silverwood_staff_rod"
+  ]
+}

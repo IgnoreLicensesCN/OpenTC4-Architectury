@@ -7,7 +7,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.wands.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 
 public interface IWandRechargePedestalUpgradeBlock extends IWandRechargePedestalAspectAdder {
     default @VisAmount int additionalMaxDrainAmountOnce(Level atLevel, BlockPos pos, BlockState state){

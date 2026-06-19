@@ -36,8 +36,8 @@ public class ConfigResearch {
 
    public static void init() {
       wand = new ItemStack(ConfigItems.WandCastingItem, 1, 0);
-      ((WandCastingItem)wand.getItem()).setCap(wand, ConfigItems.WAND_CAP_IRON);
-      ((WandCastingItem)wand.getItem()).setRod(wand, ConfigItems.WAND_ROD_WOOD);
+      ((WandCastingItem)wand.getItem()).setCap(wand, ConfigItems.IRON_WAND_CAP);
+      ((WandCastingItem)wand.getItem()).setRod(wand, ConfigItems.WOOD_WAND_ROD);
       initCategories();
       initBasicResearch();
       initThaumaturgyResearch();
@@ -120,41 +120,41 @@ public class ConfigResearch {
       AspectList<Aspect>al1 = new LinkedHashAspectList<>();
       AspectList<Aspect>al2 = new LinkedHashAspectList<>();
       AspectList<Aspect>al3 = new LinkedHashAspectList<>();
-      int cost = (int)((float)(ConfigItems.WAND_CAP_IRON.getCraftCost() * ConfigItems.WAND_ROD_WOOD.getCraftCost()) * 1.5F);
+      int cost = (int)((float)(ConfigItems.IRON_WAND_CAP.getCraftCost() * ConfigItems.WOOD_WAND_ROD.getCraftCost()) * 1.5F);
 
       for(Aspect as : Aspects.getPrimalAspects()) {
          al1.addAll(as, cost);
       }
 
       ItemStack sceptre1 = new ItemStack(ConfigItems.WandCastingItem, 1, cost);
-      ((WandCastingItem)sceptre1.getItem()).setCap(sceptre1, ConfigItems.WAND_CAP_IRON);
-      ((WandCastingItem)sceptre1.getItem()).setRod(sceptre1, ConfigItems.WAND_ROD_WOOD);
+      ((WandCastingItem)sceptre1.getItem()).setCap(sceptre1, ConfigItems.IRON_WAND_CAP);
+      ((WandCastingItem)sceptre1.getItem()).setRod(sceptre1, ConfigItems.WOOD_WAND_ROD);
       sceptre1.setTagInfo("sceptre", new NBTTagByte((byte)1));
-      ShapedArcaneRecipe r1 = new ShapedArcaneRecipe("SCEPTRE", sceptre1, al1, " TF", " RT", "T  ", 'T', ConfigItems.WAND_CAP_IRON.getItem(), 'R', ConfigItems.WAND_ROD_WOOD.getItem(), 'F', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1));
+      ShapedArcaneRecipe r1 = new ShapedArcaneRecipe("SCEPTRE", sceptre1, al1, " TF", " RT", "T  ", 'T', ConfigItems.IRON_WAND_CAP.getItem(), 'R', ConfigItems.WOOD_WAND_ROD.getItem(), 'F', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1));
       scer.add(r1);
-      cost = (int)((float)(ConfigItems.WAND_CAP_GOLD.getCraftCost() * ConfigItems.WAND_ROD_GREATWOOD.getCraftCost()) * 1.5F);
+      cost = (int)((float)(ConfigItems.GOLD_WAND_CAP.getCraftCost() * ConfigItems.GREATWOOD_WAND_ROD.getCraftCost()) * 1.5F);
 
       for(Aspect as : Aspects.getPrimalAspects()) {
          al2.addAll(as, cost);
       }
 
       ItemStack sceptre2 = new ItemStack(ConfigItems.WandCastingItem, 1, cost);
-      ((WandCastingItem)sceptre2.getItem()).setCap(sceptre2, ConfigItems.WAND_CAP_GOLD);
-      ((WandCastingItem)sceptre2.getItem()).setRod(sceptre2, ConfigItems.WAND_ROD_GREATWOOD);
+      ((WandCastingItem)sceptre2.getItem()).setCap(sceptre2, ConfigItems.GOLD_WAND_CAP);
+      ((WandCastingItem)sceptre2.getItem()).setRod(sceptre2, ConfigItems.GREATWOOD_WAND_ROD);
       sceptre2.setTagInfo("sceptre", new NBTTagByte((byte)1));
-      ShapedArcaneRecipe r2 = new ShapedArcaneRecipe("SCEPTRE", sceptre2, al2, " TF", " RT", "T  ", 'T', ConfigItems.WAND_CAP_GOLD.getItem(), 'R', ConfigItems.WAND_ROD_GREATWOOD.getItem(), 'F', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1));
+      ShapedArcaneRecipe r2 = new ShapedArcaneRecipe("SCEPTRE", sceptre2, al2, " TF", " RT", "T  ", 'T', ConfigItems.GOLD_WAND_CAP.getItem(), 'R', ConfigItems.GREATWOOD_WAND_ROD.getItem(), 'F', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1));
       scer.add(r2);
-      cost = (int)((float)(ConfigItems.WAND_CAP_THAUMIUM.getCraftCost() * ConfigItems.WAND_ROD_SILVERWOOD.getCraftCost()) * 1.5F);
+      cost = (int)((float)(ConfigItems.THAUMIUM_WAND_CAP.getCraftCost() * ConfigItems.SILVERWOOD_WAND_ROD.getCraftCost()) * 1.5F);
 
       for(Aspect as : Aspects.getPrimalAspects()) {
          al3.addAll(as, cost);
       }
 
       ItemStack sceptre3 = new ItemStack(ConfigItems.WandCastingItem, 1, cost);
-      ((WandCastingItem)sceptre3.getItem()).setCap(sceptre3, ConfigItems.WAND_CAP_THAUMIUM);
-      ((WandCastingItem)sceptre3.getItem()).setRod(sceptre3, ConfigItems.WAND_ROD_SILVERWOOD);
+      ((WandCastingItem)sceptre3.getItem()).setCap(sceptre3, ConfigItems.THAUMIUM_WAND_CAP);
+      ((WandCastingItem)sceptre3.getItem()).setRod(sceptre3, ConfigItems.SILVERWOOD_WAND_ROD);
       sceptre3.setTagInfo("sceptre", new NBTTagByte((byte)1));
-      ShapedArcaneRecipe r3 = new ShapedArcaneRecipe("SCEPTRE", sceptre3, al3, " TF", " RT", "T  ", 'T', ConfigItems.WAND_CAP_THAUMIUM.getItem(), 'R', ConfigItems.WAND_ROD_SILVERWOOD.getItem(), 'F', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1));
+      ShapedArcaneRecipe r3 = new ShapedArcaneRecipe("SCEPTRE", sceptre3, al3, " TF", " RT", "T  ", 'T', ConfigItems.THAUMIUM_WAND_CAP.getItem(), 'R', ConfigItems.SILVERWOOD_WAND_ROD.getItem(), 'F', new ItemStack(ThaumcraftItemInstances.PRIMAL_CHARM(), 1));
       scer.add(r3);
       (new ResearchItem("SCEPTRE", "THAUMATURGY", (new LinkedHashAspectList<>()).addAll(Aspects.TOOL, 6).addAll(Aspects.CRAFT, 6).addAll(
               Aspects.TREE, 6).addAll(

@@ -14,7 +14,7 @@ import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.HashCentiVisList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
 import thaumcraft.api.research.ResearchItem;
-import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
+import thaumcraft.common.items.abstracts.wandabstraction.component.ICraftingCostAspectOwnerComponentItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.lib.resourcelocations.AbstractArcaneRecipeResourceLocation;
@@ -98,10 +98,10 @@ public class ArcaneSceptreRecipe extends AbstractArcaneRecipe {
         if (cap.isEmpty() || rod.isEmpty()){
             return null;
         }
-        if (!(cap.getItem() instanceof ICraftingCostAspectOwnerComponent<? extends Aspect> capCostOwner)){
+        if (!(cap.getItem() instanceof ICraftingCostAspectOwnerComponentItem<? extends Aspect> capCostOwner)){
             return null;
         }
-        if (!(rod.getItem() instanceof ICraftingCostAspectOwnerComponent<? extends Aspect> rodCostOwner)){
+        if (!(rod.getItem() instanceof ICraftingCostAspectOwnerComponentItem<? extends Aspect> rodCostOwner)){
             return null;
         }
         var requiredCentiVis = new HashCentiVisList<>();

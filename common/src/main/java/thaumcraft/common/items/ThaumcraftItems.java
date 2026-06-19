@@ -56,6 +56,18 @@ public class ThaumcraftItems {
         public static final TagKey<Item> UNNATURAL_HUNGER_NEEDED = TagKey.create(
                 Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "unnatural_hunger_needed")
         );
+        public static final TagKey<Item> WAND_CAP = TagKey.create(
+                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "wand_cap")
+        );
+        public static final TagKey<Item> WAND_ROD = TagKey.create(
+                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "wand_rod")
+        );
+        public static final TagKey<Item> STAFF_ROD = TagKey.create(
+                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "staff_rod")
+        );
+        public static final TagKey<Item> NODE_HARMFUL = TagKey.create(
+                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "node_harmful_component")
+        );
     }
 
     public static class BannerPatternTags {

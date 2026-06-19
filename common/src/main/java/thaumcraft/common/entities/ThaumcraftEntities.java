@@ -8,10 +8,10 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.entities.projectile.AlumentumEntity;
+import thaumcraft.common.entities.projectile.thrownitem.AlumentumEntity;
 import thaumcraft.common.entities.projectile.firefocus.EmberEntity;
 import thaumcraft.common.entities.projectile.firefocus.ExplosiveOrbEntity;
-import thaumcraft.common.entities.projectile.TaintBottleEntity;
+import thaumcraft.common.entities.projectile.thrownitem.TaintBottleEntity;
 import thaumcraft.common.entities.projectile.shockfocus.ShockOrbEntity;
 
 import static thaumcraft.common.entities.ThaumcraftEntities.Registry.ENTITIES;

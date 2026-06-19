@@ -75,6 +75,7 @@ import thaumcraft.common.entities.golems.EntityTravelingTrunk;
 import thaumcraft.common.entities.monster.*;
 import thaumcraft.common.entities.monster.boss.*;
 import thaumcraft.common.entities.projectile.*;
+import thaumcraft.common.entities.projectile.thrownitem.AlumentumEntity;
 import thaumcraft.common.lib.events.KeyHandler;
 import thaumcraft.common.tiles.*;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;

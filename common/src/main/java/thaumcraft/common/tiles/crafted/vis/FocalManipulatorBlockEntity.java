@@ -18,7 +18,7 @@ import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisLi
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.focus.IWandFocusItem;
+import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 import thaumcraft.common.tiles.IThaumcraftBEWithMenu;

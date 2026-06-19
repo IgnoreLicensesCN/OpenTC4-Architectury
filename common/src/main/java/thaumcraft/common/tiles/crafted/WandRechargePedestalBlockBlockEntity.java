@@ -7,14 +7,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
-import thaumcraft.api.wands.ICentiVisContainerItem;
-import thaumcraft.api.wands.IWandComponentsOwnerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IWandComponentsOwnerItem;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.AbstractPedestalBlockEntity;
 import thaumcraft.common.tiles.abstracts.IWandRechargePedestalAspectAdder;
 import thaumcraft.common.tiles.abstracts.IWandRechargePedestalUpgradeBlock;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.common.items.ThaumcraftItems.ItemTags.RECHARGE_PEDESTAL_CANNOT_APPLY;
 import static thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity.ALL_NODES;
 

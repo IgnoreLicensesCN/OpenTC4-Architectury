@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableOwnedBlock;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableOwnedBlock;
 import thaumcraft.common.ClientFXUtils;
 
 import static thaumcraft.api.ThaumcraftApiHelper.rayTraceIgnoringSource;

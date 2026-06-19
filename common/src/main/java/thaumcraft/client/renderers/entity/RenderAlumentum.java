@@ -4,7 +4,7 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.resources.ResourceLocation;
-import thaumcraft.common.entities.projectile.AlumentumEntity;
+import thaumcraft.common.entities.projectile.thrownitem.AlumentumEntity;
 
 public class RenderAlumentum extends Render {
    public RenderAlumentum() {

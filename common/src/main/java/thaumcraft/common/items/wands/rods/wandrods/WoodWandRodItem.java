@@ -3,15 +3,12 @@ package thaumcraft.common.items.wands.rods.wandrods;
 import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.wands.INodeHarmfulComponent;
-import thaumcraft.api.wands.WorkAsWandRod;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandRodItem;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
 
-//TODO:stick to this
-public class WoodWandRodItem extends ThaumcraftWandRodItem implements WorkAsWandRod, INodeHarmfulComponent {
+public class WoodWandRodItem extends ThaumcraftWandRodItem {
     public WoodWandRodItem() {
         super(new Properties());
     }

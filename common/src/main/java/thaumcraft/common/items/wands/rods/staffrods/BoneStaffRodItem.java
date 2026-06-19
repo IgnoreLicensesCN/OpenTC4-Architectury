@@ -5,13 +5,13 @@ import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
+import thaumcraft.common.items.abstracts.wandabstraction.component.ICraftingCostAspectOwnerComponentItem;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenStaffRodItem;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.*;
 
-public class BoneStaffRodItem extends ThaumcraftAspectRegenStaffRodItem implements ICraftingCostAspectOwnerComponent<Aspect> {
+public class BoneStaffRodItem extends ThaumcraftAspectRegenStaffRodItem implements ICraftingCostAspectOwnerComponentItem<Aspect> {
     public BoneStaffRodItem() {
         super(new Properties(), getAspectsCentiVisListWithValue(Aspects.ENTROPY,17 * CENTIVIS_MULTIPLIER));
     }

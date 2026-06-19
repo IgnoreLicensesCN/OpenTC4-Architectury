@@ -5,14 +5,13 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
-import thaumcraft.api.wands.WorkAsWandRod;
+import thaumcraft.common.items.abstracts.wandabstraction.component.ICraftingCostAspectOwnerComponentItem;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.*;
 
-public class ReedWandRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsWandRod, ICraftingCostAspectOwnerComponent<Aspect> {
+public class ReedWandRodItem extends ThaumcraftAspectRegenWandRodItem implements ICraftingCostAspectOwnerComponentItem<Aspect> {
     public ReedWandRodItem() {
         super(new Properties(), getAspectsCentiVisListWithValue(Aspects.AIR,7 * CENTIVIS_MULTIPLIER));
     }

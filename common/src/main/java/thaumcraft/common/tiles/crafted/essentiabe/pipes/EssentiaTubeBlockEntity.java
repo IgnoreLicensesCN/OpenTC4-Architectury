@@ -20,7 +20,7 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
 import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
 import thaumcraft.common.tiles.TileThaumcraft;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;

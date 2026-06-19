@@ -4,11 +4,9 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
-import thaumcraft.api.wands.focus.IWandFocusItem;
+import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
-
-import java.util.function.Supplier;
 
 public class ThaumcraftFocusUpgradeTypes {
     public static final FocusUpgradeType POTENCY = new FocusUpgradeType(FocusUpgradeTypeResourceLocation.of(Thaumcraft.MOD_ID, "potency"),

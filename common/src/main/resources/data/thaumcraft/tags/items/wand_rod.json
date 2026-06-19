@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:blaze_wand_rod",
+    "thaumcraft:bone_wand_rod",
+    "thaumcraft:greatwood_wand_rod",
+    "thaumcraft:ice_wand_rod",
+    "thaumcraft:obsidian_wand_rod",
+    "thaumcraft:quartz_wand_rod",
+    "thaumcraft:reed_wand_rod",
+    "thaumcraft:silverwood_wand_rod",
+    "thaumcraft:wood_wand_rod"
+  ]
+}

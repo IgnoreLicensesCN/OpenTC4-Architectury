@@ -208,14 +208,14 @@ public class ThaumcraftItemInstances {
     public static SilverWoodStaffRodItem SILVERWOOD_STAFF_ROD() {
         return ThaumcraftItemsRegistry.SUPPLIER_SILVERWOOD_STAFF_ROD.get();
     }
-    public static Item SILVER_WAND_CAP_INERT() {
-        return ThaumcraftItemsRegistry.SUPPLIER_SILVER_WAND_CAP_INERT.get();
+    public static Item SILVER_INERT_WAND_CAP() {
+        return ThaumcraftItemsRegistry.SUPPLIER_SILVER_INERT_WAND_CAP.get();
     }
-    public static Item THAUMIUM_WAND_CAP_INERT() {
-        return ThaumcraftItemsRegistry.SUPPLIER_THAUMIUM_WAND_CAP_INERT.get();
+    public static Item THAUMIUM_INERT_WAND_CAP() {
+        return ThaumcraftItemsRegistry.SUPPLIER_THAUMIUM_INERT_WAND_CAP.get();
     }
-    public static Item VOID_WAND_CAP_INERT() {
-        return ThaumcraftItemsRegistry.SUPPLIER_VOID_WAND_CAP_INERT.get();
+    public static Item VOID_INERT_WAND_CAP() {
+        return ThaumcraftItemsRegistry.SUPPLIER_VOID_INERT_WAND_CAP.get();
     }
     public static ZombieBrainItem ZOMBIE_BRAIN() {
         return ThaumcraftItemsRegistry.SUPPLIER_ZOMBIE_BRAIN.get();

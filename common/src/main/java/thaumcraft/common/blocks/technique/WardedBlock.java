@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableOwnedBlock;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableOwnedBlock;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.technique.WardedBlockEntity;

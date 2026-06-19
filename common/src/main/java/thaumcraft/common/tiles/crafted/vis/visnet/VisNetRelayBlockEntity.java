@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import tc4tweak.CommonUtils;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.visnet.VisNetNodeBlockEntity;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;

@@ -37,7 +37,7 @@ import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.tiles.IThaumcraftBEWithMenu;
 import thaumcraft.common.tiles.TileThaumcraftWithMenu;
 import thaumcraft.api.visnet.VisNetHandler;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.client.fx.migrated.beams.FXBeamBore;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;

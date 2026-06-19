@@ -10,7 +10,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.wands.*;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.component.ICraftingCostAspectOwnerComponentItem;
+import thaumcraft.common.items.abstracts.wandabstraction.component.IFocusUpgradeModifierComponentItem;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenStaffRodItem;
@@ -18,10 +20,10 @@ import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenStaffRod
 import java.util.ArrayList;
 import java.util.List;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
 
-public class PrimalStaffRodItem extends ThaumcraftAspectRegenStaffRodItem implements ICraftingCostAspectOwnerComponent<Aspect>, IWandUpgradeModifier {
+public class PrimalStaffRodItem extends ThaumcraftAspectRegenStaffRodItem implements ICraftingCostAspectOwnerComponentItem<Aspect>, IFocusUpgradeModifierComponentItem {
     public PrimalStaffRodItem() {
         super(new Properties().rarity(Rarity.RARE), getPrimalAspectCentiVisListWithValueCastedUnmodifiable(25 * CENTIVIS_MULTIPLIER));
     }

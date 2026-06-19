@@ -4,10 +4,10 @@ import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCenti
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.wands.IWandComponentNameOwnerItem;
-import thaumcraft.api.wands.IWandRodPropertiesOwnerComponent;
+import thaumcraft.common.items.abstracts.wandabstraction.component.IWandComponentNameOwnerComponentItem;
+import thaumcraft.common.items.abstracts.wandabstraction.component.IWandRodPropertiesOwnerComponentItem;
 
-public abstract class ThaumcraftWandRodItem extends Item implements IWandRodPropertiesOwnerComponent<Aspect>, IWandComponentNameOwnerItem {
+public abstract class ThaumcraftWandRodItem extends Item implements IWandRodPropertiesOwnerComponentItem<Aspect>, IWandComponentNameOwnerComponentItem {
     public ThaumcraftWandRodItem(Properties properties) {
         super(properties);
     }

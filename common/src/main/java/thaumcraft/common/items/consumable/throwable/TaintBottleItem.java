@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.entities.projectile.TaintBottleEntity;
+import thaumcraft.common.entities.projectile.thrownitem.TaintBottleEntity;
 
 public class TaintBottleItem extends Item {
     public TaintBottleItem() {

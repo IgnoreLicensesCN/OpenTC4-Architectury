@@ -1,12 +1,15 @@
 package thaumcraft.api.listeners.wandconsumption.consts;
 
+import thaumcraft.common.items.abstracts.wandabstraction.component.IArcaneCraftingVisDiscountOwnerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IArcaneCraftingVisMultiplierProviderItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IVisCostModifierOwnerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IWandFocusEngineItem;
 import thaumcraft.common.items.abstracts.IVisDiscountGearItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.effects.VisCostAddEffectWithCategory;
 import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculationContext;
 import thaumcraft.api.listeners.wandconsumption.listeners.CalculateWandConsumptionListener;
-import thaumcraft.api.wands.*;
-import thaumcraft.api.wands.focus.IWandFocusItem;
+import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 
 import java.util.HashMap;
@@ -35,7 +38,7 @@ public enum CalculateWandConsumptionListenerEnum {
             var casting = context.casting;
             var wandStack = context.wandStack;
             var aspect = context.aspect;
-            if ((casting instanceof IArcaneCraftingVisMultiplierProvider craftingVisMultiplierProvider)) {
+            if ((casting instanceof IArcaneCraftingVisMultiplierProviderItem craftingVisMultiplierProvider)) {
                 context.currentConsumption -= craftingVisMultiplierProvider.getCraftingVisMultiplier(wandStack, aspect);
             }
         }

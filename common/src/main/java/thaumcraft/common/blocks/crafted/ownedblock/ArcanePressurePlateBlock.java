@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableOwnedBlock;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableOwnedBlock;
 import thaumcraft.common.tiles.abstracts.owned.KeyableOwnedBlockEntity;
 import thaumcraft.common.tiles.abstracts.owned.OwnedBlockEntity;
 
