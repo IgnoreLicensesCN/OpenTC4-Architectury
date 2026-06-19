@@ -4,6 +4,7 @@ import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.mixinaccessors.DropExperienceBlockAccessor;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -31,11 +32,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
-import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
-import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
+import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
@@ -45,7 +47,6 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.items.wands.render.waveanimations.AbstractWandWaveAnimation;
 import thaumcraft.common.items.wands.render.waveanimations.ThaumcraftWandWaveAnimations;
-import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -56,41 +57,33 @@ import static thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes.*;
 import static thaumcraft.common.lib.enchantment.ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.DOWSING;
 
 public class ExcavationFocusItem extends BasicFocusItem {
-    public static final CentiVisList<Aspect> wandCost = LinkedHashCentiVisList.of(Aspects.EARTH, 15);
+    public static final CentiVisList<Aspect> BASIC_COST = UnmodifiableCentiVisList.of(Aspects.EARTH, 15);
 
-    public static final CentiVisList<Aspect> wandCostWithSilkTouchOrDowsing;
-    static {
-        LinkedHashAspectList<Aspect> wandCostWithSilkTouchOrDowsingInternal;
-        wandCostWithSilkTouchOrDowsingInternal = new LinkedHashAspectList<>(6 + wandCost.size(),1);
-        wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.AIR, 1);
-        wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.FIRE, 1);
-        wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.EARTH, 1);
-        wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.WATER, 1);
-        wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.ORDER, 1);
-        wandCostWithSilkTouchOrDowsingInternal.addAll(Aspects.ENTROPY, 1);
-        wandCostWithSilkTouchOrDowsingInternal.addAll(wandCost);
-        wandCostWithSilkTouchOrDowsing = CentiVisList.fromAspectVisList(
-                wandCostWithSilkTouchOrDowsingInternal
-        );
-    }
+    public static final CentiVisList<Aspect> WITH_SILKTOUCH_OR_DOWSING = UnmodifiableCentiVisList.of(
+            Aspects.AIR, 1,
+            Aspects.FIRE, 1,
+            Aspects.EARTH, 16,
+            Aspects.WATER, 1,
+            Aspects.ORDER, 1,
+            Aspects.ENTROPY, 1
+    );
 
     public ExcavationFocusItem() {
         super(new Properties().stacksTo(1));
     }
 
     @Override
-    public CentiVisList<Aspect> getCentiVisCost(ItemStack focusStack, @Nullable ItemStack wandStack) {
-        var upgrades = this.getFocusUpgradesWithWandModifiers(focusStack,wandStack);
-        if (upgrades.getOrDefault(SILKTOUCH,0) > 0
-                || upgrades.getOrDefault(DOWSING,0) > 0
+    public CentiVisList<Aspect> getCentiVisCost(ItemStack focusStack, Object2IntMap<FocusUpgradeType> upgrades) {
+        if (isUpgradedWith(focusStack,SILKTOUCH,upgrades)
+                || isUpgradedWith(focusStack,DOWSING,upgrades)
         ) {
-            return wandCostWithSilkTouchOrDowsing;
+            return WITH_SILKTOUCH_OR_DOWSING;
         }
-        return wandCost;
+        return BASIC_COST;
     }
 
     @Override
-    public int getActivationCooldownTicks(ItemStack focusStack) {
+    public int getActivationCooldownTicks(ItemStack focusStack, @NotNull ItemStack wandStack) {
         return 0;
     }
 
@@ -112,7 +105,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
 
 
     @Override
-    public List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack,int rank) {
+    public @NotNull List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack, int rank) {
         if (focusStack == null) {return List.of();}
         if (rank == 0) return RANK_0_UPGRADES;
         if (rank == 1) return RANK_1_UPGRADES;
@@ -149,7 +142,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
     @SuppressWarnings("unchecked")
     public void onUsingFocusTick(ItemStack usingWand, ItemStack focusStack, LivingEntity user, int count) {
 
-        if (!checkAndSetCooldown(focusStack,user)) {
+        if (!checkAndSetCooldown(focusStack,usingWand,user)) {
             user.stopUsingItem();
             return;
         }
@@ -161,12 +154,13 @@ public class ExcavationFocusItem extends BasicFocusItem {
             user.stopUsingItem();
             return;
         }
+        var upgrades = getFocusUpgradesWithWandModifiers(focusStack, usingWand);
         var container = (ICentiVisContainerItem<Aspect>) containerNotCasted;
         var level = user.level();
         var serverSideFlag = !level.isClientSide();
         if (!(container.consumeAllCentiVis(
                 usingWand
-                ,user, getCentiVisCost(focusStack,usingWand),false,false,serverSideFlag))
+                ,user, getCentiVisCost(focusStack,upgrades),false, ThaumcraftWandConsumptionTypes.FOCUS,serverSideFlag))
         ){
             user.stopUsingItem();
             return;
@@ -177,21 +171,20 @@ public class ExcavationFocusItem extends BasicFocusItem {
             breakCount.putIfAbsent(user, 0.0F);
             lastUsingAtCoords.putIfAbsent(user, ZERO);
 
-            HitResult mop = BlockUtils.getTargetBlock(level, user, false);
+            HitResult mop = user.pick(5, 0, false);
             Vec3 v = user.getLookAngle();
             double tx = user.getX() + v.x() * (double)10.0F;
             double ty = user.getY() + v.y() * (double)10.0F;
             double tz = user.getZ() + v.z() * (double)10.0F;
             int impact = 0;
 
-            if (mop == null && level instanceof ClientLevel clientLevel) {
-                lastUsingAtCoords.put(user,MAX);
-                breakCount.put(user,0.F);
-                soundDelay.put(user, 0L);
-                beam.put(user, ClientFXUtils.beamCont(clientLevel, user, tx, ty, tz, 2, 65382, false, 0.0F, beam.get(user), impact));
-                return;
-            }
-            if (mop == null) {
+            if (mop.getType() == HitResult.Type.MISS && level.isClientSide) {
+                if (level instanceof ClientLevel clientLevel) {
+                    lastUsingAtCoords.put(user, MAX);
+                    breakCount.put(user, 0.F);
+                    soundDelay.put(user, 0L);
+                    beam.put(user, ClientFXUtils.beamCont(clientLevel, user, tx, ty, tz, 2, 65382, false, 0.0F, beam.get(user), impact));
+                }
                 return;
             }
             var mopVec = mop.getLocation();
@@ -244,12 +237,14 @@ public class ExcavationFocusItem extends BasicFocusItem {
                             } else {
                                 breakCount.put(user, bc + speed);
                             }
-                        } else if (bc >= hardness && container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), true, false,serverSideFlag)) {
+                        } else if (bc >= hardness
+                                && container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades),
+                                true, false, true)) {
                             if (this.excavate(level, usingWand, user, blockState, mopBlockPos)) {
                                 for(int a = 0; a < wandFocusItem.getFocusUpgradesWithWandModifiers(focusStack,usingWand).getOrDefault(ENLARGE,0); ++a) {
-                                    if (container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), false, false,serverSideFlag)
+                                    if (container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades), false, ThaumcraftWandConsumptionTypes.FOCUS, true)
                                             && this.breakNeighbour(user, mopBlockPos, blockState, usingWand)) {
-                                        container.consumeAllCentiVis(usingWand, user, (CentiVisList<Aspect>)wandFocusItem.getCentiVisCost(focusStack,usingWand), true, false,serverSideFlag);
+                                        container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades), true, ThaumcraftWandConsumptionTypes.FOCUS, true);
                                     }
                                 }
                             }
@@ -403,7 +398,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
     }
 
     @Override
-    public AbstractWandWaveAnimation getWaveAnimation(ItemStack focusStack) {
+    public AbstractWandWaveAnimation getWaveAnimation(ItemStack focusStack,@Nullable ItemStack wandStack) {
         return ThaumcraftWandWaveAnimations.CHARGE;
     }
 }

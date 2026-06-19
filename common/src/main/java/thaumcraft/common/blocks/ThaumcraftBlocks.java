@@ -744,6 +744,10 @@ public class ThaumcraftBlocks {
         public static FluxScrubberBlock FLUX_SCRUBBER() {
             return Registry.SUPPLIER_FLUX_SCRUBBER.get();
         }
+
+        public static Block FROST_FOCUS_PARTICLE_PROVIDER(){
+            return Registry.SUPPLIER_FROST_FOCUS_PARTICLE_PROVIDER.get();
+        }
     }
 
     public static class Registry {
@@ -1513,6 +1517,11 @@ public class ThaumcraftBlocks {
                 BLOCKS.register(
                         "flux_scrubber",
                         FluxScrubberBlock::new
+                );
+        public static final RegistrySupplier<Block> SUPPLIER_FROST_FOCUS_PARTICLE_PROVIDER =
+                BLOCKS.register(
+                        "frost_focus_particle_provider",
+                        () -> new Block(BlockBehaviour.Properties.copy(Blocks.GLASS))
                 );
 
         static {

@@ -19,6 +19,7 @@ import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.listeners.wandconsumption.WandConsumptionType;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
@@ -49,14 +50,15 @@ public class WandManager implements IWandTriggerManager {
     static Map<Entity, Long> cooldownClient = new MapMaker().weakKeys().makeMap();
 
 
-    public static boolean consumeCentiVisFromInventory(Entity entityToCost, CentiVisList<Aspect> cost){
-        return consumeCentiVisFromInventory(entityToCost, cost, ignore -> true);
+    public static boolean consumeCentiVisFromInventory(Entity entityToCost, CentiVisList<Aspect> cost,WandConsumptionType consumptionType){
+        return consumeCentiVisFromInventory(entityToCost, cost, ignore -> true,consumptionType);
     }
     //do some mixin?
     public static boolean consumeCentiVisFromInventory(
             Entity entity,
             CentiVisList<Aspect> cost,
-            Function<ItemStack,Boolean> checkCondition
+            Function<ItemStack,Boolean> checkCondition,
+            WandConsumptionType consumptionType
     ) {
         if (entity instanceof LivingEntity living){
             BaubleConsumer<ICentiVisContainerItem> centiVisContainerConsumer = (slot, stack, centiVisContainerItem) ->
@@ -65,7 +67,7 @@ public class WandManager implements IWandTriggerManager {
                     return false;
                 }
                 return centiVisContainerItem.consumeAllCentiVis(
-                        stack, living, cost, true, false, !living.level().isClientSide);
+                        stack, living, cost, true, consumptionType, !living.level().isClientSide);
             };
             return forEachBauble(living, ICentiVisContainerItem.class, centiVisContainerConsumer);
         }

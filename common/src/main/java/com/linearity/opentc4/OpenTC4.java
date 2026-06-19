@@ -4,6 +4,7 @@ import com.linearity.opentc4.chatcomponent.ComponentRendering;
 import com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
 import thaumcraft.common.items.abstracts.IRepairableItem;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.EventListeners;
@@ -74,6 +75,7 @@ public final class OpenTC4 {
         //oh i can see someone want it "Da---ta---Dri---ven" cause of lazy to write researchItem in java
         //but i wont provide a Json2ResearchItem parser,you have to make it yourself
         ThaumcraftResearches.init();
+        ThaumcraftWandConsumptionTypes.init();
 
         ThaumcraftRunicShieldTypes.init();
         ThaumcraftEnchantments.init();

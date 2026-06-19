@@ -20,7 +20,8 @@ public class ConsumptionModifierCalculationContext {
     public final ItemStack wandStack;
     public final @Nullable LivingEntity user;
     public final Aspect aspect;
-    public final boolean crafting;
+//    public final boolean crafting;
+    public final WandConsumptionType wandConsumptionType;
     //if there's a blockEntity calculating put BE pos
     public final @Nullable BlockPos atPos;
     public float currentConsumption = 1;
@@ -30,13 +31,13 @@ public class ConsumptionModifierCalculationContext {
             ItemStack wandStack,
             @Nullable LivingEntity user,
             Aspect aspect,
-            boolean crafting,
+            WandConsumptionType wandConsumptionType,
             @Nullable BlockPos atPos) {
         this.casting = casting;
         this.wandStack = wandStack;
         this.user = user;
         this.aspect = aspect;
-        this.crafting = crafting;
+        this.wandConsumptionType = wandConsumptionType;
         this.atPos = atPos;
     }
 }

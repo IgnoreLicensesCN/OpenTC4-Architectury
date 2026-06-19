@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
@@ -59,8 +60,8 @@ public interface IWandFocusItem<Asp extends Aspect> {
     void storeFocusUpgrades(ItemStack stack, List<FocusUpgradeType> wandUpgrades);
     void addFocusUpgrade(ItemStack stack, FocusUpgradeType type);
 
-    default boolean isUpgradedWith(ItemStack focusStack, FocusUpgradeType focusUpgradetype) {
-        return getAppliedFocusUpgrades(focusStack).containsKey(focusUpgradetype);
+    default boolean isUpgradedWith(ItemStack focusStack, FocusUpgradeType focusUpgradetype,Object2IntMap<FocusUpgradeType> upgrades) {
+        return upgrades.getInt(focusUpgradetype) > 0;
     }
 
     default int getRank(ItemStack focusStack) {
@@ -74,12 +75,12 @@ public interface IWandFocusItem<Asp extends Aspect> {
     /**
      * How much vis does this focus consume per activation.
      */
-    CentiVisList<Asp> getCentiVisCost(ItemStack focusStack, @Nullable ItemStack wandStack);
+    CentiVisList<Asp> getCentiVisCost(ItemStack focusStack, Object2IntMap<FocusUpgradeType> upgrades);
 
     /**
      * This returns how many milliseconds must pass before the focus can be activated again.
      */
-    int getActivationCooldownTicks(ItemStack focusStack);
+    int getActivationCooldownTicks(ItemStack focusStack, @NotNull ItemStack wandStack);
 
     /**
      * What upgrades can be applied to this focus for ranks 1 to 5
@@ -87,7 +88,7 @@ public interface IWandFocusItem<Asp extends Aspect> {
     default List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack){
         return getPossibleUpgradesByRank(focusStack,getRank(focusStack));
     }
-    List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack,int rank);
+    @NotNull List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack, int rank);
 
 
     //only for displaying
@@ -114,7 +115,7 @@ public interface IWandFocusItem<Asp extends Aspect> {
     default @Nullable InteractionResult onFocusUseOn(UseOnContext useOnContext) {
         return null;
     }
-    default AbstractWandWaveAnimation getWaveAnimation(ItemStack focusStack){
+    default AbstractWandWaveAnimation getWaveAnimation(ItemStack focusStack,@Nullable ItemStack wandStack){
         return ThaumcraftWandWaveAnimations.WAVE;
     }
 }

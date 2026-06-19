@@ -342,4 +342,11 @@ public class Consts {
         public static final IntTagAccessor STRENGTH = new IntTagAccessor("strength");
         public static final BooleanTagAccessor ON_FIRE = new BooleanTagAccessor("on_fire");
     }
+    public static class FrostShardEntityTagAccessors {
+        public static final DoubleTagAccessor BOUNCE = new DoubleTagAccessor("bounce");
+        public static final IntTagAccessor BOUNCE_LIMIT = new IntTagAccessor("bounce_limit");
+        public static final BooleanTagAccessor FRAGILE = new BooleanTagAccessor("fragile");
+        public static final FloatTagAccessor DAMAGE = new FloatTagAccessor("damage");
+        public static final IntTagAccessor FROSTY = new IntTagAccessor("frosty");
+    }
 }

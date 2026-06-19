@@ -11,6 +11,8 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
+import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
+import thaumcraft.api.listeners.wandconsumption.WandConsumptionType;
 
 import static thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
 
@@ -124,8 +126,8 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
         return res;
     }
 
-    default boolean consumeCentiVis(@NotNull ItemStack is, @Nullable LivingEntity user, @NotNull Asp aspect, int centiVisAmount, boolean crafting) {
-        centiVisAmount = (int) ((float) centiVisAmount * getConsumptionModifier(is.getItem(),is, user, aspect, crafting));
+    default boolean consumeCentiVis(@NotNull ItemStack is, @Nullable LivingEntity user, @NotNull Asp aspect, int centiVisAmount, WandConsumptionType consumptionType) {
+        centiVisAmount = (int) ((float) centiVisAmount * getConsumptionModifier(is.getItem(),is, user, aspect, consumptionType));
         if (getCentiVisOwning(is, aspect) >= centiVisAmount) {
             storeCentiVisOwning(is, aspect, getCentiVisOwning(is, aspect) - centiVisAmount);
             return true;
@@ -133,7 +135,7 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
             return false;
         }
     }
-    default boolean consumeCentiVisWithoutModifier(@NotNull ItemStack is, @Nullable LivingEntity user, @NotNull Asp aspect, int centiVisAmount, boolean crafting) {
+    default boolean consumeCentiVisWithoutModifier(@NotNull ItemStack is, @Nullable LivingEntity user, @NotNull Asp aspect, int centiVisAmount, WandConsumptionType consumptionType) {
         if (getCentiVisOwning(is, aspect) >= centiVisAmount) {
             storeCentiVisOwning(is, aspect, getCentiVisOwning(is, aspect) - centiVisAmount);
             return true;
@@ -161,18 +163,18 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
     }
 
     default boolean consumeAllCentiVisCrafting(ItemStack is, @Nullable LivingEntity user, CentiVisList<Asp> aspects, boolean doit,boolean serverSide) {
-        return this.consumeAllCentiVis(is, user, aspects, doit, true,serverSide);
+        return this.consumeAllCentiVis(is, user, aspects, doit, ThaumcraftWandConsumptionTypes.CRAFTING,serverSide);
     }
 
     default boolean consumeAllCentiVis(
             @NotNull ItemStack is,
             @Nullable LivingEntity user,
             @NotNull CentiVisList<Asp> aspects,
-            boolean doit, boolean crafting,boolean serverSide) {
+            boolean doit, WandConsumptionType consumptionType,boolean serverSide) {
         if (!aspects.isEmpty()) {
             var allCentiVis = getAllCentiVisOwning(is);
             boolean notEnoughCentiVis = aspects.forEachWithBreak((aspect,cost) -> {
-                cost = (int) ((float) cost * getConsumptionModifier(is.getItem(),is, user, aspect, crafting));
+                cost = (int) ((float) cost * getConsumptionModifier(is.getItem(),is, user, aspect, consumptionType));
                 return !allCentiVis.tryReduce(aspect, cost);
             });
             if (notEnoughCentiVis) {

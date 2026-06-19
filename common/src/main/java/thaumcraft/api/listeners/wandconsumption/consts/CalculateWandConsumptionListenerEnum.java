@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
+import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CRAFTING;
+import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.FOCUS;
 
 public enum CalculateWandConsumptionListenerEnum {
     CASTING_MODIFIER(new CalculateWandConsumptionListener(0) {
@@ -32,7 +34,7 @@ public enum CalculateWandConsumptionListenerEnum {
     CASTING_MODIFIER_CRAFTING(new CalculateWandConsumptionListener(5) {
         @Override
         public void onCalculation(ConsumptionModifierCalculationContext context) {
-            if (!context.crafting) {
+            if (context.wandConsumptionType == CRAFTING) {
                 return;
             }
             var casting = context.casting;
@@ -99,7 +101,7 @@ public enum CalculateWandConsumptionListenerEnum {
             if (context.casting instanceof IWandFocusEngineItem focusEngine) {
                 if (focusEngine.canApplyFocus()){
                     var focusStack = focusEngine.getFocusItemStack(context.wandStack);
-                    if (!focusStack.isEmpty() && !context.crafting && focusStack.getItem() instanceof IWandFocusItem<? extends Aspect> wandFocusItem) {
+                    if (!focusStack.isEmpty() && context.wandConsumptionType == FOCUS && focusStack.getItem() instanceof IWandFocusItem<? extends Aspect> wandFocusItem) {
                         context.currentConsumption -= (float) wandFocusItem
                                 .getFocusUpgradesWithWandModifiers(focusStack,context.wandStack)
                                 .getOrDefault(ThaumcraftFocusUpgradeTypes.FRUGAL,0) / 10.0F;

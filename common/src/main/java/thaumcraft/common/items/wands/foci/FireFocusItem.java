@@ -1,6 +1,7 @@
 package thaumcraft.common.items.wands.foci;
 
 import com.google.common.collect.MapMaker;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -8,12 +9,14 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
+import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.common.ThaumcraftSounds;
@@ -66,7 +69,7 @@ public class FireFocusItem extends BasicFocusItem{
             List.of(FRUGAL, POTENCY);
 
     @Override
-    public List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack,int rank) {
+    public @NotNull List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack, int rank) {
         if (focusStack == null) {return List.of();}
         if (rank == 0) return RANK_0_UPGRADES;
         if (rank == 1) return RANK_1_UPGRADES;
@@ -77,9 +80,9 @@ public class FireFocusItem extends BasicFocusItem{
     }
 
     @Override
-    public AbstractWandWaveAnimation getWaveAnimation(ItemStack focusStack) {
+    public AbstractWandWaveAnimation getWaveAnimation(ItemStack focusStack,ItemStack wandStack) {
         var upgrades = getAppliedFocusUpgrades(focusStack);
-        return upgrades.getInt(FIREBALL) > 0 ? ThaumcraftWandWaveAnimations.WAVE:ThaumcraftWandWaveAnimations.CHARGE;
+        return isUpgradedWith(focusStack,FIREBALL,upgrades) ? ThaumcraftWandWaveAnimations.WAVE:ThaumcraftWandWaveAnimations.CHARGE;
     }
 
     @Override
@@ -88,8 +91,7 @@ public class FireFocusItem extends BasicFocusItem{
     }
 
     @Override
-    public CentiVisList<Aspect> getCentiVisCost(ItemStack focusStack, @Nullable ItemStack wandStack) {
-        var upgrades = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
+    public CentiVisList<Aspect> getCentiVisCost(ItemStack focusStack, Object2IntMap<FocusUpgradeType> upgrades) {
         if (upgrades.getInt(FIREBALL) > 0) {
             return BALL_COST;
         }
@@ -100,7 +102,7 @@ public class FireFocusItem extends BasicFocusItem{
     }
 
     @Override
-    public int getActivationCooldownTicks(ItemStack focusStack) {
+    public int getActivationCooldownTicks(ItemStack focusStack, @NotNull ItemStack wandStack) {
         var upgrades = getAppliedFocusUpgradesWithOrder(focusStack);
         if (upgrades.contains(FIREBALL)) {
             return 20;
@@ -117,8 +119,8 @@ public class FireFocusItem extends BasicFocusItem{
         var wandItem = wandStack.getItem();
         if (wandItem instanceof ICentiVisContainerItem<?> centiVisContainerItemNotCasted) {
             ICentiVisContainerItem<Aspect> centiVisContainer = (ICentiVisContainerItem<Aspect>) centiVisContainerItemNotCasted;
-            var upgradeMap = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
-            if (upgradeMap.getInt(FIREBALL) <= 0) {
+            var upgrades = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
+            if (upgrades.getInt(FIREBALL) <= 0) {
                 user.startUsingItem(interactionHand);
                 cooldownManager.setCooldown(user,-1);
                 return InteractionResultHolder.sidedSuccess(wandStack,level.isClientSide);
@@ -126,15 +128,15 @@ public class FireFocusItem extends BasicFocusItem{
             if (centiVisContainer.consumeAllCentiVis(
                     wandStack,
                     user,
-                    this.getCentiVisCost(focusStack,wandStack),
+                    this.getCentiVisCost(focusStack,upgrades),
                     !level.isClientSide,
-                    false,
+                    ThaumcraftWandConsumptionTypes.FOCUS,
                     !level.isClientSide)
             ) {
                 if (!level.isClientSide) {
                     ExplosiveOrbEntity orb = new ExplosiveOrbEntity(user,level);
-                    orb.strength += upgradeMap.getInt(POTENCY) * 0.4F;
-                    orb.onFire = upgradeMap.getInt(ALCHEMISTS_FIRE) > 0;
+                    orb.strength += upgrades.getInt(POTENCY) * 0.4F;
+                    orb.onFire = upgrades.getInt(ALCHEMISTS_FIRE) > 0;
                     level.addFreshEntity(orb);
                     level.playSound(null,user.blockPosition(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS);
                 }
@@ -148,7 +150,7 @@ public class FireFocusItem extends BasicFocusItem{
 
     @Override
     public void onUsingFocusTick(ItemStack wandStack, ItemStack focusStack, LivingEntity user, int count) {
-        if (!checkAndSetCooldown(focusStack,user)) {
+        if (!checkAndSetCooldown(focusStack,wandStack,user)) {
             user.stopUsingItem();
             return;
         }
@@ -158,13 +160,13 @@ public class FireFocusItem extends BasicFocusItem{
             return;
         }
         var centiVisContainer = (ICentiVisContainerItem<Aspect>) centiVisContainerItemNotCasted;
-        var cost = getCentiVisCost(focusStack,wandStack);
-        if (!centiVisContainer.consumeAllCentiVis(wandStack,user,cost,true,false,!user.level().isClientSide)) {
+        var upgrades = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
+        var cost = getCentiVisCost(focusStack,upgrades);
+        if (!centiVisContainer.consumeAllCentiVis(wandStack,user,cost,true,ThaumcraftWandConsumptionTypes.FOCUS,!user.level().isClientSide)) {
             user.stopUsingItem();
             return;
         }
         var level = user.level();
-        var upgrades = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
         if (!level.isClientSide) {
             if (soundTicks.getOrDefault(user, 0) < user.tickCount) {
                 soundTicks.put(user, user.tickCount + 5);

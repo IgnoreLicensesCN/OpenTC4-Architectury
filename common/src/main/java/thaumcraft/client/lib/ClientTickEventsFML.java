@@ -30,6 +30,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
 import thaumcraft.client.gui.GuiResearchPopup;
 import thaumcraft.client.gui.GuiResearchRecipe;
 import thaumcraft.client.gui.MappingThread;
@@ -438,7 +439,7 @@ public class ClientTickEventsFML {
             mc.ingameGUI.drawString(mc.fontRenderer, msg, -32, -4, 16777215);
             GL11.glPopMatrix();
             if (focus != null && focus.getVisCost(focusStack).getAmount(aspect) > 0) {
-               float mod = wand.getConsumptionModifier(wandstack, player, aspect, false);
+               float mod = wand.getConsumptionModifier(wandstack, player, aspect, ThaumcraftWandConsumptionTypes.FOCUS);
                GL11.glPushMatrix();
                GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
                msg = this.myFormatter.format((float)focus.getVisCost(focusStack).getAmount(aspect) * mod / 100.0F);

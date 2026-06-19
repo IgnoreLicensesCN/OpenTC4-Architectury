@@ -968,6 +968,7 @@ public class ThaumcraftItemInstances {
     public static ShockFocusItem SHOCK_FOCUS() {
         return ThaumcraftItemsRegistry.SUPPLIER_SHOCK_FOCUS.get();
     }
-
-
+    public static FrostFocusItem FROST_FOCUS() {
+        return ThaumcraftItemsRegistry.SUPPLIER_FROST_FOCUS.get();
+    }
 }

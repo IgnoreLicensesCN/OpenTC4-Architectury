@@ -1,40 +1,24 @@
 package thaumcraft.common.items.wands.foci;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.resources.ResourceLocation;
-import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
-import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.entities.projectile.EntityFrostShard;
-import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
-
 public class ItemFocusFrost {
-   private static final AspectList<Aspect>costBase;
-   private static final AspectList<Aspect>costScatter;
-   private static final AspectList<Aspect>costBoulder;
-   public static FocusUpgradeType scattershot;
-   public static FocusUpgradeType iceboulder;
-
-   public ItemFocusFrost() {
-      this.setCreativeTab(Thaumcraft.tabTC);
-   }
-
-   public String getSortingHelper(ItemStack itemstack) {
-      return "BF" + super.getSortingHelper(itemstack);
-   }
-
-   @SideOnly(Side.CLIENT)
-   public void registerIcons(IIconRegister ir) {
-      this.icon = ir.registerIcon("thaumcraft:focus_frost");
-   }
+//   private static final AspectList<Aspect>costBase;
+//   private static final AspectList<Aspect>costScatter;
+//   private static final AspectList<Aspect>costBoulder;
+//   public static FocusUpgradeType scattershot;
+//   public static FocusUpgradeType iceboulder;
+//
+//   public ItemFocusFrost() {
+//      this.setCreativeTab(Thaumcraft.tabTC);
+//   }
+//
+//   public String getSortingHelper(ItemStack itemstack) {
+//      return "BF" + super.getSortingHelper(itemstack);
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public void registerIcons(IIconRegister ir) {
+//      this.icon = ir.registerIcon("thaumcraft:focus_frost");
+//   }
 
    public ItemStack onFocusRightClick(ItemStack itemstack, World world, Player p, HitResult mob) {
       WandCastingItem wand = (WandCastingItem)itemstack.getItem();
@@ -70,44 +54,48 @@ public class ItemFocusFrost {
       return itemstack;
    }
 
-   public int getFocusColor(ItemStack itemstack) {
-      return 5204428;
-   }
+//   public int getFocusColor(ItemStack itemstack) {
+//      return 5204428;
+//   }
 
-   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
-      return this.isUpgradedWith(itemstack, scattershot) ? costScatter : (this.isUpgradedWith(itemstack, iceboulder) ? costBoulder : costBase);
-   }
-
-   public int getActivationCooldown(ItemStack focusstack) {
-      return this.getUpgradeLevel(focusstack, scattershot) <= 0 && this.getUpgradeLevel(focusstack, iceboulder) <= 0 ? 200 : 500;
-   }
-
-   public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
-      switch (rank) {
-         case 1:
-            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FROST};
-         case 2:
-            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
-         case 3:
-            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, scattershot, iceboulder, ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FROST};
-         case 4:
-            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
-         case 5:
-            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FROST};
-         default:
-            return null;
-      }
-   }
-
-   static {
-      costBase = (new LinkedHashAspectList<>()).addAll(Aspects.WATER, 5).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2);
-      costScatter = (new LinkedHashAspectList<>()).addAll(Aspects.WATER, 20).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2).addAll(
-              Aspects.AIR, 5);
-      costBoulder = (new LinkedHashAspectList<>()).addAll(Aspects.WATER, 20).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2).addAll(
-              Aspects.EARTH, 5);
-      scattershot = new FocusUpgradeType(11, new ResourceLocation("thaumcraft", "textures/foci/scattershot.png"), "focus.upgrade.scattershot.name", "focus.upgrade.scattershot.text", (new LinkedHashAspectList<>()).addAll(
-              Aspects.COLD, 1).addAll(Aspects.WEAPON, 1));
-      iceboulder = new FocusUpgradeType(12, new ResourceLocation("thaumcraft", "textures/foci/iceboulder.png"), "focus.upgrade.iceboulder.name", "focus.upgrade.iceboulder.text", (new LinkedHashAspectList<>()).addAll(
-              Aspects.COLD, 1).addAll(Aspects.CRYSTAL, 1));
-   }
+//   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
+//      return this.isUpgradedWith(itemstack, scattershot) ? costScatter :
+//              (this.isUpgradedWith(itemstack, iceboulder) ? costBoulder :
+//               costBase);
+//   }
+//
+//   public int getActivationCooldown(ItemStack focusstack) {
+//      return this.getUpgradeLevel(focusstack, scattershot) <= 0
+//              && this.getUpgradeLevel(focusstack, iceboulder) <= 0 ? 200
+//              : 500;
+//   }
+//
+//   public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
+//      switch (rank) {
+//         case 1:
+//            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FROST};
+//         case 2:
+//            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
+//         case 3:
+//            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, scattershot, iceboulder, ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FROST};
+//         case 4:
+//            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
+//         case 5:
+//            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, ThaumcraftFocusUpgradeTypes.ALCHEMISTS_FROST};
+//         default:
+//            return null;
+//      }
+//   }
+//
+//   static {
+//      costBase = (new LinkedHashAspectList<>()).addAll(Aspects.WATER, 5).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2);
+//      costScatter = (new LinkedHashAspectList<>()).addAll(Aspects.WATER, 20).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2).addAll(
+//              Aspects.AIR, 5);
+//      costBoulder = (new LinkedHashAspectList<>()).addAll(Aspects.WATER, 20).addAll(Aspects.FIRE, 2).addAll(Aspects.ENTROPY, 2).addAll(
+//              Aspects.EARTH, 5);
+//      scattershot = new FocusUpgradeType(11, new ResourceLocation("thaumcraft", "textures/foci/scattershot.png"), "focus.upgrade.scattershot.name", "focus.upgrade.scattershot.text", (new LinkedHashAspectList<>()).addAll(
+//              Aspects.COLD, 1).addAll(Aspects.WEAPON, 1));
+//      iceboulder = new FocusUpgradeType(12, new ResourceLocation("thaumcraft", "textures/foci/iceboulder.png"), "focus.upgrade.iceboulder.name", "focus.upgrade.iceboulder.text", (new LinkedHashAspectList<>()).addAll(
+//              Aspects.COLD, 1).addAll(Aspects.CRYSTAL, 1));
+//   }
 }

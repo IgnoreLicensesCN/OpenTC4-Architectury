@@ -22,16 +22,16 @@ public class ConsumptionModifierCalculator {
     /**
      * {@link CalculateWandConsumptionListener#onCalculation}
      */
-    public static float getConsumptionModifier(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, boolean crafting) {
-        var context = new ConsumptionModifierCalculationContext(casting,wandStack,user,aspect,crafting,null);
+    public static float getConsumptionModifier(Item casting, ItemStack wandStack, @Nullable LivingEntity user, Aspect aspect, WandConsumptionType wandConsumptionType) {
+        var context = new ConsumptionModifierCalculationContext(casting,wandStack,user,aspect,wandConsumptionType,null);
         for (CalculateWandConsumptionListener listener : calculateWandConsumptionListenerManager.getListeners()) {
             listener.onCalculation(context);
         }
         return context.currentConsumption;
     }
     //maybe ThaumicEnergistics will back and add their own modifier
-    public static float getConsumptionModifier(Item casting, ItemStack wandStack, @Nullable BlockPos pos, Aspect aspect, boolean crafting) {
-        var context = new ConsumptionModifierCalculationContext(casting,wandStack,null,aspect,crafting,pos);
+    public static float getConsumptionModifier(Item casting, ItemStack wandStack, @Nullable BlockPos pos, Aspect aspect, WandConsumptionType wandConsumptionType) {
+        var context = new ConsumptionModifierCalculationContext(casting,wandStack,null,aspect,wandConsumptionType,pos);
         for (CalculateWandConsumptionListener listener : calculateWandConsumptionListenerManager.getListeners()) {
             listener.onCalculation(context);
         }

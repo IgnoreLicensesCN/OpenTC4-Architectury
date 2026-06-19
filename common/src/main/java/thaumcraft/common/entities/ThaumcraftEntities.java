@@ -8,6 +8,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.entities.projectile.frostfocus.FrostShardEntity;
 import thaumcraft.common.entities.projectile.thrownitem.AlumentumEntity;
 import thaumcraft.common.entities.projectile.firefocus.EmberEntity;
 import thaumcraft.common.entities.projectile.firefocus.ExplosiveOrbEntity;
@@ -37,6 +38,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<ShockOrbEntity> SHOCK_ORB() {
             return Registry.SUPPLIER_SHOCK_ORB.get();
+        }
+        public static EntityType<FrostShardEntity> FROST_SHARD() {
+            return Registry.SUPPLIER_FROST_SHARD.get();
         }
 
     }
@@ -86,6 +90,13 @@ public class ThaumcraftEntities {
                         .clientTrackingRange(10)
                         .updateInterval(20)
                         .build("shock_orb")
+        );
+        public static final RegistrySupplier<EntityType<FrostShardEntity>> SUPPLIER_FROST_SHARD = ENTITIES.register("frost_shard",
+                () -> EntityType.Builder.<FrostShardEntity>of(FrostShardEntity::new, MobCategory.MISC)
+                        .sized(0.25F, 0.25F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("frost_shard")
         );
     }
 

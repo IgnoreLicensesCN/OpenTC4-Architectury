@@ -1,6 +1,7 @@
 package thaumcraft.common.items.wands.foci;
 
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -12,11 +13,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
+import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.client.fx.migrated.bolt.FXLightningBolt;
@@ -45,7 +47,7 @@ public class ShockFocusItem extends BasicFocusItem{
     }
 
     @Override
-    public int getActivationCooldownTicks(ItemStack focusStack) {
+    public int getActivationCooldownTicks(ItemStack focusStack, @NotNull ItemStack wandStack) {
         var upgrades = getAppliedFocusUpgrades(focusStack);
         return upgrades.getInt(CHAIN_LIGHTING) > 0 ? 10:
                 upgrades.getInt(EARTH_SHOCK) > 0 ? 20:
@@ -54,8 +56,9 @@ public class ShockFocusItem extends BasicFocusItem{
     }
 
     @Override
-    public AbstractWandWaveAnimation getWaveAnimation(ItemStack focusStack) {
-        return isUpgradedWith(focusStack,EARTH_SHOCK)? ThaumcraftWandWaveAnimations.WAVE:ThaumcraftWandWaveAnimations.CHARGE;
+    public AbstractWandWaveAnimation getWaveAnimation(ItemStack focusStack,ItemStack wandStack) {
+        var upgrades = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
+        return isUpgradedWith(focusStack,EARTH_SHOCK,upgrades)? ThaumcraftWandWaveAnimations.WAVE:ThaumcraftWandWaveAnimations.CHARGE;
     }
 
     public static final List<FocusUpgradeType> RANK_0_UPGRADES =
@@ -69,7 +72,7 @@ public class ShockFocusItem extends BasicFocusItem{
     public static final List<FocusUpgradeType> RANK_4_UPGRADES =
             List.of(FRUGAL, POTENCY, ENLARGE);
     @Override
-    public List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack,int rank) {
+    public @NotNull List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack, int rank) {
         if (focusStack == null) {return List.of();}
         if (rank == 0) return RANK_0_UPGRADES;
         if (rank == 1) return RANK_1_UPGRADES;
@@ -103,8 +106,7 @@ public class ShockFocusItem extends BasicFocusItem{
     );
 
     @Override
-    public CentiVisList<Aspect> getCentiVisCost(ItemStack focusStack, @Nullable ItemStack wandStack) {
-        var upgrades = getAppliedFocusUpgrades(focusStack);
+    public CentiVisList<Aspect> getCentiVisCost(ItemStack focusStack, Object2IntMap<FocusUpgradeType> upgrades) {
         if (upgrades.getInt(CHAIN_LIGHTING) > 0){
             return CHAIN_COST;
         }
@@ -128,9 +130,9 @@ public class ShockFocusItem extends BasicFocusItem{
                 if (centiVisContainer.consumeAllCentiVis(
                         wandStack,
                         user,
-                        getCentiVisCost(focusStack,wandStack),
+                        getCentiVisCost(focusStack,upgrades),
                         !level.isClientSide,
-                        false,
+                        ThaumcraftWandConsumptionTypes.FOCUS,
                         !level.isClientSide
                 )){
                     if (!level.isClientSide){
@@ -162,7 +164,7 @@ public class ShockFocusItem extends BasicFocusItem{
 
     @Override
     public void onUsingFocusTick(ItemStack wandStack, ItemStack focusStack, LivingEntity user, int count) {
-        if (!checkAndSetCooldown(focusStack,user)){
+        if (!checkAndSetCooldown(focusStack,wandStack,user)){
             user.stopUsingItem();
             return;
         }
@@ -172,18 +174,18 @@ public class ShockFocusItem extends BasicFocusItem{
         }
         var level = user.level();
         var centiVisContainer = (ICentiVisContainerItem<Aspect>) centiVisContainerItemNotCasted;
+        var upgrades = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
         if (!centiVisContainer.consumeAllCentiVis(
                 wandStack,
                 user,
-                getCentiVisCost(focusStack,wandStack),
+                getCentiVisCost(focusStack,upgrades),
                 !level.isClientSide,
-                false,
+                ThaumcraftWandConsumptionTypes.FOCUS,
                 !level.isClientSide
         )){
             user.stopUsingItem();
             return;
         }
-        var upgrades = getAppliedFocusUpgrades(focusStack);
         var pointedEntityHitResult = EntityUtils.getPointedEntity(user, 20.0F);
         if (level.isClientSide){
             playLightingAndSparkleEffect(user, pointedEntityHitResult);

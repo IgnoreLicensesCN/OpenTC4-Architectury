@@ -13,6 +13,7 @@ import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
+import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
 import thaumcraft.common.items.wands.WandManager;
 
 import java.util.Map;
@@ -38,7 +39,7 @@ public interface IRepairableItem {
 			var cost = getRepairCost(is,enchantlevel);
 			if (!cost.isEmpty()) {
 				boolean doRepair = WandManager.consumeCentiVisFromInventory(
-						living, (CentiVisList<Aspect>)(Object)cost, checkIfCanConsumeForRepair
+						living, (CentiVisList<Aspect>)(Object)cost, checkIfCanConsumeForRepair, ThaumcraftWandConsumptionTypes.REPAIR_ITEM
 				);
                 if (doRepair) {
 					if (living != null) {

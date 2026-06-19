@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
@@ -85,7 +86,7 @@ public abstract class BasicFocusItem extends Item implements IWandFocusItem<Aspe
         addFocusInformation(focusStack,list);
     }
 
-    public boolean checkAndSetCooldown(ItemStack focusStack,LivingEntity user){
+    public boolean checkAndSetCooldown(ItemStack focusStack, @NotNull ItemStack wandStack, LivingEntity user){
         var cooldownManager = WandCooldownManager.getFromLiving(user);
         if (cooldownManager == null) {
             return false;
@@ -94,7 +95,7 @@ public abstract class BasicFocusItem extends Item implements IWandFocusItem<Aspe
         if (!cooldownMeets) {
             return false;
         }
-        cooldownManager.setCooldown(user,getActivationCooldownTicks(focusStack));
+        cooldownManager.setCooldown(user,getActivationCooldownTicks(focusStack,wandStack));
         return true;
     }
 }
