@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static thaumcraft.api.damagesource.ThaumcraftDamageSources.Tags.BYPASS_RUNIC_SHIELD;
-import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.RECHARGE_RUNIC_SHIELD;
+import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CONSUMPTION_RECHARGE_RUNIC_SHIELD;
 import static thaumcraft.common.runicshield.ThaumcraftRunicShieldTypes.CHARGED;
 
 //TODO:[maybe wont finished] Attribute to calculate but maybe not so fine?maybe we dont need this kind
@@ -74,7 +74,7 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
         var shieldMap = shieldInfo.shieldCharged;
         int capacity = shieldCapacityMap.getInt(this);
         if (capacity > shieldMap.getInt(this)) {
-            if (WandManager.consumeCentiVisFromInventory(living, getRechargeCost(),RECHARGE_RUNIC_SHIELD)) {
+            if (WandManager.consumeCentiVisFromInventory(living, getRechargeCost(), CONSUMPTION_RECHARGE_RUNIC_SHIELD)) {
                 shieldMap.mergeInt(this, 1, Integer::sum);
                 shieldInfo.rechargeDelay += getTickCooldownAfterRegen(living, shieldInfo);
                 shieldInfo.shouldSyncCharge = true;

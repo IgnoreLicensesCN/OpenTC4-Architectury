@@ -20,41 +20,41 @@ import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 public class ItemFocusHellbat {
-   public IIcon iconOrnament;
-   private static final AspectList<Aspect>costBase;
-   private static final AspectList<Aspect>costBomb;
-   private static final AspectList<Aspect>costDevil;
-   public static FocusUpgradeType batbombs;
-   public static FocusUpgradeType devilbats;
-   public static FocusUpgradeType vampirebats;
-
-   public ItemFocusHellbat() {
-      this.setCreativeTab(Thaumcraft.tabTC);
-   }
-
-   public String getSortingHelper(ItemStack itemstack) {
-      return "HH" + super.getSortingHelper(itemstack);
-   }
-
-   @SideOnly(Side.CLIENT)
-   public void registerIcons(IIconRegister ir) {
-      this.icon = ir.registerIcon("thaumcraft:focus_hellbat");
-      this.iconOrnament = ir.registerIcon("thaumcraft:focus_hellbat_orn");
-   }
-
-   @SideOnly(Side.CLIENT)
-   public IIcon getIconFromDamageForRenderPass(int par1, int renderPass) {
-      return renderPass == 1 ? this.icon : this.iconOrnament;
-   }
-
-   @SideOnly(Side.CLIENT)
-   public boolean requiresMultipleRenderPasses() {
-      return true;
-   }
-
-   public IIcon getOrnament(ItemStack itemstack) {
-      return this.iconOrnament;
-   }
+//   public IIcon iconOrnament;
+//   private static final AspectList<Aspect>costBase;
+//   private static final AspectList<Aspect>costBomb;
+//   private static final AspectList<Aspect>costDevil;
+//   public static FocusUpgradeType batbombs;
+//   public static FocusUpgradeType devilbats;
+//   public static FocusUpgradeType vampirebats;
+//
+//   public ItemFocusHellbat() {
+//      this.setCreativeTab(Thaumcraft.tabTC);
+//   }
+//
+//   public String getSortingHelper(ItemStack itemstack) {
+//      return "HH" + super.getSortingHelper(itemstack);
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public void registerIcons(IIconRegister ir) {
+//      this.icon = ir.registerIcon("thaumcraft:focus_hellbat");
+//      this.iconOrnament = ir.registerIcon("thaumcraft:focus_hellbat_orn");
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public IIcon getIconFromDamageForRenderPass(int par1, int renderPass) {
+//      return renderPass == 1 ? this.icon : this.iconOrnament;
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public boolean requiresMultipleRenderPasses() {
+//      return true;
+//   }
+//
+//   public IIcon getOrnament(ItemStack itemstack) {
+//      return this.iconOrnament;
+//   }
 
    public ItemStack onFocusRightClick(ItemStack itemstack, World world, Player player, HitResult HitResult) {
       WandCastingItem wand = (WandCastingItem)itemstack.getItem();
@@ -64,7 +64,7 @@ public class ItemFocusHellbat {
       double pz = player.posZ;
       py = player.boundingBox.minY + (double)(player.height / 2.0F) + (double)0.25F;
       px -= MathHelper.cos(player.rotationYaw / 180.0F * 3.141593F) * 0.16F;
-      py -= 0.05000000014901161;
+      py -= 0.05;
       pz -= MathHelper.sin(player.rotationYaw / 180.0F * 3.141593F) * 0.16F;
       Vec3 vec3d = player.getLook(1.0F);
       px += vec3d.xCoord * (double)0.5F;
@@ -109,50 +109,52 @@ public class ItemFocusHellbat {
       return itemstack;
    }
 
-   public int getFocusColor(ItemStack itemstack) {
-      return 14431746;
-   }
-
-   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
-      return this.isUpgradedWith(itemstack, batbombs) ? costBomb : (this.isUpgradedWith(itemstack, devilbats) ? costDevil : costBase);
-   }
-
-   public int getActivationCooldown(ItemStack focusstack) {
-      return 1000;
-   }
-
-   public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
-      switch (rank) {
-         case 1:
-            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
-         case 2:
-            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
-         case 3:
-            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, batbombs, devilbats};
-         case 4:
-            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
-         case 5:
-            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, vampirebats};
-         default:
-            return null;
-      }
-   }
-
-   public boolean canApplyUpgrade(ItemStack focusstack, Player player, FocusUpgradeType type, int rank) {
-      return !type.equals(vampirebats) || ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), "VAMPBAT");
-   }
-
-   static {
-      costBase = (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 200).addAll(Aspects.ENTROPY, 100).addAll(Aspects.AIR, 100);
-      costBomb = (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 100).addAll(Aspects.ENTROPY, 200).addAll(Aspects.AIR, 100);
-      costDevil = (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 100).addAll(Aspects.ENTROPY, 100).addAll(Aspects.AIR, 100).addAll(
-              Aspects.EARTH, 100);
-      batbombs = new FocusUpgradeType(13, new ResourceLocation("thaumcraft", "textures/foci/batbombs.png"), "focus.upgrade.batbombs.name", "focus.upgrade.batbombs.text", (new LinkedHashAspectList<>()).addAll(
-              Aspects.ENERGY, 1).addAll(Aspects.TRAP, 1));
-      devilbats = new FocusUpgradeType(14, new ResourceLocation("thaumcraft", "textures/foci/devilbats.png"), "focus.upgrade.devilbats.name", "focus.upgrade.devilbats.text", (new LinkedHashAspectList<>()).addAll(
-              Aspects.ARMOR, 1));
-      vampirebats = new FocusUpgradeType(19, new ResourceLocation("thaumcraft", "textures/foci/vampirebats.png"), "focus.upgrade.vampirebats.name", "focus.upgrade.vampirebats.text", (new LinkedHashAspectList<>()).addAll(
-              Aspects.HUNGER, 1).addAll(
-              Aspects.LIFE, 1));
-   }
+//   public int getFocusColor(ItemStack itemstack) {
+//      return 14431746;
+//   }
+//
+//   public AspectList<Aspect>getVisCost(ItemStack itemstack) {
+//      return this.isUpgradedWith(itemstack, batbombs) ? costBomb :
+//              (this.isUpgradedWith(itemstack, devilbats) ? costDevil :
+//               costBase);
+//   }
+//
+//   public int getActivationCooldown(ItemStack focusstack) {
+//      return 1000;
+//   }
+//
+//   public FocusUpgradeType[] getPossibleUpgradesByRank(ItemStack itemstack, int rank) {
+//      switch (rank) {
+//         case 1:
+//            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
+//         case 2:
+//            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
+//         case 3:
+//            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, batbombs, devilbats};
+//         case 4:
+//            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY};
+//         case 5:
+//            return new FocusUpgradeType[]{ThaumcraftFocusUpgradeTypes.FRUGAL, ThaumcraftFocusUpgradeTypes.POTENCY, vampirebats};
+//         default:
+//            return null;
+//      }
+//   }
+//
+//   public boolean canApplyUpgrade(ItemStack focusstack, Player player, FocusUpgradeType type, int rank) {
+//      return !(type.equals(vampirebats) && !ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), "VAMPBAT"));
+//   }
+//
+//   static {
+//      costBase = (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 200).addAll(Aspects.ENTROPY, 100).addAll(Aspects.AIR, 100);
+//      costBomb = (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 100).addAll(Aspects.ENTROPY, 200).addAll(Aspects.AIR, 100);
+//      costDevil = (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 100).addAll(Aspects.ENTROPY, 100).addAll(Aspects.AIR, 100).addAll(
+//              Aspects.EARTH, 100);
+//      batbombs = new FocusUpgradeType(13, new ResourceLocation("thaumcraft", "textures/foci/batbombs.png"), "focus.upgrade.batbombs.name", "focus.upgrade.batbombs.text", (new LinkedHashAspectList<>()).addAll(
+//              Aspects.ENERGY, 1).addAll(Aspects.TRAP, 1));
+//      devilbats = new FocusUpgradeType(14, new ResourceLocation("thaumcraft", "textures/foci/devilbats.png"), "focus.upgrade.devilbats.name", "focus.upgrade.devilbats.text", (new LinkedHashAspectList<>()).addAll(
+//              Aspects.ARMOR, 1));
+//      vampirebats = new FocusUpgradeType(19, new ResourceLocation("thaumcraft", "textures/foci/vampirebats.png"), "focus.upgrade.vampirebats.name", "focus.upgrade.vampirebats.text", (new LinkedHashAspectList<>()).addAll(
+//              Aspects.HUNGER, 1).addAll(
+//              Aspects.LIFE, 1));
+//   }
 }

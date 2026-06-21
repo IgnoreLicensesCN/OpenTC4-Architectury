@@ -45,10 +45,7 @@ import thaumcraft.common.items.misc.*;
 import thaumcraft.common.items.research.*;
 import thaumcraft.common.items.transport.*;
 import thaumcraft.common.items.wands.FocusPouchItem;
-import thaumcraft.common.items.wands.foci.ExcavationFocusItem;
-import thaumcraft.common.items.wands.foci.FireFocusItem;
-import thaumcraft.common.items.wands.foci.FrostFocusItem;
-import thaumcraft.common.items.wands.foci.ShockFocusItem;
+import thaumcraft.common.items.wands.foci.*;
 import thaumcraft.common.items.wands.rods.staffrods.*;
 import thaumcraft.common.items.wands.rods.wandrods.*;
 import thaumcraft.common.items.wands.wandcaps.*;
@@ -1206,6 +1203,10 @@ public class ThaumcraftItemsRegistry {
     public static final RegistrySupplier<FrostFocusItem> SUPPLIER_FROST_FOCUS = ITEMS.register(
             "frost_focus",
             FrostFocusItem::new
+    );
+    public static final RegistrySupplier<HellBatFocusItem> SUPPLIER_HELL_BAT_FOCUS = ITEMS.register(
+            "hell_bat_focus",
+            HellBatFocusItem::new
     );
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();
     public record ClusterRegistrationArgs(String orePrefix,Set<TagKey<Item>> tagsToRegister,TagKey<Item> burnIntoTag){

@@ -83,14 +83,14 @@ public class ShockFocusItem extends BasicFocusItem{
     }
 
     @Override
-    public boolean canApplyUpgrade(ItemStack focusStack, Player player, FocusUpgradeType type) {
+    public boolean canApplyUpgrade(ItemStack focusStack, LivingEntity upgradeApplier, FocusUpgradeType type) {
         if (type == ENLARGE){
             var upgrades = getAppliedFocusUpgrades(focusStack);
             if (!(upgrades.getInt(CHAIN_LIGHTING) > 0 || upgrades.getInt(ENLARGE) > 0)){
                 return false;
             }
         }
-        return super.canApplyUpgrade(focusStack, player, type);
+        return super.canApplyUpgrade(focusStack, upgradeApplier, type);
     }
 
     public static final CentiVisList<Aspect> BASE_COST = UnmodifiableCentiVisList.of(
@@ -132,7 +132,7 @@ public class ShockFocusItem extends BasicFocusItem{
                         user,
                         getCentiVisCost(focusStack,upgrades),
                         !level.isClientSide,
-                        ThaumcraftWandConsumptionTypes.FOCUS,
+                        ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS,
                         !level.isClientSide
                 )){
                     if (!level.isClientSide){
@@ -180,7 +180,7 @@ public class ShockFocusItem extends BasicFocusItem{
                 user,
                 getCentiVisCost(focusStack,upgrades),
                 !level.isClientSide,
-                ThaumcraftWandConsumptionTypes.FOCUS,
+                ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS,
                 !level.isClientSide
         )){
             user.stopUsingItem();

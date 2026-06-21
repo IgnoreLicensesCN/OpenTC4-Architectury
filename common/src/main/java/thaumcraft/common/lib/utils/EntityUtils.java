@@ -30,6 +30,7 @@ import thaumcraft.common.entities.monster.mods.ChampionModifier;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.*;
 
@@ -218,23 +219,26 @@ public class EntityUtils {
 //        );
     }
 
-    public static @Nullable EntityHitResult getPointedEntity(Entity entity, double range) {
+    public static @Nullable EntityHitResult getPointedEntity(Entity pointer, double range) {
+        return getPointedEntity(pointer,range,e -> !e.isSpectator());
+    }
+    public static @Nullable EntityHitResult getPointedEntity(Entity pointer, double range, Predicate<Entity> entityFilter) {
 
-        Level world = entity.level();
-        Vec3 startPos = entity.getEyePosition();
-        Vec3 lookVec = entity.getLookAngle();
+        Level world = pointer.level();
+        Vec3 startPos = pointer.getEyePosition();
+        Vec3 lookVec = pointer.getLookAngle();
         var lookScaled = lookVec.scale(range);
         Vec3 endPos = startPos.add(lookScaled);
 
         return ProjectileUtil.getEntityHitResult(
                 world,
-                entity,
+                pointer,
                 startPos,
                 endPos,
-                entity.getBoundingBox()
+                pointer.getBoundingBox()
                         .expandTowards(lookScaled)
                         .inflate(1.0),
-                e -> !e.isSpectator()
+                entityFilter
         );
     }
 

@@ -38,7 +38,7 @@ public class FrostFocusItem extends BasicFocusItem {
     public static final List<FocusUpgradeType> RANK_2_UPGRADES =
             List.of(FRUGAL, POTENCY, SCATTER_SHOT, ICE_BOULDER, ALCHEMISTS_FROST);
     public static final List<FocusUpgradeType> RANK_3_UPGRADES =
-            List.of(FRUGAL, FRUGAL, ENLARGE);
+            List.of(FRUGAL, FRUGAL);
     public static final List<FocusUpgradeType> RANK_4_UPGRADES =
             List.of(FRUGAL, POTENCY, ALCHEMISTS_FROST);
 
@@ -107,7 +107,7 @@ public class FrostFocusItem extends BasicFocusItem {
         var upgrades = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
         if (centiVisContainer.consumeAllCentiVis(
                 wandStack,user,getCentiVisCost(focusStack,upgrades),
-                true, ThaumcraftWandConsumptionTypes.FOCUS,!level.isClientSide
+                true, ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS,!level.isClientSide
         )){
             int frosty = upgrades.getInt(ALCHEMISTS_FROST);
             int potency = upgrades.getInt(POTENCY);
@@ -126,18 +126,18 @@ public class FrostFocusItem extends BasicFocusItem {
 
     protected void doCommonShoot(Level level, LivingEntity user, int potency, int frosty) {
         var shard = new FrostShardEntity(user, level);
-        shard.damage = 3.0F + potency * 1.5F;
-        shard.frosty = frosty;
+        shard.setDamage(3.0F + potency * 1.5F);
+        shard.setFrosty(frosty);
         shard.shootFromRotation(user, user.getXRot(), user.getYRot(), 0,1.5F, 1);
         level.addFreshEntity(shard);
     }
 
     protected void doIceboulderShoot(Level level, LivingEntity user, int potency, int frosty) {
         var shard = new FrostShardEntity(user, level);
-        shard.damage = 4 + potency * 2;
-        shard.bounce = 0.8;
-        shard.bounceLimit = 6;
-        shard.frosty = frosty;
+        shard.setDamage(4 + potency * 2);
+        shard.setBounce(0.8F);
+        shard.setBounceLimit(6);
+        shard.setFrosty(frosty);
         shard.shootFromRotation(user, user.getXRot(), user.getYRot(), 0,1.5F, 1);
         level.addFreshEntity(shard);
     }
@@ -145,9 +145,9 @@ public class FrostFocusItem extends BasicFocusItem {
     protected void doScatterShot(Level level, LivingEntity user, int potency, int frosty) {
         for(int a = 0; a < 5 + potency * 2; ++a) {
             var shard = new FrostShardEntity(user, level);
-            shard.damage = 1.0F;
-            shard.fragile = true;
-            shard.frosty = frosty;
+            shard.setDamage(1.0F);
+            shard.setFragile(true);
+            shard.setFrosty(frosty);
             shard.shootFromRotation(user, user.getXRot(), user.getYRot(), 0,1.5F, 8);
             level.addFreshEntity(shard);
         }

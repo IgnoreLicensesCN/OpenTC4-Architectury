@@ -39,7 +39,7 @@ public interface IRepairableItem {
 			var cost = getRepairCost(is,enchantlevel);
 			if (!cost.isEmpty()) {
 				boolean doRepair = WandManager.consumeCentiVisFromInventory(
-						living, (CentiVisList<Aspect>)(Object)cost, checkIfCanConsumeForRepair, ThaumcraftWandConsumptionTypes.REPAIR_ITEM
+						living, (CentiVisList<Aspect>)(Object)cost, checkIfCanConsumeForRepair, ThaumcraftWandConsumptionTypes.CONSUMPTION_REPAIRING_ITEM
 				);
                 if (doRepair) {
 					if (living != null) {

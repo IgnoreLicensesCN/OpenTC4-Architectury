@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.common.items.abstracts.wandabstraction.component.IInventoryTickableComponentItem;
@@ -18,12 +19,8 @@ public abstract class ThaumcraftAspectRegenStaffRodItem extends ThaumcraftStaffR
     public ThaumcraftAspectRegenStaffRodItem(Properties properties, CentiVisList<Aspect> canRegenCentiVisAndValue) {
         super(properties);
         this.canRegenCentiVisAndValue = canRegenCentiVisAndValue;
-        List<ObjectIntPair<Aspect>> canRegenList = new ArrayList<>(canRegenCentiVisAndValue.size());
-        canRegenCentiVisAndValue.forEach(((aspect, value) -> canRegenList.add(new ObjectIntPair<>(aspect, value))));
-        this.canRegenCentiVisAndValueAsList = canRegenList;
     }
-    protected final CentiVisList<Aspect> canRegenCentiVisAndValue;
-    protected final List<ObjectIntPair<Aspect>> canRegenCentiVisAndValueAsList;
+    protected final @Unmodifiable CentiVisList<Aspect> canRegenCentiVisAndValue;
 
     @Override
     public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean parentSelected) {

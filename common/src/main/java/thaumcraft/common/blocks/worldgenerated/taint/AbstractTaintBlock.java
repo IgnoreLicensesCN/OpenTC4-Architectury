@@ -108,7 +108,7 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
                 && (bState.getValue(FiniteLiquidBlock.LEVEL) >= 4)
         ) {
             return false;
-        } else if (block != Blocks.FIRE && ! (block instanceof AbstractTaintFibreBlock)) {
+        } else if (block != Blocks.FIRE && !(block instanceof AbstractTaintFibreBlock)) {
             if (bState.canBeReplaced()) {
                 return true;
             } else {

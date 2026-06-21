@@ -163,7 +163,7 @@ public interface ICentiVisContainerItem<Asp extends Aspect> {
     }
 
     default boolean consumeAllCentiVisCrafting(ItemStack is, @Nullable LivingEntity user, CentiVisList<Asp> aspects, boolean doit,boolean serverSide) {
-        return this.consumeAllCentiVis(is, user, aspects, doit, ThaumcraftWandConsumptionTypes.CRAFTING,serverSide);
+        return this.consumeAllCentiVis(is, user, aspects, doit, ThaumcraftWandConsumptionTypes.CONSUMPTION_CRAFTING,serverSide);
     }
 
     default boolean consumeAllCentiVis(

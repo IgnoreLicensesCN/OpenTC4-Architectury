@@ -8,12 +8,12 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
-import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
 import thaumcraft.common.inventory.ArcaneWorkbenchResultContainer;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
 
 import static thaumcraft.api.crafting.arcane.AbstractArcaneRecipe.ARCANE_RECIPES_VIEW;
 import static thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
+import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CONSUMPTION_CRAFTING;
 
 public class ArcaneWorkbenchOutputSlot extends ResultSlot {
 
@@ -36,7 +36,7 @@ public class ArcaneWorkbenchOutputSlot extends ResultSlot {
         CentiVisList<Aspect> centiVisCostFinal = new LinkedHashCentiVisList<>();
         var wandStack = workbench.getStackInWandSlot();
         for (var aspect:centiVisCostOriginal.keySet()){
-            float modifier = getConsumptionModifier(wandStack.getItem(),wandStack,player,aspect, ThaumcraftWandConsumptionTypes.CRAFTING);
+            float modifier = getConsumptionModifier(wandStack.getItem(),wandStack,player,aspect, CONSUMPTION_CRAFTING);
             centiVisCostFinal.addAll(aspect, (int) (centiVisCostOriginal.get(aspect) * modifier));
         }
         return centiVisCostFinal;

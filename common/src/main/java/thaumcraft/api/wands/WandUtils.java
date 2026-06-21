@@ -20,7 +20,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.PrimalAspect;
-import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator;
 import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
@@ -29,13 +29,11 @@ import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 
 import java.text.DecimalFormat;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class WandUtils {
 
-    private static final Int2ObjectMap<CentiVisList<PrimalAspect>> map_AspectCentiVisListWithValue = new Int2ObjectOpenHashMap<>();
+    private static final Int2ObjectMap<CentiVisList<PrimalAspect>> primalAspectAmount2AspectsMap = new Int2ObjectOpenHashMap<>();
 
     @Unmodifiable
     public static CentiVisList<Aspect> getPrimalAspectCentiVisListWithValueCastedUnmodifiable(int value) {
@@ -43,32 +41,14 @@ public class WandUtils {
     }
     @Unmodifiable
     public static CentiVisList<PrimalAspect> getPrimalAspectCentiVisListWithValueUnmodifiable(int value) {
-        return map_AspectCentiVisListWithValue.computeIfAbsent(
+        return primalAspectAmount2AspectsMap.computeIfAbsent(
                 value,val -> {
                     Object2IntLinkedOpenHashMap<PrimalAspect> map = new Object2IntLinkedOpenHashMap<>();
-                    Aspects.getPrimalAspects().forEach(aspect -> {
-                        map.put(aspect,val);
-                    });
-                    return LinkedHashCentiVisList.viewOf(map);
+                    Aspects.getPrimalAspects().forEach(aspect -> map.put(aspect,val));
+                    return UnmodifiableCentiVisList.of(map);
                 }
         );
     }
-
-    //generate capacity? or whatever you like
-    public static CentiVisList<Aspect> getPrimalAspectCentiVisListWithValueCasted(int value) {
-        return new LinkedHashCentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
-    }
-    public static CentiVisList<PrimalAspect> getPrimalAspectCentiVisListWithValue(int value) {
-
-        return new LinkedHashCentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
-    }
-    public static CentiVisList<Aspect> getAspectsCentiVisListWithValue(Collection<Aspect> aspects, int value) {
-        return new LinkedHashCentiVisList<>(aspects.stream().collect(Collectors.toMap(a -> a, a -> value)));
-    }
-    public static CentiVisList<Aspect> getAspectsCentiVisListWithValue(Aspect aspect, int value) {
-        return LinkedHashCentiVisList.of(aspect,value);
-    }
-
     public static final DecimalFormat CENTIVIS_DECIMAL_FORMAT = new DecimalFormat("#######.##");
     public static void appendWandHoverText(Item wandItem, ItemStack wandStack, @Nullable Level level, List<Component> list, TooltipFlag flag, LivingEntity livingEntity) {
         int pos = list.size();
@@ -120,7 +100,7 @@ public class WandUtils {
                 wandStack,
                 livingEntity,
                 aspect,
-                ThaumcraftWandConsumptionTypes.FOCUS);
+                ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS);
         String consumptionString = CENTIVIS_DECIMAL_FORMAT.format(mod * 100.0F);
         var focusConsumptionComponent = Component.empty();
         if (wandItem instanceof IWandFocusEngineItem engine && engine.canApplyFocus()) {

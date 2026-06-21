@@ -50,7 +50,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
-import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.REPAIR_ITEM;
+import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CONSUMPTION_REPAIRING_ITEM;
 import static thaumcraft.common.items.abstracts.IRepairableItem.getRepairCostDefault;
 import static thaumcraft.common.items.equipment.armor.thaumaturge.TravellerBootsItem.inputVecForward;
 
@@ -194,7 +194,7 @@ public class EventHandlerEntity {
          var cost = getRepairCostDefault(is,level);
          if (!cost.isEmpty()) {
             boolean doRepair = WandManager.consumeCentiVisFromInventory(
-                    player, (CentiVisList<Aspect>)(Object)cost, checkIfCanConsumeForRepair,REPAIR_ITEM
+                    player, (CentiVisList<Aspect>)(Object)cost, checkIfCanConsumeForRepair, CONSUMPTION_REPAIRING_ITEM
             );
             if (doRepair) {
                 is.hurtAndBreak(-level, player, (p) -> {});

@@ -35,6 +35,7 @@ public class ThaumcraftResearches {
     public static final ResearchItem SCEPTRE_CRAFTING = ;
     public static final BasicThaumaturgyResearch BASIC_THAUMATURGY = new BasicThaumaturgyResearch() ;
     public static final ResearchItem STAFF_CRAFTING = ;
+    public static final ResearchItem VAMPIRE_BATS = ;
 
 
     public static void init() {

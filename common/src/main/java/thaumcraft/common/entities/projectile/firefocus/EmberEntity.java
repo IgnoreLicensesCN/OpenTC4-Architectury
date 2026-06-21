@@ -1,5 +1,8 @@
 package thaumcraft.common.entities.projectile.firefocus;
 
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
@@ -14,9 +17,19 @@ import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.common.entities.ThaumcraftEntities;
 
 public class EmberEntity extends ThrowableProjectile {
-    public int duration = 20;
-    public int firey = 0;
-    public float damage = 1.0F;
+    private static final EntityDataAccessor<Integer> DATA_DURATION_ID
+            = SynchedEntityData.defineId(EmberEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_FIREY_ID
+            = SynchedEntityData.defineId(EmberEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> DATA_DAMAGE_ID
+            = SynchedEntityData.defineId(EmberEntity.class, EntityDataSerializers.FLOAT);
+
+    @Override
+    protected void defineSynchedData() {
+        entityData.define(DATA_DURATION_ID, 20);
+        entityData.define(DATA_FIREY_ID, 0);
+        entityData.define(DATA_DAMAGE_ID, 1.0F);
+    }
     public EmberEntity(Level par1World){
         this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.EMBER(),par1World);
     }
@@ -44,11 +57,11 @@ public class EmberEntity extends ThrowableProjectile {
     @Override
     public void tick() {
 
-        if (this.tickCount > this.duration) {
+        if (this.tickCount > this.getDuration()) {
             this.remove(RemovalReason.DISCARDED);
         }
 
-        if (this.duration <= 20) {
+        if (this.getDuration() <= 20) {
             this.setDeltaMovement(this.getDeltaMovement().multiply(0.95, 0.95, 0.95));
         } else {
             this.setDeltaMovement(this.getDeltaMovement().multiply(0.975, 0.975, 0.975));
@@ -60,10 +73,6 @@ public class EmberEntity extends ThrowableProjectile {
         super.tick();
     }
 
-    @Override
-    protected void defineSynchedData() {
-
-    }
 
     @Override
     protected float getGravity() {
@@ -84,12 +93,12 @@ public class EmberEntity extends ThrowableProjectile {
                 var damageSource = new DamageSource(ThaumcraftDamageSources.getHolder(level, DamageTypes.FIREBALL),this,getOwner());
                 if (!entity.isInvulnerableTo(damageSource)
                         && entity.hurt(damageSource,
-                        this.damage)
+                        this.getDamage())
                 ) {
-                    entity.setSecondsOnFire(3 + this.firey);
+                    entity.setSecondsOnFire(3 + this.getFirey());
                 }
             } else if (hitResult instanceof BlockHitResult blockHitResult) {
-                if (this.random.nextFloat() < 0.025F * (float) this.firey) {
+                if (this.random.nextFloat() < 0.025F * (float) this.getFirey()) {
                     var hitPos = blockHitResult.getBlockPos().relative(blockHitResult.getDirection());
 
                     if (level.getBlockState(hitPos).isAir()) {
@@ -99,5 +108,29 @@ public class EmberEntity extends ThrowableProjectile {
             }
         }
         this.setRemoved(RemovalReason.DISCARDED);
+    }
+
+    public int getDuration() {
+        return entityData.get(DATA_DURATION_ID);
+    }
+
+    public void setDuration(int duration) {
+        entityData.set(DATA_DURATION_ID,duration);
+    }
+
+    public int getFirey() {
+        return entityData.get(DATA_FIREY_ID);
+    }
+
+    public void setFirey(int firey) {
+        entityData.set(DATA_FIREY_ID,firey);
+    }
+
+    public float getDamage() {
+        return entityData.get(DATA_DAMAGE_ID);
+    }
+
+    public void setDamage(float damage) {
+        entityData.set(DATA_DAMAGE_ID,damage);
     }
 }

@@ -4,6 +4,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -21,11 +24,16 @@ import static com.linearity.opentc4.Consts.FrostShardEntityTagAccessors.*;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.FROST_FOCUS_PARTICLE_PROVIDER;
 
 public class FrostShardEntity extends ThrowableProjectile {
-    public double bounce = 0.5F;
-    public int bounceLimit = 3;
-    public boolean fragile = false;
-    public int frosty = 0;
-    public float damage = 0;
+    private static final EntityDataAccessor<Integer> DATA_FROSTY_ID
+            = SynchedEntityData.defineId(FrostShardEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_FRAGILE_ID
+            = SynchedEntityData.defineId(FrostShardEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DATA_BOUNCE_ID
+            = SynchedEntityData.defineId(FrostShardEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> DATA_BOUNCE_LIMIT_ID
+            = SynchedEntityData.defineId(FrostShardEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> DATA_DAMAGE_ID
+            = SynchedEntityData.defineId(FrostShardEntity.class, EntityDataSerializers.FLOAT);
 
     public FrostShardEntity(EntityType<FrostShardEntity> type, Level par1World) {
         super(type, par1World);
@@ -35,36 +43,39 @@ public class FrostShardEntity extends ThrowableProjectile {
         super(ThaumcraftEntities.ThaumcraftEntityTypeInstances.FROST_SHARD(), living, par1World);
     }
 
-
     @Override
     protected void defineSynchedData() {
-
+        entityData.define(DATA_FROSTY_ID, 0);
+        entityData.define(DATA_FRAGILE_ID, false);
+        entityData.define(DATA_BOUNCE_ID,0.5F);
+        entityData.define(DATA_BOUNCE_LIMIT_ID,3);
+        entityData.define(DATA_DAMAGE_ID,0.0F);
     }
 
     @Override
     protected float getGravity() {
-        return fragile ? 0.015F : 0.05F;
+        return isFragile() ? 0.015F : 0.05F;
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        bounce = BOUNCE.readDoubleFromCompoundTag(tag);
-        bounceLimit = BOUNCE_LIMIT.readIntFromCompoundTag(tag);
-        fragile = FRAGILE.readBooleanFromCompoundTag(tag);
-        damage = DAMAGE.readFloatFromCompoundTag(tag);
-        frosty = FROSTY.readIntFromCompoundTag(tag);
+        setBounce(BOUNCE.readFloatFromCompoundTag(tag));
+        setBounceLimit(BOUNCE_LIMIT.readIntFromCompoundTag(tag));
+        setFragile(FRAGILE.readBooleanFromCompoundTag(tag));
+        setDamage(DAMAGE.readFloatFromCompoundTag(tag));
+        setFrosty(FROSTY.readIntFromCompoundTag(tag));
 
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        BOUNCE.writeDoubleToCompoundTag(tag, bounce);
-        BOUNCE_LIMIT.writeIntToCompoundTag(tag, bounceLimit);
-        FRAGILE.writeBooleanToCompoundTag(tag, fragile);
-        DAMAGE.writeFloatToCompoundTag(tag, damage);
-        FROSTY.writeIntToCompoundTag(tag, frosty);
+        BOUNCE.writeFloatToCompoundTag(tag, getBounce());
+        BOUNCE_LIMIT.writeIntToCompoundTag(tag, getBounceLimit());
+        FRAGILE.writeBooleanToCompoundTag(tag, isFragile());
+        DAMAGE.writeFloatToCompoundTag(tag, getDamage());
+        FROSTY.writeIntToCompoundTag(tag, getFrosty());
     }
 
     @Override
@@ -72,10 +83,10 @@ public class FrostShardEntity extends ThrowableProjectile {
         super.tick();
         var level = level();
         if (level.isClientSide) {
-            if (frosty > 0) {
-                float s = damage / 10.0F;
+            if (getFrosty() > 0) {
+                float s = getDamage() / 10.0F;
 
-                for (int a = 0; a < frosty; ++a) {
+                for (int a = 0; a < getFrosty(); ++a) {
                     ClientFXUtils.sparkle(
                             (float) this.getX() - s + this.random.nextFloat() * s * 2.0F,
                             (float) this.getY() - s + this.random.nextFloat() * s * 2.0F,
@@ -126,16 +137,16 @@ public class FrostShardEntity extends ThrowableProjectile {
         scaleSpeedWithBounce();
         if (!level.isClientSide) {
             entity.hurt(
-                    level.damageSources().thrown(this, getOwner()), damage
+                    level.damageSources().thrown(this, getOwner()), getDamage()
             );
-            if (entity instanceof LivingEntity living && this.frosty > 0) {
-                living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, frosty - 1));
-                if (this.fragile) {
+            if (entity instanceof LivingEntity living && this.getFrosty() > 0) {
+                living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, getFrosty() - 1));
+                if (this.isFragile()) {
                     living.invulnerableTime = 0;
                 }
             }
 
-            if (this.fragile) {
+            if (this.isFragile()) {
                 this.remove(RemovalReason.DISCARDED);
                 this.playSound(Blocks.ICE.defaultBlockState().getSoundType().getBreakSound(), 0.3F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
                 entity.setDeltaMovement(entity.getDeltaMovement().scale(1. / 10.));
@@ -177,14 +188,14 @@ public class FrostShardEntity extends ThrowableProjectile {
     protected void onHit(HitResult hitResult) {
         super.onHit(hitResult);
         this.markHurt();
-
-
-        if (this.bounceLimit-- <= 0) {
+        var bounceLimit = this.getBounceLimit() - 1;
+        this.setBounceLimit(bounceLimit);
+        if (bounceLimit <= 0) {
             this.remove(RemovalReason.DISCARDED);
             this.playSound(Blocks.ICE.defaultBlockState().getSoundType().getBreakSound(),
                     0.3F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
             var pos = position();
-            for (int a = 0; a < 8.0F * this.damage; ++a) {
+            for (int a = 0; a < 8.0F * this.getDamage(); ++a) {
                 level().addParticle(
                         new BlockParticleOption(ParticleTypes.BLOCK, FROST_FOCUS_PARTICLE_PROVIDER().defaultBlockState()),
                         pos.x, pos.y, pos.z,
@@ -199,8 +210,48 @@ public class FrostShardEntity extends ThrowableProjectile {
     }
 
     private void scaleSpeedWithBounce() {
-        var movement = this.getDeltaMovement().scale(this.bounce);
+        var movement = this.getDeltaMovement().scale(this.getBounce());
         this.setDeltaMovement(movement);
         this.setPos(this.position().subtract(movement.scale(0.05 * movement.length())));
+    }
+
+    public boolean isFragile() {
+        return entityData.get(DATA_FRAGILE_ID);
+    }
+
+    public void setFragile(boolean fragile) {
+        entityData.set(DATA_FRAGILE_ID, fragile);
+    }
+
+    public int getFrosty() {
+        return entityData.get(DATA_FROSTY_ID);
+    }
+
+    public void setFrosty(int frosty) {
+        entityData.set(DATA_FROSTY_ID, frosty);
+    }
+
+    public float getBounce() {
+        return entityData.get(DATA_BOUNCE_ID);
+    }
+
+    public void setBounce(float bounce) {
+        entityData.set(DATA_BOUNCE_ID,bounce);
+    }
+
+    public int getBounceLimit() {
+        return entityData.get(DATA_BOUNCE_LIMIT_ID);
+    }
+
+    public void setBounceLimit(int bounceLimit) {
+        entityData.set(DATA_BOUNCE_LIMIT_ID, bounceLimit);
+    }
+
+    public float getDamage() {
+        return entityData.get(DATA_DAMAGE_ID);
+    }
+
+    public void setDamage(float damage) {
+        entityData.set(DATA_DAMAGE_ID, damage);
     }
 }

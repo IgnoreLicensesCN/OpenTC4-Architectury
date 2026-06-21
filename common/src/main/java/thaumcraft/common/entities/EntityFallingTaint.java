@@ -13,6 +13,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.junkbox.BlockTaint;
+import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintBlock;
 import thaumcraft.common.config.ConfigBlocks;
 
 public class EntityFallingTaint extends Entity implements IEntityAdditionalSpawnData {
@@ -108,7 +109,7 @@ public class EntityFallingTaint extends Entity implements IEntityAdditionalSpawn
                if (this.level().getBlock(i, j, k) != Blocks.piston && this.level().getBlock(i, j, k) != Blocks.piston_extension && this.level().getBlock(i, j, k) != Blocks.piston_head) {
                   this.level().playSoundAtEntity(this, "thaumcraft:gore", 0.5F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
                   this.setDead();
-                  if (this.canPlace(i, j, k) && !BlockTaint.canFallBelow(this.level(), i, j - 1, k) && this.level().setBlock(i, j, k, this.block, this.metadata, 3) && this.block instanceof BlockTaint) {
+                  if (this.canPlace(i, j, k) && !AbstractTaintBlock.canFallBelow(this.level(), i, j - 1, k) && this.level().setBlock(i, j, k, this.block, this.metadata, 3) && this.block instanceof BlockTaint) {
                      ((BlockTaint)this.block).onFinishFalling(this.level(), i, j, k, this.metadata);
                   }
                }

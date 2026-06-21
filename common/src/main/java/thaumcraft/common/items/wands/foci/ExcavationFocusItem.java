@@ -160,7 +160,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
         var serverSideFlag = !level.isClientSide();
         if (!(container.consumeAllCentiVis(
                 usingWand
-                ,user, getCentiVisCost(focusStack,upgrades),false, ThaumcraftWandConsumptionTypes.FOCUS,serverSideFlag))
+                ,user, getCentiVisCost(focusStack,upgrades),false, ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS,serverSideFlag))
         ){
             user.stopUsingItem();
             return;
@@ -242,9 +242,9 @@ public class ExcavationFocusItem extends BasicFocusItem {
                                 true, false, true)) {
                             if (this.excavate(level, usingWand, user, blockState, mopBlockPos)) {
                                 for(int a = 0; a < wandFocusItem.getFocusUpgradesWithWandModifiers(focusStack,usingWand).getOrDefault(ENLARGE,0); ++a) {
-                                    if (container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades), false, ThaumcraftWandConsumptionTypes.FOCUS, true)
+                                    if (container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades), false, ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS, true)
                                             && this.breakNeighbour(user, mopBlockPos, blockState, usingWand)) {
-                                        container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades), true, ThaumcraftWandConsumptionTypes.FOCUS, true);
+                                        container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades), true, ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS, true);
                                     }
                                 }
                             }

@@ -7,7 +7,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -68,7 +67,7 @@ public interface IWandFocusItem<Asp extends Aspect> {
         return getAppliedFocusUpgrades(focusStack).size();
     }
 
-    default boolean canApplyUpgrade(ItemStack focusStack, Player player, FocusUpgradeType type) {
+    default boolean canApplyUpgrade(ItemStack focusStack, LivingEntity upgradeApplier, FocusUpgradeType type) {
         return getPossibleUpgradesByRank(focusStack).contains(type) && type.canApplyTo(focusStack,this);
     }
 

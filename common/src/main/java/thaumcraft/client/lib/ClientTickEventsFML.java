@@ -439,7 +439,7 @@ public class ClientTickEventsFML {
             mc.ingameGUI.drawString(mc.fontRenderer, msg, -32, -4, 16777215);
             GL11.glPopMatrix();
             if (focus != null && focus.getVisCost(focusStack).getAmount(aspect) > 0) {
-               float mod = wand.getConsumptionModifier(wandstack, player, aspect, ThaumcraftWandConsumptionTypes.FOCUS);
+               float mod = wand.getConsumptionModifier(wandstack, player, aspect, ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS);
                GL11.glPushMatrix();
                GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
                msg = this.myFormatter.format((float)focus.getVisCost(focusStack).getAmount(aspect) * mod / 100.0F);

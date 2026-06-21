@@ -130,13 +130,13 @@ public class FireFocusItem extends BasicFocusItem{
                     user,
                     this.getCentiVisCost(focusStack,upgrades),
                     !level.isClientSide,
-                    ThaumcraftWandConsumptionTypes.FOCUS,
+                    ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS,
                     !level.isClientSide)
             ) {
                 if (!level.isClientSide) {
                     ExplosiveOrbEntity orb = new ExplosiveOrbEntity(user,level);
-                    orb.strength += upgrades.getInt(POTENCY) * 0.4F;
-                    orb.onFire = upgrades.getInt(ALCHEMISTS_FIRE) > 0;
+                    orb.setStrength(orb.getStrength() + upgrades.getInt(POTENCY) * 0.4F);
+                    orb.setOnFire(upgrades.getInt(ALCHEMISTS_FIRE) > 0);
                     level.addFreshEntity(orb);
                     level.playSound(null,user.blockPosition(), SoundEvents.FIRECHARGE_USE, SoundSource.PLAYERS);
                 }
@@ -162,7 +162,7 @@ public class FireFocusItem extends BasicFocusItem{
         var centiVisContainer = (ICentiVisContainerItem<Aspect>) centiVisContainerItemNotCasted;
         var upgrades = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
         var cost = getCentiVisCost(focusStack,upgrades);
-        if (!centiVisContainer.consumeAllCentiVis(wandStack,user,cost,true,ThaumcraftWandConsumptionTypes.FOCUS,!user.level().isClientSide)) {
+        if (!centiVisContainer.consumeAllCentiVis(wandStack,user,cost,true,ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS,!user.level().isClientSide)) {
             user.stopUsingItem();
             return;
         }
@@ -177,14 +177,14 @@ public class FireFocusItem extends BasicFocusItem{
             int potency = upgrades.getInt(POTENCY);
             for(int a = 0; a < 2 + potency; ++a) {
                 EmberEntity orb = new EmberEntity(user,user.level(), scatter);
-                orb.damage = (2 + potency);
+                orb.setDamage((2 + potency));
                 if (fireBeamUpgraded) {
-                    orb.damage += 0.5F;
-                    orb.damage *= 1.5F;
-                    orb.duration = 30;
+                    orb.setDamage(orb.getDamage() + 0.5F);
+                    orb.setDamage(orb.getDamage() * 1.5F);
+                    orb.setDuration(30);
                 }
 
-                orb.firey = upgrades.getInt(ALCHEMISTS_FIRE);
+                orb.setFirey(upgrades.getInt(ALCHEMISTS_FIRE));
                 orb.setPos(orb.position().add(orb.getDeltaMovement()));
                 level.addFreshEntity(orb);
             }

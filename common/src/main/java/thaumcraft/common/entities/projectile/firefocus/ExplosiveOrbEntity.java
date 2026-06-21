@@ -2,6 +2,9 @@ package thaumcraft.common.entities.projectile.firefocus;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -20,8 +23,16 @@ import static com.linearity.opentc4.Consts.ExplosiveOrbEntityTagAccessors.ON_FIR
 import static com.linearity.opentc4.Consts.ExplosiveOrbEntityTagAccessors.STRENGTH;
 
 public class ExplosiveOrbEntity extends ThrowableProjectile {
-    public float strength = 1.F;
-    public boolean onFire = false;
+    private static final EntityDataAccessor<Float> DATA_STRENGTH_ID
+            = SynchedEntityData.defineId(ExplosiveOrbEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> DATA_ON_FIRE_ID
+            = SynchedEntityData.defineId(ExplosiveOrbEntity.class, EntityDataSerializers.BOOLEAN);
+
+    @Override
+    protected void defineSynchedData() {
+        entityData.define(DATA_STRENGTH_ID, 1.0F);
+        entityData.define(DATA_ON_FIRE_ID, false);
+    }
 
     public ExplosiveOrbEntity(Level par1World){
         this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.EXPLOSIVE_ORB(),par1World);
@@ -44,11 +55,6 @@ public class ExplosiveOrbEntity extends ThrowableProjectile {
     }
 
     @Override
-    protected void defineSynchedData() {
-
-    }
-
-    @Override
     protected float getGravity() {
         return 0.01F;
     }
@@ -56,8 +62,8 @@ public class ExplosiveOrbEntity extends ThrowableProjectile {
     @Override
     protected void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        strength = STRENGTH.readIntFromCompoundTag(compoundTag);
-        onFire = ON_FIRE.readBooleanFromCompoundTag(compoundTag);
+        setStrength(STRENGTH.readIntFromCompoundTag(compoundTag));
+        setOnFire(ON_FIRE.readBooleanFromCompoundTag(compoundTag));
     }
 
     @Override
@@ -108,10 +114,10 @@ public class ExplosiveOrbEntity extends ThrowableProjectile {
         if (!level.isClientSide) {
             if (hitResult instanceof EntityHitResult entityHitResult) {
                 var victim = entityHitResult.getEntity();
-                victim.hurt(causeFireballDamage(this.getOwner()), this.strength * 1.5F);
+                victim.hurt(causeFireballDamage(this.getOwner()), this.getStrength() * 1.5F);
             }
 
-            level.explode(null, this.getX(), this.getY(), this.getZ(), this.strength, this.onFire, Level.ExplosionInteraction.MOB);
+            level.explode(null, this.getX(), this.getY(), this.getZ(), this.getStrength(), this.isOnFire(), Level.ExplosionInteraction.MOB);
         }
 
         this.setRemoved(RemovalReason.DISCARDED);
@@ -140,5 +146,22 @@ public class ExplosiveOrbEntity extends ThrowableProjectile {
     @Override
     protected boolean canHitEntity(Entity entity) {
         return super.canHitEntity(entity);
+    }
+
+    public float getStrength() {
+        return entityData.get(DATA_STRENGTH_ID);
+    }
+
+    public void setStrength(float strength) {
+        entityData.set(DATA_STRENGTH_ID, strength);
+    }
+
+    @Override
+    public boolean isOnFire() {
+        return entityData.get(DATA_ON_FIRE_ID);
+    }
+
+    public void setOnFire(boolean onFire) {
+        entityData.set(DATA_ON_FIRE_ID, onFire);
     }
 }

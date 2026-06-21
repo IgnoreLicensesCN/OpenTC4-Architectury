@@ -60,7 +60,7 @@ public class GuiArcaneWorkbench extends GuiContainer {
                 if (cost.get(primal) > 0) {
                     float alpha = 0.5F + (MathHelper.sin((float) (this.ip.player.ticksExisted + count * 10) / 2.0F) * 0.2F - 0.2F);
                     if (wand != null) {
-                        amt *= wand.getConsumptionModifier(this.tileEntity.getStackInSlot(10), this.ip.player, primal, ThaumcraftWandConsumptionTypes.CRAFTING);
+                        amt *= wand.getConsumptionModifier(this.tileEntity.getStackInSlot(10), this.ip.player, primal, ThaumcraftWandConsumptionTypes.CONSUMPTION_CRAFTING);
                         if (amt * 100.0F <= (float) wand.getVis(this.tileEntity.getStackInSlot(10), primal)) {
                             alpha = 1.0F;
                         }

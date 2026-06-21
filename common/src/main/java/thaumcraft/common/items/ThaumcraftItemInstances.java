@@ -971,4 +971,7 @@ public class ThaumcraftItemInstances {
     public static FrostFocusItem FROST_FOCUS() {
         return ThaumcraftItemsRegistry.SUPPLIER_FROST_FOCUS.get();
     }
+    public static HellBatFocusItem HELL_BAT_FOCUS(){
+        return ThaumcraftItemsRegistry.SUPPLIER_HELL_BAT_FOCUS.get();
+    }
 }

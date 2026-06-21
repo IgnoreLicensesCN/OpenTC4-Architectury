@@ -6,15 +6,22 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.frostfocus.FrostShardEntity;
+import thaumcraft.common.entities.projectile.hellbatfocus.FireBatEntity;
 import thaumcraft.common.entities.projectile.thrownitem.AlumentumEntity;
 import thaumcraft.common.entities.projectile.firefocus.EmberEntity;
 import thaumcraft.common.entities.projectile.firefocus.ExplosiveOrbEntity;
 import thaumcraft.common.entities.projectile.thrownitem.TaintBottleEntity;
 import thaumcraft.common.entities.projectile.shockfocus.ShockOrbEntity;
 
+import java.util.IdentityHashMap;
+
+import static com.linearity.opentc4.mixin.DefaultAttributesAccessor.opentc4$getSuppliers;
+import static com.linearity.opentc4.mixin.DefaultAttributesAccessor.opentc4$setSuppliers;
 import static thaumcraft.common.entities.ThaumcraftEntities.Registry.ENTITIES;
 
 public class ThaumcraftEntities {
@@ -42,11 +49,15 @@ public class ThaumcraftEntities {
         public static EntityType<FrostShardEntity> FROST_SHARD() {
             return Registry.SUPPLIER_FROST_SHARD.get();
         }
+        public static EntityType<FireBatEntity> FIRE_BAT() {
+            return Registry.SUPPLIER_FIRE_BAT.get();
+        }
 
     }
 
     public static class Registry {
-        public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Thaumcraft.MOD_ID,
+        public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(
+                Thaumcraft.MOD_ID,
                 Registries.ENTITY_TYPE
         );
         public static final RegistrySupplier<EntityType<AlumentumEntity>> SUPPLIER_ALUMENTUM = ENTITIES.register("alumentum",
@@ -98,6 +109,15 @@ public class ThaumcraftEntities {
                         .updateInterval(20)
                         .build("frost_shard")
         );
+        public static final RegistrySupplier<EntityType<FireBatEntity>> SUPPLIER_FIRE_BAT = ENTITIES.register(
+                "fire_bat",
+                () -> EntityType.Builder.<FireBatEntity>of(FireBatEntity::new, MobCategory.MISC)
+                        .sized(0.5F, 0.9F)
+                        .clientTrackingRange(16)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("fire_bat")
+        );
     }
 
     public static class EntityTags {
@@ -109,5 +129,18 @@ public class ThaumcraftEntities {
 
     public static void init(){
         ENTITIES.register();
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.FIRE_BAT(),FireBatEntity.createAttributes().build());
+    }
+
+    public static void registerDefaultAttribute(EntityType<? extends LivingEntity> entityType,AttributeSupplier attributeSupplier){
+        ensureAttributeSuppliersModifiable();
+        opentc4$getSuppliers().put(entityType, attributeSupplier);
+    }
+
+    public static void ensureAttributeSuppliersModifiable(){
+        var gotMap = opentc4$getSuppliers();
+        if (!(gotMap instanceof IdentityHashMap<EntityType<? extends LivingEntity>, AttributeSupplier>)){
+            opentc4$setSuppliers(new IdentityHashMap<>(gotMap));
+        }
     }
 }
