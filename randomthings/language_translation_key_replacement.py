@@ -1,7 +1,7 @@
 import json
 import os
 from pathlib import Path
-
+import typing
 block_with_item_names = [
     ['tile.blockWoodenDevice.0.name', ['arcane_bellow']],
     ['tile.blockWoodenDevice.6.name', ['greatwood_planks']],
@@ -244,31 +244,26 @@ force_add_keys = {
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')
 
-def special_key_sort_weight(parts:list[str]):
-    if parts[-1].startswith("mundane_"):
-        return 7
+ruleset:list[typing.Callable[[str], bool]]= [
+    lambda s: s.startswith("mundane_"),
+    lambda s: s.endswith("_arrow"),
+    lambda s: s.endswith("_apprentices_ring"),
+    lambda s: s.endswith("_candle"),
+    lambda s: s.endswith("_girdle"),
+    lambda s: s.endswith("_amulet"),
+    lambda s: s.endswith("_ring"),
+    lambda s: s.endswith("_focus") and (len(s.split("_")) == 2 or s == 'hell_bat_focus'),
+    lambda s: s.endswith("_wand_cap"),
+    lambda s: s.endswith("_wand_rod"),
+    lambda s: s.endswith("_staff_rod"),
+]
 
-    if parts[-1].endswith("_arrow"):
-        return 1
-    if parts[-1].endswith("_apprentices_ring"):
-        return 2
-    if parts[-1].endswith("_candle"):
-        return 3
-    if parts[-1].endswith("_girdle"):
-        return 4
-    if parts[-1].endswith("_amulet"):
-        return 5
-    if parts[-1].endswith("_ring"):
-        return 6
-    l = len(parts[-1].split("_"))
-    if parts[-1].endswith("_focus") and (l == 2 or parts[-1] == 'hell_bat_focus'):
-        return 8
-    if parts[-1].endswith("_wand_cap"):
-        return 9
-    if parts[-1].endswith("_wand_rod"):
-        return 10
-    if parts[-1].endswith("_staff_rod"):
-        return 11
+def special_key_sort_weight(parts:list[str]):
+    counter = 0
+    for checker in ruleset:
+        counter += 1
+        if checker(parts[-1]):
+            return counter
     return 0
 
 def key_sorter(key_string):
