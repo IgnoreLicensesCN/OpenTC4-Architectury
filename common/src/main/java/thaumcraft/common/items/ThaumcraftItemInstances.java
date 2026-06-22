@@ -980,4 +980,7 @@ public class ThaumcraftItemInstances {
     public static PortableHoleFocusItem PORTABLE_HOLE() {
         return ThaumcraftItemsRegistry.SUPPLIER_PORTABLE_HOLE_FOCUS.get();
     }
+    public static PrimalFocusItem PRIMAL_FOCUS() {
+        return ThaumcraftItemsRegistry.SUPPLIER_PRIMAL_FOCUS.get();
+    }
 }

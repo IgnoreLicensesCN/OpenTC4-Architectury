@@ -43,6 +43,9 @@ public class PortableHoleFocusItem extends BasicFocusItem{
 
     @Override
     public @NotNull List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack, int rank) {
+        if (rank > 4){
+            return List.of();
+        }
         return UPGRADES;
     }
     public static final UnmodifiableCentiVisList<Aspect> COST_PER_STEP = UnmodifiableCentiVisList.of(

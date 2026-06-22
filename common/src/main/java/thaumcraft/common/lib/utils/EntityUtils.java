@@ -24,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.entities.EntitySpecialItem;
+import thaumcraft.common.entities.SpecialItemEntity;
 import thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;
 
@@ -373,12 +373,10 @@ public class EntityUtils {
     //TODO:Migrate to entity drop item logic(whatever it will lead to,always floating or anything else)
     public static ItemEntity entityDropSpecialItem(Entity entity, ItemStack stack, float dropheight) {
         if (stack.getCount() != 0 && !stack.isEmpty()) {
-            EntitySpecialItem entityitem = new EntitySpecialItem(
+            var entityitem = new SpecialItemEntity(
                     entity.level(), entity.getX(), entity.getY() + (double) dropheight, entity.getZ(), stack);
-            entityitem.delayBeforeCanPickup = 10;
-            entityitem.motionY = 0.1F;
-            entityitem.motionX = 0.0F;
-            entityitem.motionZ = 0.0F;
+            entityitem.setPickUpDelay(10);
+            entityitem.setDeltaMovement(new Vec3(0,0.1,0));
             if (entity.captureDrops) {
                 entity.capturedDrops.add(entityitem);
             } else {

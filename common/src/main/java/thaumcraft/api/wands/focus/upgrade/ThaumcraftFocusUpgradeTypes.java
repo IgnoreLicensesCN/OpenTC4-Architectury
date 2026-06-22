@@ -1,9 +1,5 @@
 package thaumcraft.api.wands.focus.upgrade;
 
-import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 import thaumcraft.api.wands.focus.upgrade.impl.*;
 import thaumcraft.api.wands.focus.upgrade.impl.excavationfocus.DowsingFocusUpgrade;
 import thaumcraft.api.wands.focus.upgrade.impl.excavationfocus.SilkTouchFocusUpgrade;
@@ -18,13 +14,10 @@ import thaumcraft.api.wands.focus.upgrade.impl.hellbatfocus.BatBombsFocusUpgrade
 import thaumcraft.api.wands.focus.upgrade.impl.hellbatfocus.DevilBatsFocusUpgrade;
 import thaumcraft.api.wands.focus.upgrade.impl.hellbatfocus.VampireBatsFocusUpgrade;
 import thaumcraft.api.wands.focus.upgrade.impl.pechfocus.NightShadeFocusUpgrade;
+import thaumcraft.api.wands.focus.upgrade.impl.primalfocus.SeekerFocusUpgrade;
 import thaumcraft.api.wands.focus.upgrade.impl.shockfocus.ChainLightingFocusUpgrade;
 import thaumcraft.api.wands.focus.upgrade.impl.shockfocus.EarthShockFocusUpgrade;
-import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 
-//TODO:Make inner class into another outer class
 public class ThaumcraftFocusUpgradeTypes {
     public static final PotencyFocusUpgrade POTENCY = PotencyFocusUpgrade.INSTANCE;
     public static final FrugalFocusUpgrade FRUGAL = FrugalFocusUpgrade.INSTANCE;
@@ -45,15 +38,15 @@ public class ThaumcraftFocusUpgradeTypes {
     //frost
     public static final ScatterShotFocusUpgrade SCATTER_SHOT = ScatterShotFocusUpgrade.INSTANCE;;
     public static final IceBoulderFocusUpgrade ICE_BOULDER = IceBoulderFocusUpgrade.INSTANCE;
-
     public static final AlchemistsFrostFocusUpgrade ALCHEMISTS_FROST = AlchemistsFrostFocusUpgrade.INSTANCE;
-
     //hellBat
     public static final BatBombsFocusUpgrade BAT_BOMBS = BatBombsFocusUpgrade.INSTANCE;
     public static final DevilBatsFocusUpgrade DEVIL_BATS = DevilBatsFocusUpgrade.INSTANCE;
     public static final VampireBatsFocusUpgrade VAMPIRE_BATS = VampireBatsFocusUpgrade.INSTANCE;
     //pech
     public static final NightShadeFocusUpgrade NIGHT_SHADE = NightShadeFocusUpgrade.INSTANCE;
+    //primal
+    public static final SeekerFocusUpgrade SEEKER = SeekerFocusUpgrade.INSTANCE;
 
     public static void init() {
 

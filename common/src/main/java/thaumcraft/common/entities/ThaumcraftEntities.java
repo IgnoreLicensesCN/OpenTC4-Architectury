@@ -13,6 +13,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.frostfocus.FrostShardEntity;
 import thaumcraft.common.entities.projectile.hellbatfocus.FireBatEntity;
 import thaumcraft.common.entities.projectile.pechfocus.PechBlastEntity;
+import thaumcraft.common.entities.projectile.primalfocus.PrimalOrbEntity;
 import thaumcraft.common.entities.projectile.thrownitem.AlumentumEntity;
 import thaumcraft.common.entities.projectile.firefocus.EmberEntity;
 import thaumcraft.common.entities.projectile.firefocus.ExplosiveOrbEntity;
@@ -55,6 +56,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<PechBlastEntity> PECH_BLAST() {
             return  Registry.SUPPLIER_PECH_BLAST.get();
+        }
+        public static EntityType<PrimalOrbEntity> PRIMAL_ORB() {
+            return Registry.SUPPLIER_PRIMAL_ORB.get();
         }
 
     }
@@ -128,6 +132,13 @@ public class ThaumcraftEntities {
                         .clientTrackingRange(10)
                         .updateInterval(20)
                         .build("pech_blast")
+        );
+        public static final RegistrySupplier<EntityType<PrimalOrbEntity>> SUPPLIER_PRIMAL_ORB = ENTITIES.register("primal_orb",
+                () -> EntityType.Builder.<PrimalOrbEntity>of(PrimalOrbEntity::new, MobCategory.MISC)
+                        .sized(0.25F, 0.25F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("primal_orb")
         );
     }
 
