@@ -131,9 +131,6 @@ public class FocusUpgradeType {
 
     private final Int2ObjectMap<CentiVisList<Aspect>> costCache = new Int2ObjectOpenHashMap<>();
 
-    public CentiVisList<Aspect> getCentiVisRequiring(ItemStack focusStack, IWandFocusItem<? extends Aspect> focusItem) {
-        return getCentiVisRequiring(focusStack, focusItem,focusItem.getRank(focusStack));
-    }
     @Unmodifiable
     public CentiVisList<Aspect> getCentiVisRequiring(ItemStack focusStack, IWandFocusItem<? extends Aspect> focusItem,int rank) {
         return costCache.computeIfAbsent(
@@ -151,5 +148,15 @@ public class FocusUpgradeType {
                     return result;
                 }
         );
+    }
+
+    public static boolean easyIncompatibleCheck(ItemStack focusStack, IWandFocusItem<? extends Aspect> focusItem, FocusUpgradeType... types) {
+        var upgrades = focusItem.getAppliedFocusUpgrades(focusStack);
+        for (var type : types) {
+            if (upgrades.getInt(type) > 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }

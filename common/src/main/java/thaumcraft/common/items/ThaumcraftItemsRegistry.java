@@ -1208,6 +1208,10 @@ public class ThaumcraftItemsRegistry {
             "hell_bat_focus",
             HellBatFocusItem::new
     );
+    public static final RegistrySupplier<PechFocusItem> SUPPLIER_PECH_FOCUS = ITEMS.register(
+            "pech_focus",
+            PechFocusItem::new
+    );
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();
     public record ClusterRegistrationArgs(String orePrefix,Set<TagKey<Item>> tagsToRegister,TagKey<Item> burnIntoTag){
         public void registerToClusterItems(DeferredRegister<Item> items){

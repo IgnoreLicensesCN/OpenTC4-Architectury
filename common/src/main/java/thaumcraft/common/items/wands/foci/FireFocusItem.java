@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,7 +38,7 @@ public class FireFocusItem extends BasicFocusItem{
         super(properties);
     }
     public FireFocusItem() {
-        this(new Properties().stacksTo(1));
+        this(new Properties().stacksTo(1).rarity(Rarity.RARE));
     }
 
     public static final @Unmodifiable CentiVisList<Aspect> BASE_COST = UnmodifiableCentiVisList.of(

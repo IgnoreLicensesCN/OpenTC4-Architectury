@@ -21,6 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -53,6 +54,7 @@ import java.util.function.Consumer;
 
 import static com.linearity.opentc4.utils.consts.DirectionShuffles.DIRECTIONS_SHUFFLED;
 import static net.minecraft.world.level.block.Block.getDrops;
+import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS;
 import static thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes.*;
 import static thaumcraft.common.lib.enchantment.ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.DOWSING;
 
@@ -69,7 +71,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
     );
 
     public ExcavationFocusItem() {
-        super(new Properties().stacksTo(1));
+        super(new Properties().stacksTo(1).rarity(Rarity.RARE));
     }
 
     @Override
@@ -160,7 +162,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
         var serverSideFlag = !level.isClientSide();
         if (!(container.consumeAllCentiVis(
                 usingWand
-                ,user, getCentiVisCost(focusStack,upgrades),false, ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS,serverSideFlag))
+                ,user, getCentiVisCost(focusStack,upgrades),false, CONSUMPTION_FOCUS,serverSideFlag))
         ){
             user.stopUsingItem();
             return;
@@ -239,12 +241,12 @@ public class ExcavationFocusItem extends BasicFocusItem {
                             }
                         } else if (bc >= hardness
                                 && container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades),
-                                true, false, true)) {
+                                true, CONSUMPTION_FOCUS, true)) {
                             if (this.excavate(level, usingWand, user, blockState, mopBlockPos)) {
                                 for(int a = 0; a < wandFocusItem.getFocusUpgradesWithWandModifiers(focusStack,usingWand).getOrDefault(ENLARGE,0); ++a) {
-                                    if (container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades), false, ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS, true)
+                                    if (container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades), false, CONSUMPTION_FOCUS, true)
                                             && this.breakNeighbour(user, mopBlockPos, blockState, usingWand)) {
-                                        container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades), true, ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS, true);
+                                        container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades), true, CONSUMPTION_FOCUS, true);
                                     }
                                 }
                             }

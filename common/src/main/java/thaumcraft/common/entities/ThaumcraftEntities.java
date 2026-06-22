@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.projectile.frostfocus.FrostShardEntity;
 import thaumcraft.common.entities.projectile.hellbatfocus.FireBatEntity;
+import thaumcraft.common.entities.projectile.pechfocus.PechBlastEntity;
 import thaumcraft.common.entities.projectile.thrownitem.AlumentumEntity;
 import thaumcraft.common.entities.projectile.firefocus.EmberEntity;
 import thaumcraft.common.entities.projectile.firefocus.ExplosiveOrbEntity;
@@ -51,6 +52,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<FireBatEntity> FIRE_BAT() {
             return Registry.SUPPLIER_FIRE_BAT.get();
+        }
+        public static EntityType<PechBlastEntity> PECH_BLAST() {
+            return  Registry.SUPPLIER_PECH_BLAST.get();
         }
 
     }
@@ -117,6 +121,13 @@ public class ThaumcraftEntities {
                         .updateInterval(20)
                         .fireImmune()
                         .build("fire_bat")
+        );
+        public static final RegistrySupplier<EntityType<PechBlastEntity>> SUPPLIER_PECH_BLAST = ENTITIES.register("pech_blast",
+                () -> EntityType.Builder.<PechBlastEntity>of(PechBlastEntity::new, MobCategory.MISC)
+                        .sized(0.25F, 0.25F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("pech_blast")
         );
     }
 
