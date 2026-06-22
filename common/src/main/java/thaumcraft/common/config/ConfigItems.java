@@ -258,8 +258,8 @@ public class ConfigItems {
       GameRegistry.registerItem(itemFocusTrade, "FocusTrade", "Thaumcraft");
 //      itemFocusExcavation = (new ItemFocusExcavation()).setUnlocalizedName("FocusExcavation");
 //      GameRegistry.registerItem(itemFocusExcavation, "FocusExcavation", "Thaumcraft");
-      itemFocusPortableHole = (new ItemFocusPortableHole()).setUnlocalizedName("FocusPortableHole");
-      GameRegistry.registerItem(itemFocusPortableHole, "FocusPortableHole", "Thaumcraft");
+//      itemFocusPortableHole = (new ItemFocusPortableHole()).setUnlocalizedName("FocusPortableHole");
+//      GameRegistry.registerItem(itemFocusPortableHole, "FocusPortableHole", "Thaumcraft");
 //      itemFocusPech = (new ItemFocusPech()).setUnlocalizedName("FocusPech");
 //      GameRegistry.registerItem(itemFocusPech, "FocusPech", "Thaumcraft");
       itemFocusWarding = (new ItemFocusWarding()).setUnlocalizedName("FocusWarding");

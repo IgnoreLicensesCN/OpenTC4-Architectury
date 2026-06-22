@@ -229,6 +229,7 @@ block_with_item_names = [
     ['item.FocusFrost.name','frost_focus'],
     ['item.FocusHellbat.name','hell_bat_focus'],
     ['item.FocusPech.name','pech_focus'],
+    ['item.FocusPortableHole.name','portable_hole_focus'],
 
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],

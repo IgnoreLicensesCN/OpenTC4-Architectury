@@ -15,7 +15,6 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.HoleBlockEntityTagAccessors.*;
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class HoleBlockEntity extends TileThaumcraft {
     public HoleBlockEntity(BlockEntityType<? extends HoleBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -24,10 +23,10 @@ public class HoleBlockEntity extends TileThaumcraft {
     public HoleBlockEntity(BlockPos blockPos, BlockState blockState) {
         this(ThaumcraftBlockEntities.BlockEntityTypeInstances.HOLE(),blockPos,blockState);
     }
-    private int tickRemaining = 20;
+    private int tickRemaining = 33;
     private @NotNull BlockState storingState = Blocks.AIR.defaultBlockState();
     private CompoundTag storedTag = null;
-    private int spreadDistance = 0;
+    private int spreadDistance = 3;
     private Direction spreadDirection = Direction.DOWN;
 
     @Override
@@ -74,55 +73,88 @@ public class HoleBlockEntity extends TileThaumcraft {
         }
     }
 
-    public static final BlockPos[][] offsets = new BlockPos[6][9];
     static {
         for (var dir: Direction.values()) {
             for (int i=0;i<9;i++){
                 if (dir.getStepX() != 0){
-                    offsets[dir.ordinal()][i] = new BlockPos(dir.getStepX(),(i/3)-1,(i%3)-1);
+                    HoleSpreader.offsets[dir.ordinal()][i] = new BlockPos(dir.getStepX(),(i/3)-1,(i%3)-1);
                 }
                 else if (dir.getStepY() != 0){
-                    offsets[dir.ordinal()][i] = new BlockPos((i/3)-1,dir.getStepY(),(i%3)-1);
+                    HoleSpreader.offsets[dir.ordinal()][i] = new BlockPos((i/3)-1,dir.getStepY(),(i%3)-1);
                 }
                 else if (dir.getStepZ() != 0){
-                    offsets[dir.ordinal()][i] = new BlockPos((i/3)-1,(i%3)-1,dir.getStepZ());
+                    HoleSpreader.offsets[dir.ordinal()][i] = new BlockPos((i/3)-1,(i%3)-1,dir.getStepZ());
                 }
             }
         }
     }
     public void doSpreadHole(){
         if (this.level == null){return;}
-        var offsetArr = offsets[spreadDirection.ordinal()];
         var selfPos = getBlockPos();
-        for (var posOffset: offsetArr) {
-            if (posOffset.distManhattan(this.spreadDirection.getNormal()) == 0){
-                spreadHoleOnBlockPos(selfPos.offset(posOffset),this.spreadDirection,this.spreadDistance-1,this.tickRemaining);
-            }
-            spreadHoleOnBlockPosNotCenter(selfPos.offset(posOffset),this.spreadDirection,this.tickRemaining);
-        }
+        HoleSpreader.spreadForward(this.level, spreadDirection, this.spreadDistance - 1, this.tickRemaining, selfPos);
         this.spreadDistance = 0;
     }
-    public void spreadHoleOnBlockPosNotCenter(BlockPos pos,Direction spreadDirection,int tickRemaining){
-        spreadHoleOnBlockPos(pos,spreadDirection,0,tickRemaining);
-    }
-    public void spreadHoleOnBlockPos(BlockPos pos,Direction spreadDirection,int spreadDistance,int tickRemaining){
-        if (this.level == null){return;}
-        var relatedBE = LevelBlockEntityAccessing.getExistingBlockEntity(this.level, pos);
-        if (relatedBE == null) {
-            var stateToStore = this.level.getBlockState(pos);
-            this.level.setBlockAndUpdate(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.HOLE().defaultBlockState());
-            if (LevelBlockEntityAccessing.getExistingBlockEntity(this.level, pos) instanceof HoleBlockEntity hole){
-                hole.setSpreadDirection(spreadDirection);
-                hole.mergeSpreadDistanceWithMax(spreadDistance-1);
-                hole.mergeTickRemainingWithMax(tickRemaining+1);
-                hole.setStoringState(stateToStore);
-            }
 
-        }else if (relatedBE instanceof HoleBlockEntity hole){
-            hole.mergeTickRemainingWithMax(this.tickRemaining+1);
-            hole.mergeSpreadDistanceWithMax(this.spreadDistance-1);
+    public static class HoleSpreader{
+
+        public static final BlockPos[][] offsets = new BlockPos[6][9];
+
+        public static void doSpreadInitialHoleAt(Level level, BlockPos pos, Direction spreadDirection, int spreadDistance, int tickRemaining){
+            var posBase = pos.relative(spreadDirection.getOpposite());
+            spreadForward(level, spreadDirection, spreadDistance, tickRemaining, posBase);
+        }
+
+        private static void spreadForward(Level level, Direction spreadDirection, int spreadDistance, int tickRemaining, BlockPos posBase) {
+            var offsetArr = offsets[spreadDirection.ordinal()];
+            for (var posOffset: offsetArr) {
+                if (posOffset.distManhattan(spreadDirection.getNormal()) == 0){
+                    spreadHoleOnBlockPos(level, posBase.offset(posOffset), spreadDirection, spreadDistance, tickRemaining);
+                }
+                spreadHoleOnBlockPosNotCenter(level, posBase.offset(posOffset), spreadDirection, tickRemaining);
+            }
+        }
+
+        public static void spreadHoleOnBlockPosNotCenter(Level level, BlockPos pos, Direction spreadDirection, int tickRemaining){
+            spreadHoleOnBlockPos(level,pos,spreadDirection,0,tickRemaining);
+        }
+
+        public static void spreadHoleOnBlockPos(Level level, BlockPos pos, Direction spreadDirection, int spreadDistance, int tickRemaining){
+            if (!canSpreadHoleAtPos(level,pos)){return;}
+            var relatedBE = LevelBlockEntityAccessing.getExistingBlockEntity(level, pos);
+            if (relatedBE == null) {
+                var stateToStore = level.getBlockState(pos);
+                level.setBlockAndUpdate(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.HOLE().defaultBlockState());
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof HoleBlockEntity hole){
+                    hole.setSpreadDirection(spreadDirection);
+                    hole.mergeSpreadDistanceWithMax(spreadDistance-1);
+                    hole.mergeTickRemainingWithMax(tickRemaining+1);
+                    hole.setStoringState(stateToStore);
+                }
+            } else if (relatedBE instanceof HoleBlockEntity hole){
+                hole.mergeTickRemainingWithMax(tickRemaining+1);
+                hole.mergeSpreadDistanceWithMax(spreadDistance-1);
+                if (hole.spreadDistance == spreadDistance-1){
+                    hole.setSpreadDirection(spreadDirection);
+                }
+            }
+        }
+
+        public static boolean canSpreadHoleAtPos(Level level, BlockPos pos){
+            var blockState = level.getBlockState(pos);
+            if (blockState.getDestroySpeed(level, pos) < 0){
+                return false;
+            }
+            var relatedBE = LevelBlockEntityAccessing.getExistingBlockEntity(level, pos);
+            if (relatedBE != null && !(relatedBE instanceof HoleBlockEntity)){
+                return false;
+            }
+            if (blockState.isAir()){
+                return false;
+            }
+            return true;
         }
     }
+
 
     public void setTickRemaining(int tickRemaining) {
         this.tickRemaining = tickRemaining;

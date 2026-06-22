@@ -977,4 +977,7 @@ public class ThaumcraftItemInstances {
     public static PechFocusItem PECH_FOCUS() {
         return ThaumcraftItemsRegistry.SUPPLIER_PECH_FOCUS.get();
     }
+    public static PortableHoleFocusItem PORTABLE_HOLE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_PORTABLE_HOLE_FOCUS.get();
+    }
 }

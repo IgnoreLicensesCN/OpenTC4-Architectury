@@ -270,7 +270,7 @@ public class WandCastingItem extends Item
         if (!focusStack.isEmpty()) {
             var focusItem = focusStack.getItem();
             if (focusItem instanceof IWandFocusItem<? extends Aspect> focus) {
-                var result = focus.onFocusUseOn(useOnContext);
+                var result = focus.onFocusUseOn(useOnContext,focusStack);
                 if (result != null) {
                     return result;
                 }

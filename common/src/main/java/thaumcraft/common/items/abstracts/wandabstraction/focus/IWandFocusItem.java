@@ -68,7 +68,7 @@ public interface IWandFocusItem<Asp extends Aspect> {
     }
 
     default boolean canApplyUpgrade(ItemStack focusStack, LivingEntity upgradeApplier, FocusUpgradeType type) {
-        return getPossibleUpgradesByRank(focusStack).contains(type) && type.canApplyTo(focusStack,this);
+        return getPossibleUpgradesByRank(focusStack,getRank(focusStack)).contains(type) && type.canApplyTo(focusStack,this);
     }
 
     /**
@@ -82,11 +82,8 @@ public interface IWandFocusItem<Asp extends Aspect> {
     int getActivationCooldownTicks(ItemStack focusStack, @NotNull ItemStack wandStack);
 
     /**
-     * What upgrades can be applied to this focus for ranks 1 to 5
+     * What upgrades can be applied to this focus <s>for ranks 1 to 5</s>
      */
-    default List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack){
-        return getPossibleUpgradesByRank(focusStack,getRank(focusStack));
-    }
     @NotNull List<FocusUpgradeType> getPossibleUpgradesByRank(ItemStack focusStack, int rank);
 
 
@@ -111,7 +108,7 @@ public interface IWandFocusItem<Asp extends Aspect> {
 
     //null -> dont handle it
     //"onEntitySwing"
-    default @Nullable InteractionResult onFocusUseOn(UseOnContext useOnContext) {
+    default @Nullable InteractionResult onFocusUseOn(UseOnContext useOnContext,ItemStack focusStack) {
         return null;
     }
     default AbstractWandWaveAnimation getWaveAnimation(ItemStack focusStack,@Nullable ItemStack wandStack){

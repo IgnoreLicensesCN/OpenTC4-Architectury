@@ -226,4 +226,39 @@ public class UnmodifiableCentiVisList<Asp extends Aspect> extends UnmodifiableAs
     public CentiVisList<Asp> copy() {
         return UnmodifiableCentiVisList.ofDirectly(internalList.copy());
     }
+
+
+    public UnmodifiableCentiVisList<Asp> addAllAsNew(CentiVisList<Asp> aspects) {
+        Object2IntLinkedOpenHashMap<Asp> resultMap = new Object2IntLinkedOpenHashMap<>(aspects.size() + this.size(),1);
+        aspects.forEach((aspect, amount) -> resultMap.mergeInt(aspect, amount,Integer::sum));
+        this.forEach((aspect, amount) -> resultMap.mergeInt(aspect, amount,Integer::sum));
+        return new UnmodifiableCentiVisList<>(resultMap);
+    }
+
+    public UnmodifiableCentiVisList<Asp> multiplyAsNew(int multiplier) {
+        Object2IntLinkedOpenHashMap<Asp> resultMap = new Object2IntLinkedOpenHashMap<>(this.size(),1);
+        this.forEach((aspect, amount) -> resultMap.put(aspect, amount*multiplier));
+        return new UnmodifiableCentiVisList<>(resultMap);
+    }
+    public UnmodifiableCentiVisList<Asp> divideAndCeilAsNew(int divisor) {
+        if (divisor == 0){
+            throw new IllegalArgumentException("divided by zero!");
+        }
+        Object2IntLinkedOpenHashMap<Asp> resultMap = new Object2IntLinkedOpenHashMap<>(this.size(),1);
+        this.forEach((aspect, amount) -> resultMap.put(aspect, (amount + divisor - 1)/divisor));
+        return new UnmodifiableCentiVisList<>(resultMap);
+    }
+
+    public static <A extends Aspect> UnmodifiableCentiVisList<A> combine(CentiVisList<A> aspectsA, CentiVisList<A> aspectsB) {
+        if (aspectsA == null) {
+            return new UnmodifiableCentiVisList<>(aspectsB);
+        }
+        if (aspectsB == null) {
+            return new UnmodifiableCentiVisList<>(aspectsA);
+        }
+        Object2IntLinkedOpenHashMap<A> resultMap = new Object2IntLinkedOpenHashMap<>(aspectsA.size() + aspectsB.size(),1);
+        aspectsA.forEach((aspect, amount) -> resultMap.mergeInt(aspect, amount,Integer::sum));
+        aspectsB.forEach((aspect, amount) -> resultMap.mergeInt(aspect, amount,Integer::sum));
+        return new UnmodifiableCentiVisList<>(resultMap);
+    }
 }

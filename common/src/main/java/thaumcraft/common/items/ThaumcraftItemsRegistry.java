@@ -1212,6 +1212,10 @@ public class ThaumcraftItemsRegistry {
             "pech_focus",
             PechFocusItem::new
     );
+    public static final RegistrySupplier<PortableHoleFocusItem> SUPPLIER_PORTABLE_HOLE_FOCUS = ITEMS.register(
+            "portable_hole_focus",
+            PortableHoleFocusItem::new
+    );
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();
     public record ClusterRegistrationArgs(String orePrefix,Set<TagKey<Item>> tagsToRegister,TagKey<Item> burnIntoTag){
         public void registerToClusterItems(DeferredRegister<Item> items){
