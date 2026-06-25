@@ -28,8 +28,10 @@
     "BiomeMixin",
     "BlockMixin",
     "BlockStateBaseMixin",
+    "BrainProviderAccessor",
     "ClientPacketListenerAccessor",
     "ClimateSettingsMixin",
+    "CreeperMixin",
     "DefaultAttributesAccessor",
     "DropExperienceBlockMixin",
     "EnchantmentCategoryWeaponMixin",
@@ -50,7 +52,8 @@
     "RedStoneWireBlockMixin",
     "ServerGamePacketListenerImplAccessor",
     "ServerPlayerGameModeMixin",
-    "ServerPlayerMixin"
+    "ServerPlayerMixin",
+    "VillagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -456,13 +456,13 @@ public class ClientTickEventsFML {
 
       if (focus != null) {
          ItemStack picked = null;
-         if (focus instanceof ItemFocusTrade) {
-            ItemFocusTrade wt = (ItemFocusTrade)focus;
-            picked = wt.getPickedBlock(player.inventory.getCurrentItem());
-            if (picked != null) {
-               this.renderWandTradeHud(partialTicks, player, time, picked);
-            }
-         }
+//         if (focus instanceof ItemFocusTrade) {
+//            ItemFocusTrade wt = (ItemFocusTrade)focus;
+//            picked = wt.getPickedBlock(player.inventory.getCurrentItem());
+//            if (picked != null) {
+//               this.renderWandTradeHud(partialTicks, player, time, picked);
+//            }
+//         }
 
          if (picked == null) {
             GL11.glPushMatrix();

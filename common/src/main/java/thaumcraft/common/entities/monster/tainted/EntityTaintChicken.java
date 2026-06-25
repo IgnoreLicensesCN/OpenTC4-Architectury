@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.monster;
+package thaumcraft.common.entities.monster.tainted;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;

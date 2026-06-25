@@ -19,6 +19,7 @@ import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeLookups;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
+import static com.linearity.opentc4.Consts.TAINT_SPREAD_DOWN_DISTANCE;
 import static com.linearity.opentc4.Consts.TAINT_SPREAD_UP_DISTANCE;
 
 public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
@@ -94,7 +95,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
 
     private void setBiomeAboveNotTaint(ServerLevel serverLevel, BlockPos base){
         if (this.level == null){return;}
-        for (int i=1;i<=TAINT_SPREAD_UP_DISTANCE;i+=1){
+        for (int i=TAINT_SPREAD_DOWN_DISTANCE;i<=TAINT_SPREAD_UP_DISTANCE;i+=1){
             var currentPos = base.offset(0,i,0);
             var biomeID = this.level.getBiome(currentPos);
             if (biomeID.is(ThaumcraftBiomeIDs.TAINT_ID)) {

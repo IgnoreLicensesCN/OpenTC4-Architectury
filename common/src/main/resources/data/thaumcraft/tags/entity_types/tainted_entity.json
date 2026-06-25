@@ -1,5 +1,7 @@
 {
   "replace": false,
   "values": [
+    "thaumcraft:tainted_creeper",
+    "thaumcraft:tainted_villager"
   ]
 }

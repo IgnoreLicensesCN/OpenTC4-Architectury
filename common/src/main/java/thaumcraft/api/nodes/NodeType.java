@@ -33,8 +33,7 @@ import thaumcraft.common.tiles.crafted.vis.visnet.EnergizedAuraNodeBlockEntity;
 
 import java.util.*;
 
-import static com.linearity.opentc4.Consts.PURE_NODE_Y_RANGE;
-import static com.linearity.opentc4.Consts.TAINT_SPREAD_UP_DISTANCE;
+import static com.linearity.opentc4.Consts.*;
 import static thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetterManager.getAspectsForEntity;
 
 public class NodeType {
@@ -192,7 +191,7 @@ public class NodeType {
                 var biome = serverLevel.getBiome(randomPickPos);
                 if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
                     var holderTaint = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,ThaumcraftBiomeIDs.TAINT_KEY);
-                    for (int i=0;i<TAINT_SPREAD_UP_DISTANCE;i+=1){
+                    for (int i=TAINT_SPREAD_DOWN_DISTANCE;i<TAINT_SPREAD_UP_DISTANCE;i+=1){
                         Utils.setBiomeAt(serverLevel, randomPickPos.above(i), holderTaint);
                     }
                 }

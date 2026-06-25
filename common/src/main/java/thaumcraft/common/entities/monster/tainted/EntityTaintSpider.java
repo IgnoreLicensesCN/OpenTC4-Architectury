@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.monster;
+package thaumcraft.common.entities.monster.tainted;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

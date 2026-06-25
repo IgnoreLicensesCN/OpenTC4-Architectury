@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.entities.monster.EntityTaintacle;
+import thaumcraft.common.entities.monster.tainted.EntityTaintacle;
 import thaumcraft.common.entities.monster.boss.EntityCultistPortal;
 import thaumcraft.common.entities.monster.boss.EntityEldritchGolem;
 import thaumcraft.common.entities.monster.boss.EntityEldritchWarden;

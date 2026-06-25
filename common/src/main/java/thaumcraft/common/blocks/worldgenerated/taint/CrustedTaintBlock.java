@@ -16,7 +16,7 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.entities.monster.EntityTaintSporeSwarmer;
+import thaumcraft.common.entities.monster.tainted.EntityTaintSporeSwarmer;
 
 import java.util.List;
 //blocktaint:0

@@ -9,6 +9,7 @@ import thaumcraft.api.research.impl.basics.CrimsonResearch;
 import thaumcraft.api.research.impl.eldritch.EldritchMajorResearch;
 import thaumcraft.api.research.impl.eldritch.EldritchMinorResearch;
 import thaumcraft.api.research.impl.eldritch.FocusPrimalResearch;
+import thaumcraft.api.research.impl.eldritch.PrimePearlResearch;
 import thaumcraft.api.research.impl.thaumaturgy.BasicThaumaturgyResearch;
 
 
@@ -30,6 +31,7 @@ public class ThaumcraftResearches {
     public static final ResearchItem PRIME_PEARL_NODE_CONTROL = ;
     public static final EldritchMinorResearch ELDRITCH_MINOR = new EldritchMinorResearch();
     public static final EldritchMajorResearch ELDRITCH_MAJOR = new EldritchMajorResearch();
+    public static final PrimePearlResearch PRIME_PEARL = new PrimePearlResearch();
 
     public static final ResearchItem FOCAL_MANIPULATION = ;
     public static final ResearchItem SCEPTRE_CRAFTING = ;

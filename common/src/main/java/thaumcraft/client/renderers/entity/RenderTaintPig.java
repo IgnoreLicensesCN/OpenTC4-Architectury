@@ -4,7 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.resources.ResourceLocation;
-import thaumcraft.common.entities.monster.EntityTaintPig;
+import thaumcraft.common.entities.monster.tainted.EntityTaintPig;
 
 public class RenderTaintPig extends RenderLiving {
    private static final ResourceLocation rl = new ResourceLocation("thaumcraft", "textures/models/pig.png");

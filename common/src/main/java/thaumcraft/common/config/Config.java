@@ -32,6 +32,7 @@ import thaumcraft.common.entities.monster.boss.EntityCultistLeader;
 import thaumcraft.common.entities.monster.boss.EntityCultistPortal;
 import thaumcraft.common.entities.monster.boss.EntityEldritchGolem;
 import thaumcraft.common.entities.monster.boss.EntityEldritchWarden;
+import thaumcraft.common.entities.monster.tainted.EntityTaintSpore;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.abstracts.IDowsingTool;
 import thaumcraft.common.lib.enchantment.EnchantmentHaste;

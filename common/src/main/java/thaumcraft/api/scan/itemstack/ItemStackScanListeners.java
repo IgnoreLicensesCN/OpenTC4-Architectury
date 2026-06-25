@@ -1,18 +1,31 @@
 package thaumcraft.api.scan.itemstack;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
+import thaumcraft.api.research.impl.eldritch.PrimePearlResearch;
 import thaumcraft.api.scan.ScanManager;
 import thaumcraft.api.research.ResearchAndScannedInfo;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketResearchCompleteS2C;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 import static thaumcraft.api.scan.ThaumcraftScannedTypes.ITEM;
+import static thaumcraft.common.items.ThaumcraftItemInstances.PRIME_PEARL;
 
 public enum ItemStackScanListeners {
     SCAN_ITEM_COMMON(new ItemStackScanListener(0) {
         @Override
         public void onItemStackScan(ItemStackScanContext context) {
-            if (scanItemCommon(context.livingScanning,context.stack.getItem())){
+            var item = context.stack.getItem();
+            if (scanItemCommon(context.livingScanning,item)){
+                var consumer = onScannedItemEvents.get(item);
+                if (consumer != null) {
+                    consumer.accept(context);
+                }
                 context.shouldBreak = true;
             }
         }
@@ -39,5 +52,14 @@ public enum ItemStackScanListeners {
             return true;
         }
         return false;
+    }
+    //warning:may not always work
+    public static final Map<Item, Consumer<ItemStackScanContext>> onScannedItemEvents =  new ConcurrentHashMap<>();
+    static {
+        onScannedItemEvents.put(PRIME_PEARL(),context -> {
+            if (context.livingScanning instanceof ServerPlayer serverPlayer) {
+                new PacketResearchCompleteS2C(PrimePearlResearch.ID).sendTo(serverPlayer);
+            }
+        });
     }
 }

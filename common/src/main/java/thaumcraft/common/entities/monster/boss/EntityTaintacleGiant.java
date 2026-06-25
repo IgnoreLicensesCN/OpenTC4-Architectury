@@ -13,7 +13,7 @@ import net.minecraft.world.damagesource.DamageSource;
 
 import net.minecraft.world.level.Level;
 import thaumcraft.api.entities.ITaintedMob;
-import thaumcraft.common.entities.monster.EntityTaintacle;
+import thaumcraft.common.entities.monster.tainted.EntityTaintacle;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.lib.utils.EntityUtils;
 

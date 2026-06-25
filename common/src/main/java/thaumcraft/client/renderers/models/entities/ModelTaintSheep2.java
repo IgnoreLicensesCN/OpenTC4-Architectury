@@ -4,7 +4,7 @@ import net.minecraft.client.model.ModelQuadruped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import thaumcraft.common.entities.monster.EntityTaintSheep;
+import thaumcraft.common.entities.monster.tainted.EntityTaintSheep;
 
 public class ModelTaintSheep2 extends ModelQuadruped {
    private float field_44017_o;

@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.AABB;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.entities.monster.EntityTaintSpore;
+import thaumcraft.common.entities.monster.tainted.EntityTaintSpore;
 
 import java.util.List;
 

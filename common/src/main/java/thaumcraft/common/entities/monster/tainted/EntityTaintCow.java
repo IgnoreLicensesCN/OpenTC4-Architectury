@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.monster;
+package thaumcraft.common.entities.monster.tainted;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
@@ -15,10 +15,10 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 
-public class EntityTaintPig extends EntityMob implements ITaintedMob {
-   public EntityTaintPig(Level par1World) {
+public class EntityTaintCow extends EntityMob implements ITaintedMob {
+   public EntityTaintCow(Level par1World) {
       super(par1World);
-      this.setSize(0.9F, 0.9F);
+      this.setSize(0.9F, 1.3F);
       this.getNavigator().setAvoidsWater(true);
       this.tasks.addTask(0, new EntityAISwimming(this));
       this.tasks.addTask(2, new AIAttackOnCollide(this, Player.class, 1.0F, false));
@@ -35,9 +35,45 @@ public class EntityTaintPig extends EntityMob implements ITaintedMob {
 
    protected void applyEntityAttributes() {
       super.applyEntityAttributes();
-      this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0F);
-      this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0F);
-      this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.275);
+      this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0F);
+      this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0F);
+      this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.27);
+   }
+
+   public boolean isAIEnabled() {
+      return true;
+   }
+
+   public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+      super.writeEntityToNBT(par1NBTTagCompound);
+   }
+
+   public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+      super.readEntityFromNBT(par1NBTTagCompound);
+   }
+
+   protected String getLivingSound() {
+      return "mob.cow.say";
+   }
+
+   protected String getHurtSound() {
+      return "mob.cow.hurt";
+   }
+
+   protected String getDeathSound() {
+      return "mob.cow.hurt";
+   }
+
+   protected void playStepSound(int par1, int par2, int par3, int par4) {
+      this.playSound("mob.cow.step", 0.15F, 1.0F);
+   }
+
+   protected float getSoundPitch() {
+      return 0.7F;
+   }
+
+   protected float getSoundVolume() {
+      return 0.4F;
    }
 
    public void onLivingUpdate() {
@@ -50,66 +86,15 @@ public class EntityTaintPig extends EntityMob implements ITaintedMob {
 
    }
 
-   protected boolean canDespawn() {
-      return false;
-   }
-
-   public boolean isAIEnabled() {
-      return true;
-   }
-
-   public int getTotalArmorValue() {
-      return 2;
-   }
-
-   protected void entityInit() {
-      super.entityInit();
-      this.dataWatcher.addObject(16, (byte)0);
-   }
-
-   public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-      super.writeEntityToNBT(par1NBTTagCompound);
-   }
-
-   public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-      super.readEntityFromNBT(par1NBTTagCompound);
-   }
-
-   protected String getLivingSound() {
-      return "mob.pig.say";
-   }
-
-   protected String getHurtSound() {
-      return "mob.pig.say";
-   }
-
-   protected String getDeathSound() {
-      return "mob.pig.death";
-   }
-
-   protected void playStepSound(int par1, int par2, int par3, int par4) {
-      this.playSound("mob.pig.step", 0.15F, 1.0F);
-   }
-
-   protected float getSoundPitch() {
-      return 0.7F;
-   }
-
-   public boolean interact(Player par1Player) {
-      return super.interact(par1Player);
-   }
-
    protected Item getDropItem() {
       return ConfigItems.itemResource;
    }
 
    protected void dropFewItems(boolean flag, int i) {
-      if (this.level().rand.nextInt(3) == 0) {
-         if (this.level().rand.nextBoolean()) {
-            this.entityDropItem(new ItemStack(ThaumcraftItems.TAINTED_GOO,1), this.height / 2.0F);
-         } else {
-            this.entityDropItem(new ItemStack(ThaumcraftItems.TAINT_TENDRIL,1), this.height / 2.0F);
-         }
+      if (this.level().rand.nextBoolean()) {
+         this.entityDropItem(new ItemStack(ThaumcraftItems.TAINTED_GOO,1), this.height / 2.0F);
+      } else {
+         this.entityDropItem(new ItemStack(ThaumcraftItems.TAINT_TENDRIL,1), this.height / 2.0F);
       }
 
    }

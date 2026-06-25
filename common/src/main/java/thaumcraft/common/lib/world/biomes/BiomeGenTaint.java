@@ -11,7 +11,7 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenBlockBlob;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.entities.monster.EntityTaintacle;
+import thaumcraft.common.entities.monster.tainted.EntityTaintacle;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;

@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import thaumcraft.common.entities.monster.tainted.*;
 import thaumcraft.common.items.abstracts.IRepairableItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;

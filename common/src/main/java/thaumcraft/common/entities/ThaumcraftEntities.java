@@ -10,6 +10,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.entities.monster.tainted.TaintedCreeperEntity;
+import thaumcraft.common.entities.monster.tainted.TaintedVillagerEntity;
 import thaumcraft.common.entities.projectile.frostfocus.FrostShardEntity;
 import thaumcraft.common.entities.projectile.hellbatfocus.FireBatEntity;
 import thaumcraft.common.entities.projectile.pechfocus.PechBlastEntity;
@@ -59,6 +61,13 @@ public class ThaumcraftEntities {
         }
         public static EntityType<PrimalOrbEntity> PRIMAL_ORB() {
             return Registry.SUPPLIER_PRIMAL_ORB.get();
+        }
+        public static EntityType<TaintedCreeperEntity> TAINTED_CREEPER() {
+            return Registry.SUPPLIER_TAINTED_CREEPER.get();
+        }
+
+        public static EntityType<TaintedVillagerEntity> TAINTED_VILLAGER() {
+            return Registry.SUPPLIER_TAINTED_VILLAGER.get();
         }
 
     }
@@ -117,15 +126,6 @@ public class ThaumcraftEntities {
                         .updateInterval(20)
                         .build("frost_shard")
         );
-        public static final RegistrySupplier<EntityType<FireBatEntity>> SUPPLIER_FIRE_BAT = ENTITIES.register(
-                "fire_bat",
-                () -> EntityType.Builder.<FireBatEntity>of(FireBatEntity::new, MobCategory.MISC)
-                        .sized(0.5F, 0.9F)
-                        .clientTrackingRange(16)
-                        .updateInterval(20)
-                        .fireImmune()
-                        .build("fire_bat")
-        );
         public static final RegistrySupplier<EntityType<PechBlastEntity>> SUPPLIER_PECH_BLAST = ENTITIES.register("pech_blast",
                 () -> EntityType.Builder.<PechBlastEntity>of(PechBlastEntity::new, MobCategory.MISC)
                         .sized(0.25F, 0.25F)
@@ -140,6 +140,27 @@ public class ThaumcraftEntities {
                         .updateInterval(20)
                         .build("primal_orb")
         );
+        public static final RegistrySupplier<EntityType<FireBatEntity>> SUPPLIER_FIRE_BAT = ENTITIES.register(
+                "fire_bat",
+                () -> EntityType.Builder.<FireBatEntity>of(FireBatEntity::new, MobCategory.MONSTER)
+                        .sized(0.5F, 0.9F)
+                        .clientTrackingRange(16)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("fire_bat")
+        );
+        public static final RegistrySupplier<EntityType<TaintedCreeperEntity>> SUPPLIER_TAINTED_CREEPER = ENTITIES.register(
+                "tainted_creeper",
+                () -> EntityType.Builder.<TaintedCreeperEntity>of(TaintedCreeperEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.7F).clientTrackingRange(8)
+                        .build("tainted_creeper")
+        );
+        public static final RegistrySupplier<EntityType<TaintedVillagerEntity>> SUPPLIER_TAINTED_VILLAGER = ENTITIES.register(
+                "tainted_villager",
+                () -> EntityType.Builder.<TaintedVillagerEntity>of(TaintedVillagerEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.95F).clientTrackingRange(10)
+                        .build("tainted_villager")
+        );
     }
 
     public static class EntityTags {
@@ -147,11 +168,13 @@ public class ThaumcraftEntities {
         public static final TagKey<EntityType<?>> FERTILITY_LAMP_AFFECTIVE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"fertility_lamp_affective"));
         public static final TagKey<EntityType<?>> FERTILITY_LAMP_NOT_AFFECTIVE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"fertility_lamp_not_affective"));
         public static final TagKey<EntityType<?>> TAINTED = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"tainted_entity"));
+        public static final TagKey<EntityType<?>> ELDRITCH = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"eldritch_entity"));
     }
 
     public static void init(){
         ENTITIES.register();
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.FIRE_BAT(),FireBatEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_CREEPER(),TaintedCreeperEntity.createAttributes().build());
     }
 
     public static void registerDefaultAttribute(EntityType<? extends LivingEntity> entityType,AttributeSupplier attributeSupplier){

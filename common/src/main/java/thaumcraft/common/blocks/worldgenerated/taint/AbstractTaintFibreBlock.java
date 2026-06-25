@@ -142,7 +142,7 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
                             || pickState.is(Blocks.CARVED_PUMPKIN)
                             || pickState.is(Blocks.JACK_O_LANTERN)
                             || pickState.is(Blocks.CACTUS))) {
-                        world.setBlock(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT().defaultBlockState(), 0, 3);
+                        world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT().defaultBlockState());
                         world.blockEvent(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT(), 1, 0);
                     }
 

@@ -45,7 +45,6 @@ public class PrimePearlItem extends Item {
                 .withStyle(ChatFormatting.DARK_PURPLE));
     }
 
-    //TODO:Unlock pearl research by picking up
 //    @Override
 //    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
 //

@@ -16,6 +16,7 @@ import thaumcraft.common.lib.utils.Utils;
 
 import java.util.Random;
 
+import static com.linearity.opentc4.Consts.TAINT_SPREAD_DOWN_DISTANCE;
 import static com.linearity.opentc4.Consts.TAINT_SPREAD_UP_DISTANCE;
 
 public class BiomeUtils {
@@ -28,7 +29,7 @@ public class BiomeUtils {
           var pos = basePos.offset(rand.nextInt(3) - 1,0,rand.nextInt(3) - 1);
           if (!world.getBiome(pos).is(ThaumcraftBiomeIDs.TAINT_ID)&& rand.nextInt(Config.taintSpreadRate * 5) == 0 && getAdjacentTaint(world, basePos) >= 2) {
               var biomeToSet = ThaumcraftBiomeLookups.biomeHolderForLevel(world,ThaumcraftBiomeIDs.TAINT_KEY);
-             for (int yOffset = 0; yOffset < TAINT_SPREAD_UP_DISTANCE; yOffset++) {
+             for (int yOffset = TAINT_SPREAD_DOWN_DISTANCE; yOffset < TAINT_SPREAD_UP_DISTANCE; yOffset++) {
                 var afffectPos = pos.above(yOffset);
                 Utils.setBiomeAt(world, pos.above(yOffset), biomeToSet);
                 world.blockEvent(afffectPos,world.getBlockState(afffectPos).getBlock(),1,0);
@@ -37,7 +38,7 @@ public class BiomeUtils {
        }
     }
     public static void setPosTaint(ServerLevel world, BlockPos pos, Holder<Biome> taintHolder) {
-        for (int yOffset = 0; yOffset < TAINT_SPREAD_UP_DISTANCE; yOffset++) {
+        for (int yOffset = TAINT_SPREAD_DOWN_DISTANCE; yOffset < TAINT_SPREAD_UP_DISTANCE; yOffset++) {
             var afffectPos = pos.above(yOffset);
             Utils.setBiomeAt(world, pos.above(yOffset), taintHolder);
             world.blockEvent(afffectPos,world.getBlockState(afffectPos).getBlock(),1,0);

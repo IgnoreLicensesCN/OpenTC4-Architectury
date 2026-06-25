@@ -5,7 +5,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.world.entity.Entity;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.entities.monster.EntityTaintacle;
+import thaumcraft.common.entities.monster.tainted.EntityTaintacle;
 
 public class ModelTaintacle extends ModelBase {
    public ModelRenderer tentacle = new ModelRendererTaintacle(this);

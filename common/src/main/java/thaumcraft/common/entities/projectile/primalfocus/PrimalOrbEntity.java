@@ -18,6 +18,7 @@ import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeLookups;
 
 import java.util.Comparator;
 
+import static com.linearity.opentc4.Consts.TAINT_SPREAD_DOWN_DISTANCE;
 import static com.linearity.opentc4.Consts.TAINT_SPREAD_UP_DISTANCE;
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.LIVING_TEST;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT;
@@ -117,7 +118,7 @@ public class PrimalOrbEntity extends ThrowableProjectile {
             var biome = serverLevel.getBiome(pickPos);
             if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
                 var holderTaint = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,ThaumcraftBiomeIDs.TAINT_KEY);
-                for (int i=0;i<TAINT_SPREAD_UP_DISTANCE;i+=1){
+                for (int i=TAINT_SPREAD_DOWN_DISTANCE;i<TAINT_SPREAD_UP_DISTANCE;i+=1){
                     Utils.setBiomeAt(serverLevel, pickPos.above(i), holderTaint);
                 }
                 var fibreLocation = pickPos.below();

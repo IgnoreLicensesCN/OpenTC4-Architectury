@@ -29,7 +29,7 @@ public class PrimalFocusItem extends BasicFocusItem{
         super(properties);
     }
     public PrimalFocusItem() {
-        super(new Properties().stacksTo(1).rarity(Rarity.RARE));
+        this(new Properties().stacksTo(1).rarity(Rarity.RARE));
     }
 
     protected int easyLCGState = 0;

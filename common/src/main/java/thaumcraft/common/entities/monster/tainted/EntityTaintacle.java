@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.monster;
+package thaumcraft.common.entities.monster.tainted;
 
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.entity.Entity;

@@ -27,6 +27,7 @@ import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 public class Consts {
+    public static final int TAINT_SPREAD_DOWN_DISTANCE = -1;
     public static final int TAINT_SPREAD_UP_DISTANCE = 64;
     public static final int PURE_NODE_Y_RANGE = 8;
 

@@ -6,7 +6,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.entities.monster.EntityTaintSpore;
+import thaumcraft.common.entities.monster.tainted.EntityTaintSpore;
 
 //blocktaintfibres:3
 public class SporeStalkBlock extends AbstractTaintFibreBlock{

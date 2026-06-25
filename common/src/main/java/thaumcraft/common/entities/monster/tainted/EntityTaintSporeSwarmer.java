@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.monster;
+package thaumcraft.common.entities.monster.tainted;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -11,7 +11,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigItems;
 
 public class EntityTaintSporeSwarmer extends EntityTaintSpore {
    int spawnCounter = 500;
