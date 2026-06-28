@@ -8,7 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.entities.monster.EntityThaumicSlime;
+import thaumcraft.common.entities.monster.tainted.EntityThaumicSlime;
 
 @SideOnly(Side.CLIENT)
 public class RenderThaumicSlime extends RenderLiving {

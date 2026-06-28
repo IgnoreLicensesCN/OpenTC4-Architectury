@@ -28,6 +28,7 @@ import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 
+import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.TAINTED_MATERIAL_BLOCK;
 import static thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock.spreadFibres;
 
 public abstract class AbstractTaintBlock extends SuppressedWarningBlock implements ITaintMaterial{
@@ -55,7 +56,7 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
     public void randomTick(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
         super.randomTick(blockState, world, blockPos, random);
         if (Platform.getEnvironment() != Env.CLIENT) {
-            BiomeUtils.taintBiomeSpread(world, blockPos, random, this);
+            BiomeUtils.taintBiomeSpread(world, blockPos, random);
             beforeSpreadingFibres(blockState, world, blockPos, random);
 
             var considerSpreadFibresPos = blockPos.offset(random.nextInt(3) - 1,random.nextInt(3) - 1,random.nextInt(3) - 1);
@@ -108,7 +109,7 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
                 && (bState.getValue(FiniteLiquidBlock.LEVEL) >= 4)
         ) {
             return false;
-        } else if (block != Blocks.FIRE && !(block instanceof AbstractTaintFibreBlock)) {
+        } else if (block != Blocks.FIRE && !(bState.is(TAINTED_MATERIAL_BLOCK))) {
             if (bState.canBeReplaced()) {
                 return true;
             } else {

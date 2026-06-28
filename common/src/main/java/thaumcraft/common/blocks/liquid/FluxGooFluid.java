@@ -7,7 +7,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.entities.monster.EntityThaumicSlime;
+import thaumcraft.common.entities.monster.tainted.EntityThaumicSlime;
 
 import static thaumcraft.common.ThaumcraftSounds.GORE;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO;

@@ -66,22 +66,12 @@ public class TaintBottleEntity extends ThrowableItemProjectile {
                 living.forEach(l -> l.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT(),100,0)));
 
 
-                var biomeToSet = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,ThaumcraftBiomeIDs.TAINT_KEY);
-                var stateToSet = FIBROUS_TAINT().defaultBlockState();
-
                 for (int _times = 0;_times < 10;_times++){
                     var xOffset = random.nextInt(11)-5;
                     var zOffset = random.nextInt(11)-5;
                     var pickPos = atPos.offset(xOffset,0,zOffset);
-                    var pickPosBelow = pickPos.below();
-                    if (serverLevel.random.nextBoolean() && !serverLevel.getBiome(pickPos).is(ThaumcraftBiomeIDs.TAINT_KEY)){
-                        BiomeUtils.setPosTaint(serverLevel,pickPos,biomeToSet);
-                        if (serverLevel.getBlockState(pickPosBelow).isCollisionShapeFullBlock(serverLevel,pickPosBelow)){
-                            var pickState = serverLevel.getBlockState(pickPos);
-                            if (pickState.canBeReplaced() || pickState.isAir()){
-                                serverLevel.setBlockAndUpdate(pickPos,stateToSet);
-                            }
-                        }
+                    if (serverLevel.random.nextBoolean()){
+                        BiomeUtils.setPosTaintAndSetTaintSourceIfNotTaint(serverLevel,pickPos);
                     }
                 }
             }

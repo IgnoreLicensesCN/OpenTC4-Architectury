@@ -35,6 +35,7 @@ import java.util.*;
 
 import static com.linearity.opentc4.Consts.*;
 import static thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetterManager.getAspectsForEntity;
+import static thaumcraft.common.lib.world.biomes.BiomeUtils.setPosTaint;
 
 public class NodeType {
     private static final Map<NodeTypeResourceLocation, NodeType> BY_NAME = new LinkedHashMap<>();
@@ -191,9 +192,7 @@ public class NodeType {
                 var biome = serverLevel.getBiome(randomPickPos);
                 if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
                     var holderTaint = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,ThaumcraftBiomeIDs.TAINT_KEY);
-                    for (int i=TAINT_SPREAD_DOWN_DISTANCE;i<TAINT_SPREAD_UP_DISTANCE;i+=1){
-                        Utils.setBiomeAt(serverLevel, randomPickPos.above(i), holderTaint);
-                    }
+                    setPosTaint(serverLevel,randomPickPos,holderTaint);
                 }
 
                 if (Config.hardNode && serverLevel.random.nextBoolean()) {

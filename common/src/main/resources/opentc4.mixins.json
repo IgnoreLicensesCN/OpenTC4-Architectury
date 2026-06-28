@@ -53,7 +53,8 @@
     "ServerGamePacketListenerImplAccessor",
     "ServerPlayerGameModeMixin",
     "ServerPlayerMixin",
-    "VillagerMixin"
+    "VillagerMixin",
+    "ZombieMixin"
   ],
   "injectors": {
     "defaultRequire": 1

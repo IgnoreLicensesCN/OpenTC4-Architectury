@@ -12,16 +12,11 @@ import net.minecraft.world.phys.Vec3;
 import thaumcraft.api.listeners.worldgen.node.NodeGenerationManager;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.ThaumcraftEntities;
-import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
-import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeLookups;
+import thaumcraft.common.lib.world.biomes.BiomeUtils;
 
 import java.util.Comparator;
 
-import static com.linearity.opentc4.Consts.TAINT_SPREAD_DOWN_DISTANCE;
-import static com.linearity.opentc4.Consts.TAINT_SPREAD_UP_DISTANCE;
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.LIVING_TEST;
-import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT;
 
 public class PrimalOrbEntity extends ThrowableProjectile {
     protected boolean seeker = false;
@@ -115,21 +110,11 @@ public class PrimalOrbEntity extends ThrowableProjectile {
         var basePos = blockPosition();
         for(int a = 0; a < 10; ++a) {
             var pickPos = basePos.offset(random.nextInt(13)-6,0,random.nextInt(13)-6);
-            var biome = serverLevel.getBiome(pickPos);
-            if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
-                var holderTaint = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,ThaumcraftBiomeIDs.TAINT_KEY);
-                for (int i=TAINT_SPREAD_DOWN_DISTANCE;i<TAINT_SPREAD_UP_DISTANCE;i+=1){
-                    Utils.setBiomeAt(serverLevel, pickPos.above(i), holderTaint);
-                }
-                var fibreLocation = pickPos.below();
-                if (!serverLevel.getBlockState(fibreLocation).isAir()){
-                    serverLevel.setBlockAndUpdate(fibreLocation,FIBROUS_TAINT().defaultBlockState());
-                }
-            }
+            BiomeUtils.setPosTaintAndSetTaintSourceIfNotTaint(serverLevel, pickPos);
         }
 
     }
-    
+
     protected void playClientOnHitEffect(){
         if (!(level() instanceof ClientLevel clientLevel)) {return;}
         for(int a = 0; a < 6; ++a) {

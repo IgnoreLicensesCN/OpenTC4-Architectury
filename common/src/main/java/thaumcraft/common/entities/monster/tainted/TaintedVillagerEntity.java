@@ -6,7 +6,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,17 +18,17 @@ import net.minecraft.world.entity.ai.behavior.declarative.BehaviorBuilder;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.abstracts.IBrainGoalsOverrideVillager;
-import thaumcraft.common.items.ThaumcraftItemInstances;
+import thaumcraft.common.entities.abstracts.IZombieConvertableEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,7 @@ import java.util.Optional;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_VILLAGER;
 
 //rewritten in lazy
-public class TaintedVillagerEntity extends Villager implements IBrainGoalsOverrideVillager, Enemy {
+public class TaintedVillagerEntity extends Villager implements IBrainGoalsOverrideVillager, Enemy, IZombieConvertableEntity {
     public TaintedVillagerEntity(Level level) {
         this(TAINTED_VILLAGER(),level);
     }
@@ -121,22 +120,6 @@ public class TaintedVillagerEntity extends Villager implements IBrainGoalsOverri
         }
     }
 
-    @Override
-    protected void dropCustomDeathLoot(DamageSource damageSource, int i, boolean bl) {
-        super.dropCustomDeathLoot(damageSource, i, bl);
-        if (random.nextInt(2) == 0) {
-            if (random.nextBoolean()) {
-                this.spawnAtLocation(new ItemStack(ThaumcraftItemInstances.TAINTED_GOO()),getBbHeight()/2);
-            } else {
-                this.spawnAtLocation(new ItemStack(ThaumcraftItemInstances.TAINT_TENDRIL()),getBbHeight()/2);
-            }
-        }
-
-        if (random.nextInt(13) < 1 + i) {
-            this.spawnAtLocation(new ItemStack(ThaumcraftItemInstances.GOLD_COIN()),1.5F);
-        }
-    }
-
     @Nullable
     public Villager getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         double d = this.random.nextDouble();
@@ -153,4 +136,11 @@ public class TaintedVillagerEntity extends Villager implements IBrainGoalsOverri
         villager.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(villager.blockPosition()), MobSpawnType.BREEDING, null, null);
         return villager;
     }
+
+    @Override
+    public boolean zombify(ServerLevel level, Zombie killer) {
+        //TODO:[maybe wont finished] zombify tainted villager or leave blank
+        return false;
+    }
+
 }

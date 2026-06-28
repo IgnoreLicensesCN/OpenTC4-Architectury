@@ -2,6 +2,9 @@
   "replace": false,
   "values": [
     "thaumcraft:tainted_creeper",
-    "thaumcraft:tainted_villager"
+    "thaumcraft:tainted_villager",
+    "thaumcraft:tainted_cow",
+    "thaumcraft:tainted_chicken",
+    "thaumcraft:tainted_sheep"
   ]
 }

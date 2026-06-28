@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.utils;
 
+import com.linearity.opentc4.annotations.forvalue.RadianValue;
 import com.linearity.opentc4.mixin.LivingEntityAccessor;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -340,35 +341,50 @@ public class EntityUtils {
         return world.getEntitiesOfClass(clazz, box, e -> e != self);
     }
 
-    public static boolean isVisibleTo(float fov, Entity ent, Entity ent2, float range) {
-        return isVisibleToInternal(
-                fov, ent,
-                ent2.getX(),
-                ent2.getBoundingBox().minY + ent2.getEyeHeight() / 2.0,
-                ent2.getZ(),
+    public static boolean isVisibleTo(
+            @RadianValue("the whole cone's radian,2 times of degree value between look vec and vec from entityPosition to targetPosition") float fov, Entity ent, Entity ent2, float range) {
+        return isVisibleTo(
+                fov,
+                ent,
+                ent2.getEyePosition(),
                 range
         );
     }
 
-    public static boolean isVisibleTo(float fov, Entity ent, double xx, double yy, double zz, float range) {
-        return isVisibleToInternal(fov, ent, xx, yy, zz, range);
-    }
-
-    // 私有统一方法
-    private static boolean isVisibleToInternal(float fov, Entity ent, double tx, double ty, double tz, float range) {
-        // 玩家视线向量
+    public static boolean isVisibleTo(
+            @RadianValue("the whole cone's radian,2 times of degree value between look vec and vec from entityPosition to targetPosition") float fov,
+            Entity ent,
+            Vec3 checkingPos,
+            float range
+    ) {
+        Vec3 eye = ent.getEyePosition();
         Vec3 look = ent.getLookAngle();
-        Vec3 start = new Vec3(ent.getX(), ent.getBoundingBox().minY + ent.getEyeHeight(), ent.getZ());
-        Vec3 end = start.add(look.x * range, look.y * range, look.z * range);
-
-        // 目标位置
-        double[] target = new double[]{tx, ty, tz};
-        double[] origin = new double[]{start.x, start.y, start.z};
-        double[] lookPos = new double[]{end.x, end.y, end.z};
-
-        // 调用你的 Utils.isLyingInCone
-        return Utils.isLyingInCone(target, origin, lookPos, fov);
+        Vec3 dir = checkingPos.subtract(eye);
+        double distSq = dir.lengthSqr();
+        if (distSq > range * range) {
+            return false;
+        }
+        double dot = dir.dot(look);
+        if (dot <= 0) {
+            return false;
+        }
+        double cosHalf = Math.cos(Math.toRadians(fov * 0.5));
+        return dot * dot >= distSq * cosHalf * cosHalf;
     }
+
+//    // 私有统一方法
+//    private static boolean isVisibleToInternal(float fov, Entity ent, double tx, double ty, double tz, float range) {
+//
+//        Vec3 look = ent.getLookAngle();
+//        Vec3 start = new Vec3(ent.getX(), ent.getBoundingBox().minY + ent.getEyeHeight(), ent.getZ());
+//        Vec3 end = start.add(look.x * range, look.y * range, look.z * range);
+//
+//        double[] target = new double[]{tx, ty, tz};
+//        double[] origin = new double[]{start.x, start.y, start.z};
+//        double[] lookPos = new double[]{end.x, end.y, end.z};
+//
+//        return Utils.isLyingInCone(target, origin, lookPos, fov);
+//    }
 
     //TODO:Migrate to entity drop item logic(whatever it will lead to,always floating or anything else)
     public static ItemEntity entityDropSpecialItem(Entity entity, ItemStack stack, float dropheight) {

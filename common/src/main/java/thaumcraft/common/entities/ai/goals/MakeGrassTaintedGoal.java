@@ -1,0 +1,90 @@
+package thaumcraft.common.entities.ai.goals;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
+
+import java.util.EnumSet;
+import java.util.function.Predicate;
+
+import static thaumcraft.common.lib.world.biomes.BiomeUtils.setPosTaintAndSetTaintSource;
+
+public class MakeGrassTaintedGoal extends Goal {
+    private static final int EAT_ANIMATION_TICKS = 40;
+    private static final Predicate<BlockState> IS_TALL_GRASS = BlockStatePredicate.forBlock(Blocks.GRASS);
+    private final Mob mob;
+    private final Level level;
+    private int eatAnimationTick;
+
+    public MakeGrassTaintedGoal(Mob mob) {
+        this.mob = mob;
+        this.level = mob.level();
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
+    }
+
+    @Override
+    public boolean canUse() {
+        if (this.mob.getRandom().nextInt(this.mob.isBaby() ? 50 : 1000) != 0) {
+            return false;
+        } else {
+            BlockPos blockPos = this.mob.blockPosition();
+            return IS_TALL_GRASS.test(this.level.getBlockState(blockPos)) || this.level.getBlockState(blockPos.below()).is(Blocks.GRASS_BLOCK);
+        }
+    }
+
+    @Override
+    public void start() {
+        this.eatAnimationTick = this.adjustedTickDelay(40);
+        this.level.broadcastEntityEvent(this.mob, (byte)10);
+        this.mob.getNavigation().stop();
+    }
+
+    @Override
+    public void stop() {
+        this.eatAnimationTick = 0;
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        return this.eatAnimationTick > 0;
+    }
+
+    public int getEatAnimationTick() {
+        return this.eatAnimationTick;
+    }
+
+    @Override
+    public void tick() {
+        this.eatAnimationTick = Math.max(0, this.eatAnimationTick - 1);
+        if (this.eatAnimationTick == this.adjustedTickDelay(4)) {
+            BlockPos blockPos = this.mob.blockPosition();
+            if (IS_TALL_GRASS.test(this.level.getBlockState(blockPos))) {
+                if (this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+                    this.level.destroyBlock(blockPos, false);
+                }
+                if (level instanceof ServerLevel serverLevel){
+                    setPosTaintAndSetTaintSource(serverLevel, blockPos.above());
+                }
+                this.mob.ate();
+            } else {
+                BlockPos blockPos2 = blockPos.below();
+                if (this.level.getBlockState(blockPos2).is(Blocks.GRASS_BLOCK)) {
+                    if (this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+                        this.level.levelEvent(2001, blockPos2, Block.getId(Blocks.GRASS_BLOCK.defaultBlockState()));
+                        if (level instanceof ServerLevel serverLevel){
+                            setPosTaintAndSetTaintSource(serverLevel, blockPos);
+                        }
+                    }
+                    this.mob.ate();
+                }
+            }
+        }
+    }
+}

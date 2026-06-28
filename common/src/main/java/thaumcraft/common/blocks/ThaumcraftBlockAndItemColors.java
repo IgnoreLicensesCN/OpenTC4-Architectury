@@ -245,13 +245,11 @@ public class ThaumcraftBlockAndItemColors {
                                 if (nodeBE.getNodeType() == NodeType.DARK){
                                     var nodePos = nodeBE.getBlockPos();
 
-                                    if (finalHasGoggles //added to avoid players' anger
-                                            || EntityUtils.isVisibleTo(
-                                            0.66F,
+                                    if (EntityUtils.isVisibleTo(
+                                            finalHasGoggles ? (float) Math.PI/2 //added to avoid players' anger
+                                            :0.66F,
                                             livingEntity,
-                                            nodePos.getX() + 0.5F,
-                                            nodePos.getY() + 0.5F,
-                                            nodePos.getZ() + 0.5F,
+                                            nodePos.getCenter(),
                                             256.0F
                                     )
                                     ){

@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.entities.monster.EntityThaumicSlime;
+import thaumcraft.common.entities.monster.tainted.EntityThaumicSlime;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.ThaumcraftFluidInstances.FLUX_GOO_FLUID;

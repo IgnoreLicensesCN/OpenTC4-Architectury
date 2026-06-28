@@ -16,14 +16,9 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.IExplodeOverrideCreeper;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
-import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
-import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeLookups;
+import thaumcraft.common.lib.world.biomes.BiomeUtils;
 
-import static com.linearity.opentc4.Consts.TAINT_SPREAD_DOWN_DISTANCE;
-import static com.linearity.opentc4.Consts.TAINT_SPREAD_UP_DISTANCE;
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.LIVING_TEST;
-import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_CREEPER;
 
 public class TaintedCreeperEntity extends Creeper implements IExplodeOverrideCreeper {
@@ -58,23 +53,10 @@ public class TaintedCreeperEntity extends Creeper implements IExplodeOverrideCre
                 e.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT(), 100, 0));
             });//TODO:[maybe wont finished]"Vote in democracy"(are u ill with it asdff?) to decide if spawnLingeringCloud instead
 
-
-
             for(int a = 0; a < 10; ++a) {
                 if (level.random.nextBoolean()){
-
                     var pickPos = bpos.offset(random.nextInt(11) - 5, 0, random.nextInt(11) - 5);
-                    var biome = serverLevel.getBiome(pickPos);
-                    if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
-                        var holderTaint = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,ThaumcraftBiomeIDs.TAINT_KEY);
-                        for (int i=TAINT_SPREAD_DOWN_DISTANCE;i<TAINT_SPREAD_UP_DISTANCE;i+=1){
-                            Utils.setBiomeAt(serverLevel, pickPos.above(i), holderTaint);
-                        }
-                        var fibreLocation = pickPos.below();
-                        if (!serverLevel.getBlockState(fibreLocation).isAir()){
-                            serverLevel.setBlockAndUpdate(fibreLocation,FIBROUS_TAINT().defaultBlockState());
-                        }
-                    }
+                    BiomeUtils.setPosTaintAndSetTaintSourceIfNotTaint(serverLevel, pickPos);
                 }
             }
 

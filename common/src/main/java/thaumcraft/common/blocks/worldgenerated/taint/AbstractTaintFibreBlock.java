@@ -123,7 +123,7 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
     @Override
     public void randomTick(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
         if (Platform.getEnvironment() != Env.CLIENT) {
-            BiomeUtils.taintBiomeSpread(world, blockPos, random, this);
+            BiomeUtils.taintBiomeSpread(world, blockPos, random);
 
             if (cancelRandomTickAfterSpread(blockState, world, blockPos, random)) {
                 return;
@@ -132,27 +132,18 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
             var pickPos = blockPos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
             if (world.getBiome(pickPos).is(ThaumcraftBiomeIDs.TAINT_KEY)) {
                 var pickState = world.getBlockState(pickPos);
-                var pickBlock = pickState.getBlock();
                 if (!spreadFibres(world, pickPos)) {
-                    int adjacentTaint = BiomeUtils.getAdjacentTaint(world, pickPos);
+                    int adjacentTaint = BiomeUtils.getTaintedBlocksNear(world, pickPos);
                     if (adjacentTaint >= 2
-                            && (Utils.isWoodLog(world, pickPos)
-                            || pickState.is(Blocks.MELON)
-                            || pickState.is(Blocks.PUMPKIN)
-                            || pickState.is(Blocks.CARVED_PUMPKIN)
-                            || pickState.is(Blocks.JACK_O_LANTERN)
-                            || pickState.is(Blocks.CACTUS))) {
+                            && (
+                            pickState.is(ThaumcraftBlocks.Tags.CAN_BE_CONVERTED_TO_FIBROUS_TAINT))) {
                         world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT().defaultBlockState());
                         world.blockEvent(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT(), 1, 0);
                     }
 
                     if (adjacentTaint >= 3 && !pickState.isAir()
                             && (
-                                    pickState.is(BlockTags.SAND)
-                                            || pickState.is(Blocks.GRAVEL)
-                                            || pickState.is(BlockTags.DIRT)
-                                            || pickState.is(Blocks.GRASS_BLOCK)
-                                            || pickState.is(Blocks.CLAY)
+                                    pickState.is(ThaumcraftBlocks.Tags.CAN_BE_CONVERTED_TO_TAINTED_SOIL)
                     )
                     ) {
                         world.setBlock(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_SOIL().defaultBlockState(), 0, 3);

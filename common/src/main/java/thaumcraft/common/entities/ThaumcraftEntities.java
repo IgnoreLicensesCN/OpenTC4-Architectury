@@ -8,10 +8,18 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.entities.monster.tainted.TaintedCreeperEntity;
-import thaumcraft.common.entities.monster.tainted.TaintedVillagerEntity;
+import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
+import thaumcraft.common.entities.monster.tainted.*;
 import thaumcraft.common.entities.projectile.frostfocus.FrostShardEntity;
 import thaumcraft.common.entities.projectile.hellbatfocus.FireBatEntity;
 import thaumcraft.common.entities.projectile.pechfocus.PechBlastEntity;
@@ -65,9 +73,17 @@ public class ThaumcraftEntities {
         public static EntityType<TaintedCreeperEntity> TAINTED_CREEPER() {
             return Registry.SUPPLIER_TAINTED_CREEPER.get();
         }
-
         public static EntityType<TaintedVillagerEntity> TAINTED_VILLAGER() {
             return Registry.SUPPLIER_TAINTED_VILLAGER.get();
+        }
+        public static EntityType<TaintedCowEntity> TAINTED_COW() {
+            return Registry.SUPPLIER_TAINTED_COW.get();
+        }
+        public static EntityType<TaintedSheepEntity>  TAINTED_SHEEP() {
+            return Registry.SUPPLIER_TAINTED_SHEEP.get();
+        }
+        public static EntityType<TaintedChickenEntity> TAINTED_CHICKEN() {
+            return Registry.SUPPLIER_TAINTED_CHICKEN.get();
         }
 
     }
@@ -161,6 +177,24 @@ public class ThaumcraftEntities {
                         .sized(0.6F, 1.95F).clientTrackingRange(10)
                         .build("tainted_villager")
         );
+        public static final RegistrySupplier<EntityType<TaintedCowEntity>> SUPPLIER_TAINTED_COW = ENTITIES.register(
+                "tainted_cow",
+                () -> EntityType.Builder.<TaintedCowEntity>of(TaintedCowEntity::new, MobCategory.CREATURE)
+                        .sized(0.9F, 1.4F).clientTrackingRange(10)
+                        .build("tainted_cow")
+        );
+        public static final RegistrySupplier<EntityType<TaintedSheepEntity>> SUPPLIER_TAINTED_SHEEP = ENTITIES.register(
+                "tainted_sheep",
+                () -> EntityType.Builder.<TaintedSheepEntity>of(TaintedSheepEntity::new, MobCategory.CREATURE)
+                        .sized(0.9F, 1.3F).clientTrackingRange(10)
+                        .build("tainted_sheep")
+        );
+        public static final RegistrySupplier<EntityType<TaintedChickenEntity>> SUPPLIER_TAINTED_CHICKEN = ENTITIES.register(
+                "tainted_chicken",
+                () -> EntityType.Builder.<TaintedChickenEntity>of(TaintedChickenEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.7F).clientTrackingRange(10)
+                        .build("tainted_chicken")
+        );
     }
 
     public static class EntityTags {
@@ -175,6 +209,9 @@ public class ThaumcraftEntities {
         ENTITIES.register();
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.FIRE_BAT(),FireBatEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_CREEPER(),TaintedCreeperEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_COW(),TaintedCowEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_CHICKEN(),TaintedChickenEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_SHEEP(),TaintedSheepEntity.createAttributes().build());
     }
 
     public static void registerDefaultAttribute(EntityType<? extends LivingEntity> entityType,AttributeSupplier attributeSupplier){
@@ -187,5 +224,27 @@ public class ThaumcraftEntities {
         if (!(gotMap instanceof IdentityHashMap<EntityType<? extends LivingEntity>, AttributeSupplier>)){
             opentc4$setSuppliers(new IdentityHashMap<>(gotMap));
         }
+    }
+
+    public static boolean taintedMobWontAttack(LivingEntity entity){
+        return entity.getType().is(EntityTags.TAINTED);
+    }
+
+    public static void handleTargetSelectorForTaintedMob(PathfinderMob mob, GoalSelector targetSelector){
+        targetSelector.addGoal(1, new HurtByTargetGoal(mob));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, Player.class, true, living -> !taintedMobWontAttack(living)));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, IronGolem.class, true, living -> !taintedMobWontAttack(living)));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, Villager.class, true, living -> !taintedMobWontAttack(living)));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, Animal.class, true, living -> !taintedMobWontAttack(living)));
+    }
+    public static void handleGoalsForTaintedMob(PathfinderMob mob, GoalSelector goalSelector) {
+        goalSelector.getAvailableGoals().removeIf(wrapped -> {
+            var goal = wrapped.getGoal();
+            return goal instanceof PanicGoal
+                    || goal instanceof TemptGoal
+                    || goal instanceof BreedGoal
+                    || goal instanceof FollowParentGoal;
+        });
+        goalSelector.addGoal(2, new DelayControllableMeleeAttackGoal(mob, 1.0F, false).setAttackInterval(10));
     }
 }
