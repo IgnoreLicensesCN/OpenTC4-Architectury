@@ -38,35 +38,6 @@ public class Utils {
 //    public static HashMap<WorldCoordinates, Long> effectBuffer = new HashMap<>();
     public static Map<Level,Cache<BlockPos,Boolean>> effectBuffer = new MapMaker().weakKeys().makeMap();
 
-    public static boolean isChunkLoaded(Level world, int x, int z) {
-        int chunkX = x >> 4;
-        int chunkZ = z >> 4;
-        return world.hasChunk(chunkX, chunkZ);
-    }
-
-    public static boolean useBonemealAtLoc(Level world, Player player, int x, int y, int z) {
-        BlockPos pos = new BlockPos(x, y, z);
-        ItemStack fake = new ItemStack(Items.BONE_MEAL);
-        if (BoneMealItem.growCrop(fake, world, pos)) {
-            if (!world.isClientSide) {
-                world.levelEvent(1505, pos, 0);
-            }
-            return true;
-        }
-
-        return false;
-    }
-
-    public static boolean hasColor(byte[] colors) {
-        for (byte col : colors) {
-            if (col >= 0) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static int getFirstUncoveredY(Level world, int x, int z) {
         int y = Math.max(5, world.getMinBuildHeight());
 
@@ -92,11 +63,7 @@ public class Utils {
 
     public static int getFirstUncoveredBlockHeight(Level world, int par1, int par2) {
         return getFirstUncoveredY(world, par1, par2);
-//      int var3;
-//      for(var3 = 10; !world.isAirBlock(par1, var3 + 1, par2) || var3 > 250; ++var3) {
-//      }
-//
-//      return var3;
+
     }
 
     public static float clamp_float(float par0, float par1, float par2) {
@@ -305,31 +272,6 @@ public class Utils {
 
     }
 
-    public static boolean isLyingInCone(double[] x, double[] t, double[] b, float aperture) {
-        double halfAperture = aperture / 2.0F;
-        double[] apexToXVect = dif(t, x);
-        double[] axisVect = dif(t, b);
-        boolean isInInfiniteCone = dotProd(apexToXVect, axisVect) / magn(apexToXVect) / magn(axisVect) > Math.cos(
-                halfAperture);
-        if (!isInInfiniteCone) {
-            return false;
-        } else {
-            boolean isUnderRoundCap = dotProd(apexToXVect, axisVect) / magn(axisVect) < magn(axisVect);
-            return isUnderRoundCap;
-        }
-    }
-
-    public static double dotProd(double[] a, double[] b) {
-        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-    }
-
-    public static double[] dif(double[] a, double[] b) {
-        return new double[]{a[0] - b[0], a[1] - b[1], a[2] - b[2]};
-    }
-
-    public static double magn(double[] a) {
-        return Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
-    }
 
     public static Vec3 calculateVelocity(Vec3 from, Vec3 to, double heightGain, double gravity) {
         double endGain = to.y() - from.y();

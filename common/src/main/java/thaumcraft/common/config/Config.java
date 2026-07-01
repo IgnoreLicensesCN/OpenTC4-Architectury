@@ -245,20 +245,20 @@ public class Config {
         config.save();
     }
 
-    public static void initPotions() {
-        int customPotions = 8;
-        int potionOffset = Potion.potionTypes.length;
-        int start = 0;
-        Thaumcraft.log.info("Found potion array with a size of {}", potionOffset);
-        if (potionOffset < 128 - customPotions) {
-            Thaumcraft.log.info("Extending Potion.potionTypes array to {}", potionOffset + customPotions);
-            Potion[] potionTypes = new Potion[potionOffset + customPotions];
-            System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, potionOffset);
-            Utils.setPrivateFinalValue(Potion.class, null, potionTypes, "potionTypes", "potionTypes", "a");
-            start = potionOffset++ - 1;
-        } else {
-            start = -1;
-        }
+//    public static void initPotions() {
+//        int customPotions = 8;
+//        int potionOffset = Potion.potionTypes.length;
+//        int start = 0;
+//        Thaumcraft.log.info("Found potion array with a size of {}", potionOffset);
+//        if (potionOffset < 128 - customPotions) {
+//            Thaumcraft.log.info("Extending Potion.potionTypes array to {}", potionOffset + customPotions);
+//            Potion[] potionTypes = new Potion[potionOffset+customPotions];
+//            System.arraycopy(Potion.potionTypes, 0, potionTypes, 0, potionOffset);
+//            Utils.setPrivateFinalValue(Potion.class, null, potionTypes, "potionTypes", "potionTypes", "a");
+//            start = potionOffset++ - 1;
+//        } else {
+//            start = -1;
+//        }
 
 //        start = getNextPotionId(start);
 //        if (start >= 0) {
@@ -324,28 +324,29 @@ public class Config {
 //            Thaumcraft.log.info("Initializing PotionSunScorned with id {}", start);
 //        }
 
-//        start = getNextPotionId(start);
-//        if (start >= 0) {
-//            potionThaumarhiaID = start;
-//            PotionThaumarhia.instance = new PotionThaumarhia(potionThaumarhiaID, true, 6702199);
-//            PotionThaumarhia.init();
-//            Thaumcraft.log.info("Initializing PotionThaumarhia with id {}", start);
+
+    / /        start = getNextPotionId(start);
+    / /        if (start >= 0) {
+    / /            potionThaumarhiaID = start;
+    / /            PotionThaumarhia.instance = new PotionThaumarhia(potionThaumarhiaID, true, 6702199);
+    / /            PotionThaumarhia.init();
+    / /            Thaumcraft.log.info("Initializing PotionThaumarhia with id {}", start);
+    / /        }
+//
+//    }
+
+//    static int getNextPotionId(int start) {
+//        if (start <= 0 || start >= Potion.potionTypes.length || Potion.potionTypes[start] != null) {
+//            ++start;
+//            if (start < 128) {
+//                start = getNextPotionId(start);
+//            } else {
+//                start = -1;
+//            }
+//
 //        }
-
-    }
-
-    static int getNextPotionId(int start) {
-        if (start <= 0 || start >= Potion.potionTypes.length || Potion.potionTypes[start] != null) {
-            ++start;
-            if (start < 128) {
-                start = getNextPotionId(start);
-            } else {
-                start = -1;
-            }
-
-        }
-        return start;
-    }
+//        return start;
+//    }
 
     public static void syncConfigurable() {
         genAura = config.get(CATEGORY_GEN, "generate_aura_nodes", true).getBoolean(true);

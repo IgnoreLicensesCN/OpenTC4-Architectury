@@ -5,6 +5,8 @@
     "thaumcraft:tainted_villager",
     "thaumcraft:tainted_cow",
     "thaumcraft:tainted_chicken",
-    "thaumcraft:tainted_sheep"
+    "thaumcraft:tainted_sheep",
+    "thaumcraft:tainted_pig",
+    "thaumcraft:tainted_spider"
   ]
 }

@@ -6,9 +6,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import org.jetbrains.annotations.Nullable;
+import org.jsoup.parser.Tag;
 import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 import thaumcraft.api.entities.ITaintedMob;
+import thaumcraft.common.entities.ThaumcraftEntities;
 
 import java.util.Objects;
 
@@ -23,7 +25,7 @@ public class FluxTaintEffect extends MobEffect implements IPreventMilkRemoveEffe
 	public void applyEffectTick(LivingEntity entity, int amplifier) {
 		boolean undeadFlag = Objects.equals(entity.getMobType(), MobType.UNDEAD);
 
-		if (entity instanceof ITaintedMob) {
+		if (entity.getType().is(ThaumcraftEntities.EntityTags.TAINTED)) {
 			entity.heal(1.0F);
 			return;
 		}

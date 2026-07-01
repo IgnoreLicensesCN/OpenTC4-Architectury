@@ -1,60 +1,47 @@
 package com.linearity.opentc4.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import thaumcraft.api.blockapi.IEntityInLavaBlock;
+import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
 
 @Mixin(Entity.class)
 public class EntityMixin {
 
-    @Inject(
-            method = "isInLava",
-            at = @At("HEAD"),
-            cancellable = true
+    @WrapOperation(
+            method = "updateFluidHeightAndDoFluidPushing",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/level/Level;getFluidState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/FluidState;"
+            )
     )
-    private void opentc4$isInLava(CallbackInfoReturnable<Boolean> cir) {
-        Entity self = (Entity)(Object)this;
-
-        Level level = self.level();
-        if (level.isClientSide) return; // 可选，通常不必客户端算
-
-        AABB box = self.getBoundingBox();
-
-        // 扫描实体 AABB 覆盖的方块
-        int minX = Mth.floor(box.minX);
-        int maxX = Mth.floor(box.maxX);
-        int minY = Mth.floor(box.minY);
-        int maxY = Mth.floor(box.maxY);
-        int minZ = Mth.floor(box.minZ);
-        int maxZ = Mth.floor(box.maxZ);
-
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-
-        for (int x = minX; x <= maxX; x++) {
-            for (int y = minY; y <= maxY; y++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    pos.set(x, y, z);
-
-                    BlockState state = level.getBlockState(pos);
-                    Block block = state.getBlock();
-
-                    if (block instanceof IEntityInLavaBlock lavaLike) {
-                        if (lavaLike.consideredAsLava(state, level, pos, self)) {
-                            cir.setReturnValue(true);
-                            return;
-                        }
-                    }
-                }
+    private FluidState opentc4$insideLavaBlockCheck(Level level, BlockPos pos, Operation<FluidState> original){
+        //maybe better than another foreach?
+        var blockState = level.getBlockState(pos);
+        if (blockState.getBlock() instanceof IEntityInLavaBlock entityInLavaBlock) {
+            if (entityInLavaBlock.consideredAsLava(blockState,level,pos,(Entity)(Object)this)) {
+                return Fluids.LAVA.defaultFluidState();
             }
+        }
+        return original.call(level, pos);
+    }
+
+    @Inject(
+            method = "tick",
+            at = @At("HEAD")
+    )
+    private void opentc4$entityTick(CallbackInfo ci){
+        var self = (Entity)(Object)this;
+        if (self instanceof ITaintConvertableEntity taintConvertable && taintConvertable.canConvertToTaintedMob()) {
+            taintConvertable.convertToTaintedMob();
         }
     }
 

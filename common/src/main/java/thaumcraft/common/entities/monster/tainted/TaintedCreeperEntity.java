@@ -15,13 +15,14 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.IExplodeOverrideCreeper;
+import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.LIVING_TEST;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_CREEPER;
 
-public class TaintedCreeperEntity extends Creeper implements IExplodeOverrideCreeper {
+public class TaintedCreeperEntity extends Creeper implements IExplodeOverrideCreeper, ITaintConvertableEntity {
     public TaintedCreeperEntity(Level level) {
         this(TAINTED_CREEPER(), level);
     }
@@ -81,5 +82,15 @@ public class TaintedCreeperEntity extends Creeper implements IExplodeOverrideCre
     @Override
     public float getVoicePitch() {
         return 0.7F;
+    }
+
+    @Override
+    public boolean canConvertToTaintedMob() {
+        return false;
+    }
+
+    @Override
+    public void convertToTaintedMob() {
+
     }
 }

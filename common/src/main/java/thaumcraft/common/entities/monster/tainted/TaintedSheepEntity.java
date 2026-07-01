@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
+import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
 import thaumcraft.common.entities.ai.goals.MakeGrassTaintedGoal;
 
@@ -24,7 +25,7 @@ import static thaumcraft.common.entities.ThaumcraftEntities.handleTargetSelector
 
 //oh breed light can breed this,but i decide to keep that to make chaos
 //however since goal removed they wont make love
-public class TaintedSheepEntity extends Sheep implements Enemy {
+public class TaintedSheepEntity extends Sheep implements Enemy, ITaintConvertableEntity {
     public TaintedSheepEntity(Level level) {
         this(TAINTED_SHEEP(), level);
     }
@@ -77,5 +78,19 @@ public class TaintedSheepEntity extends Sheep implements Enemy {
     @Override
     public boolean canFallInLove() {
         return false;
+    }
+    @Override
+    public int getArmorValue() {
+        return 1;
+    }
+
+    @Override
+    public boolean canConvertToTaintedMob() {
+        return false;
+    }
+
+    @Override
+    public void convertToTaintedMob() {
+
     }
 }

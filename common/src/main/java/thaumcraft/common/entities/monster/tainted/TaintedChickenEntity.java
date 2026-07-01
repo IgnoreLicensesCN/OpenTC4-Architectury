@@ -16,12 +16,13 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
+import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
 
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_CHICKEN;
 import static thaumcraft.common.entities.ThaumcraftEntities.handleGoalsForTaintedMob;
 import static thaumcraft.common.entities.ThaumcraftEntities.handleTargetSelectorForTaintedMob;
 
-public class TaintedChickenEntity extends Chicken implements Enemy {
+public class TaintedChickenEntity extends Chicken implements Enemy, ITaintConvertableEntity {
     public TaintedChickenEntity(Level level) {
         this(TAINTED_CHICKEN(), level);
     }
@@ -29,7 +30,7 @@ public class TaintedChickenEntity extends Chicken implements Enemy {
         super(entityType, level);
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
+    public static AttributeSupplier.@NotNull Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 8).add(Attributes.MOVEMENT_SPEED, 0.4F).add(Attributes.ATTACK_DAMAGE,3);
     }
 
@@ -65,5 +66,20 @@ public class TaintedChickenEntity extends Chicken implements Enemy {
     @Override
     public boolean canFallInLove() {
         return false;
+    }
+
+    @Override
+    public int getArmorValue() {
+        return 2;
+    }
+
+    @Override
+    public boolean canConvertToTaintedMob() {
+        return false;
+    }
+
+    @Override
+    public void convertToTaintedMob() {
+
     }
 }

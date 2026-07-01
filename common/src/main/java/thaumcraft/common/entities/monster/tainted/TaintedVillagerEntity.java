@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.abstracts.IBrainGoalsOverrideVillager;
+import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
 import thaumcraft.common.entities.abstracts.IZombieConvertableEntity;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import java.util.Optional;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_VILLAGER;
 
 //rewritten in lazy
-public class TaintedVillagerEntity extends Villager implements IBrainGoalsOverrideVillager, Enemy, IZombieConvertableEntity {
+public class TaintedVillagerEntity extends Villager implements IBrainGoalsOverrideVillager, Enemy, IZombieConvertableEntity, ITaintConvertableEntity {
     public TaintedVillagerEntity(Level level) {
         this(TAINTED_VILLAGER(),level);
     }
@@ -141,6 +142,16 @@ public class TaintedVillagerEntity extends Villager implements IBrainGoalsOverri
     public boolean zombify(ServerLevel level, Zombie killer) {
         //TODO:[maybe wont finished] zombify tainted villager or leave blank
         return false;
+    }
+
+    @Override
+    public boolean canConvertToTaintedMob() {
+        return false;
+    }
+
+    @Override
+    public void convertToTaintedMob() {
+
     }
 
 }

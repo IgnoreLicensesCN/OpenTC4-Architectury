@@ -1599,6 +1599,7 @@ public class ThaumcraftBlocks {
         public static final TagKey<Block> TAINTED_MATERIAL_BLOCK = TagKey.create(
                 Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "tainted_material")
         );
+
         public static final TagKey<Block> CAN_BE_CONVERTED_TO_TAINTED_SOIL = TagKey.create(
                 Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "can_be_converted_to_tainted_soil")
         );

@@ -3,12 +3,10 @@ package thaumcraft.common.entities;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -29,6 +27,7 @@ import thaumcraft.common.entities.projectile.firefocus.EmberEntity;
 import thaumcraft.common.entities.projectile.firefocus.ExplosiveOrbEntity;
 import thaumcraft.common.entities.projectile.thrownitem.TaintBottleEntity;
 import thaumcraft.common.entities.projectile.shockfocus.ShockOrbEntity;
+import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 import java.util.IdentityHashMap;
 
@@ -85,7 +84,12 @@ public class ThaumcraftEntities {
         public static EntityType<TaintedChickenEntity> TAINTED_CHICKEN() {
             return Registry.SUPPLIER_TAINTED_CHICKEN.get();
         }
-
+        public static EntityType<TaintedPigEntity> TAINTED_PIG() {
+            return Registry.SUPPLIER_TAINTED_PIG.get();
+        }
+        public static EntityType<TaintedSpiderEntity> TAINTED_SPIDER() {
+            return Registry.SUPPLIER_TAINTED_SPIDER.get();
+        }
     }
 
     public static class Registry {
@@ -195,6 +199,18 @@ public class ThaumcraftEntities {
                         .sized(0.4F, 0.7F).clientTrackingRange(10)
                         .build("tainted_chicken")
         );
+        public static final RegistrySupplier<EntityType<TaintedPigEntity>> SUPPLIER_TAINTED_PIG = ENTITIES.register(
+                "tainted_pig",
+                () -> EntityType.Builder.<TaintedPigEntity>of(TaintedPigEntity::new, MobCategory.CREATURE)
+                        .sized(0.9F, 0.9F).clientTrackingRange(10)
+                        .build("tainted_pig")
+        );
+        public static final RegistrySupplier<EntityType<TaintedSpiderEntity>> SUPPLIER_TAINTED_SPIDER = ENTITIES.register(
+                "tainted_spider",
+                () -> EntityType.Builder.<TaintedSpiderEntity>of(TaintedSpiderEntity::new, MobCategory.MONSTER)
+                        .sized(0.4F, 0.3F).clientTrackingRange(8)
+                        .build("tainted_spider")
+        );
     }
 
     public static class EntityTags {
@@ -203,6 +219,7 @@ public class ThaumcraftEntities {
         public static final TagKey<EntityType<?>> FERTILITY_LAMP_NOT_AFFECTIVE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"fertility_lamp_not_affective"));
         public static final TagKey<EntityType<?>> TAINTED = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"tainted_entity"));
         public static final TagKey<EntityType<?>> ELDRITCH = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"eldritch_entity"));
+        public static final TagKey<EntityType<?>> NOT_TAINT_CONVERTABLE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"not_taint_convertable"));
     }
 
     public static void init(){
@@ -212,6 +229,7 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_COW(),TaintedCowEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_CHICKEN(),TaintedChickenEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_SHEEP(),TaintedSheepEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_PIG(),TaintedPigEntity.createAttributes().build());
     }
 
     public static void registerDefaultAttribute(EntityType<? extends LivingEntity> entityType,AttributeSupplier attributeSupplier){
@@ -234,8 +252,8 @@ public class ThaumcraftEntities {
         targetSelector.addGoal(1, new HurtByTargetGoal(mob));
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(mob, Player.class, true, living -> !taintedMobWontAttack(living)));
         targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, IronGolem.class, true, living -> !taintedMobWontAttack(living)));
-        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, Villager.class, true, living -> !taintedMobWontAttack(living)));
-        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(mob, Animal.class, true, living -> !taintedMobWontAttack(living)));
+        targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(mob, Villager.class, true, living -> !taintedMobWontAttack(living)));
+        targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(mob, Animal.class, true, living -> !taintedMobWontAttack(living)));
     }
     public static void handleGoalsForTaintedMob(PathfinderMob mob, GoalSelector goalSelector) {
         goalSelector.getAvailableGoals().removeIf(wrapped -> {
@@ -246,5 +264,25 @@ public class ThaumcraftEntities {
                     || goal instanceof FollowParentGoal;
         });
         goalSelector.addGoal(2, new DelayControllableMeleeAttackGoal(mob, 1.0F, false).setAttackInterval(10));
+    }
+
+    public static boolean usualCanConvertToTaintedMob(LivingEntity living) {
+        return living.hasEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT()) && !living.getType().is(EntityTags.TAINTED) && !living.getType().is(EntityTags.NOT_TAINT_CONVERTABLE);
+    }
+    public static <TaintedType extends NotTaintedType,NotTaintedType extends Entity> void  usualTaintedMobConversion(NotTaintedType notTainted,EntityType<TaintedType> taintedEntityType){
+
+        var level = notTainted.level();
+        var taintedSelf = taintedEntityType.create(level);
+        var tags = new CompoundTag();
+
+        notTainted.saveWithoutId(tags);
+        tags.putUUID("UUID", taintedSelf.getUUID());
+        taintedSelf.load(tags);
+        if (taintedSelf instanceof LivingEntity living && notTainted instanceof LivingEntity notTaintedLiving){
+            living.setHealth(living.getMaxHealth() *(notTaintedLiving.getHealth() / notTaintedLiving.getMaxHealth()));
+        }
+
+        level.addFreshEntity(taintedSelf);
+        notTainted.discard();
     }
 }

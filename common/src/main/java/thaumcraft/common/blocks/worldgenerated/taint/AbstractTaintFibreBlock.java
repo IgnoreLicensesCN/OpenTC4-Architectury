@@ -5,7 +5,6 @@ import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -13,6 +12,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -25,12 +25,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.internal.WeightedRandomCollection;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.utils.BlockUtils;
-import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 
@@ -45,17 +46,19 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
             ThaumcraftSounds.GORE,//SoundEvents.GRASS_HIT,
             ThaumcraftSounds.GORE//SoundEvents.GRASS_FALL
     );
+
     public AbstractTaintFibreBlock(Properties properties) {
         super(properties);
     }
+
     public AbstractTaintFibreBlock() {
         super(BlockBehaviour.Properties.of()
-                        .noOcclusion()
-                        .randomTicks()
-                        .noCollission()
-                        .sound(TAINT_FIBRE_SOUND)
-                        .strength(1,5)
-                        .mapColor(MapColor.COLOR_PURPLE));
+                .noOcclusion()
+                .randomTicks()
+                .noCollission()
+                .sound(TAINT_FIBRE_SOUND)
+                .strength(1, 5)
+                .mapColor(MapColor.COLOR_PURPLE));
     }
 
     @Override
@@ -67,10 +70,8 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
                                     && !living.getType().is(ThaumcraftEntities.EntityTags.UNDEAD)
                     )
             ) {
-                if (living instanceof ServerPlayer && level.random.nextInt(1000) == 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT(),80,0));
-                }else if(!(living instanceof ServerPlayer) && level.random.nextInt(500) == 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT(),160,0));
+                if (level.random.nextInt(living instanceof Player ? 1000 : 500) == 0) {
+                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT(), 80, 0));
                 }
 
             }
@@ -82,7 +83,7 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
     public boolean triggerEvent(BlockState blockState, Level level, BlockPos blockPos, int i, int j) {
         if (i == 1 && Platform.getEnvironment() == Env.CLIENT) {
             level.playSound(
-                    null,blockPos,
+                    null, blockPos,
                     ThaumcraftSounds.ROOTS,
                     SoundSource.BLOCKS,
                     0.1F,
@@ -97,9 +98,10 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
         return false;
     }
 
-    protected void onSpreadFibresFailed(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random){
+    protected void onSpreadFibresFailed(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
 
     }
+
     public static final VoxelShape SHAPE = Shapes.box(0.2, 0.0, 0.2, 0.8, 0.8, 0.8);
 
     @Override
@@ -133,65 +135,74 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
             if (world.getBiome(pickPos).is(ThaumcraftBiomeIDs.TAINT_KEY)) {
                 var pickState = world.getBlockState(pickPos);
                 if (!spreadFibres(world, pickPos)) {
-                    int adjacentTaint = BiomeUtils.getTaintedBlocksNear(world, pickPos);
-                    if (adjacentTaint >= 2
-                            && (
-                            pickState.is(ThaumcraftBlocks.Tags.CAN_BE_CONVERTED_TO_FIBROUS_TAINT))) {
-                        world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT().defaultBlockState());
-                        world.blockEvent(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT(), 1, 0);
-                    }
-
-                    if (adjacentTaint >= 3 && !pickState.isAir()
-                            && (
-                                    pickState.is(ThaumcraftBlocks.Tags.CAN_BE_CONVERTED_TO_TAINTED_SOIL)
-                    )
-                    ) {
-                        world.setBlock(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_SOIL().defaultBlockState(), 0, 3);
-                        world.blockEvent(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_SOIL(), 1, 0);
-                    }
+                    spreadSoil(world, pickPos, pickState);
                     onSpreadFibresFailed(blockState, world, blockPos, random);
                 }
             }
         }
+    }
 
+    protected void spreadSoil(ServerLevel world, BlockPos pickPos, BlockState pickState) {
+        int adjacentTaint = BiomeUtils.getTaintedBlocksNear(world, pickPos);
+        BlockState stateToSpread = getBlockStateToSpreadSoil(pickState, adjacentTaint);
+        if (stateToSpread == null) {
+            return;
+        }
+        world.setBlockAndUpdate(pickPos, stateToSpread);
+        world.blockEvent(pickPos, stateToSpread.getBlock(), 1, 0);
+    }
+
+    protected @Nullable BlockState getBlockStateToSpreadSoil(BlockState pickState, int adjacentTaint) {
+        if (adjacentTaint >= 2 && (pickState.is(ThaumcraftBlocks.Tags.CAN_BE_CONVERTED_TO_FIBROUS_TAINT))) {
+            return ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT().defaultBlockState();
+        }
+
+        if (adjacentTaint >= 3 && pickState.is(ThaumcraftBlocks.Tags.CAN_BE_CONVERTED_TO_TAINTED_SOIL)) {
+            return ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_SOIL().defaultBlockState();
+        }
+        return null;
+    }
+
+    public static final WeightedRandomCollection<BlockState> TAINTED_DECORATIONS_TO_SPREAD = new WeightedRandomCollection<>();
+    public static void initDecorations() {
+        TAINTED_DECORATIONS_TO_SPREAD.add(ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_GRASS().defaultBlockState(),99);
+        TAINTED_DECORATIONS_TO_SPREAD.add(ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_PLANT().defaultBlockState(),10);
+        TAINTED_DECORATIONS_TO_SPREAD.add(ThaumcraftBlocks.ThaumcraftBlockInstances.SPORE_STALK().defaultBlockState(),1);
     }
 
     public static boolean spreadFibres(ServerLevel world, BlockPos blockPos) {
-        var blockState = world.getBlockState(blockPos);
-        var liquidState = world.getFluidState(blockPos);
-        Block block = world.getBlockState(blockPos).getBlock();
-        if (BlockUtils.isAdjacentToSolidBlock(world, blockPos)
-                && !isOnlyAdjacentToTaint(world, blockPos)
-                && !liquidState.isEmpty()
-                && (blockState.isAir()
-                || blockState.canBeReplaced()
-                || blockState.is(BlockTags.FLOWERS)
-                || blockState.is(BlockTags.LEAVES)
-        )
-        ) {
-            Block blockForEvent = null;
-            if (world.getRandom().nextInt(10) == 0
+        if (TAINTED_DECORATIONS_TO_SPREAD.getInternalContainerView().isEmpty()){
+            initDecorations();
+        }
+        var random = world.random;
+        if (canSpreadFibresTo(world,blockPos)) {
+            BlockState blockStateForEvent;
+            if (random.nextInt(10) == 0
                     && world.getBlockState(blockPos.above()).isAir()
-                    && world.getBlockState(blockPos.below()).isFaceSturdy(world,blockPos.below(), Direction.UP)
+                    && world.getBlockState(blockPos.below()).isFaceSturdy(world, blockPos.below(), Direction.UP)
             ) {
-                if (world.getRandom().nextInt(10) < 9) {
-                    blockForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_GRASS();
-                    world.setBlock(blockPos, blockForEvent.defaultBlockState(), 3);
-                } else if (world.getRandom().nextInt(12) < 10) {
-                    blockForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_PLANT();
-                    world.setBlock(blockPos, blockForEvent.defaultBlockState(), 2, 3);
-                } else {
-                    blockForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.SPORE_STALK();
-                    world.setBlock(blockPos, blockForEvent.defaultBlockState(), 3, 3);
-                }
+                blockStateForEvent = TAINTED_DECORATIONS_TO_SPREAD.getRandom(random);
+                world.setBlockAndUpdate(blockPos, blockStateForEvent);
             } else {
-                blockForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT();
-                world.setBlock(blockPos, blockForEvent.defaultBlockState(), 0, 3);
+                blockStateForEvent = ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT().defaultBlockState();
+                world.setBlockAndUpdate(blockPos, blockStateForEvent);
             }
-            world.blockEvent(blockPos, blockForEvent, 1, 0);
+            world.blockEvent(blockPos, blockStateForEvent.getBlock(), 1, 0);
             return true;
         } else {
             return false;
         }
+    }
+
+    public static boolean canSpreadFibresTo(ServerLevel level,BlockPos blockPos) {
+        var blockState = level.getBlockState(blockPos);
+        var liquidState = level.getFluidState(blockPos);
+        return BlockUtils.isAdjacentToSolidBlock(level, blockPos)
+                && !isOnlyAdjacentToTaint(level, blockPos)
+                && !liquidState.isEmpty()
+                && (blockState.isAir()
+                || blockState.canBeReplaced()
+                || blockState.is(BlockTags.FLOWERS)
+                || blockState.is(BlockTags.LEAVES));
     }
 }
