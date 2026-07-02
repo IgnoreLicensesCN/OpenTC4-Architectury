@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.entities.monster.tainted.EntityThaumicSlime;
+import thaumcraft.common.entities.monster.tainted.ThaumicSlimeEntity;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.ThaumcraftFluidInstances.FLUX_GOO_FLUID;
@@ -39,9 +39,9 @@ public class FluxGooBlock extends FiniteLiquidBlock {
         var fluidState = state.getFluidState();
         int lvl = fluidState.getAmount();
 
-        if (entity instanceof EntityThaumicSlime slime) {
-            if (slime.getSlimeSize() < lvl && level.random.nextBoolean()) {
-                slime.setSlimeSize(slime.getSlimeSize() + 1);
+        if (entity instanceof ThaumicSlimeEntity slime) {
+            if (slime.getSize() < lvl && level.random.nextBoolean()) {
+                slime.setSize(slime.getSize() + 1,true);
                 finiteFluid.decreaseOrRemove(level, pos, fluidState);
             }
             return;

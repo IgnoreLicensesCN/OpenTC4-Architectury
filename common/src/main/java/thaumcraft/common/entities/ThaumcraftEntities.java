@@ -13,6 +13,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.common.Thaumcraft;
@@ -89,6 +90,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<TaintedSpiderEntity> TAINTED_SPIDER() {
             return Registry.SUPPLIER_TAINTED_SPIDER.get();
+        }
+        public static EntityType<ThaumicSlimeEntity> THAUMIC_SLIME(){
+            return Registry.SUPPLIER_THAUMIC_SLIME.get();
         }
     }
 
@@ -211,6 +215,12 @@ public class ThaumcraftEntities {
                         .sized(0.4F, 0.3F).clientTrackingRange(8)
                         .build("tainted_spider")
         );
+        public static final RegistrySupplier<EntityType<ThaumicSlimeEntity>> SUPPLIER_THAUMIC_SLIME = ENTITIES.register(
+                "thaumic_slime",
+                () -> EntityType.Builder.<ThaumicSlimeEntity>of(ThaumicSlimeEntity::new, MobCategory.MONSTER)
+                        .sized(2.04F, 2.04F).clientTrackingRange(8)
+                        .build("thaumic_slime")
+        );
     }
 
     public static class EntityTags {
@@ -230,6 +240,7 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_CHICKEN(),TaintedChickenEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_SHEEP(),TaintedSheepEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_PIG(),TaintedPigEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.THAUMIC_SLIME(), Monster.createMonsterAttributes().build());
     }
 
     public static void registerDefaultAttribute(EntityType<? extends LivingEntity> entityType,AttributeSupplier attributeSupplier){
@@ -269,7 +280,11 @@ public class ThaumcraftEntities {
     public static boolean usualCanConvertToTaintedMob(LivingEntity living) {
         return living.hasEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT()) && !living.getType().is(EntityTags.TAINTED) && !living.getType().is(EntityTags.NOT_TAINT_CONVERTABLE);
     }
-    public static <TaintedType extends NotTaintedType,NotTaintedType extends Entity> void  usualTaintedMobConversion(NotTaintedType notTainted,EntityType<TaintedType> taintedEntityType){
+    public static <TaintedType extends NotTaintedType,NotTaintedType extends Entity> void
+    usualTaintedMobConversion(
+            NotTaintedType notTainted,
+            EntityType<TaintedType> taintedEntityType
+    ){
 
         var level = notTainted.level();
         var taintedSelf = taintedEntityType.create(level);

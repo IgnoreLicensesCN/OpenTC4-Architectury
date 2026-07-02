@@ -3,15 +3,13 @@ package com.linearity.opentc4.mixin;
 import com.linearity.opentc4.mixinaccessors.InMilkContextAccessor;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Final;
@@ -22,19 +20,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import thaumcraft.common.entities.ThaumcraftEntityEvents;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;
-import thaumcraft.common.items.abstracts.ISpecialDamageCalculationEquipmentItem;
-import thaumcraft.common.items.abstracts.armorcomponents.IAttackOthersListenerArmor;
-import thaumcraft.common.items.abstracts.armorcomponents.IBeingAttackedListenerArmor;
-import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
-import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
-import static thaumcraft.common.items.ThaumcraftItems.ItemTags.UNNATURAL_HUNGER_NEEDED;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.*;
 
 @Mixin(value=LivingEntity.class,priority = 214748)
@@ -137,31 +129,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
     private void opentc4$onFinishUsing(
             Level level, ItemStack itemStack, CallbackInfoReturnable<ItemStack> cir
     ) {
-        //idk if it's suitable to make a interface for item so i didn't
-        Item item = itemStack.getItem();
-        var living = (LivingEntity)(Object)this;
-        var unnaturalHungerInstance = living.getEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER());
-        if (unnaturalHungerInstance != null){
-            if (itemStack.is(UNNATURAL_HUNGER_NEEDED)){
-                int amp = unnaturalHungerInstance.getAmplifier() - 1;
-                int duration = unnaturalHungerInstance.getDuration() - 600;
-                living.removeEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER());
-                if (duration > 0 && amp >= 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.UNNATURAL_HUNGER(), duration, amp, true,true));
-                }
-
-                living.sendSystemMessage((Component.translatable("warp.text.hunger.2")
-                        .withStyle(ChatFormatting.ITALIC)
-                        .withStyle(ChatFormatting.DARK_GREEN)));
-            }
-            else if (item.getFoodProperties() != null) {
-                living.sendSystemMessage(
-                        Component.translatable("warp.text.hunger.1")
-                                .withStyle(ChatFormatting.ITALIC)
-                                .withStyle(ChatFormatting.DARK_RED)
-                );
-            }
-        }
+        ThaumcraftEntityEvents.onHandlingUnnaturalHungerForEating((LivingEntity)(Object)this,itemStack);
     }
 
     @ModifyReturnValue(
@@ -169,13 +137,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
             at = @At("RETURN")
     )
     private static AttributeSupplier.Builder opentc4$injectAttributes(AttributeSupplier.Builder builder) {
-        builder
-                .add(JUMP_Y_VELOCITY_ADDITION_NOT_SNEAKING())
-                .add(STEP_HEIGHT_ADDITION_NOT_SNEAKING())
-                .add(FLYING_SPEED_CONTROL_OVERRIDE())
-                .add(HARNESS_FLYING_SPEED_ADD_PERCENT())
-                .add(HARNESS_FUEL_DURATION_ADD_PERCENT());
-        return builder;
+        return ThaumcraftEntityEvents.injectLivingAttributes(builder);
     }
 
     @ModifyReturnValue(
@@ -183,38 +145,14 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
             at = @At("RETURN")
     )
     private float opentc4$getDamageAfterArmorAbsorb(float originalOut,DamageSource damageSource,float originalIn) {
-        var living = (LivingEntity)(Object)this;
-        AtomicReference<Float> modifiedOut = new AtomicReference<>(originalOut);
-        living.getArmorSlots().forEach(stack -> {
-            if (stack.getItem() instanceof ISpecialDamageCalculationEquipmentItem equipment) {
-                modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedArmorAbsorb(living,stack,out,damageSource,originalIn));
-
-            }
-        });
-        forEachBauble(living, ISpecialDamageCalculationEquipmentItem.class,((slot, stack, equipment) -> {
-            modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedArmorAbsorb(living,stack,out,damageSource,originalIn));
-            return false;
-        }));
-        return modifiedOut.get();
+        return ThaumcraftEntityEvents.DamageEvents.getDamageAfterArmorAbsorb((LivingEntity)(Object)this,originalOut,damageSource,originalIn);
     }
     @ModifyReturnValue(
             method = "getDamageAfterMagicAbsorb",
             at = @At("RETURN")
     )
     private float opentc4$getDamageAfterMagicAbsorb(float originalOut,DamageSource damageSource,float originalIn) {
-        var living = (LivingEntity)(Object)this;
-        AtomicReference<Float> modifiedOut = new AtomicReference<>(originalOut);
-        living.getArmorSlots().forEach(stack -> {
-            if (stack.getItem() instanceof ISpecialDamageCalculationEquipmentItem equipment) {
-                modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedMagicAbsorb(living,stack,out,damageSource,originalIn));
-
-            }
-        });
-        forEachBauble(living, ISpecialDamageCalculationEquipmentItem.class,((slot, stack, equipment) -> {
-            modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedMagicAbsorb(living,stack,out,damageSource,originalIn));
-            return false;
-        }));
-        return modifiedOut.get();
+        return ThaumcraftEntityEvents.DamageEvents.getDamageAfterMagicAbsorb((LivingEntity)(Object)this,originalOut,damageSource,originalIn);
     }
 
     @Inject(
@@ -222,32 +160,17 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V",shift = At.Shift.AFTER)
     )
     private void opentc4$onBeingDamaged(DamageSource damageSource, float damageCausedNoArmorReduce, CallbackInfo ci) {
-        var self = (LivingEntity)(Object)this;
-        var entityCausedDamage = damageSource.getEntity();
-        if (entityCausedDamage != null) {
+        ThaumcraftEntityEvents.DamageEvents.onBeingDamaged((LivingEntity)(Object)this,damageSource,damageCausedNoArmorReduce);
+    }
+    @Shadow
+    public abstract RandomSource getRandom();
 
-            for (var stack : entityCausedDamage.getArmorSlots()) {
-                if (stack.getItem() instanceof IAttackOthersListenerArmor armor) {
-                    armor.onAttackOtherEntity(
-                            stack,
-                            entityCausedDamage,
-                            self,
-                            damageSource,
-                            damageCausedNoArmorReduce
-                    );
-                }
-            }
-        }
-        for (var stack:self.getArmorSlots()) {
-            if (stack.getItem() instanceof IBeingAttackedListenerArmor armor) {
-                armor.onBeingAttackedByOtherEntity(
-                        stack,
-                        self,
-                        damageSource,
-                        damageCausedNoArmorReduce
-                );
-            }
-        }
+    @Inject(
+            method = "dropAllDeathLoot",
+            at = @At("RETURN")
+    )
+    private void opentc4$onDropAll(DamageSource damageSource, CallbackInfo ci) {
+        ThaumcraftEntityEvents.DropEvents.onDropAllDeathLoot((LivingEntity)(Object)this,damageSource);
     }
 }
 

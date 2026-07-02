@@ -59,11 +59,11 @@ public enum EntityBasicAspectGetters {
         this.listener = listener;
     }
 
-    public static AspectList<Aspect> getBasicAspectsForEntityType(EntityType<?> entityType){
+    public static @Unmodifiable AspectList<Aspect> getBasicAspectsForEntityType(EntityType<?> entityType){
         return CALCULATED_RESULT.computeIfAbsent(
                 entityType,
                 type -> {
-                    var result = new HashAspectList<Aspect>();
+                    var result = new HashAspectList<>();
                     result.addAll(ENTITY_TYPE_TO_ASPECTS.getOrDefault(type, UnmodifiableAspectList.EMPTY));
 
                     for (var entry : ADDITIONAL_ENTITY_TYPE_ASPECTS.entrySet()) {

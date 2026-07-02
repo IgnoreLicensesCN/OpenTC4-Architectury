@@ -314,7 +314,9 @@ public class EventHandlerEntity {
               && !fakePlayerFlag
               && event.entity instanceof EntityMob
               && !(event.entity instanceof EntityThaumcraftBoss)
-              && ((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue() >= (double)0.0F) {
+              && ((EntityMob)event.entity).getAttribute(
+                      EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()
+      ).getAttributeValue() >= (double)0.0F) {
          int i = 5 + event.entity.getRandom().nextInt(3);
 
          while(i > 0) {
@@ -359,52 +361,50 @@ public class EventHandlerEntity {
 
    }
 
-   @SubscribeEvent
-   public void livingTick(LivingDeathEvent event) {
-      if (Platform.getEnvironment() != Env.CLIENT
-              && !(event.entityLiving instanceof ITaintedMob)
-              && event.entityLiving.isPotionActive(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT())
-      ) {
-         Entity entity = null;
-         if (event.entityLiving instanceof EntityCreeper) {
-            entity = new EntityTaintCreeper(event.entityLiving.level());
-         } else if (event.entityLiving instanceof EntitySheep) {
-            entity = new EntityTaintSheep(event.entityLiving.level());
-         } else if (event.entityLiving instanceof EntityCow) {
-            entity = new EntityTaintCow(event.entityLiving.level());
-         } else if (event.entityLiving instanceof EntityPig) {
-            entity = new EntityTaintPig(event.entityLiving.level());
-         } else if (event.entityLiving instanceof EntityChicken) {
-            entity = new EntityTaintChicken(event.entityLiving.level());
-         } else if (event.entityLiving instanceof EntityVillager) {
-            entity = new EntityTaintVillager(event.entityLiving.level());
-         } else {
-            entity = new EntityThaumicSlime(event.entityLiving.level());
-            if (entity != null) {
-               ((EntityThaumicSlime)entity).setSlimeSize((int)(1.0F + Math.min(event.entityLiving.getMaxHealth() / 10.0F, 6.0F)));
-            }
-         }
+//   @SubscribeEvent
+//   public void livingTick(LivingDeathEvent event) {
+//      if (Platform.getEnvironment() != Env.CLIENT
+//              && !(event.entityLiving instanceof ITaintedMob)
+//              && event.entityLiving.isPotionActive(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT())
+//      ) {
+//         Entity entity = null;
+//         if (event.entityLiving instanceof EntityCreeper) {
+//            entity = new EntityTaintCreeper(event.entityLiving.level());
+//         } else if (event.entityLiving instanceof EntitySheep) {
+//            entity = new EntityTaintSheep(event.entityLiving.level());
+//         } else if (event.entityLiving instanceof EntityCow) {
+//            entity = new EntityTaintCow(event.entityLiving.level());
+//         } else if (event.entityLiving instanceof EntityPig) {
+//            entity = new EntityTaintPig(event.entityLiving.level());
+//         } else if (event.entityLiving instanceof EntityChicken) {
+//            entity = new EntityTaintChicken(event.entityLiving.level());
+//         } else if (event.entityLiving instanceof EntityVillager) {
+//            entity = new EntityTaintVillager(event.entityLiving.level());
+//         } else {
+//            entity = new EntityThaumicSlime(event.entityLiving.level());
+//             ((EntityThaumicSlime) entity).setSlimeSize((int) (1.0F + Math.min(event.entityLiving.getMaxHealth() / 10.0F, 6.0F)));
+//         }
+//
+//         if (entity != null) {
+//            entity.setLocationAndAngles(event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, event.entityLiving.rotationYaw, 0.0F);
+//            event.entityLiving.level().spawnEntityInWorld(entity);
+//            event.entityLiving.setDead();
+//         }
+//      } else if (Platform.getEnvironment() != Env.CLIENT && EntityUtils.getRecentlyHit(event.entityLiving) > 0) {
+//         AspectList<Aspect>aspectsCompound = ScanManager.generateEntityAspects(event.entityLiving);
+//         if (aspectsCompound != null && !aspectsCompound.isEmpty()) {
+//            AspectList<Aspect>aspects = IAspectReducibleToPrimal.reduceToPrimalsAndCast(aspectsCompound);
+//
+//            for(Aspect aspect : aspects.keySet()) {
+//               if (event.entityLiving.getRandom().nextBoolean()) {
+//                  EntityAspectOrb orb = new EntityAspectOrb(event.entityLiving.level(), event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, aspect, 1 + event.entityLiving.getRandom().nextInt(aspects.get(aspect)));
+//                  event.entityLiving.level().spawnEntityInWorld(orb);
+//               }
+//            }
+//         }
+//      }
 
-         if (entity != null) {
-            entity.setLocationAndAngles(event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, event.entityLiving.rotationYaw, 0.0F);
-            event.entityLiving.level().spawnEntityInWorld(entity);
-            event.entityLiving.setDead();
-         }
-      } else if (Platform.getEnvironment() != Env.CLIENT && EntityUtils.getRecentlyHit(event.entityLiving) > 0) {
-         AspectList<Aspect>aspectsCompound = ScanManager.generateEntityAspects(event.entityLiving);
-         if (aspectsCompound != null && !aspectsCompound.isEmpty()) {
-            AspectList<Aspect>aspects = IAspectReducibleToPrimal.reduceToPrimalsAndCast(aspectsCompound);
-
-            for(Aspect aspect : aspects.keySet()) {
-               if (event.entityLiving.getRandom().nextBoolean()) {
-                  EntityAspectOrb orb = new EntityAspectOrb(event.entityLiving.level(), event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, aspect, 1 + event.entityLiving.getRandom().nextInt(aspects.get(aspect)));
-                  event.entityLiving.level().spawnEntityInWorld(orb);
-               }
-            }
-         }
-      }
-
-   }
+//   }
 
 //   @SubscribeEvent
 //   public void bowNocked(ArrowNockEvent event) {

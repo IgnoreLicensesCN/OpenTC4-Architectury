@@ -57,6 +57,8 @@
     "ServerPlayerGameModeMixin",
     "ServerPlayerMixin",
     "SheepMixin",
+    "SlimeMixin",
+    "SlimeMixin$SlimeMoveControlAccessor",
     "SpiderMixin",
     "VillagerMixin",
     "ZombieMixin"

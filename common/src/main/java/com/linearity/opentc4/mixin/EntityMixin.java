@@ -8,13 +8,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import thaumcraft.api.blockapi.IEntityInLavaBlock;
-import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
+import thaumcraft.common.entities.ThaumcraftEntityEvents;
 
 @Mixin(Entity.class)
 public class EntityMixin {
+
+    @Shadow
+    private Level level;
 
     @WrapOperation(
             method = "updateFluidHeightAndDoFluidPushing",
@@ -35,14 +39,11 @@ public class EntityMixin {
     }
 
     @Inject(
-            method = "tick",
+            method = "setRemoved",
             at = @At("HEAD")
     )
-    private void opentc4$entityTick(CallbackInfo ci){
-        var self = (Entity)(Object)this;
-        if (self instanceof ITaintConvertableEntity taintConvertable && taintConvertable.canConvertToTaintedMob()) {
-            taintConvertable.convertToTaintedMob();
-        }
+    private void opentc4$onRemoved(Entity.RemovalReason removalReason, CallbackInfo ci){
+        ThaumcraftEntityEvents.convertTaintMobOnRemoved((Entity) (Object) this,removalReason);
     }
 
 }

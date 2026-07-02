@@ -7,7 +7,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.entities.monster.tainted.EntityThaumicSlime;
+import thaumcraft.common.entities.monster.tainted.ThaumicSlimeEntity;
 
 import static thaumcraft.common.ThaumcraftSounds.GORE;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO;
@@ -62,8 +62,8 @@ public class FluxGooFluid extends FiniteFlowingFluid {
 
 
     protected void spawnSlime(Level level, BlockPos pos, int size) {
-        EntityThaumicSlime slime = new EntityThaumicSlime(level);
-        slime.setSlimeSize(size);
+        var slime = new ThaumicSlimeEntity(level);
+        slime.setSize(size,true);
         slime.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
         level.addFreshEntity(slime);
         level.playSound(null, pos, GORE,
