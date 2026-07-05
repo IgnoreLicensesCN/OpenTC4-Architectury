@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.tainted;
 
+import com.linearity.opentc4.mixinaccessors.SlimeAttackGoalAccessorGetter;
 import com.linearity.opentc4.mixinaccessors.SlimeMoveControlAccessorGetter;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -78,6 +79,11 @@ public class ThaumicSlimeEntity extends Slime {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        var defaultAttackGoalAccessor = ((SlimeAttackGoalAccessorGetter)this).opentc4$getSlimeAttackGoal();
+        if (defaultAttackGoalAccessor instanceof Goal attackGoal) {
+            this.goalSelector.removeGoal(attackGoal);
+        }
+        this.goalSelector.addGoal(2,new ThaumicSlimeAttackGoal(this));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, ThaumicSlimeEntity.class, true));
     }
 
@@ -92,7 +98,7 @@ public class ThaumicSlimeEntity extends Slime {
 
             for (int l = 0; l < k; l++) {
                 float g = (l % 2 - 0.5F) * f;
-                float h = (l / 2 - 0.5F) * f;
+                float h = (l / 2.F - 0.5F) * f;
                 Slime slime = this.getType().create(this.level());
                 if (slime != null) {
                     if (this.isPersistenceRequired()) {
@@ -140,7 +146,7 @@ public class ThaumicSlimeEntity extends Slime {
             if (livingEntity == null) {
                 return false;
             } else {
-                return !this.slime.canAttack(livingEntity) ? false : ((SlimeMoveControlAccessorGetter)this.slime).opentc4$getSlimeMoveControl() != null;
+                return this.slime.canAttack(livingEntity) && ((SlimeMoveControlAccessorGetter) this.slime).opentc4$getSlimeMoveControl() != null;
             }
         }
 
