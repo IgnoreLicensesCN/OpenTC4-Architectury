@@ -1,4 +1,4 @@
-package com.linearity.opentc4.mixin;
+package com.linearity.opentc4.mixin.client;
 
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.Material;

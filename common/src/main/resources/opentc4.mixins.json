@@ -4,12 +4,11 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
-    "ClientChunkCacheMixin",
-    "ClientChunkCacheStorageMixin",
-    "SheetsMixin",
+    "client.ClientChunkCacheStorageMixin",
     "client.ClientPacketListenerMixin",
     "client.FontRendererMixin",
     "client.LivingEntityClientMixin",
+    "client.SheetsMixin",
     "client.StringSplitterMixin",
     "client.clientbe.ArcaneBoreBlockEntityClientMixin",
     "client.clientbe.BrainJarBlockEntityClientMixin",
@@ -20,7 +19,9 @@
     "client.clientbe.InfusionMatrixBlockEntityClientMixin",
     "client.clientbe.VisNetRelayBlockEntityClientMixin",
     "client.render.ItemRendererMixin",
-    "client.render.ModelPredicateProviderRegistryAccessor"
+    "client.render.ModelPredicateProviderRegistryAccessor",
+    "client.ClientPacketListenerAccessor",
+    "client.entity.TaintedSwarmEntityMixin"
   ],
   "mixins": [
     "AbstractFurnaceBlockEntityMixin",
@@ -30,7 +31,6 @@
     "BlockStateBaseMixin",
     "BrainProviderAccessor",
     "ChickenMixin",
-    "ClientPacketListenerAccessor",
     "ClimateSettingsMixin",
     "CowMixin",
     "CreeperMixin",
@@ -39,7 +39,6 @@
     "EnchantmentCategoryWeaponMixin",
     "EntityMixin",
     "EntityTypeMixin",
-    "EntityUtilHelpfulMixin$ThaumcraftEntityHiddenClassesMixin",
     "ItemEntityMixin",
     "ItemMixin",
     "ItemStackMixin",

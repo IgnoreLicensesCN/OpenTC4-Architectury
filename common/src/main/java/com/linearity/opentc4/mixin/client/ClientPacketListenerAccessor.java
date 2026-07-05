@@ -1,4 +1,4 @@
-package com.linearity.opentc4.mixin;
+package com.linearity.opentc4.mixin.client;
 
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.world.item.crafting.RecipeManager;

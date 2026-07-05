@@ -32,7 +32,11 @@ public class TaintedPigEntity extends Pig implements Enemy, ITaintConvertableEnt
     }
 
     public static AttributeSupplier.@NotNull Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20).add(Attributes.MOVEMENT_SPEED, 0.275F).add(Attributes.ATTACK_DAMAGE,4);
+        return Mob.createMobAttributes()
+                .add(Attributes.ARMOR,2)
+                .add(Attributes.MAX_HEALTH, 20)
+                .add(Attributes.MOVEMENT_SPEED, 0.275F)
+                .add(Attributes.ATTACK_DAMAGE,4);
     }
 
     @Override
@@ -66,11 +70,6 @@ public class TaintedPigEntity extends Pig implements Enemy, ITaintConvertableEnt
     @Override
     public boolean canFallInLove() {
         return false;
-    }
-
-    @Override
-    public int getArmorValue() {
-        return 2;
     }
 
     @Override

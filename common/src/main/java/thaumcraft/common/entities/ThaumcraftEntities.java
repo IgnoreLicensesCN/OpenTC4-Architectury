@@ -94,6 +94,9 @@ public class ThaumcraftEntities {
         public static EntityType<ThaumicSlimeEntity> THAUMIC_SLIME(){
             return Registry.SUPPLIER_THAUMIC_SLIME.get();
         }
+        public static EntityType<TaintedSwarmEntity> TAINTED_SWARM() {
+            return Registry.SUPPLIER_TAINTED_SWARM.get();
+        }
     }
 
     public static class Registry {
@@ -212,14 +215,21 @@ public class ThaumcraftEntities {
         public static final RegistrySupplier<EntityType<TaintedSpiderEntity>> SUPPLIER_TAINTED_SPIDER = ENTITIES.register(
                 "tainted_spider",
                 () -> EntityType.Builder.<TaintedSpiderEntity>of(TaintedSpiderEntity::new, MobCategory.MONSTER)
-                        .sized(0.4F, 0.3F).clientTrackingRange(8)
+                        .sized(0.4F, 0.3F).clientTrackingRange(10)
                         .build("tainted_spider")
         );
         public static final RegistrySupplier<EntityType<ThaumicSlimeEntity>> SUPPLIER_THAUMIC_SLIME = ENTITIES.register(
                 "thaumic_slime",
                 () -> EntityType.Builder.<ThaumicSlimeEntity>of(ThaumicSlimeEntity::new, MobCategory.MONSTER)
-                        .sized(2.04F, 2.04F).clientTrackingRange(8)
+                        .sized(2.04F, 2.04F).clientTrackingRange(10)
                         .build("thaumic_slime")
+        );
+        public static final RegistrySupplier<EntityType<TaintedSwarmEntity>> SUPPLIER_TAINTED_SWARM = ENTITIES.register(
+                "tainted_swarm",
+                () -> EntityType.Builder.<TaintedSwarmEntity>of(TaintedSwarmEntity::new, MobCategory.MONSTER)
+                        .sized(2, 2)
+                        .clientTrackingRange(10)
+                        .build("tainted_swarm")
         );
     }
 
@@ -240,7 +250,8 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_CHICKEN(),TaintedChickenEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_SHEEP(),TaintedSheepEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_PIG(),TaintedPigEntity.createAttributes().build());
-        registerDefaultAttribute(ThaumcraftEntityTypeInstances.THAUMIC_SLIME(), Monster.createMonsterAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.THAUMIC_SLIME(), ThaumicSlimeEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_SWARM(), TaintedSwarmEntity.createAttributes().build());
     }
 
     public static void registerDefaultAttribute(EntityType<? extends LivingEntity> entityType,AttributeSupplier attributeSupplier){

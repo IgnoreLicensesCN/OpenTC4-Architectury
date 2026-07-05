@@ -10,9 +10,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -53,6 +56,9 @@ public class ThaumicSlimeEntity extends Slime {
         }
     }
 
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMonsterAttributes();
+    }
     protected int spitCounter = 100;
 
     protected void dealDamage(LivingEntity livingEntity) {
@@ -162,7 +168,7 @@ public class ThaumicSlimeEntity extends Slime {
             if (livingEntity == null) {
                 return false;
             } else {
-                return !this.slime.canAttack(livingEntity) ? false : --this.growTiredTimer > 0;
+                return this.slime.canAttack(livingEntity) && --this.growTiredTimer > 0;
             }
         }
 
@@ -176,32 +182,33 @@ public class ThaumicSlimeEntity extends Slime {
             LivingEntity livingEntity = this.slime.getTarget();
             if (livingEntity != null) {
                 this.slime.lookAt(livingEntity, 10.0F, 10.0F);
-                int slimeSize = slime.getSize();
+                int thisSlimeSize = slime.getSize();
                 var level = slime.level();
                 if (livingEntity instanceof ThaumicSlimeEntity anotherSlime
                         && anotherSlime.isMergeableSlime(this.slime)
                         && this.slime.isMergeableSlime(anotherSlime)
                 ){
-                    //try merge
-                    var widthTotal = anotherSlime.getBbWidth() + slime.getBbWidth();
-                    if (anotherSlime.position().distanceToSqr(slime.position()) < widthTotal*widthTotal) {
-                        anotherSlime.setSize(Math.min(100, slimeSize + anotherSlime.getSize()),true);
-                        slime.discard();
+
+                    int anotherSlimeSize = anotherSlime.getSize();
+                    if (thisSlimeSize >= anotherSlimeSize) {
+                        this.slime.mergeSlime(anotherSlime);
+                    }else {
+                        anotherSlime.mergeSlime(this.slime);
                     }
                 }
                 else{
                     if (this.slime.spitCounter > 0) {
                         --this.slime.spitCounter;
                     }
-                    if (slime.distanceToSqr(livingEntity.position()) > 16.0F && slime.spitCounter <= 0 && slimeSize > 3) {
+                    if (slime.distanceToSqr(livingEntity.position()) > 16.0F && slime.spitCounter <= 0 && thisSlimeSize > 3) {
                         slime.spitCounter = 101;
                         if (!level.isClientSide) {
-                            var flyslime = new ThaumicSlimeEntity(level, slime, livingEntity);
-                            level.addFreshEntity(flyslime);
+                            var slimeThrown = new ThaumicSlimeEntity(level, slime, livingEntity);
+                            level.addFreshEntity(slimeThrown);
                         }
 
                         level.playSound(slime, slime.blockPosition(), ThaumcraftSounds.GORE, SoundSource.HOSTILE, 1.0F, (level.random.nextFloat() * 0.4F + 0.8F) * 0.8F);
-                        slime.setSize(slimeSize - 1,false);
+                        slime.setSize(thisSlimeSize - 1,false);
                     }
                 }
 
@@ -217,5 +224,13 @@ public class ThaumicSlimeEntity extends Slime {
         return anotherSlime.getSize() < 100 && anotherSlime.tickCount > 100 && anotherSlime != this;
     }
 
+    protected void mergeSlime(ThaumicSlimeEntity anotherSlime) {
+        int thisSlimeSize = getSize();
+        var widthTotal = anotherSlime.getBbWidth() + this.getBbWidth();
+        if (anotherSlime.position().distanceToSqr(this.position()) < widthTotal*widthTotal) {
+            this.setSize(Math.min(100, thisSlimeSize + anotherSlime.getSize()),true);
+            anotherSlime.discard();
+        }
+    }
 
 }

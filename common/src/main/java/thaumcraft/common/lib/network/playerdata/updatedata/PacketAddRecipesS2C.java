@@ -1,12 +1,11 @@
 package thaumcraft.common.lib.network.playerdata.updatedata;
 
-import com.linearity.opentc4.mixin.ClientPacketListenerAccessor;
+import com.linearity.opentc4.mixin.client.ClientPacketListenerAccessor;
 import com.linearity.opentc4.mixinaccessors.RecipeManagerAccessor;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket;
 import net.minecraft.world.item.crafting.Recipe;

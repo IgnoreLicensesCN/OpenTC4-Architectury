@@ -1,7 +1,6 @@
-package com.linearity.opentc4.mixin;
+package com.linearity.opentc4.mixin.client;
 
 import com.linearity.opentc4.mixinaccessors.ClientChunkCacheStorageAccessor;
-import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

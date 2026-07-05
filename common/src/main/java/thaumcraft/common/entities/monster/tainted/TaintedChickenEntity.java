@@ -31,7 +31,11 @@ public class TaintedChickenEntity extends Chicken implements Enemy, ITaintConver
     }
 
     public static AttributeSupplier.@NotNull Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 8).add(Attributes.MOVEMENT_SPEED, 0.4F).add(Attributes.ATTACK_DAMAGE,3);
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 8)
+                .add(Attributes.ARMOR,2)
+                .add(Attributes.MOVEMENT_SPEED, 0.4F)
+                .add(Attributes.ATTACK_DAMAGE,3);
     }
 
     @Override
@@ -66,11 +70,6 @@ public class TaintedChickenEntity extends Chicken implements Enemy, ITaintConver
     @Override
     public boolean canFallInLove() {
         return false;
-    }
-
-    @Override
-    public int getArmorValue() {
-        return 2;
     }
 
     @Override

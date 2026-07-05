@@ -34,7 +34,11 @@ public class TaintedSheepEntity extends Sheep implements Enemy, ITaintConvertabl
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40).add(Attributes.MOVEMENT_SPEED, 0.27F).add(Attributes.ATTACK_DAMAGE,6);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40)
+                .add(Attributes.MOVEMENT_SPEED, 0.27F)
+                .add(Attributes.ATTACK_DAMAGE,6)
+                .add(Attributes.ARMOR,1)
+                ;
     }
 
     @Override
@@ -78,10 +82,6 @@ public class TaintedSheepEntity extends Sheep implements Enemy, ITaintConvertabl
     @Override
     public boolean canFallInLove() {
         return false;
-    }
-    @Override
-    public int getArmorValue() {
-        return 1;
     }
 
     @Override
