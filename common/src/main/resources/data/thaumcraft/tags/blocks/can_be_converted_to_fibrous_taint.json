@@ -7,7 +7,7 @@
     "minecraft:jack_o_lantern",
     "minecraft:chorus_plant",
     "minecraft:chorus_flower",
-    "thaumcraft:cactus",
+    "minecraft:cactus",
     {
       "id": "#minecraft:logs",
       "required": false

@@ -15,7 +15,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -274,5 +273,9 @@ public class TaintedSwarmEntity extends Monster {
     public boolean checkSpawnRules(LevelAccessor levelAccessor, MobSpawnType mobSpawnType) {
         int var4 = level().getLightEmission(blockPosition());
         return var4 <= this.random.nextInt(7) && super.checkSpawnRules(levelAccessor, mobSpawnType);
+    }
+    @Override
+    public boolean canPickUpLoot() {
+        return false;
     }
 }
