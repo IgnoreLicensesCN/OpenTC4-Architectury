@@ -18,10 +18,7 @@ public class PlayerNotifications {
       addNotification(text, null, 16777215);
    }
    public static void addNotification(Component component) {
-      //TODO:Text -> component
-   }
-   public static void addNotification(Component component, Aspect aspect) {
-      addNotification(component, aspect.getImage(), aspect.getColor());
+      //Oh you just need to call something to render it now since we may(not tested) render aspect.
    }
 
    public static void addAspectNotification(Aspect aspect) {

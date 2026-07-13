@@ -35,13 +35,13 @@ public class EnchantmentMenuFabricMixin {
 //        for (int x = -1; x <= 1; ++x) {
 //            for (int z = -1; z <= 1; ++z) {
 //                if ((x != 0 || z != 0) && level.isEmptyBlock(pos.offset(x, 0, z)) && level.isEmptyBlock(pos.offset(x, 1, z))) {
-//                    obj += getPylonValue(level.getBlockState(pos.offset(x * 2, 0, z * 2)), level, pos);
-//                    obj += getPylonValue(level.getBlockState(pos.offset(x * 2, 1, z * 2)), level, pos);
+//                    left += getPylonValue(level.getBlockState(pos.offset(x * 2, 0, z * 2)), level, pos);
+//                    left += getPylonValue(level.getBlockState(pos.offset(x * 2, 1, z * 2)), level, pos);
 //                    if (x != 0 && z != 0) {
-//                        obj += getPylonValue(level.getBlockState(pos.offset(x * 2, 0, z)), level, pos);
-//                        obj += getPylonValue(level.getBlockState(pos.offset(x * 2, 1, z)), level, pos);
-//                        obj += getPylonValue(level.getBlockState(pos.offset(x, 0, z * 2)), level, pos);
-//                        obj += getPylonValue(level.getBlockState(pos.offset(x, 1, z * 2)), level, pos);
+//                        left += getPylonValue(level.getBlockState(pos.offset(x * 2, 0, z)), level, pos);
+//                        left += getPylonValue(level.getBlockState(pos.offset(x * 2, 1, z)), level, pos);
+//                        left += getPylonValue(level.getBlockState(pos.offset(x, 0, z * 2)), level, pos);
+//                        left += getPylonValue(level.getBlockState(pos.offset(x, 1, z * 2)), level, pos);
 //                    }
 //                }
 //            }

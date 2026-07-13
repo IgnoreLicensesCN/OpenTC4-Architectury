@@ -10,9 +10,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
-import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 public class KnowledgeFragmentItem extends Item {
     public KnowledgeFragmentItem() {
@@ -29,10 +27,8 @@ public class KnowledgeFragmentItem extends Item {
         if (player instanceof ServerPlayer serverPlayer) {
             for(Aspect a : Aspects.getPrimalAspects()) {
                 short q = (short)(world.getRandom().nextInt(2) + 1);
-                Thaumcraft.playerKnowledge.addAspectPool(player, a, q);
-                ResearchManager.scheduleSave(serverPlayer);
-                new PacketAspectPoolS2C(a.getAspectKey(), q, Thaumcraft.playerKnowledge.getAspectPoolFor(player, a))
-                        .sendTo(serverPlayer);
+                var info = ResearchAndScannedInfo.getFromLiving(player);
+                info.addResearchAspectAndTrySyncToPlayer(a,q,serverPlayer);
             }
         }
         return InteractionResultHolder.sidedSuccess(stack, world.isClientSide());

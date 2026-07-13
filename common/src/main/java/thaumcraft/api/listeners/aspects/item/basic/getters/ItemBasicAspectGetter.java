@@ -1,12 +1,12 @@
 package thaumcraft.api.listeners.aspects.item.basic.getters;
 
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectGetListeners;
 import thaumcraft.api.listeners.aspects.item.basic.additional.AddAdditionalBasicAspectContext;
 import thaumcraft.api.listeners.aspects.item.basic.additional.consts.AddAdditionalBasicAspectListeners;
@@ -16,7 +16,7 @@ import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsC2S;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class ItemBasicAspectGetter {
     public static final ListenerManager<ItemBasicAspectGetListener> basicListeners = new ListenerManager<>();
@@ -31,15 +31,18 @@ public class ItemBasicAspectGetter {
     }
     private static final Map<Item,AspectList<Aspect>> CACHE = new HashMap<>();
     public static final Map<Item, AspectList<Aspect>> CLIENT_CACHE = new HashMap<>();
-    public static final AtomicBoolean REQUESTED_ASPECT_LIST = new AtomicBoolean(false);
+    public static final AtomicLong REQUESTED_ASPECT_LIST_AT = new AtomicLong(0);
+    public static final long REQUEST_ASPECT_LIST_COOLDOWN = 5000;//milliseconds
     //expose to outer to get basic aspects
     public static AspectList<Aspect> getBasicAspects(@NotNull Item i,boolean isClientSide){
         return isClientSide ? getBasicAspectsClient(i) : getBasicAspectsServer(i);
     }
     public static AspectList<Aspect> getBasicAspectsClient(@NotNull Item i) {
 
-        if (CLIENT_CACHE.isEmpty() && !REQUESTED_ASPECT_LIST.get()){
-            REQUESTED_ASPECT_LIST.set(true);
+        if (CLIENT_CACHE.isEmpty()
+                && System.currentTimeMillis() - REQUESTED_ASPECT_LIST_AT.get() > REQUEST_ASPECT_LIST_COOLDOWN
+        ) {
+            REQUESTED_ASPECT_LIST_AT.set(System.currentTimeMillis());
             new PacketSyncItemAspectsC2S().sendToServer();
         }
         return CLIENT_CACHE.getOrDefault(i,UnmodifiableAspectList.EMPTY);

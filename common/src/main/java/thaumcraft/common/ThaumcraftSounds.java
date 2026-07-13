@@ -32,6 +32,19 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_SQUEEK = new ResourceLocation(Thaumcraft.MOD_ID,"squeek");
         public static final ResourceLocation RES_URN_BREAK = new ResourceLocation(Thaumcraft.MOD_ID,"urnbreak");
         public static final ResourceLocation RES_EVIL_PORTAL = new ResourceLocation(Thaumcraft.MOD_ID,"evilportal");
+        public static final ResourceLocation RES_CRAFT_START = new ResourceLocation(Thaumcraft.MOD_ID,"craftstart");
+        public static final ResourceLocation RES_INFUSER_START = new ResourceLocation(Thaumcraft.MOD_ID,"infuserstart");
+        public static final ResourceLocation RES_INFUSER = new ResourceLocation(Thaumcraft.MOD_ID,"infuser");
+        public static final ResourceLocation RES_WAND = new ResourceLocation(Thaumcraft.MOD_ID,"wand");
+        public static final ResourceLocation RES_RUNIC_SHIELD_EFFECT = new ResourceLocation(Thaumcraft.MOD_ID,"runic_shield_effect");
+        public static final ResourceLocation RES_WAND_FAIL = new ResourceLocation(Thaumcraft.MOD_ID,"wandfail");
+        public static final ResourceLocation RES_SWING = new ResourceLocation(Thaumcraft.MOD_ID,"swing");
+        public static final ResourceLocation RES_WIND = new ResourceLocation(Thaumcraft.MOD_ID,"wind");
+        public static final ResourceLocation RES_KEY = new ResourceLocation(Thaumcraft.MOD_ID,"key");
+        public static final ResourceLocation RES_COINS = new ResourceLocation(Thaumcraft.MOD_ID,"coins");
+        public static final ResourceLocation RES_FIRE_LOOP = new ResourceLocation(Thaumcraft.MOD_ID,"fireloop");
+        public static final ResourceLocation RES_SHOCK = new ResourceLocation(Thaumcraft.MOD_ID,"shock");
+        public static final ResourceLocation RES_SWARM_ATTACK = new ResourceLocation(Thaumcraft.MOD_ID,"swarmattack");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -61,4 +74,17 @@ public class ThaumcraftSounds {
     public static final SoundEvent SQUEEK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_SQUEEK);
     public static final SoundEvent URN_BREAK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_URN_BREAK);
     public static final SoundEvent EVIL_PORTAL = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_EVIL_PORTAL);
+    public static final SoundEvent CRAFT_START =  SoundEvent.createVariableRangeEvent(ResourceLocations.RES_CRAFT_START);
+    public static final SoundEvent INFUSER_START = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_INFUSER_START);
+    public static final SoundEvent INFUSER = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_INFUSER);
+    public static final SoundEvent WAND = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_WAND);
+    public static final SoundEvent RUNIC_SHIELD_EFFECT = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_EFFECT);
+    public static final SoundEvent WAND_FAIL = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_WAND_FAIL);
+    public static final SoundEvent SWING = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_SWING);
+    public static final SoundEvent WIND = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_WIND);
+    public static final SoundEvent KEY = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_KEY);
+    public static final SoundEvent COINS = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_COINS);
+    public static final SoundEvent FIRE_LOOP = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_FIRE_LOOP);
+    public static final SoundEvent SHOCK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_SHOCK);
+    public static final SoundEvent SWARM_ATTACK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_SWARM_ATTACK);
 }

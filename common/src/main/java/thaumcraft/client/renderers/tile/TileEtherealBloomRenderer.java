@@ -10,7 +10,7 @@ import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelCube;
 import thaumcraft.common.blocks.junkbox.BlockCustomPlant;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileEtherealBloom;
+import thaumcraft.common.tiles.junkbox.TileEtherealBloom;
 
 import static thaumcraft.client.renderers.tile.TileNodeRenderer.renderFacingStrip_tweaked;
 

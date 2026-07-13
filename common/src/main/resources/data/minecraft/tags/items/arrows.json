@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:air_arrow",
+    "thaumcraft:fire_arrow",
+    "thaumcraft:water_arrow",
+    "thaumcraft:earth_arrow",
+    "thaumcraft:order_arrow",
+    "thaumcraft:entropy_arrow"
+  ]
+}

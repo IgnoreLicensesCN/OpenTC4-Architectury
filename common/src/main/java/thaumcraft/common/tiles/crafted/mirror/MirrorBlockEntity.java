@@ -28,7 +28,7 @@ public class MirrorBlockEntity extends AbstractMirrorBlockEntity {
         super(blockEntityType, blockPos, blockState);
     }
     public MirrorBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.MIRROR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.MIRROR(), blockPos, blockState);
     }
     public @NotNull NonNullList<ItemStack> storedItems = new NonNullListWithConstructor<>(new ArrayList<>(),ItemStack.EMPTY);
     public int instability = 0;
@@ -136,7 +136,7 @@ public class MirrorBlockEntity extends AbstractMirrorBlockEntity {
             this.setChanged();
         }
         if (this.instability > 0) {
-            int amt = VisNetHandler.drainVis(this.level, getBlockPos(), Aspects.ORDER, Math.min(this.instability, 1));
+            int amt = VisNetHandler.drainCentiVis(this.level, getBlockPos(), Aspects.ORDER, Math.min(this.instability, 1));
             if (amt > 0) {
                 addSelfAndLinkedInstability(-amt);
             }

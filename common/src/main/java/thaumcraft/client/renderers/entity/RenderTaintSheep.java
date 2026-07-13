@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.resources.ResourceLocation;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.entities.monster.EntityTaintSheep;
+import thaumcraft.common.entities.monster.tainted.EntityTaintSheep;
 
 public class RenderTaintSheep extends RenderLiving {
    private static final ResourceLocation rl = new ResourceLocation("thaumcraft", "textures/models/sheep.png");

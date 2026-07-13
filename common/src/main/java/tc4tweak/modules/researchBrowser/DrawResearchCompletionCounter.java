@@ -9,7 +9,7 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import tc4tweak.ClientUtils;
 import tc4tweak.ConfigurationHandler;
-import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.client.ResearchCategory;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.client.gui.GuiResearchBrowser;
 

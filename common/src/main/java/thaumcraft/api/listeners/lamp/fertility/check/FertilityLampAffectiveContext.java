@@ -10,4 +10,5 @@ public class FertilityLampAffectiveContext {
     public FertilityLampAffectiveContext(Entity entity) {
         this.entity = entity;
     }
+
 }

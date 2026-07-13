@@ -6,8 +6,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.items.wands.ItemFocusPouch;
 
 public class ContainerFocusPouch extends Container {

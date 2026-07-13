@@ -3,6 +3,7 @@ package com.linearity.opentc4.recipeclean.itemmatch;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
@@ -26,5 +27,10 @@ public class ItemMatcherSum extends RecipeItemMatcher{
     @Override
     public @NotNull List<ItemStack> getAvailableItemStackSample() {
         return pickByTime(matchers).getAvailableItemStackSample();
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(matchers);
     }
 }

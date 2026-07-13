@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.crafted.mirror;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.ResourceLocationTagAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -12,14 +13,15 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 
 import static com.linearity.opentc4.Consts.AbstractMirrorBlockEntityTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor.NULL_POS_TO_WRITE;
 
 public class AbstractMirrorBlockEntity extends TileThaumcraft {
-    protected int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
     protected int inc = 40;
 
     public AbstractMirrorBlockEntity(BlockEntityType<? extends AbstractMirrorBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -97,7 +99,7 @@ public class AbstractMirrorBlockEntity extends TileThaumcraft {
         if (linkedToLevel == null) {
             return null;
         }
-        if (!(linkedToLevel.getBlockEntity(this.linkedPos) instanceof AbstractMirrorBlockEntity mirror)) {
+        if (!(LevelBlockEntityAccessing.getExistingBlockEntity(linkedToLevel, this.linkedPos) instanceof AbstractMirrorBlockEntity mirror)) {
             return null;
         }
         return mirror;

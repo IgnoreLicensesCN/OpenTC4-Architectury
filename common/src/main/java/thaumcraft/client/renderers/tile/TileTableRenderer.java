@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelTable;
-import thaumcraft.common.tiles.TileTable;
+import thaumcraft.common.tiles.junkbox.TileTable;
 
 @SideOnly(Side.CLIENT)
 public class TileTableRenderer extends TileEntitySpecialRenderer {

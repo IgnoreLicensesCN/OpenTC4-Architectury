@@ -1,18 +1,23 @@
 package thaumcraft.api.listeners.wandconsumption.consts;
 
-import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
-import net.minecraft.world.entity.player.Player;
-import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.common.items.abstracts.wandabstraction.component.IArcaneCraftingVisDiscountOwnerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IArcaneCraftingVisMultiplierProviderItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IVisCostModifierOwnerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IWandFocusEngineItem;
+import thaumcraft.common.items.abstracts.IVisDiscountGearItem;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.effects.VisCostAddEffectWithCategory;
 import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculationContext;
 import thaumcraft.api.listeners.wandconsumption.listeners.CalculateWandConsumptionListener;
-import thaumcraft.api.wands.*;
+import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
+import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CONSUMPTION_CRAFTING;
+import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS;
 
 public enum CalculateWandConsumptionListenerEnum {
     CASTING_MODIFIER(new CalculateWandConsumptionListener(0) {
@@ -29,34 +34,37 @@ public enum CalculateWandConsumptionListenerEnum {
     CASTING_MODIFIER_CRAFTING(new CalculateWandConsumptionListener(5) {
         @Override
         public void onCalculation(ConsumptionModifierCalculationContext context) {
-            if (!context.crafting) {
+            if (context.wandConsumptionType == CONSUMPTION_CRAFTING) {
                 return;
             }
             var casting = context.casting;
             var wandStack = context.wandStack;
             var aspect = context.aspect;
-            if ((casting instanceof IArcaneCraftingVisMultiplierProvider craftingVisMultiplierProvider)) {
-                context.currentConsumption += craftingVisMultiplierProvider.getCraftingVisMultiplier(wandStack, aspect);
+            if ((casting instanceof IArcaneCraftingVisMultiplierProviderItem craftingVisMultiplierProvider)) {
+                context.currentConsumption -= craftingVisMultiplierProvider.getCraftingVisMultiplier(wandStack, aspect);
             }
         }
     }),
     DISCOUNT_GEAR(new CalculateWandConsumptionListener(10) {
         @Override
         public void onCalculation(ConsumptionModifierCalculationContext context) {
-            var casting = context.casting;
             var user = context.user;
-            if (user instanceof Player player) {
-                BaubleConsumer<IVisDiscountGear> visDiscountGearBaubleConsumer = (slot, baubleStack, visDiscountGear) -> {
-                    context.currentConsumption += visDiscountGear.getVisDiscount(baubleStack, player, context.aspect);
-                    return false;
-                };
-                forEachBauble(player, IVisDiscountGear.class, visDiscountGearBaubleConsumer);
+            if (user == null) {
+                return;
+            }
 
-                for (var equipStack : player.getArmorSlots()) {
-                    var item = equipStack.getItem();
-                    if (item instanceof IVisDiscountGear visDiscountGear) {
-                        context.currentConsumption += visDiscountGear.getVisDiscount(equipStack, player, context.aspect);
-                    }
+            forEachBauble(user,(slot, baubleStack, item) -> {
+                var discountGear = IVisDiscountGearItem.getDiscountGearHandlerForItem(item);
+                if (discountGear != null) {
+                    context.currentConsumption -= (discountGear.getVisCostPercentDecrease(baubleStack, user, context.aspect)/100F);
+                }
+                return false;
+            });
+
+            for (var equipStack : user.getArmorSlots()) {
+                IVisDiscountGearItem visDiscountGear = IVisDiscountGearItem.getDiscountGearHandlerForItem(equipStack.getItem());
+                if (visDiscountGear != null) {
+                    context.currentConsumption -= (visDiscountGear.getVisCostPercentDecrease(equipStack, user, context.aspect)/100F);
                 }
             }
         }
@@ -93,8 +101,10 @@ public enum CalculateWandConsumptionListenerEnum {
             if (context.casting instanceof IWandFocusEngineItem focusEngine) {
                 if (focusEngine.canApplyFocus()){
                     var focusStack = focusEngine.getFocusItemStack(context.wandStack);
-                    if (!focusStack.isEmpty() && !context.crafting && focusStack.getItem() instanceof IWandFocusItem<? extends Aspect> wandFocusItem) {
-                        context.currentConsumption -= (float) wandFocusItem.getWandUpgradesWithWandModifiers(focusStack,context.wandStack).getOrDefault(FocusUpgradeType.frugal,0) / 10.0F;
+                    if (!focusStack.isEmpty() && context.wandConsumptionType == CONSUMPTION_FOCUS && focusStack.getItem() instanceof IWandFocusItem<? extends Aspect> wandFocusItem) {
+                        context.currentConsumption -= (float) wandFocusItem
+                                .getFocusUpgradesWithWandModifiers(focusStack,context.wandStack)
+                                .getOrDefault(ThaumcraftFocusUpgradeTypes.FRUGAL,0) / 10.0F;
                     }
                 }
             }
@@ -111,11 +121,12 @@ public enum CalculateWandConsumptionListenerEnum {
     ENSURE_LOWER_BOUND(new CalculateWandConsumptionListener(10000) {
         @Override
         public void onCalculation(ConsumptionModifierCalculationContext context) {
-            context.currentConsumption = Math.max(context.currentConsumption, 0.1F);
+            context.currentConsumption = Math.max(context.currentConsumption, 0.1F);//TODO:[maybe wont finished]Discuss if we really need this.
         }
     });
     public final  CalculateWandConsumptionListener listener;
     CalculateWandConsumptionListenerEnum(CalculateWandConsumptionListener listener) {
         this.listener = listener;
     }
+
 }

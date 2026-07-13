@@ -8,10 +8,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.IAspectDisplayBlockEntity;
 import thaumcraft.api.listeners.aspects.item.bonus.IBonusAspectOwnerItem;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.lib.NodeInfo;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
@@ -28,7 +28,7 @@ public class NodeJarBlockEntity extends TileThaumcraft
     }
 
     public NodeJarBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.NODE_JAR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.NODE_JAR(), blockPos, blockState);
     }
 
     @Override

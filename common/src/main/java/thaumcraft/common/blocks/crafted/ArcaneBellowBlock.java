@@ -1,6 +1,6 @@
 package thaumcraft.common.blocks.crafted;
 
-import com.linearity.opentc4.mixinaccessors.AbstractFurnaceBlockEntityAccessor;
+import com.linearity.opentc4.mixinaccessors.clientbe.AbstractFurnaceBlockEntityAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -17,7 +17,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import thaumcraft.api.aspects.IEssentiaTransportInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
 import thaumcraft.common.blocks.abstracts.*;
 import thaumcraft.common.tiles.abstracts.IThaumcraftFurnace;
 import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;

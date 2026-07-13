@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -14,7 +13,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -30,6 +28,7 @@ import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 
+import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.TAINTED_MATERIAL_BLOCK;
 import static thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock.spreadFibres;
 
 public abstract class AbstractTaintBlock extends SuppressedWarningBlock implements ITaintMaterial{
@@ -57,7 +56,7 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
     public void randomTick(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
         super.randomTick(blockState, world, blockPos, random);
         if (Platform.getEnvironment() != Env.CLIENT) {
-            BiomeUtils.taintBiomeSpread(world, blockPos, random, this);
+            BiomeUtils.taintBiomeSpread(world, blockPos, random);
             beforeSpreadingFibres(blockState, world, blockPos, random);
 
             var considerSpreadFibresPos = blockPos.offset(random.nextInt(3) - 1,random.nextInt(3) - 1,random.nextInt(3) - 1);
@@ -106,11 +105,11 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
 
         if (bState.isAir()) {
             return true;
-        } else if (block == ThaumcraftBlocks.FLUX_GOO
+        } else if (block == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO()
                 && (bState.getValue(FiniteLiquidBlock.LEVEL) >= 4)
         ) {
             return false;
-        } else if (block != Blocks.FIRE && ! (block instanceof AbstractTaintFibreBlock)) {
+        } else if (block != Blocks.FIRE && !(bState.is(TAINTED_MATERIAL_BLOCK))) {
             if (bState.canBeReplaced()) {
                 return true;
             } else {
@@ -170,9 +169,9 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
                     )
             ) {
                 if (living instanceof ServerPlayer && level.random.nextInt(100) == 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.FLUX_TAINT,80,0));
+                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT(),80,0));
                 }else if(!(living instanceof ServerPlayer) && level.random.nextInt(20) == 0) {
-                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.FLUX_TAINT,160,0));
+                    living.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT(),160,0));
                 }
 
             }

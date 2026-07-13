@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.monster;
 
-import com.linearity.opentc4.simpleutils.SimplePair;
+import com.linearity.opentc4.utils.collectionlike.SimplePair;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,7 +31,8 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
@@ -41,8 +42,8 @@ import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 import thaumcraft.common.entities.ai.pech.AIPechItemEntityGoto;
 import thaumcraft.common.entities.ai.pech.AIPechTradePlayer;
 import thaumcraft.common.entities.projectile.EntityPechBlast;
-import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.items.misc.ItemManaBean;
+import thaumcraft.common.items.ThaumcraftItemInstances;
+import thaumcraft.common.items.junkbox.ItemManaBean;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
@@ -325,20 +326,20 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
       for(int a = 0; a < 1 + i; ++a) {
          if (this.rand.nextBoolean()) {
             ItemStack is = new ItemStack(ConfigItems.itemManaBean);
-            ((ItemManaBean)is.getItem()).setAspects(is, (new AspectList<>()).addAll(aspects[this.rand.nextInt(aspects.length)], 1));
+            ((ItemManaBean)is.getItem()).setAspects(is, (new LinkedHashAspectList<>()).addAll(aspects[this.rand.nextInt(aspects.length)], 1));
             this.entityDropItem(is, 1.5F);
          }
       }
 
       if (this.level().rand.nextInt(10) < 1 + i) {
-         this.entityDropItem(new ItemStack(ThaumcraftItems.GOLD_COIN), 1.5F);
+         this.entityDropItem(new ItemStack(ThaumcraftItemInstances.GOLD_COIN()), 1.5F);
       }
 
       super.dropFewItems(flag, i);
    }
 
    protected void dropRareDrop(int par1) {
-      this.entityDropItem(new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT), 1.5F);
+      this.entityDropItem(new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT()), 1.5F);
    }
 
    @SideOnly(Side.CLIENT)
@@ -670,7 +671,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
          if (!value) {
             AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(item);
             al = ThaumcraftCraftingManager.getBonusAspects(item, al);
-            if (al.getAmount(Aspects.GREED) > 0) {
+            if (al.get(Aspects.GREED) > 0) {
                value = true;
             }
          }
@@ -687,7 +688,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
          if (value == 0) {
             AspectList<Aspect>al = ThaumcraftCraftingManager.getObjectTags(item);
             al = ThaumcraftCraftingManager.getBonusAspects(item, al);
-            value = Math.min(32, al.getAmount(Aspects.GREED));
+            value = Math.min(32, al.get(Aspects.GREED));
          }
 
          return value;
@@ -739,7 +740,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
          forInv.add(new SimplePair<>(2, potionStack));
 
          forInv.add(new SimplePair<>(3, new ItemStack(Items.EXPERIENCE_BOTTLE)));
-         forInv.add(new SimplePair<>(3, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
+         forInv.add(new SimplePair<>(3, new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
          forInv.add(new SimplePair<>(3, new ItemStack(Items.GOLDEN_APPLE)));
 
          potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_STRENGTH);
@@ -761,8 +762,8 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
             forMag.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemShard, 1, a)));
          }
 
-         forMag.add(new SimplePair<>(1, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
-         forMag.add(new SimplePair<>(2, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
+         forMag.add(new SimplePair<>(1, new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
+         forMag.add(new SimplePair<>(2, new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
          potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.REGENERATION);
          forMag.add(new SimplePair<>(2, potionStack));
          potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HEALING);
@@ -771,7 +772,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
          book = new ItemStack(Items.ENCHANTED_BOOK);
          EnchantedBookItem.addEnchantment(
                  book,
-                 new EnchantmentInstance(ThaumcraftEnchantments.HASTE, 1)
+                 new EnchantmentInstance(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.HASTE(), 1)
          );
          forMag.add(new SimplePair<>(3, book));
 
@@ -791,7 +792,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
          book = new ItemStack(Items.ENCHANTED_BOOK);
          EnchantedBookItem.addEnchantment(
                  book,
-                 new EnchantmentInstance(ThaumcraftEnchantments.REPAIR, 1)
+                 new EnchantmentInstance(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.REPAIR(), 1)
          );
          forMag.add(new SimplePair<>(5, book));
 
@@ -822,7 +823,7 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
          forArc.add(new SimplePair<>(2, book));
 
          forArc.add(new SimplePair<>(3, new ItemStack(Items.EXPERIENCE_BOTTLE)));
-         forArc.add(new SimplePair<>(3, new ItemStack(ThaumcraftItems.KNOWLEDGE_FRAGMENT)));
+         forArc.add(new SimplePair<>(3, new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
          potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_INVISIBILITY);
          forArc.add(new SimplePair<>(3, potionStack));
 

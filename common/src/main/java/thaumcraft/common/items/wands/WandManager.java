@@ -1,5 +1,6 @@
 package thaumcraft.common.items.wands;
 
+import com.google.common.collect.MapMaker;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.world.level.block.Block;
@@ -11,73 +12,66 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
+import com.linearity.opentc4.utils.equip.bauble.BaubleConsumer;
 import thaumcraft.api.IArchitectDisplayItem;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.listeners.wandconsumption.WandConsumptionType;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
-import thaumcraft.api.wands.FocusUpgradeType;
-import thaumcraft.api.wands.IWandTriggerManager;
-import thaumcraft.api.wands.ItemFocusBasic;
-import thaumcraft.api.wands.IWandFocusEngineItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.IWandTriggerManager;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IWandFocusEngineItem;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.EntitySpecialItem;
-import thaumcraft.common.items.baubles.ItemAmuletVis;
 import thaumcraft.common.items.wands.foci.ItemFocusTrade;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.tiles.*;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.junkbox.*;
 
 import java.util.*;
 import java.util.function.Function;
 
-import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
 import static thaumcraft.common.multiparts.constructmatch.MultipartMatcherImpls.INFERNAL_FURNACE_CONSTRUCT_MATCHER;
 import static thaumcraft.common.multiparts.placers.MultipartPlacerImpls.INFERNAL_FURNACE_PLACER;
 
 public class WandManager implements IWandTriggerManager {
-    static Map<Entity, Long> cooldownServer = new WeakHashMap<>();
-    static Map<Entity, Long> cooldownClient = new WeakHashMap<>();
+    static Map<Entity, Long> cooldownServer = new MapMaker().weakKeys().makeMap();
+    static Map<Entity, Long> cooldownClient = new MapMaker().weakKeys().makeMap();
 
 
-    public static boolean consumeCentiVisFromInventory(Player player, CentiVisList<Aspect> cost){
-        return consumeCentiVisFromInventory(player, cost, ignore -> true);
+    public static boolean consumeCentiVisFromInventory(Entity entityToCost, CentiVisList<Aspect> cost,WandConsumptionType consumptionType){
+        return consumeCentiVisFromInventory(entityToCost, cost, ignore -> true,consumptionType);
     }
-    public static boolean consumeCentiVisFromInventory(Player player, CentiVisList<Aspect>cost, Function<ItemStack,Boolean> checkCondition) {
-        BaubleConsumer<ItemAmuletVis> amuletVisBaubleConsumer = (slot, stack, itemAmuletVis)
-                -> {
-            if (!checkCondition.apply(stack)) {return false;}
-            return itemAmuletVis.consumeAllCentiVis(stack, player, cost, true, false);
-        };
-        if (forEachBauble(player, ItemAmuletVis.class, amuletVisBaubleConsumer)) {
-            return true;
+    //do some mixin?
+    public static boolean consumeCentiVisFromInventory(
+            Entity entity,
+            CentiVisList<Aspect> cost,
+            Function<ItemStack,Boolean> checkCondition,
+            WandConsumptionType consumptionType
+    ) {
+        if (entity instanceof LivingEntity living){
+            BaubleConsumer<ICentiVisContainerItem> centiVisContainerConsumer = (slot, stack, centiVisContainerItem) ->
+            {
+                if (!checkCondition.apply(stack)) {
+                    return false;
+                }
+                return centiVisContainerItem.consumeAllCentiVis(
+                        stack, living, cost, true, consumptionType, !living.level().isClientSide);
+            };
+            return forEachBauble(living, ICentiVisContainerItem.class, centiVisContainerConsumer);
         }
-
-
-        BaubleConsumer<WandCastingItem> wandCastingBaubleConsumer = (slot, stack, wandCastingItem) ->
-        {
-            if (!checkCondition.apply(stack)) {return false;}
-            return wandCastingItem.consumeAllCentiVis(stack, player, cost, true, false);
-        };
-        return forEachBauble(player, WandCastingItem.class, wandCastingBaubleConsumer);
-
-//      for(int a = player.inventory.mainInventory.length - 1; a >= 0; --a) {
-//         ItemStack item = player.inventory.mainInventory[a];
-//         if (item != null && item.getItem() instanceof WandCastingItem) {
-//            boolean done = ((WandCastingItem)item.getItem()).consumeAllCentiVis(item, player, cost, true, true);
-//            if (done) {
-//               return true;
-//            }
-//         }
-//      }
+        return false;
     }
 
     public static boolean createCrucible(ItemStack is, Player player, Level world, int x, int y, int z) {
@@ -102,7 +96,7 @@ public class WandManager implements IWandTriggerManager {
             for (int yy = y - 2; yy <= y; ++yy) {
                 for (int zz = z - 2; zz <= z; ++zz) {
                     if (fitInfusionAltar(world, xx, yy, zz) && wand.consumeAllCentiVisCrafting(itemstack, player,
-                            new AspectList<>()
+                            new LinkedHashAspectList<>()
                                     .addAll(Aspects.FIRE, 25)
                                     .addAll(Aspects.EARTH, 25)
                                     .addAll(Aspects.ORDER, 25)
@@ -196,7 +190,7 @@ public class WandManager implements IWandTriggerManager {
         for (int xx = x - 2; xx <= x; ++xx) {
             for (int yy = y - 3; yy <= y; ++yy) {
                 for (int zz = z - 2; zz <= z; ++zz) {
-                    if (fitNodeJar(world, xx, yy, zz) && wand.consumeAllCentiVisCrafting(itemstack, player, (new AspectList<>()).addAll(
+                    if (fitNodeJar(world, xx, yy, zz) && wand.consumeAllCentiVisCrafting(itemstack, player, (new LinkedHashAspectList<>()).addAll(
                             Aspects.FIRE, 70).addAll(Aspects.EARTH, 70).addAll(Aspects.ORDER, 70).addAll(Aspects.AIR, 70).addAll(
                             Aspects.ENTROPY, 70).addAll(Aspects.WATER, 70), true)) {
                         if (Platform.getEnvironment() != Env.CLIENT) {
@@ -223,7 +217,7 @@ public class WandManager implements IWandTriggerManager {
             --y;
         }
 
-        if (wand.consumeAllCentiVisCrafting(itemstack, player, (new AspectList<>()).addAll(Aspects.FIRE, 15).addAll(Aspects.ORDER, 30).addAll(
+        if (wand.consumeAllCentiVisCrafting(itemstack, player, (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 15).addAll(Aspects.ORDER, 30).addAll(
                 Aspects.WATER, 30), true) && Platform.getEnvironment() != Env.CLIENT) {
             world.setBlock(x, y, z, ConfigBlocks.blockMetalDevice, 10, 0);
             world.setBlock(x, y + 1, z, ConfigBlocks.blockMetalDevice, 11, 0);
@@ -314,7 +308,7 @@ public class WandManager implements IWandTriggerManager {
                             }
 
                             String nid = node.getId();
-                            node.setAspectsWithBase(new AspectList<>());
+                            node.setAspectsWithBase(new LinkedHashAspectList<>());
                             world.removeTileEntity(x + xx, y - yy + 2, z + zz);
                             world.setBlock(x + xx, y - yy + 2, z + zz, ConfigBlocks.blockJar, 2, 3);
                             tile = world.getTileEntity(x + xx, y - yy + 2, z + zz);
@@ -344,7 +338,7 @@ public class WandManager implements IWandTriggerManager {
         for (int xx = x - 2; xx <= x; ++xx) {
             for (int yy = y - 2; yy <= y; ++yy) {
                 for (int zz = z - 2; zz <= z; ++zz) {
-                    if (fitArcaneFurnace(world, xx, yy, zz) && wand.consumeAllCentiVisCrafting(itemstack, player, (new AspectList<>()).addAll(
+                    if (fitArcaneFurnace(world, xx, yy, zz) && wand.consumeAllCentiVisCrafting(itemstack, player, (new LinkedHashAspectList<>()).addAll(
                             Aspects.FIRE, 50).addAll(Aspects.EARTH, 50), true)) {
                         if (Platform.getEnvironment() != Env.CLIENT) {
                             replaceArcaneFurnace(world, xx, yy, zz);
@@ -473,7 +467,7 @@ public class WandManager implements IWandTriggerManager {
             TileEntity node = world.getTileEntity(x, y + 1, z);
             if (node != null && tile instanceof TileEldritchAltar && ((TileEldritchAltar) tile).getEyes() == 4 && !((TileEldritchAltar) tile).isOpen() && node instanceof AbstractNodeBlockEntity && ((AbstractNodeBlockEntity) node).getNodeType() == NodeType.DARK && ((TileEldritchAltar) tile).checkForMaze()) {
                 WandCastingItem wand = (WandCastingItem) itemstack.getItem();
-                if (wand.consumeAllCentiVisCrafting(itemstack, player, (new AspectList<>()).addAll(Aspects.AIR, 100).addAll(
+                if (wand.consumeAllCentiVisCrafting(itemstack, player, (new LinkedHashAspectList<>()).addAll(Aspects.AIR, 100).addAll(
                         Aspects.FIRE, 100).addAll(Aspects.EARTH, 100).addAll(Aspects.WATER, 100).addAll(Aspects.ORDER, 100).addAll(
                         Aspects.ENTROPY, 100), true)) {
                     world.playSoundEffect((double) x + (double) 0.5F, (double) y + (double) 0.5F, (double) z + (double) 0.5F, "thaumcraft:wand", 1.0F, 1.0F);
@@ -653,7 +647,7 @@ public class WandManager implements IWandTriggerManager {
     public static void toggleMisc(ItemStack itemstack, Level world, Player player) {
         if (itemstack.getItem() instanceof WandCastingItem) {
             WandCastingItem wand = (WandCastingItem) itemstack.getItem();
-            if (wand.getFocus(itemstack) != null && wand.getFocus(itemstack) instanceof IArchitectDisplayItem && wand.getFocus(itemstack).isUpgradedWith(wand.getFocusItem(itemstack), FocusUpgradeType.architect)) {
+            if (wand.getFocus(itemstack) != null && wand.getFocus(itemstack) instanceof IArchitectDisplayItem && wand.getFocus(itemstack).isUpgradedWith(wand.getFocusItem(itemstack), ThaumcraftFocusUpgradeTypes.ARCHITECT)) {
                 int dim = getAreaDim(itemstack);
                 IArchitectDisplayItem fa = (IArchitectDisplayItem) wand.getFocus(itemstack);
                 if (player.isSneaking()) {
@@ -774,6 +768,7 @@ public class WandManager implements IWandTriggerManager {
 
     }
 
+    @Deprecated(forRemoval = true)
     public static boolean isOnCooldown(LivingEntity entityLiving) {
         if (entityLiving.level().isClientSide() && cooldownClient.containsKey(entityLiving.getId())) {
             return cooldownClient.get(entityLiving.getId()) > System.currentTimeMillis();
@@ -786,6 +781,7 @@ public class WandManager implements IWandTriggerManager {
         }
     }
 
+    @Deprecated(forRemoval = true)
     public static float getCooldown(LivingEntity entityLiving) {
         if (entityLiving.level().isClientSide()) {
             return 0.f;
@@ -793,6 +789,7 @@ public class WandManager implements IWandTriggerManager {
         return (float) (cooldownClient.getOrDefault(entityLiving,System.currentTimeMillis()) - System.currentTimeMillis()) / 1000.0F;
     }
 
+    @Deprecated(forRemoval = true)
     public static void setCooldown(LivingEntity entityLiving, int cd) {
         if (cd == 0) {
             cooldownClient.remove(entityLiving);
@@ -802,7 +799,6 @@ public class WandManager implements IWandTriggerManager {
         } else {
             cooldownServer.put(entityLiving, System.currentTimeMillis() + (long) cd);
         }
-
     }
 
 
@@ -903,7 +899,7 @@ public class WandManager implements IWandTriggerManager {
                             }
 
                             WandCastingItem wand = (WandCastingItem) itemstack.getItem();
-                            if (!wand.consumeAllCentiVisCrafting(itemstack, player, (new AspectList<>()).addAll(Aspects.FIRE, 50).addAll(
+                            if (!wand.consumeAllCentiVisCrafting(itemstack, player, (new LinkedHashAspectList<>()).addAll(Aspects.FIRE, 50).addAll(
                                     Aspects.WATER, 50).addAll(Aspects.ORDER, 50), true)) {
                                 return false;
                             }

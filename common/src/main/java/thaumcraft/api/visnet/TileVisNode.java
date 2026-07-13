@@ -1,20 +1,5 @@
 package thaumcraft.api.visnet;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import tc4tweak.modules.visrelay.SavedLinkHandler;
-import thaumcraft.api.tile.TileThaumcraft;
-import thaumcraft.api.WorldCoordinates;
-import thaumcraft.api.aspects.Aspect;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 /**
  * @author Azanor
  * 

@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.damagesource.DamageSource;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.entities.monster.EntityTaintSpider;
+import thaumcraft.common.entities.monster.tainted.EntityTaintSpider;
 
 public class ChampionModInfested implements IChampionModifierEffect {
    public float performEffect(EntityLivingBase boss, EntityLivingBase target, DamageSource source, float amount) {

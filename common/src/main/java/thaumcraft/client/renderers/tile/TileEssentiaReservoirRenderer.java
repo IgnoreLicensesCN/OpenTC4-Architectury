@@ -16,12 +16,12 @@ import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.block.BlockRenderer;
 import thaumcraft.common.blocks.junkbox.BlockJar;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileEssentiaReservoir;
+import thaumcraft.common.tiles.junkbox.TileEssentiaReservoir;
 
 @SideOnly(Side.CLIENT)
 public class TileEssentiaReservoirRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation RELAY = new ResourceLocation("thaumcraft", "textures/models/reservoir.obj");
+   private static final ResourceLocation RELAY = new ResourceLocation("thaumcraft", "textures/models/reservoir.left");
 
    public TileEssentiaReservoirRenderer() {
       this.model = AdvancedModelLoader.loadModel(RELAY);

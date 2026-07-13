@@ -20,7 +20,7 @@ import thaumcraft.common.blocks.junkbox.BlockCosmeticOpaque;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.foci.ItemFocusWarding;
-import thaumcraft.common.tiles.TileWarded;
+import thaumcraft.common.tiles.junkbox.TileWarded;
 
 import java.util.HashMap;
 

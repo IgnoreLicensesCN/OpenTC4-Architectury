@@ -2,7 +2,7 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.client.ResearchCategory;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,7 +40,7 @@ public class ResearchCategoryResourceLocation extends VariedResourceLocation<Res
     public static ResearchCategoryResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> ResearchCategoryResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new ResearchCategoryResourceLocation(namespace,path));
     }
     public static ResearchCategoryResourceLocation of(String namespaceAndPath){
         if (namespaceAndPath.isEmpty()){

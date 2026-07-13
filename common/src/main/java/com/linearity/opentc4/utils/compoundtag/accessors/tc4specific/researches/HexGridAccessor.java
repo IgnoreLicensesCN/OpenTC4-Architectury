@@ -1,6 +1,6 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.ModifiableMapAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableMapAccessor;
 import thaumcraft.common.lib.research.HexEntry;
 import thaumcraft.common.lib.utils.HexCoord;
 

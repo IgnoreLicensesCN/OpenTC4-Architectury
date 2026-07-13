@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +33,9 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.ITEM_ENTITY_TEST;
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.PLAYER_TEST;
 
 public class HungryChestBlockEntity extends ChestBlockEntity {
     private NonNullList<ItemStack> items;
@@ -48,7 +50,7 @@ public class HungryChestBlockEntity extends ChestBlockEntity {
     }
 
     public HungryChestBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.HUNGRY_CHEST,blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.HUNGRY_CHEST(),blockPos, blockState);
     }
 
     static void playSound(Level level, BlockPos blockPos, BlockState blockState, SoundEvent soundEvent) {
@@ -221,7 +223,7 @@ public class HungryChestBlockEntity extends ChestBlockEntity {
             int j = blockPos.getY();
             int k = blockPos.getZ();
             AABB aABB = new AABB(i - 5.0F, j - 5.0F, k - 5.0F, i + 1 + 5.0F, j + 1 + 5.0F, k + 1 + 5.0F);
-            return level.getEntities(EntityTypeTest.forClass(Player.class), aABB, this::isOwnContainer).size();
+            return level.getEntities(PLAYER_TEST, aABB, this::isOwnContainer).size();
         }
 
         public void recheckOpeners(Level level, BlockPos blockPos, BlockState blockState) {
@@ -303,7 +305,7 @@ public class HungryChestBlockEntity extends ChestBlockEntity {
 
         List<ItemEntity> list = new ArrayList<>(1);
         this.level.getEntities(
-                EntityTypeTest.forClass(ItemEntity.class),
+                ITEM_ENTITY_TEST,
                 new AABB(above),
                 e -> true,
                 list,

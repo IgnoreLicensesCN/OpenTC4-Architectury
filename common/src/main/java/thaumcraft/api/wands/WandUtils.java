@@ -18,18 +18,22 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.PrimalAspect;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator;
+import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IWandFocusEngineItem;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
+import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 
 import java.text.DecimalFormat;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class WandUtils {
 
-    private static final Int2ObjectMap<CentiVisList<PrimalAspect>> map_AspectCentiVisListWithValue = new Int2ObjectOpenHashMap<>();
+    private static final Int2ObjectMap<CentiVisList<PrimalAspect>> primalAspectAmount2AspectsMap = new Int2ObjectOpenHashMap<>();
 
     @Unmodifiable
     public static CentiVisList<Aspect> getPrimalAspectCentiVisListWithValueCastedUnmodifiable(int value) {
@@ -37,33 +41,15 @@ public class WandUtils {
     }
     @Unmodifiable
     public static CentiVisList<PrimalAspect> getPrimalAspectCentiVisListWithValueUnmodifiable(int value) {
-        return map_AspectCentiVisListWithValue.computeIfAbsent(
+        return primalAspectAmount2AspectsMap.computeIfAbsent(
                 value,val -> {
                     Object2IntLinkedOpenHashMap<PrimalAspect> map = new Object2IntLinkedOpenHashMap<>();
-                    Aspects.getPrimalAspects().forEach(aspect -> {
-                        map.put(aspect,val);
-                    });
-                    return CentiVisList.viewOf(map);
+                    Aspects.getPrimalAspects().forEach(aspect -> map.put(aspect,val));
+                    return UnmodifiableCentiVisList.of(map);
                 }
         );
     }
-
-    //generate capacity? or whatever you like
-    public static CentiVisList<Aspect> getPrimalAspectCentiVisListWithValueCasted(int value) {
-        return new CentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
-    }
-    public static CentiVisList<PrimalAspect> getPrimalAspectCentiVisListWithValue(int value) {
-
-        return new CentiVisList<>(Aspects.getPrimalAspects().stream().collect(Collectors.toMap(a -> a, a -> value)));
-    }
-    public static CentiVisList<Aspect> getAspectsCentiVisListWithValue(Collection<Aspect> aspects, int value) {
-        return new CentiVisList<>(aspects.stream().collect(Collectors.toMap(a -> a, a -> value)));
-    }
-    public static CentiVisList<Aspect> getAspectsCentiVisListWithValue(Aspect aspect, int value) {
-        return new CentiVisList<>(aspect,value);
-    }
-
-    public static final DecimalFormat decimalFormat = new DecimalFormat("#######.##");
+    public static final DecimalFormat CENTIVIS_DECIMAL_FORMAT = new DecimalFormat("#######.##");
     public static void appendWandHoverText(Item wandItem, ItemStack wandStack, @Nullable Level level, List<Component> list, TooltipFlag flag, LivingEntity livingEntity) {
         int pos = list.size();
         String tt2 = "";
@@ -114,25 +100,27 @@ public class WandUtils {
                 wandStack,
                 livingEntity,
                 aspect,
-                false);
-        String consumptionString = decimalFormat.format(mod * 100.0F);
+                ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS);
+        String consumptionString = CENTIVIS_DECIMAL_FORMAT.format(mod * 100.0F);
         var focusConsumptionComponent = Component.empty();
         if (wandItem instanceof IWandFocusEngineItem engine && engine.canApplyFocus()) {
             var focusStack = engine.getFocusItemStack(wandStack);
             var focusItem = focusStack.getItem();
             if (focusItem instanceof IWandFocusItem<?> wandFocusItemNotCasted) {
                 IWandFocusItem<Aspect> wandFocusItem = (IWandFocusItem<Aspect>) wandFocusItemNotCasted;
-                int amt = wandFocusItem.getCentiVisCost(focusStack, wandStack).getAmount(aspect);
+                var upgrades = wandFocusItem.getAppliedFocusUpgrades(wandStack);
+                int amt = wandFocusItem.getCentiVisCost(focusStack, upgrades).get(aspect);
                 if (amt > 0) {
                     focusConsumptionComponent =
-                            Component.literal(", "+decimalFormat.format((float) amt * mod / 100.0F) + " ")
-                                    .append(Component.translatable(wandFocusItem.isCentiVisCostPerTick() ? "wandItem.Focus.cost2" : "wandItem.Focus.cost1"))
+                            Component.literal(", "+ CENTIVIS_DECIMAL_FORMAT.format((float) amt * mod / 100.0F) + " ")
+                                    .append(Component.translatable(wandFocusItem.isCentiVisCostPerTick(focusStack,wandStack) ? "wandItem.Focus.cost2" : "wandItem.Focus.cost1"))
                     ;
                 }
             }
         }
         if (shiftKeyDownFlag) {
-            list.add(aspect.getName().copy()
+            list.add(
+                    aspect.getName().copy()
                     .withStyle(style -> style.withColor(TextColor.fromRgb(aspect.getColor())))
                     .append(Component.literal(" x "+amountString + "/" + capacityString).withStyle(style -> Style.EMPTY))
                     .append(Component.literal(" ,").withStyle(style -> Style.EMPTY))
@@ -153,13 +141,13 @@ public class WandUtils {
     }
 
     public static void addFocusInformation(IWandFocusItem<? extends Aspect> focus,ItemStack focusstack, List<Component> list, TooltipFlag flag) {
-		for (var entry:focus.getAppliedWandUpgrades(focusstack).entrySet()) {
+		for (var entry:focus.getAppliedFocusUpgrades(focusstack).object2IntEntrySet()) {
             FocusUpgradeType type = entry.getKey();
             var id = type.id();
-            var lvl = entry.getValue();
+            var lvl = entry.getIntValue();
             var lvlComponent = (lvl>1?Component.literal(" ").append(Component.translatable("enchantment.level." + lvl)):Component.empty());
             list.add(
-                    type.getLocalizedName().copy()
+                    type.name().copy()
                             .append(lvlComponent)
                             .withStyle(style -> style.withColor(ChatFormatting.DARK_PURPLE))
             );

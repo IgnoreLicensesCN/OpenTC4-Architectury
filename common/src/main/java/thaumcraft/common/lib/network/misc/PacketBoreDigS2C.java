@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.network.misc;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
@@ -8,6 +9,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.crafted.ArcaneBoreBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class PacketBoreDigS2C extends ThaumcraftBaseS2CMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":bore_dig";
@@ -46,7 +49,7 @@ public class PacketBoreDigS2C extends ThaumcraftBaseS2CMessage {
    @Override
    public void handle(NetworkManager.PacketContext context) {
       Level world = context.getPlayer().level(); // 客户端玩家世界
-      if (world.getBlockEntity(selfPos) instanceof ArcaneBoreBlockEntity bore) {
+      if (LevelBlockEntityAccessing.getExistingBlockEntity(world, selfPos) instanceof ArcaneBoreBlockEntity bore) {
          bore.getDigEvent(digPos);
       }
    }

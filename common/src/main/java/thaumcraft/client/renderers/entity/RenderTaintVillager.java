@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.entities.monster.EntityTaintVillager;
+import thaumcraft.common.entities.monster.tainted.EntityTaintVillager;
 
 public class RenderTaintVillager extends RenderLiving {
    protected ModelVillager field_40295_c;

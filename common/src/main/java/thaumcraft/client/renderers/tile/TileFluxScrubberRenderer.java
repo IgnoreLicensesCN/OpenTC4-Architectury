@@ -13,7 +13,7 @@ import thaumcraft.common.tiles.TileFluxScrubber;
 
 public class TileFluxScrubberRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation CAP = new ResourceLocation("thaumcraft", "textures/models/obelisk_cap.obj");
+   private static final ResourceLocation CAP = new ResourceLocation("thaumcraft", "textures/models/obelisk_cap.left");
 
    public TileFluxScrubberRenderer() {
       this.model = AdvancedModelLoader.loadModel(CAP);

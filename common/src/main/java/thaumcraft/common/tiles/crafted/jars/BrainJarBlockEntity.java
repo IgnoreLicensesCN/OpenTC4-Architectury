@@ -10,11 +10,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
@@ -23,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.linearity.opentc4.Consts.BrainJarTagAccessors.EXP;
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.EXPERIENCE_ORB_TEST;
 
 public class BrainJarBlockEntity extends TileThaumcraft implements IValueContainerBasedComparatorSignalProviderBlockEntity {
     public int xp = 0;
@@ -35,7 +35,7 @@ public class BrainJarBlockEntity extends TileThaumcraft implements IValueContain
         super(blockEntityType, blockPos, blockState);
     }
     public BrainJarBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.BRAIN_JAR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.BRAIN_JAR(), blockPos, blockState);
     }
 
     @Override
@@ -171,7 +171,7 @@ public class BrainJarBlockEntity extends TileThaumcraft implements IValueContain
         } else if (this.xp < getExpCapacity()) {
             List<ExperienceOrb> list = new ArrayList<>(200);
             this.level.getEntities(
-                    EntityTypeTest.forClass(ExperienceOrb.class),
+                    EXPERIENCE_ORB_TEST,
                     new AABB(getBlockPos()).inflate(getExpConsumeRange()),
                     e -> true,
                     list,
@@ -195,7 +195,7 @@ public class BrainJarBlockEntity extends TileThaumcraft implements IValueContain
         if (this.level == null){return null;}
         List<ExperienceOrb> list = new ArrayList<>(5);
         this.level.getEntities(
-                EntityTypeTest.forClass(ExperienceOrb.class),
+                EXPERIENCE_ORB_TEST,
                 new AABB(getBlockPos()).inflate(range),
                 e -> true,
                 list,

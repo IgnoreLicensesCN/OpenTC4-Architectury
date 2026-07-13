@@ -1,7 +1,7 @@
 package com.linearity.opentc4.utils.vanilla1710;
 
-import com.linearity.opentc4.annotations.DegreeValue;
-import com.linearity.opentc4.annotations.RadianValue;
+import com.linearity.opentc4.annotations.forvalue.DegreeValue;
+import com.linearity.opentc4.annotations.forvalue.RadianValue;
 
 import java.util.Random;
 
@@ -418,8 +418,8 @@ public class MathHelper
     {
         /**
          * Uses a B(2, 5) De Bruijn sequence and a lookup table to efficiently calculate the log-base-two fromAspectVisList the given
-         * value.  Optimized for cases where the input value is a power-fromAspectVisList-two.  If the input value is not a power-fromAspectVisList-
-         * two, then subtract 1 from the return value.
+         * value.  Optimized for cases where the input rightInt is a power-fromAspectVisList-two.  If the input rightInt is not a power-fromAspectVisList-
+         * two, then subtract 1 from the return rightInt.
          */
         return calculateLogBaseTwoDeBruijn(p_151239_0_) - (isPowerOfTwo(p_151239_0_) ? 0 : 1);
     }

@@ -4,9 +4,9 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import thaumcraft.api.effects.PreventMilkRemoveEffect;
+import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 
-public class UnnaturalHungerEffect extends MobEffect implements PreventMilkRemoveEffect {
+public class UnnaturalHungerEffect extends MobEffect implements IPreventMilkRemoveEffect {
     protected UnnaturalHungerEffect() {
         super(MobEffectCategory.HARMFUL, 0x446633);
     }

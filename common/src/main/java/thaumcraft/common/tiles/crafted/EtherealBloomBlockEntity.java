@@ -1,11 +1,8 @@
 package thaumcraft.common.tiles.crafted;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.biome.Biome;
@@ -14,7 +11,7 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.utils.Utils;
@@ -22,6 +19,7 @@ import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeLookups;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
+import static com.linearity.opentc4.Consts.TAINT_SPREAD_DOWN_DISTANCE;
 import static com.linearity.opentc4.Consts.TAINT_SPREAD_UP_DISTANCE;
 
 public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
@@ -32,7 +30,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
         super(blockEntityType, blockPos, blockState);
     }
     public EtherealBloomBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ETHEREAL_BLOOM, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ETHEREAL_BLOOM(), blockPos, blockState);
     }
 
 
@@ -97,7 +95,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
 
     private void setBiomeAboveNotTaint(ServerLevel serverLevel, BlockPos base){
         if (this.level == null){return;}
-        for (int i=1;i<=TAINT_SPREAD_UP_DISTANCE;i+=1){
+        for (int i=TAINT_SPREAD_DOWN_DISTANCE;i<=TAINT_SPREAD_UP_DISTANCE;i+=1){
             var currentPos = base.offset(0,i,0);
             var biomeID = this.level.getBiome(currentPos);
             if (biomeID.is(ThaumcraftBiomeIDs.TAINT_ID)) {

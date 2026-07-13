@@ -32,15 +32,13 @@ import java.util.List;
 
 public class BlockUtils {
    static HashMap<Integer,ArrayList[]> blockEventCache = new HashMap<>();
-   static int lastx = 0;
-   static int lasty = 0;
-   static int lastz = 0;
-   static double lastdistance = 0.0F;
 
+   @Deprecated(forRemoval = true)
    public static boolean harvestBlock(Level world, Player player, int x, int y, int z) {
       return harvestBlock(world, player, x, y, z, false, 0);
    }
 
+   @Deprecated(forRemoval = true)
    public static boolean harvestBlock(Level world, Player player, int x, int y, int z, boolean followItem, int color) {
       Block block = world.getBlock(x, y, z);
       int i1 = world.getBlockMetadata(x, y, z);
@@ -82,6 +80,7 @@ public class BlockUtils {
       }
    }
 
+   @Deprecated(forRemoval = true)
    public static ArrayList[] getBlockEventList(WorldServer world) {
       if (!blockEventCache.containsKey(world.dimension())) {
          try {
@@ -108,6 +107,7 @@ public class BlockUtils {
 //      return dropped;
 //   }
 
+   @Deprecated(forRemoval = true)
    public static void dropBlockAsItem(Level world, int x, int y, int z, ItemStack stack, Block block) {
       try {
          Method m = ReflectionHelper.findMethod(Block.class, block, new String[]{"dropBlockAsItem", "func_149642_a"}, World.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, ItemStack.class);
@@ -118,6 +118,7 @@ public class BlockUtils {
 
    }
 
+   @Deprecated(forRemoval = true)
    public static void dropBlockAsItemWithChance(Level world, Block block, int x, int y, int z, int meta, float dropchance, int fortune, Player player) {
       if (Platform.getEnvironment() != Env.CLIENT && !world.restoringBlockSnapshots) {
          ArrayList<ItemStack> items = block.getDrops(world, x, y, z, meta, fortune);
@@ -146,6 +147,7 @@ public class BlockUtils {
 
    }
 
+   @Deprecated(forRemoval = true)
    public static boolean removeBlock(Level world, int par1, int par2, int par3, Player player) {
       Block block = world.getBlock(par1, par2, par3);
       int l = world.getBlockMetadata(par1, par2, par3);
@@ -161,6 +163,41 @@ public class BlockUtils {
       return flag;
    }
 
+
+
+   @Deprecated(forRemoval = true)
+   public static boolean breakFurthestBlock(Level world, int x, int y, int z, Block block, Player player) {
+      return breakFurthestBlock(world, x, y, z, block, player, false, 0);
+   }
+
+   @Deprecated(forRemoval = true)
+   public static boolean breakFurthestBlock(Level world, int x, int y, int z, Block block, Player player, boolean followitem, int color) {
+      lastx = x;
+      lasty = y;
+      lastz = z;
+      lastdistance = 0.0F;
+      findBlocks(world, x, y, z, block);
+      boolean worked = harvestBlock(world, player, lastx, lasty, lastz, followitem, color);
+      world.markBlockForUpdate(x, y, z);
+      if (worked) {
+         world.markBlockForUpdate(lastx, lasty, lastz);
+
+         for(int xx = -3; xx <= 3; ++xx) {
+            for(int yy = -3; yy <= 3; ++yy) {
+               for(int zz = -3; zz <= 3; ++zz) {
+                  world.scheduleBlockUpdate(lastx + xx, lasty + yy, lastz + zz, world.getBlock(lastx + xx, lasty + yy, lastz + zz), 150 + world.getRandom().nextInt(150));
+               }
+            }
+         }
+      }
+
+      return worked;
+   }
+   static int lastx = 0;
+   static int lasty = 0;
+   static int lastz = 0;
+   static double lastdistance = 0.0F;
+   @Deprecated(forRemoval = true)
    public static void findBlocks(Level world, int x, int y, int z, Block block) {
       int count = 0;
 
@@ -199,33 +236,7 @@ public class BlockUtils {
 
    }
 
-   public static boolean breakFurthestBlock(Level world, int x, int y, int z, Block block, Player player) {
-      return breakFurthestBlock(world, x, y, z, block, player, false, 0);
-   }
-
-   public static boolean breakFurthestBlock(Level world, int x, int y, int z, Block block, Player player, boolean followitem, int color) {
-      lastx = x;
-      lasty = y;
-      lastz = z;
-      lastdistance = 0.0F;
-      findBlocks(world, x, y, z, block);
-      boolean worked = harvestBlock(world, player, lastx, lasty, lastz, followitem, color);
-      world.markBlockForUpdate(x, y, z);
-      if (worked) {
-         world.markBlockForUpdate(lastx, lasty, lastz);
-
-         for(int xx = -3; xx <= 3; ++xx) {
-            for(int yy = -3; yy <= 3; ++yy) {
-               for(int zz = -3; zz <= 3; ++zz) {
-                  world.scheduleBlockUpdate(lastx + xx, lasty + yy, lastz + zz, world.getBlock(lastx + xx, lasty + yy, lastz + zz), 150 + world.getRandom().nextInt(150));
-               }
-            }
-         }
-      }
-
-      return worked;
-   }
-
+   @Deprecated(forRemoval = true,since = "rayTraceIgnoringSource")
    public static HitResult getTargetBlock(Level world, double x, double y, double z, float yaw, float pitch, boolean par3, double range) {
       Vec3 var13 = new Vec3(x, y, z);
       float var14 = MathHelper.cos(-yaw * ((float)Math.PI / 180F) - (float)Math.PI);
@@ -238,6 +249,7 @@ public class BlockUtils {
       return world.func_147447_a(var13, var23, par3, !par3, false);
    }
 
+   @Deprecated(forRemoval = true,since = "rayTraceIgnoringSource")
    public static HitResult getTargetBlock(Level world, Entity entity, boolean par3) {
       float var4 = 1.0F;
       float var5 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * var4;

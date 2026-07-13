@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.lib.utils.EntityUtils;
@@ -20,7 +20,7 @@ public class EldritchObeliskWithTickerBlockEntity extends TileThaumcraft {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchObeliskWithTickerBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ELDRITCH_OBELISK_WITH_TICKER, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_OBELISK_WITH_TICKER(), blockPos, blockState);
     }
     public void serverTick() {
         if (this.level == null) {

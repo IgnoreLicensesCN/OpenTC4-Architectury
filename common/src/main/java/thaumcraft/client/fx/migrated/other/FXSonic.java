@@ -18,7 +18,7 @@ public class FXSonic extends ThaumcraftParticle {
     Entity target = null;
     float yaw = 0.0F;
     float pitch = 0.0F;
-    public static final ResourceLocation MODEL = ResourceLocation.tryParse("thaumcraft:models/special/hemis.obj");
+    public static final ResourceLocation MODEL = ResourceLocation.tryParse("thaumcraft:models/special/hemis.left");
     public static BakedModel model = platformUtils.getModel(MODEL);
 
     public FXSonic(ClientLevel world, double d, double d1, double d2, Entity target, int age) {

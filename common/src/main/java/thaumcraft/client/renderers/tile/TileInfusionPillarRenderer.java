@@ -9,12 +9,12 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.tiles.TileInfusionPillar;
+import thaumcraft.common.tiles.junkbox.TileInfusionPillar;
 
 @SideOnly(Side.CLIENT)
 public class TileInfusionPillarRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation PILLAR = new ResourceLocation("thaumcraft", "textures/models/pillar.obj");
+   private static final ResourceLocation PILLAR = new ResourceLocation("thaumcraft", "textures/models/pillar.left");
 
    public TileInfusionPillarRenderer() {
       this.model = AdvancedModelLoader.loadModel(PILLAR);

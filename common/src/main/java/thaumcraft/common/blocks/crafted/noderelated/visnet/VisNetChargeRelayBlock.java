@@ -1,9 +1,6 @@
 package thaumcraft.common.blocks.crafted.noderelated.visnet;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -18,17 +15,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
-import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.visnet.VisNetChargeRelayBlockEntity;
-import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.visnet.VisNetChargeRelayBlockEntity;
 
 import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR;
-import static thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock.COLOR_TYPES;
 
-public class VisNetChargeRelayBlock extends SuppressedWarningBlock implements IWandInteractableBlockOrBlockEntity, EntityBlock {
+public class VisNetChargeRelayBlock extends SuppressedWarningBlock implements EntityBlock {
     public VisNetChargeRelayBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
@@ -47,23 +40,6 @@ public class VisNetChargeRelayBlock extends SuppressedWarningBlock implements IW
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(COLOR);
-    }
-    @Override
-    public @NotNull InteractionResult useOnWandInteractable(UseOnContext useOnContext) {
-        var level = useOnContext.getLevel();
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        }
-        var state = level.getBlockState(useOnContext.getClickedPos());
-        state = state.setValue(COLOR, (state.getValue(COLOR) + 1)%COLOR_TYPES);
-        level.setBlockAndUpdate(useOnContext.getClickedPos(), state);
-        if (level.getBlockEntity(useOnContext.getClickedPos()) instanceof VisNetRelayBlockEntity relay) {
-            relay.removeThisNode();
-            relay.shouldRefreshVisNetNode =true;
-            relay.markDirtyAndUpdateSelf();
-            level.playSound(null,relay.getBlockPos(), ThaumcraftSounds.CRYSTAL, SoundSource.BLOCKS, 0.2F, 1.0F);
-        }
-        return InteractionResult.SUCCESS;
     }
     public static final VoxelShape SHAPE = Block.box(
             5, 8, 5,
@@ -95,7 +71,7 @@ public class VisNetChargeRelayBlock extends SuppressedWarningBlock implements IW
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == ThaumcraftBlockEntities.VIS_CHARGE_RELAY && blockState.getBlock() == this && level != null) {
+        if (blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.VIS_CHARGE_RELAY() && blockState.getBlock() == this && level != null) {
             if (!level.isClientSide) {
                 return ((level1, blockPos, blockState1, blockEntity) -> {
                     if (blockEntity instanceof VisNetChargeRelayBlockEntity relay) {

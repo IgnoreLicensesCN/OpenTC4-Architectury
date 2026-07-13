@@ -1,19 +1,17 @@
 package thaumcraft.common.items.wands.wandcaps;
 
-import com.linearity.opentc4.simpleutils.UnmodifiableAspectFloatEntry;
+import com.linearity.opentc4.utils.collectionlike.UnmodifiableAspectFloatEntry;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.common.items.abstracts.wandabstraction.component.ICraftingCostAspectOwnerComponentItem;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
-
-import java.util.Map;
 
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
 
-public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwnerComponent<Aspect> {//itemWandCap:4
+public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwnerComponentItem<Aspect> {//itemWandCap:4
     public SilverWandCapItem() {
         super(new Properties());
     }
@@ -21,14 +19,14 @@ public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftin
 
     @Override
     public float getBaseCostModifier() {
-        return 1f;
+        return 0;
     }
 
     private final Object2FloatMap<Aspect> specialCostModifierAspects = Object2FloatMap.ofEntries(
-            new UnmodifiableAspectFloatEntry<>(Aspects.AIR,.95f),
-            new UnmodifiableAspectFloatEntry<>(Aspects.EARTH,.95f),
-            new UnmodifiableAspectFloatEntry<>(Aspects.FIRE,.95f),
-            new UnmodifiableAspectFloatEntry<>(Aspects.WATER,.95f)
+            new UnmodifiableAspectFloatEntry<>(Aspects.AIR,.05f),
+            new UnmodifiableAspectFloatEntry<>(Aspects.EARTH,.05f),
+            new UnmodifiableAspectFloatEntry<>(Aspects.FIRE,.05f),
+            new UnmodifiableAspectFloatEntry<>(Aspects.WATER,.05f)
     );
     @Override
     public @NotNull Object2FloatMap<Aspect> getSpecialCostModifierAspects() {

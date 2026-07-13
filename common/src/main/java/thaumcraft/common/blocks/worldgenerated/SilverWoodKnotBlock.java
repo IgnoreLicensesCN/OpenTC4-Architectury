@@ -1,9 +1,8 @@
 package thaumcraft.common.blocks.worldgenerated;
 
-import net.minecraft.client.multiplayer.ClientLevel;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -23,12 +22,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.nodes.INodeBlock;
 import thaumcraft.client.lib.UtilsFXMigrated;
-import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.node.SilverWoodKnotNodeBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+import static thaumcraft.common.blocks.abstracts.AbstractNodeBlock.nodeBlockOnRemove;
 
 public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlock, INodeBlock {
 
@@ -68,16 +69,7 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
             BlockState newState,
             boolean isMoving
     ) {
-        if (level instanceof ClientLevel clientLevel && state.getBlock() != newState.getBlock()) {
-            var x = pos.getX();
-            var y = pos.getY();
-            var z = pos.getZ();
-            // 粒子
-            ClientFXUtils.burst(clientLevel, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 1.0F);
-        }
-        if (level instanceof ServerLevel serverLevel && newState.isAir()) {
-            //TODO:wispEssences
-        }
+        nodeBlockOnRemove(state, level, pos, newState, isMoving);
         super.onRemove(state, level, pos, newState, isMoving);
     }
 
@@ -98,7 +90,7 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
-        var bEntity = level.getBlockEntity(blockPos);
+        var bEntity = LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos);
         if (bEntity instanceof SilverWoodKnotNodeBlockEntity node){
             node.clientAnimateTickByBlockHandle();
         }
@@ -106,7 +98,7 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
 
     @Override
     public @NotNull Item asItem() {
-        return ThaumcraftItems.SILVERWOOD_LOG;
+        return ThaumcraftItemInstances.SILVERWOOD_LOG();
     }
 
 
@@ -118,7 +110,7 @@ public class SilverWoodKnotBlock extends RotatedPillarBlock implements EntityBlo
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType != ThaumcraftBlockEntities.SILVERWOOD_KNOT_NODE) {
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.SILVERWOOD_KNOT_NODE()) {
             return null;
         }
         if (level.isClientSide){

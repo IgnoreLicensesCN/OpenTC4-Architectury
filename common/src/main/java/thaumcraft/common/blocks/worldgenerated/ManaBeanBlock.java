@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.worldgenerated;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -31,13 +32,15 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.IManaBeanAspectCombineProviderBlock;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
-import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.items.consumable.ManaBeanItem;
+import thaumcraft.common.items.ThaumcraftItemInstances;
+import thaumcraft.common.items.consumable.aspectowning.ManaBeanItem;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 import thaumcraft.common.tiles.generated.ManaBeanBlockEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class ManaBeanBlock extends SuppressedWarningBlock
         implements
@@ -89,11 +92,11 @@ public class ManaBeanBlock extends SuppressedWarningBlock
 
     @Override
     public @NotNull BlockState updateShape(
-            BlockState prevState, Direction changeFromDirection, BlockState blockState2, LevelAccessor levelAccessor, BlockPos selfPos, BlockPos changedPos
+            BlockState prevState, Direction changeFromDirection, BlockState neighborState, LevelAccessor levelAccessor, BlockPos selfPos, BlockPos changedPos
     ) {
         return changeFromDirection == Direction.UP && !prevState.canSurvive(levelAccessor, selfPos)
                 ? Blocks.AIR.defaultBlockState()
-                : super.updateShape(prevState, changeFromDirection, blockState2, levelAccessor, selfPos, changedPos);
+                : super.updateShape(prevState, changeFromDirection, neighborState, levelAccessor, selfPos, changedPos);
     }
 
 
@@ -114,18 +117,18 @@ public class ManaBeanBlock extends SuppressedWarningBlock
                     }
                     dropCount *= 1 + random.nextInt(fortuneLevel+1);
                 }
-                int stackSize = ThaumcraftItems.MANA_BEAN.getMaxStackSize();
+                int stackSize = ThaumcraftItemInstances.MANA_BEAN().getMaxStackSize();
                 List<ItemStack> drops = new ArrayList<>((dropCount / stackSize)+1);
                 while ((dropCount / stackSize) > 0) {
                     dropCount -= stackSize;
-                    var addStack = new ItemStack(ThaumcraftItems.MANA_BEAN,stackSize);
-                    ThaumcraftItems.MANA_BEAN.writeOwningBonusAspect(addStack,aspect);
+                    var addStack = new ItemStack(ThaumcraftItemInstances.MANA_BEAN(),stackSize);
+                    ThaumcraftItemInstances.MANA_BEAN().writeOwningBonusAspect(addStack,aspect);
                     drops.add(addStack);
                 }
                 int remaining = dropCount % stackSize;
                 if (remaining > 0) {
-                    var addStack = new ItemStack(ThaumcraftItems.MANA_BEAN,remaining);
-                    ThaumcraftItems.MANA_BEAN.writeOwningBonusAspect(addStack,aspect);
+                    var addStack = new ItemStack(ThaumcraftItemInstances.MANA_BEAN(),remaining);
+                    ThaumcraftItemInstances.MANA_BEAN().writeOwningBonusAspect(addStack,aspect);
                     drops.add(addStack);
                 }
                 return drops;
@@ -152,7 +155,7 @@ public class ManaBeanBlock extends SuppressedWarningBlock
     @Override
     public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         super.randomTick(blockState, serverLevel, blockPos, randomSource);
-        if (serverLevel.getBlockEntity(blockPos) instanceof ManaBeanBlockEntity manaBean) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(serverLevel, blockPos) instanceof ManaBeanBlockEntity manaBean) {
             manaBean.randomTick();
         }
     }
@@ -188,7 +191,7 @@ public class ManaBeanBlock extends SuppressedWarningBlock
         if (itemStack.getItem() instanceof ManaBeanItem beanItem){
             var owningAspect = beanItem.getContainingAspectFromStack(itemStack);
             if (!owningAspect.isEmpty()){
-                if (level.getBlockEntity(blockPos) instanceof ManaBeanBlockEntity manaBean){
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ManaBeanBlockEntity manaBean){
                     manaBean.setAspectOwning(owningAspect);
                 }
             }
@@ -197,7 +200,7 @@ public class ManaBeanBlock extends SuppressedWarningBlock
 
     @Override
     public @NotNull Aspect getAspectCanProvide(Level level, BlockPos selfPos, BlockState selfState) {
-        if (level.getBlockEntity(selfPos) instanceof ManaBeanBlockEntity manaBean){
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, selfPos) instanceof ManaBeanBlockEntity manaBean){
             return manaBean.getAspectOwning();
         }
         return Aspects.EMPTY;

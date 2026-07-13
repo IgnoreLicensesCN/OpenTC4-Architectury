@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.essentia.pipes;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -21,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.crafted.essentiabe.pipes.EssentiaTubeValveBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class EssentiaTubeValveBlock extends AbstractEssentiaTubeBlock
         implements
@@ -103,7 +106,7 @@ public class EssentiaTubeValveBlock extends AbstractEssentiaTubeBlock
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         super.neighborChanged(state, level, pos, block, fromPos, isMoving);
         if (!level.isClientSide()) {
-            if (level.getBlockEntity(pos) instanceof EssentiaTubeValveBlockEntity valve) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof EssentiaTubeValveBlockEntity valve) {
                 var hasSignalNow = level.hasNeighborSignal(pos);
                 var hasSignalBefore = state.getValue(POWERED);
                 if (hasSignalNow != hasSignalBefore) {
@@ -117,7 +120,7 @@ public class EssentiaTubeValveBlock extends AbstractEssentiaTubeBlock
     @Override
     public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide){
-            if (level.getBlockEntity(pos) instanceof EssentiaTubeValveBlockEntity valve){
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof EssentiaTubeValveBlockEntity valve){
                 valve.setBlockStateAndUpdate(state.setValue(FORCE_CUT_FLOW,!state.getValue(FORCE_CUT_FLOW)));
             }
         }

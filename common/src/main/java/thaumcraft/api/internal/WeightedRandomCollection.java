@@ -1,16 +1,14 @@
 package thaumcraft.api.internal;
 
-import com.linearity.opentc4.simpleutils.ObjectIntPair;
+import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.random.Weight;
-import net.minecraft.util.random.WeightedEntry;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 import oshi.annotation.concurrent.NotThreadSafe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 @NotThreadSafe//at least for writing
 public class WeightedRandomCollection<Obj>{
@@ -18,11 +16,6 @@ public class WeightedRandomCollection<Obj>{
     protected @NotNull List<ObjectIntPair<Obj>> internalContainer = new ArrayList<>();
     protected boolean sorted = false;
     protected int totalWeight = 0;
-    public static final WeightedRandomCollection<Function<RandomSource,ItemStack>> lootBagCommon = new WeightedRandomCollection<>();
-    public static final WeightedRandomCollection<Function<RandomSource,ItemStack>> lootBagUncommon = new WeightedRandomCollection<>();
-    public static final WeightedRandomCollection<Function<RandomSource,ItemStack>> lootBagRare = new WeightedRandomCollection<>();
-
-
     public void add(Obj obj, int weight) {
         internalContainer.add(new ObjectIntPair<>(obj,weight));
         sorted = false;
@@ -35,24 +28,27 @@ public class WeightedRandomCollection<Obj>{
         if (!sorted){
             sort();
         }
-        int pickValue = rand.nextInt(totalWeight);
+        int pickValue = rand.nextInt(totalWeight + 1);
         for (var item : internalContainer) {
-            pickValue -= item.value();
-            if (pickValue < 0) {
-                return item.obj();
+            pickValue -= item.rightInt();
+            if (pickValue <= 0) {
+                return item.left();
             }
         }
-        return internalContainer.getFirst().obj();
+        return internalContainer.getFirst().left();
     }
     public void clear(){
         internalContainer.clear();
+        totalWeight = 0;
     }
-
     public int getTotalWeight() {
         return totalWeight;
     }
     public void sort(){
-        internalContainer.sort((a,b) -> -Integer.compare(a.value(), b.value()));
+        internalContainer.sort((a,b) -> -Integer.compare(a.rightInt(), b.rightInt()));
         sorted = true;
+    }
+    public @UnmodifiableView List<ObjectIntPair<Obj>> getInternalContainerView() {
+        return Collections.unmodifiableList(internalContainer);
     }
 }

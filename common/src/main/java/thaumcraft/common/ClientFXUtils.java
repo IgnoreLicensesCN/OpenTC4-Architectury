@@ -28,14 +28,14 @@ import thaumcraft.client.fx.migrated.beams.*;
 import thaumcraft.client.fx.migrated.bolt.*;
 import thaumcraft.client.fx.migrated.other.*;
 import thaumcraft.common.tiles.crafted.CrucibleBlockEntity;
-import thaumcraft.common.tiles.crafted.visnet.VisNetRelayBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.visnet.VisNetRelayBlockEntity;
 
 import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 //all method here should check platform
-@SuppressWarnings({"resource","unused"})
+@SuppressWarnings({"unused"})
 public class ClientFXUtils {
 
     public static ClientLevel getClientWorld() {
@@ -59,10 +59,10 @@ public class ClientFXUtils {
         FXArc efa = new FXArc(world, x, y, z, tx, ty, tz, r, g, b, h);
         Minecraft.getInstance().particleEngine.add(efa);
     }
-    public static void blockSparkle(ClientLevel world, BlockPos pos, int c, int count){
+    public static void blockSparkle(ClientLevel world, BlockPos pos,@RGBColor int c, int count){
         blockSparkle(world, pos.getX(),pos.getY(),pos.getZ(), count, c);
     }
-    public static void blockSparkle(ClientLevel world, int x, int y, int z, int c, int count) {
+    public static void blockSparkle(ClientLevel world, int x, int y, int z,@RGBColor int c, int count) {
         if (!checkPlatformClient()) {
             return;
         }
@@ -1106,21 +1106,23 @@ public class ClientFXUtils {
         float f2 = MathHelper.sin(f) * 2.0F * 0.5F * f1;
         float f3 = MathHelper.cos(f) * 2.0F * 0.5F * f1;
         if (e.level().isClientSide()) {
-            FXBreaking fx = new FXBreaking(
-                    (ClientLevel) e.level(),
-                    e.getX() + (double) f2,
-                    (e.getBoundingBox().minY + e.getBoundingBox().maxY) / (double) 2.0F,
-                    e.getZ() + (double) f3,
-                    Items.SLIME_BALL
-            );
-            fx.setRBGColorF(
-                    0.1F,
-                    0.0F,
-                    0.1F
-            );
-            fx.setAlphaF(0.4F);
-            fx.setParticleMaxAge((int) (66.0F / (e.level().getRandom().nextFloat() * 0.9F + 0.1F)));
-            Minecraft.getInstance().particleEngine.add(fx);
+            if (e.level() instanceof ClientLevel clientLevel){
+                FXBreaking fx = new FXBreaking(
+                        clientLevel,
+                        e.getX() + (double) f2,
+                        (e.getBoundingBox().minY + e.getBoundingBox().maxY) / (double) 2.0F,
+                        e.getZ() + (double) f3,
+                        Items.SLIME_BALL
+                );
+                fx.setRBGColorF(
+                        0.1F,
+                        0.0F,
+                        0.1F
+                );
+                fx.setAlphaF(0.4F);
+                fx.setParticleMaxAge((int) (66.0F / (e.level().getRandom().nextFloat() * 0.9F + 0.1F)));
+                Minecraft.getInstance().particleEngine.add(fx);
+            }
         }
 
     }
@@ -1148,7 +1150,7 @@ public class ClientFXUtils {
         Minecraft.getInstance().particleEngine.add(fb);
     }
 
-    public static void drawInfusionParticles1(ClientLevel worldObj, double x, double y, double z, int x2, int y2, int z2, Item id, int md) {
+    public static void drawInfusionParticles1(ClientLevel worldObj, double x, double y, double z, int x2, int y2, int z2, Item id) {
         if (!checkPlatformClient()) {
             return;
         }
@@ -1175,7 +1177,7 @@ public class ClientFXUtils {
         Minecraft.getInstance().particleEngine.add(fb);
     }
 
-    public static void drawInfusionParticles2(ClientLevel worldObj, double x, double y, double z, int x2, int y2, int z2, Block id, int md) {
+    public static void drawInfusionParticles2(ClientLevel worldObj, double x, double y, double z, int x2, int y2, int z2, Block id) {
         if (!checkPlatformClient()) {
             return;
         }

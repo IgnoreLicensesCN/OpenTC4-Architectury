@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.tiles.TileEldritchPortal;
+import thaumcraft.common.tiles.junkbox.TileEldritchPortal;
 
 public class TileEldritchPortalRenderer extends TileEntitySpecialRenderer {
    public static final ResourceLocation portaltex = new ResourceLocation("thaumcraft", "textures/misc/eldritch_portal.png");

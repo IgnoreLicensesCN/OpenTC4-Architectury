@@ -1,53 +1,73 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.colorannotation.annotation.RGBColor;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
+import com.linearity.opentc4.chatcomponent.AspectChatComponent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 public abstract class Aspect {
 
 	public final @NotNull AspectResourceLocation aspectKey;
 	public final @RGBColor int color;
-	public final @NotNull ResourceLocation image;
 	public final int blend;
+	private final int hash;
 
 	/**
 	 * Use this constructor to register your own aspects.
 	 * @param aspectKey the key that will be used to reference this aspect, as well as its latin display name
 	 * @param color color to display the tag in
-	 * @param image ResourceLocation pointing to a 32x32 icon of the aspect
 	 * @param blend GL11 blendmode (1 or 771). Used for rendering nodes. Default is 1
 	 */
-	public Aspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend) {
+	public Aspect(
+			@NotNull AspectResourceLocation aspectKey,
+			@RGBColor int color,
+			int blend
+	) {
 		if (Aspects.ALL_ASPECTS.containsKey(aspectKey)) throw new IllegalArgumentException(aspectKey +" already registered!");
 		this.aspectKey = aspectKey;
 		this.color = color;
-		this.image = image;
 		this.blend = blend;
 		Aspects.ALL_ASPECTS.put(aspectKey, this);
+		this.hash = Aspects.ALL_ASPECTS.size();//all aspect with same key should be same
 	}
 	@SuppressWarnings("unused")
-	private Aspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend, boolean noRegisterArg) {
+	//CONSTRUCTOR FOR EMPTY
+    Aspect(
+            @NotNull AspectResourceLocation aspectKey,
+            @RGBColor int color,
+            int blend,
+            boolean noRegisterArg
+    ) {
 		this.aspectKey = aspectKey;
 		this.color = color;
-		this.image = image;
 		this.blend = blend;
+		this.hash = 0;
 	}
 
 	public static final Aspect EMPTY = new Aspect(
 			AspectResourceLocation.of(Thaumcraft.MOD_ID,""),
 			0x000000,
-			new ResourceLocation(Thaumcraft.MOD_ID,"textures/aspects/empty.png"),
+			1,
+			true) {
+		@Override
+		public boolean isEmpty() {
+			return true;
+		}
+
+		@Override
+		public Component getName() {
+			return Component.translatable("aspect.thaumcraft.empty");
+		}
+	};
+	public static final Aspect UNKNOWN = new Aspect(
+			AspectResourceLocation.of(Thaumcraft.MOD_ID,"_unknown"),
+			0x000000,
 			1,
 			true) {
 		@Override
@@ -60,32 +80,47 @@ public abstract class Aspect {
 	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
 	 */
 	public Aspect(AspectResourceLocation aspectKey, @RGBColor int color) {
-		this(aspectKey,color,AspectResourceLocation.of(aspectKey.getNamespace(),"textures/aspects/"+ aspectKey.getPath()+".png"),1);
-	}
-	
-	/**
-	 * Shortcut constructor I use for the default aspects - you shouldn't be using this.
-	 */
-	public Aspect(AspectResourceLocation aspectKey, @RGBColor int color, int blend) {
-		this(aspectKey,color,AspectResourceLocation.of(aspectKey.getNamespace(),"textures/aspects/"+ aspectKey.getPath()+".png"),blend);
+		this(aspectKey,color,1);
 	}
 
-
-
-	
 	public @RGBColor int getColor() {
 		return color;
 	}
-	
+
+	protected Component name;
 	public Component getName() {
-		return Component.translatable(aspectKey.getNamespace()+".aspect."+aspectKey.getPath());
+		if (name == null) {
+			name = Component.translatable("aspect."+aspectKey.getNamespace()+"."+aspectKey.getPath());
+		}
+		return name;
 	}
+	protected Component nameColored;
+	public Component getNameColored() {
+		if (nameColored == null) {
+			nameColored = getName().copy().withStyle(style -> style.withColor(color));
+		}
+		return nameColored;
+	}
+	protected String nameString;
 	public String getNameString() {
-		return Component.translatable(aspectKey.getNamespace()+".aspect."+aspectKey.getPath()).getString();
+		if (nameString == null) {
+			nameString = getName().getString();
+		}
+		return nameString;
 	}
-	
+	protected Component localizedDescription;
 	public Component getLocalizedDescription() {
-		return Component.translatable(aspectKey.getNamespace()+".aspect."+aspectKey.getPath());
+		if (localizedDescription == null) {
+			localizedDescription = Component.translatable("aspect."+aspectKey.getNamespace()+".helper."+aspectKey.getPath());
+		}
+		return localizedDescription;
+	}
+	protected Component imageComponent;
+	public Component getImageComponent(){
+		if (imageComponent == null) {
+			imageComponent = MutableComponent.create(new AspectChatComponent(this.aspectKey));
+		}
+		return imageComponent;
 	}
 	
 	public @NotNull AspectResourceLocation getAspectKey() {
@@ -107,7 +142,6 @@ public abstract class Aspect {
 		return "Aspect{" +
 				"aspectKey=" + aspectKey +
 				", color=" + color +
-				", image=" + image +
 				", blend=" + blend +
 				'}';
 	}
@@ -115,16 +149,15 @@ public abstract class Aspect {
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Aspect aspect)) return false;
-        return color == aspect.color && blend == aspect.blend && Objects.equals(
-				aspectKey, aspect.aspectKey) && Objects.equals(image, aspect.image);
+        return this == o;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(aspectKey, color, image, blend);
+		return hash;
 	}
 
 	public boolean hasPlayerDiscovered(@NotNull Player player) {
-		return Thaumcraft.playerKnowledge.hasDiscoveredAspect(player, this);
+		return ResearchAndScannedInfo.getFromLiving(player).hasResearchAspect(this);
 	}
 }

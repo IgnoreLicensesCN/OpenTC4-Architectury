@@ -9,12 +9,12 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.*;
-import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportBlockEntity;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.utils.InventoryUtils;
-import thaumcraft.common.tiles.TileEssentiaReservoir;
-import thaumcraft.common.tiles.TileJarFillable;
-import thaumcraft.common.tiles.TileJarFillableVoid;
+import thaumcraft.common.tiles.junkbox.TileEssentiaReservoir;
+import thaumcraft.common.tiles.junkbox.TileJarFillable;
+import thaumcraft.common.tiles.junkbox.TileJarFillableVoid;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

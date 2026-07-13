@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.ownedblock;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -15,19 +16,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.wands.IWandInteractableOwnedBlock;
-import thaumcraft.common.tiles.crafted.OwnedBlockEntity;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableOwnedBlock;
+import thaumcraft.common.tiles.abstracts.owned.KeyableOwnedBlockEntity;
+import thaumcraft.common.tiles.abstracts.owned.OwnedBlockEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
 
 public class ArcanePressurePlateBlock extends PressurePlateBlock
         implements IWandInteractableOwnedBlock {
@@ -63,7 +67,7 @@ public class ArcanePressurePlateBlock extends PressurePlateBlock
     @Override
     protected int getSignalStrength(Level level, BlockPos blockPos) {
         int settings = level.getBlockState(blockPos.below()).getValue(SETTING);
-        if (!(level.getBlockEntity(blockPos) instanceof OwnedBlockEntity ownedBlockEntity)){
+        if (!(LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof OwnedBlockEntity ownedBlockEntity)){
             return 0;
         }
         return hasValidEntity(level, TOUCH_AABB.move(blockPos), settings,ownedBlockEntity)? 15 : 0;
@@ -72,7 +76,7 @@ public class ArcanePressurePlateBlock extends PressurePlateBlock
     protected boolean hasValidEntity(Level level, net.minecraft.world.phys.AABB aABB, int settings, OwnedBlockEntity ownedBE) {
         List<Entity> list = new ArrayList<>(1);
         level.getEntities(
-                EntityTypeTest.forClass(Entity.class),
+                ENTITY_TEST,
                 aABB,
                 EntitySelector.NO_SPECTATORS
                         .and(entity -> !entity.isIgnoringBlockTriggers())
@@ -103,7 +107,7 @@ public class ArcanePressurePlateBlock extends PressurePlateBlock
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide()){
-            if (level.getBlockEntity(blockPos) instanceof OwnedBlockEntity ownedBlockEntity){
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof OwnedBlockEntity ownedBlockEntity){
                 int setting = blockState.getValue(SETTING);
                 setting = (setting+1)%3;
                 if (player != null){
@@ -128,5 +132,10 @@ public class ArcanePressurePlateBlock extends PressurePlateBlock
     public void setPlacedBy(Level level, BlockPos blockPos, BlockState blockState, @Nullable LivingEntity livingEntity, ItemStack itemStack) {
         super.setPlacedBy(level, blockPos, blockState, livingEntity, itemStack);
         setPlacedOwnedBlockBy(level, blockPos, blockState, livingEntity, itemStack);
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new KeyableOwnedBlockEntity(blockPos, blockState);
     }
 }

@@ -13,8 +13,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelArcaneWorkbench;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.tiles.TileDeconstructionTable;
+import thaumcraft.common.tiles.junkbox.TileDeconstructionTable;
 
 @SideOnly(Side.CLIENT)
 public class TileDeconstructionTableRenderer extends TileEntitySpecialRenderer {

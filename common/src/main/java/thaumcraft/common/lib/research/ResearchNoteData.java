@@ -7,11 +7,11 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.CompoundAspect;
+import thaumcraft.api.aspects.aspect.IResearchConnectableToOtherAspect;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchNoteCreatableResearch;
 import thaumcraft.api.research.interfaces.IThemedAspectOwner;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 import thaumcraft.common.lib.utils.HexCoord;
 import thaumcraft.common.lib.utils.HexCoordUtils;
@@ -36,7 +36,7 @@ public class ResearchNoteData {
         if (!(researchItem instanceof IResearchNoteCreatableResearch noteCreatable)) {
             throw new IllegalArgumentException("research cannot create ResearchNote:"+researchItem);
         }
-        var stack = ThaumcraftItems.RESEARCH_NOTE.getDefaultInstance();
+        var stack = ThaumcraftItemInstances.RESEARCH_NOTE().getDefaultInstance();
         var researchKey = researchItem.key;
         Aspect researchThemedAspect = Aspects.EMPTY;
         if (researchItem instanceof IThemedAspectOwner themedAspectOwner){
@@ -45,9 +45,9 @@ public class ResearchNoteData {
 
         CompoundTag tag = stack.getOrCreateTag();
         RESEARCH_NOTE_RESEARCH_ACCESSOR.writeToCompoundTag(tag, researchKey);
-        RESEARCH_NOTE_COLOR_ACCESSOR.writeToCompoundTag(tag, researchThemedAspect.getColor());
-        RESEARCH_NOTE_COMPLETE_ACCESSOR.writeToCompoundTag(tag, false);
-        RESEARCH_NOTE_COPIES_ACCESSOR.writeToCompoundTag(tag, 0);
+        RESEARCH_NOTE_COLOR_ACCESSOR.writeIntToCompoundTag(tag, researchThemedAspect.getColor());
+        RESEARCH_NOTE_COMPLETE_ACCESSOR.writeBooleanToCompoundTag(tag, false);
+        RESEARCH_NOTE_COPIES_ACCESSOR.writeIntToCompoundTag(tag, 0);
 
         int radius = 1 + noteCreatable.getComplexity();
         var hexLocs = HexCoordUtils.generateHexGridWithRadius(radius);
@@ -56,7 +56,7 @@ public class ResearchNoteData {
         int placedAspectCount = 0;
 
         for (HexCoord hex : outerRing) {
-            hexLocs.put(hex,new HexEntry(noteCreatable.getResearchGivenAspects().getAspectTypes().stream().toList().get(placedAspectCount), HexType.GIVEN));
+            hexLocs.put(hex,new HexEntry(noteCreatable.getResearchGivenAspects().keySet().stream().toList().get(placedAspectCount), HexType.GIVEN));
             ++placedAspectCount;
         }
 
@@ -149,7 +149,7 @@ public class ResearchNoteData {
 
             if (!isConnected(start, end, hexGrid, visited)) {
                 // 找最短路径恢复
-                List<HexCoord> path = findPathAllowRemoved(start, end, hexGrid);
+                List<HexCoord> path = findPathAllowRemoved(start, end);
                 for (HexCoord key : path) {
                     if (!hexGrid.containsKey(key)) {
                         hexGrid.put(key, HexEntry.EMPTY);
@@ -189,8 +189,7 @@ public class ResearchNoteData {
     // 找到 start -> end 的路径，允许穿过被移除 hex
     //author:ChatGPT
     private static List<HexCoord> findPathAllowRemoved(
-            HexCoord start, HexCoord end,
-            Map<HexCoord, HexEntry> hexGrid
+            HexCoord start, HexCoord end
     ) {
         Map<HexCoord, HexCoord> cameFromMap = new HashMap<>();
         Queue<HexCoord> queue = new ArrayDeque<>();
@@ -234,9 +233,9 @@ public class ResearchNoteData {
         CompoundTag tag = stack.getOrCreateTag();
         ResearchNoteData data = new ResearchNoteData();
         data.key = RESEARCH_NOTE_RESEARCH_ACCESSOR.readFromCompoundTag(tag);
-        data.color = RESEARCH_NOTE_COLOR_ACCESSOR.readFromCompoundTag(tag);
-        data.completed = RESEARCH_NOTE_COMPLETE_ACCESSOR.readFromCompoundTag(tag);
-        data.copiedCount = RESEARCH_NOTE_COPIES_ACCESSOR.readFromCompoundTag(tag);
+        data.color = RESEARCH_NOTE_COLOR_ACCESSOR.readIntFromCompoundTag(tag);
+        data.completed = RESEARCH_NOTE_COMPLETE_ACCESSOR.readBooleanFromCompoundTag(tag);
+        data.copiedCount = RESEARCH_NOTE_COPIES_ACCESSOR.readIntFromCompoundTag(tag);
         data.hexGrid = RESEARCH_NOTE_HEXGRID_ACCESSOR.readFromCompoundTag(tag);
         stack.setTag(tag);
         return data;
@@ -246,9 +245,9 @@ public class ResearchNoteData {
         if (stack.isEmpty()) return;
         CompoundTag tag = stack.getOrCreateTag();
         RESEARCH_NOTE_RESEARCH_ACCESSOR.writeToCompoundTag(tag, this.key);
-        RESEARCH_NOTE_COLOR_ACCESSOR.writeToCompoundTag(tag, this.color);
-        RESEARCH_NOTE_COMPLETE_ACCESSOR.writeToCompoundTag(tag, this.completed);
-        RESEARCH_NOTE_COPIES_ACCESSOR.writeToCompoundTag(tag, this.copiedCount);
+        RESEARCH_NOTE_COLOR_ACCESSOR.writeIntToCompoundTag(tag, this.color);
+        RESEARCH_NOTE_COMPLETE_ACCESSOR.writeBooleanToCompoundTag(tag, this.completed);
+        RESEARCH_NOTE_COPIES_ACCESSOR.writeIntToCompoundTag(tag, this.copiedCount);
         RESEARCH_NOTE_HEXGRID_ACCESSOR.writeToCompoundTag(tag, this.hexGrid);
     }
 
@@ -296,25 +295,6 @@ public class ResearchNoteData {
         }
     }
 
-    private static boolean canAspectConnectToEachOther(Aspect aspectA, Aspect aspectB) {
-        if (aspectA instanceof CompoundAspect compoundAspectA) {
-            if (compoundAspectA.components.aspectA() == aspectB) {
-                return true;
-            }
-            if (compoundAspectA.components.aspectB() == aspectB) {
-                return true;
-            }
-        }
-        if (aspectB instanceof CompoundAspect compoundAspectB) {
-            if (compoundAspectB.components.aspectA() == aspectA) {
-                return true;
-            }
-            return compoundAspectB.components.aspectB() == aspectA;
-        }
-        return false;
-
-    }
-
     private static void checkConnections(
             ResearchNoteData note,
             HexCoord hex,
@@ -339,7 +319,7 @@ public class ResearchNoteData {
                         .aspect();
                 if (aspect1.hasPlayerDiscovered(player)
                         && aspect2.hasPlayerDiscovered(player)
-                        && canAspectConnectToEachOther(aspect1, aspect2)) {
+                        && IResearchConnectableToOtherAspect.canAspectConnectToEachOther(aspect1, aspect2)) {
                     remains.add(target);
                     if (note.hexGrid.get(target)
                             .type() == HexType.GIVEN) {

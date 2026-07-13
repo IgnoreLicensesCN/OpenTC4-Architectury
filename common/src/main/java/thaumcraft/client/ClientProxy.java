@@ -74,10 +74,13 @@ import thaumcraft.common.entities.golems.EntityGolemBobber;
 import thaumcraft.common.entities.golems.EntityTravelingTrunk;
 import thaumcraft.common.entities.monster.*;
 import thaumcraft.common.entities.monster.boss.*;
+import thaumcraft.common.entities.monster.tainted.*;
 import thaumcraft.common.entities.projectile.*;
+import thaumcraft.common.entities.projectile.thrownitem.AlumentumEntity;
 import thaumcraft.common.lib.events.KeyHandler;
 import thaumcraft.common.tiles.*;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
+import thaumcraft.common.tiles.junkbox.*;
 
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -172,7 +175,7 @@ public class ClientProxy extends CommonProxy {
    }
 
    private void setupEntityRenderers() {
-      RenderingRegistry.registerEntityRenderingHandler(EntityItemGrate.class, new RenderItem());
+//      RenderingRegistry.registerEntityRenderingHandler(EntityItemGrate.class, new RenderItem());
       RenderingRegistry.registerEntityRenderingHandler(EntitySpecialItem.class, new RenderSpecialItem());
       RenderingRegistry.registerEntityRenderingHandler(EntityFollowingItem.class, new RenderFollowingItem());
       RenderingRegistry.registerEntityRenderingHandler(EntityPermanentItem.class, new RenderSpecialItem());
@@ -180,7 +183,7 @@ public class ClientProxy extends CommonProxy {
       RenderingRegistry.registerEntityRenderingHandler(EntityGolemBobber.class, new RenderGolemBobber());
       RenderingRegistry.registerEntityRenderingHandler(EntityGolemBase.class, new RenderGolemBase(new ModelGolem(false)));
       RenderingRegistry.registerEntityRenderingHandler(EntityWisp.class, new RenderWisp());
-      RenderingRegistry.registerEntityRenderingHandler(EntityAlumentum.class, new RenderAlumentum());
+      RenderingRegistry.registerEntityRenderingHandler(AlumentumEntity.class, new RenderAlumentum());
       RenderingRegistry.registerEntityRenderingHandler(EntityPrimalOrb.class, new RenderPrimalOrb());
       RenderingRegistry.registerEntityRenderingHandler(EntityEldritchOrb.class, new RenderEldritchOrb());
       RenderingRegistry.registerEntityRenderingHandler(EntityGolemOrb.class, new RenderElectricOrb());
@@ -845,15 +848,15 @@ public class ClientProxy extends CommonProxy {
       return GuiScreen.isShiftKeyDown();
    }
 
-   public void bottleTaintBreak(World world, double x, double y, double z) {
-      String s = "iconcrack_" + BuiltInRegistries.ITEM.getKey(ConfigItems.itemBottleTaint) + "_" + 0;
-
-      for(int k1 = 0; k1 < 8; ++k1) {
-         Minecraft.getMinecraft().renderGlobal.spawnParticle(s, x, y, z, world.getRandom().nextGaussian() * 0.15, world.getRandom().nextDouble() * 0.2, world.getRandom().nextGaussian() * 0.15);
-      }
-
-      world.playSound(x, y, z, "game.potion.smash", 1.0F, world.getRandom().nextFloat() * 0.1F + 0.9F, false);
-   }
+//   public void bottleTaintBreak(World world, double x, double y, double z) {
+//      String s = "iconcrack_" + BuiltInRegistries.ITEM.getKey(ConfigItems.itemBottleTaint) + "_" + 0;
+//
+//      for(int k1 = 0; k1 < 8; ++k1) {
+//         Minecraft.getMinecraft().renderGlobal.spawnParticle(s, x, y, z, world.getRandom().nextGaussian() * 0.15, world.getRandom().nextDouble() * 0.2, world.getRandom().nextGaussian() * 0.15);
+//      }
+//
+//      world.playSound(x, y, z, "game.potion.smash", 1.0F, world.getRandom().nextFloat() * 0.1F + 0.9F, false);
+//   }
 
    public void arcLightning(World world, double x, double y, double z, double tx, double ty, double tz, float r, float g, float b, float h) {
       FXSparkle ef2 = new FXSparkle(world, tx, ty, tz, tx, ty, tz, 3.0F, 6, 2);

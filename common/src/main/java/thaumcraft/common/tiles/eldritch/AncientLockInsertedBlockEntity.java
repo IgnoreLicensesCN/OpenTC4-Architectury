@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.entities.monster.EntityTaintacle;
+import thaumcraft.common.entities.monster.tainted.EntityTaintacle;
 import thaumcraft.common.entities.monster.boss.EntityCultistPortal;
 import thaumcraft.common.entities.monster.boss.EntityEldritchGolem;
 import thaumcraft.common.entities.monster.boss.EntityEldritchWarden;
@@ -26,13 +26,13 @@ import thaumcraft.common.lib.world.dim.*;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class AncientLockInsertedBlockEntity extends BlockEntity {
-    public int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
 
     public AncientLockInsertedBlockEntity(BlockEntityType<? extends AncientLockInsertedBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public AncientLockInsertedBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(ThaumcraftBlockEntities.ANCIENT_LOCK_INSERTED, blockPos, blockState);
+        super(ThaumcraftBlockEntities.BlockEntityTypeInstances.ANCIENT_LOCK_INSERTED(), blockPos, blockState);
     }
     
     public void tick() {

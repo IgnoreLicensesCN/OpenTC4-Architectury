@@ -1,0 +1,26 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:sand",
+    "minecraft:gravel",
+    "minecraft:dirt",
+    "minecraft:dirt_path",
+    "minecraft:mycelium",
+    "minecraft:sand",
+    "minecraft:red_sand",
+    "minecraft:muddy_mangrove_roots",
+    "minecraft:mud",
+    "minecraft:suspicious_sand",
+    "minecraft:suspicious_gravel",
+    "minecraft:grass_block",
+    "minecraft:moss_block",
+    {
+      "id": "#minecraft:dirt",
+      "required": false
+    },
+    {
+      "id": "#minecraft:sand",
+      "required": false
+    }
+  ]
+}

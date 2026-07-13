@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.resources.ResourceLocation;
-import thaumcraft.common.entities.monster.EntityTaintCow;
+import thaumcraft.common.entities.monster.tainted.EntityTaintCow;
 
 public class RenderTaintCow extends RenderLiving {
    private static final ResourceLocation rl = new ResourceLocation("thaumcraft", "textures/models/cow.png");

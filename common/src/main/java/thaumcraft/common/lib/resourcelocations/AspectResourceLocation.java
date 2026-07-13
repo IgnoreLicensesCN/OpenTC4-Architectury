@@ -40,7 +40,7 @@ public class AspectResourceLocation extends VariedResourceLocation<Aspect, Aspec
     public static AspectResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> AspectResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new AspectResourceLocation(namespace,path));
     }
     public static AspectResourceLocation of(String namespaceAndPath){
         if (namespaceAndPath.isEmpty()){

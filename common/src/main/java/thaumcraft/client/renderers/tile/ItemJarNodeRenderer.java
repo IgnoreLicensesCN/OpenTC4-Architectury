@@ -10,12 +10,12 @@ import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.common.blocks.junkbox.ItemJarNode;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.tiles.TileJar;
-import thaumcraft.common.tiles.TileJarNode;
+import thaumcraft.common.tiles.junkbox.TileJar;
+import thaumcraft.common.tiles.junkbox.TileJarNode;
 
 public class ItemJarNodeRenderer implements IItemRenderer {
    RenderBlocks rb = new RenderBlocks();

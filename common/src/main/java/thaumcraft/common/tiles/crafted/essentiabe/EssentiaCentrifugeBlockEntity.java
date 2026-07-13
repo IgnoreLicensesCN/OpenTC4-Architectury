@@ -1,7 +1,8 @@
 package thaumcraft.common.tiles.crafted.essentiabe;
 
-import com.linearity.opentc4.annotations.DegreeValue;
-import com.linearity.opentc4.mixinaccessors.EssentiaCentrifugeBlockEntityClientAccessor;
+import com.linearity.opentc4.annotations.forvalue.DegreeValue;
+import com.linearity.opentc4.mixinaccessors.clientbe.EssentiaCentrifugeBlockEntityClientAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -12,29 +13,43 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableSingleAspectListFromSupplier;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.EssentiaCentrifugeBlockEntityTagAccessors.ASPECT_IN;
 import static com.linearity.opentc4.Consts.EssentiaCentrifugeBlockEntityTagAccessors.ASPECT_OUT;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class EssentiaCentrifugeBlockEntity extends TileThaumcraft 
-        implements 
+        implements
         IEssentiaTransportInBlockEntity,
         IEssentiaTransportOutBlockEntity,
         IAspectDisplayBlockEntity<Aspect>,
-        IValueContainerBasedComparatorSignalProviderBlockEntity
+        IValueContainerBasedComparatorSignalProviderBlockEntity,
+        UnmodifiableSingleAspectListFromSupplier.SingleAspectAndAmountSupplier<Aspect>
 {
     public EssentiaCentrifugeBlockEntity(BlockEntityType<? extends EssentiaCentrifugeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaCentrifugeBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ESSENTIA_CENTRIFUGE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_CENTRIFUGE(), blockPos, blockState);
     }
-    private final UnmodifiableSingleAspectListFromSupplier<Aspect> aspToDisplay = new UnmodifiableSingleAspectListFromSupplier<>(
-            () -> this.aspectOut,() -> this.aspectOut.isEmpty()?0:1
-    );
+    private final UnmodifiableSingleAspectListFromSupplier<Aspect> aspToDisplay = new UnmodifiableSingleAspectListFromSupplier<>(this);
+
+    @Override
+    public Aspect getAspectAsSupplier() {
+        return this.aspectOut;
+    }
+
+    @Override
+    public int getAmountAsSupplier() {
+        return this.aspectOut.isEmpty()?0:1;
+    }
     private @NotNull("null -> empty") CompoundAspect aspectIn = Aspects.EMPTY_COMPOUND;
     private @NotNull("null -> empty") Aspect aspectOut = Aspects.EMPTY;
     private int tickCount = System.identityHashCode(this) & 3;
@@ -75,7 +90,7 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
 
 
     void processEssentia() {
-        if (this.level == null) {
+        if (this.level == null || this.aspectIn.isEmpty()) {
             return;
         }
         var comps = this.aspectIn.components;
@@ -112,7 +127,7 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
         var selfPos = getBlockPos();
         var inPos = selfPos.relative(INPUT_DIRECTION);
         var outDirForOutBE = INPUT_DIRECTION.getOpposite();
-        if (this.level.getBlockEntity(inPos) instanceof IEssentiaTransportOutBlockEntity outBE 
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(this.level, inPos) instanceof IEssentiaTransportOutBlockEntity outBE
                 && outBE.canOutputTo(outDirForOutBE)
         ) {
             Aspect ta = outBE.getEssentiaType(outDirForOutBE);
@@ -214,6 +229,7 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
     public int comparatorSignalCapacity() {
         return 2;
     }
+
 
     public static class ClientTickContext {
         private @DegreeValue float rotationSpeed;

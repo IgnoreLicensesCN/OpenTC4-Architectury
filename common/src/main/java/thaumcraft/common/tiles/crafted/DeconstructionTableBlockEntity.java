@@ -8,16 +8,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.tile.TileThaumcraftWithMenu;
+import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
+import thaumcraft.common.tiles.TileThaumcraftWithMenu;
 import thaumcraft.common.menu.menu.DeconstructionTableMenu;
-import thaumcraft.common.lib.research.ResearchManager;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
 
@@ -40,7 +39,7 @@ public class DeconstructionTableBlockEntity
         super(blockEntityType, blockPos, blockState,DeconstructionTableMenu::new);
     }
     public DeconstructionTableBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.DECONSTRUCTION_TABLE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.DECONSTRUCTION_TABLE(), blockPos, blockState);
     }
 
     @Override
@@ -110,7 +109,7 @@ public class DeconstructionTableBlockEntity
                 inventory.set(THE_ONLY_SLOT,ItemStack.EMPTY);
             }
             var randomSource = this.level != null? this.level.random : RandomSource.createNewThreadLocalInstance();
-            var reducedAspects = ResearchManager.reduceToPrimals(additionalAspects);
+            var reducedAspects = IAspectReducibleToPrimal.reduceToPrimals(additionalAspects);
             if (randomSource.nextInt(80) < reducedAspects.visSize()) {
                 var toStore = reducedAspects.randomAspect(randomSource);
                 if (toStore == null){

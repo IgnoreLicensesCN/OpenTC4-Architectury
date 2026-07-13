@@ -1,7 +1,7 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect;
 
 import com.linearity.opentc4.OpenTC4;
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.AspectResourceLocationTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;

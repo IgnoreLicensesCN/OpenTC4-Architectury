@@ -1,10 +1,7 @@
 package thaumcraft.common.items.eldritch;
 
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -12,9 +9,10 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
 
 import java.util.List;
 
@@ -33,15 +31,14 @@ public class EldritchObeliskPlacerItem extends Item {
     @Override
     public @NotNull InteractionResult useOn(UseOnContext useOnContext) {
         var world = useOnContext.getLevel();
+        if (world.isClientSide) {
+            return InteractionResult.CONSUME;
+        }
         var player = useOnContext.getPlayer();
         var clickedPos = useOnContext.getClickedPos();
-        if (Platform.getEnvironment() != Env.CLIENT) {
+        if (player == null) {
             return super.useOn(useOnContext);
         }
-        if (!(player instanceof ServerPlayer serverPlayer)) {
-            return super.useOn(useOnContext);
-        }
-
 
         if (useOnContext.getClickedFace() == Direction.UP) {
             player.swing(useOnContext.getHand(),true);
@@ -52,17 +49,12 @@ public class EldritchObeliskPlacerItem extends Item {
                     return InteractionResult.FAIL;
                 }
             }
-            int x = clickedPos.getX();
-            int y = clickedPos.getY();
-            int z = clickedPos.getZ();
-
-            //TODO:Meta -> state
-            world.setBlock(clickedPos.above(1), ConfigBlocks.blockEldritch, 0, 3);
-            world.setBlock(clickedPos.above(3), ConfigBlocks.blockEldritch, 1, 3);
-            world.setBlock(clickedPos.above(4), ConfigBlocks.blockEldritch, 2, 3);
-            world.setBlock(clickedPos.above(5), ConfigBlocks.blockEldritch, 2, 3);
-            world.setBlock(clickedPos.above(6), ConfigBlocks.blockEldritch, 2, 3);
-            world.setBlock(clickedPos.above(7), ConfigBlocks.blockEldritch, 2, 3);
+            world.setBlock(clickedPos.above(1), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_ALTAR().defaultBlockState(),Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(3), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK_WITH_TICKER().defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(4), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK().defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(5), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK().defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(6), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK().defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(clickedPos.above(7), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK().defaultBlockState(), Block.UPDATE_CLIENTS);
             return InteractionResult.SUCCESS;
         }
         return super.useOn(useOnContext);

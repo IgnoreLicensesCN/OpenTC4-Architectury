@@ -102,7 +102,7 @@ public class EntityFollowingItem extends EntitySpecialItem implements IEntityAdd
             if (this.type != 10) {
                ClientFXUtils.sparkle((float)this.prevPosX + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosY + this.yOffset + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosZ + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, this.type);
             } else {
-               Thaumcraft.proxy.crucibleBubble(this.level(), (float)this.prevPosX + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosY + this.yOffset + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosZ + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, 0.33F, 0.33F, 1.0F);
+               ClientFXUtils.crucibleBubble(this.level(), (float)this.prevPosX + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosY + this.yOffset + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, (float)this.prevPosZ + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.125F, 0.33F, 0.33F, 1.0F);
             }
          }
       }

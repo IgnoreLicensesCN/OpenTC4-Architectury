@@ -20,10 +20,9 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
+import com.linearity.opentc4.utils.equip.bauble.BaubleConsumer;
 import thaumcraft.api.BlockCoordinates;
 import thaumcraft.api.IArchitectDisplayItem;
-import thaumcraft.api.wands.ItemFocusBasic;
 import thaumcraft.common.blocks.junkbox.BlockCosmeticOpaque;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.items.wands.ItemFocusPouch;
@@ -36,7 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import static com.linearity.opentc4.simpleutils.bauble.BaubleUtils.forEachBauble;
+import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
 
 //azanor plays index trick and crashed my save when i put focusPouch into bauble slot.
 //i got to fix it

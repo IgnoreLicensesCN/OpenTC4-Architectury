@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.crafted.jars;
 
 import com.linearity.opentc4.annotations.SoftImplement;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -24,6 +25,8 @@ import thaumcraft.api.blockapi.IEnchantmentPowerProviderBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.jars.BrainJarBlockEntity;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+
 public class BrainJarBlock extends JarBlock implements EntityBlock, IEnchantmentPowerProviderBlock {
     public BrainJarBlock(Properties properties) {
         super(properties);
@@ -42,7 +45,7 @@ public class BrainJarBlock extends JarBlock implements EntityBlock, IEnchantment
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == ThaumcraftBlockEntities.BRAIN_JAR) {
+        if (blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.BRAIN_JAR()) {
             if (level.isClientSide()) {
                 return ((level1, blockPos, blockState1, blockEntity) -> {
                     if (blockEntity instanceof BrainJarBlockEntity brainJar) {
@@ -61,7 +64,7 @@ public class BrainJarBlock extends JarBlock implements EntityBlock, IEnchantment
 
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        var be = level.getBlockEntity(blockPos);
+        var be = LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos);
         if (be instanceof BrainJarBlockEntity brainJar) {
             if (level.isClientSide()) {
                 playJarSound(level,blockPos,.2f);
@@ -93,7 +96,7 @@ public class BrainJarBlock extends JarBlock implements EntityBlock, IEnchantment
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        var be = level.getBlockEntity(pos);
+        var be = LevelBlockEntityAccessing.getExistingBlockEntity(level, pos);
         if (be instanceof BrainJarBlockEntity brainJar) {
             if (!level.isClientSide()) {
                 dropXPsToOrbs(level,brainJar.xp, pos);
@@ -109,7 +112,7 @@ public class BrainJarBlock extends JarBlock implements EntityBlock, IEnchantment
 
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        return !(level.getBlockEntity(pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
+        return !(LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
                 ? 0 : signalProvider.getComparatorSignal();
     }
 
@@ -119,7 +122,7 @@ public class BrainJarBlock extends JarBlock implements EntityBlock, IEnchantment
         if (!(level instanceof ClientLevel clientLevel)){
             return;
         }
-        var be = clientLevel.getBlockEntity(blockPos);
+        var be = LevelBlockEntityAccessing.getExistingBlockEntity(clientLevel, blockPos);
         if (be instanceof BrainJarBlockEntity brainJar && brainJar.xp >= brainJar.getExpCapacity()) {
 
             double xx = (double) blockPos.getX() + 0.3 + (double) (randomSource.nextFloat() * 0.4F);

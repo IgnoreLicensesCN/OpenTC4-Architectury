@@ -3,11 +3,11 @@ package thaumcraft.common.tiles.abstracts;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectContainerItem;
-import thaumcraft.api.aspects.IAspectOutBlockEntity;
+import thaumcraft.api.aspects.IEssentiaContainerItem;
+import thaumcraft.api.aspects.essentiabe.IEssentiaForceOutBlockEntity;
 
 
-public interface IAlembic extends IAspectOutBlockEntity<Aspect> {
+public interface IAlembic extends IEssentiaForceOutBlockEntity<Aspect> {
     @NotNull("null -> empty")
     Aspect getAspect();
     @NotNull("null -> empty")
@@ -29,11 +29,11 @@ public interface IAlembic extends IAspectOutBlockEntity<Aspect> {
     void clear();
 
     boolean canFillAspectContainerItem(ItemStack stackToFill,
-                                       IAspectContainerItem<Aspect> itemToFill,
+                                       IEssentiaContainerItem<Aspect> itemToFill,
                                        Aspect aspect);
     boolean fillAspectContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             int minAmount
     );
 

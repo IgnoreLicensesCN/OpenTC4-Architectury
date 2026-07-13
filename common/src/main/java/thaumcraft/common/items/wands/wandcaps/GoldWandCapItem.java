@@ -1,21 +1,20 @@
 package thaumcraft.common.items.wands.wandcaps;
 
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.common.items.abstracts.wandabstraction.component.ICraftingCostAspectOwnerComponentItem;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandCapItem;
 
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
 
-public class GoldWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwnerComponent<Aspect> {//itemWandCap:1
+public class GoldWandCapItem extends ThaumcraftWandCapItem implements ICraftingCostAspectOwnerComponentItem<Aspect> {//itemWandCap:1
     public GoldWandCapItem() {
         super(new Properties());
     }
 
-
     @Override
     public float getBaseCostModifier() {
-        return 1.f;
+        return 0;
     }
 
     private final CentiVisList<Aspect> cost = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(3);

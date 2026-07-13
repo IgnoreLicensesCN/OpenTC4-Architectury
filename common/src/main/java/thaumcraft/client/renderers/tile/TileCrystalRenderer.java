@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelCrystal;
 import thaumcraft.common.blocks.junkbox.BlockCustomOreItem;
-import thaumcraft.common.tiles.TileCrystal;
+import thaumcraft.common.tiles.junkbox.TileCrystal;
 
 import java.awt.*;
 import java.util.Random;

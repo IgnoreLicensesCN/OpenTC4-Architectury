@@ -9,13 +9,13 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.playerdata.PacketAspectPool;
 import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.tiles.TileDeconstructionTable;
+import thaumcraft.common.tiles.junkbox.TileDeconstructionTable;
 
 public class ContainerDeconstructionTable extends Container {
    private TileDeconstructionTable table;

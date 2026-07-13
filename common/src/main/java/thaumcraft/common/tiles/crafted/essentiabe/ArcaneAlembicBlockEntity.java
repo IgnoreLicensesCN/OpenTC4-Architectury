@@ -11,7 +11,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableSingleAspectListFromSupplier;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.essentia.ArcaneAlembicBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.IAlembic;
@@ -22,14 +25,15 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
         implements IAlembic,
         IEssentiaTransportOutBlockEntity,
         IAspectFilterAccessibleBlockEntity,
-        IAspectDisplayBlockEntity<Aspect>
+        IAspectDisplayBlockEntity<Aspect>,
+        UnmodifiableSingleAspectListFromSupplier.SingleAspectAndAmountSupplier<Aspect>
 {
     public ArcaneAlembicBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
 
     public ArcaneAlembicBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ARCANE_ALEMBIC, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_ALEMBIC(), blockPos, blockState);
     }
 
     public static final int ASPECT_CAPACITY = 32;
@@ -38,10 +42,17 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
     private @NotNull Aspect aspectFilter = Aspects.EMPTY;
     private int aspectAmountCurrent = 0;
     private final UnmodifiableSingleAspectListFromSupplier<Aspect> aspOwningCurrent =
-            new UnmodifiableSingleAspectListFromSupplier<>(
-                    () -> this.aspectCurrent,
-                    () -> this.aspectAmountCurrent
-            );
+            new UnmodifiableSingleAspectListFromSupplier<>(this);
+
+    @Override
+    public Aspect getAspectAsSupplier() {
+        return this.aspectCurrent;
+    }
+
+    @Override
+    public int getAmountAsSupplier() {
+        return this.aspectAmountCurrent;
+    }
 
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
@@ -162,7 +173,7 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
 
     public boolean canFillAspectContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             Aspect aspect
     ) {
         return (aspect == this.aspectCurrent || aspect.isEmpty()) && this.aspectAmountCurrent != 0;
@@ -171,7 +182,7 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
     @Override
     public boolean fillAspectContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             int minAmount
     ) {
         if (level == null){
@@ -182,7 +193,7 @@ public class ArcaneAlembicBlockEntity extends TileThaumcraft
             return false;
         }
         var amountBefore = aspectAmountCurrent;
-        aspectAmountCurrent = itemToFill.storeAspect(level,getBlockPos(),stackToFill, aspectCurrent, amountBefore);
+        aspectAmountCurrent = itemToFill.storeEssentia(level,getBlockPos(),stackToFill, aspectCurrent, amountBefore);
         if (aspectAmountCurrent == 0) {
             aspectCurrent = Aspects.EMPTY;
         }

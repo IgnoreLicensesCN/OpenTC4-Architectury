@@ -1,7 +1,8 @@
 package thaumcraft.common.tiles.crafted.essentiabe;
 
 import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.mixinaccessors.EssentiaReservoirBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinaccessors.clientbe.EssentiaReservoirBlockEntityClientAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -15,28 +16,36 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectView;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IRemoteEssentiaDrainerBlockEntity;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.essentia.EssentiaReservoirBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.EssentiaReservoirBlockEntityTagAccessors.ASPECTS_OWNING;
-import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.registerToRemoteDrainables;
-import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.unregisterFromRemoteDrainables;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.registerToRemoteDrainables;
+import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.unregisterFromRemoteDrainables;
 
 public class EssentiaReservoirBlockEntity extends TileThaumcraft
         implements
         IEssentiaTransportBlockEntity,
         IValueContainerBasedComparatorSignalProviderBlockEntity,
         IAspectDisplayBlockEntity<Aspect>,
-        IRemoteDrainableAspectSourceBlockEntity<Aspect>{
+        IRemoteDrainableEssentiaSourceBlockEntity {
 
     public EssentiaReservoirBlockEntity(BlockEntityType<? extends EssentiaReservoirBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaReservoirBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ESSENTIA_RESERVOIR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_RESERVOIR(), blockPos, blockState);
     }
 
     public Direction getFacing(){
@@ -67,8 +76,8 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
         owningAspects.clear();
     }
 
-    protected final AspectList<Aspect> owningAspects = new AspectList<>();
-    public final AspectList<Aspect> aspOwningView = new UnmodifiableAspectList<>(owningAspects);
+    protected final AspectList<Aspect> owningAspects = new LinkedHashAspectList<>();
+    public final AspectList<Aspect> aspOwningView = new UnmodifiableAspectView<>(owningAspects);
 
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
@@ -79,7 +88,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
-        this.owningAspects.putAllAspects(ASPECTS_OWNING.readFromCompoundTag(compoundTag));
+        this.owningAspects.overrideAllAspects(ASPECTS_OWNING.readFromCompoundTag(compoundTag));
     }
 
     @Override
@@ -173,7 +182,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
 
 
     @Override
-    public int drainAspectRemote(Aspect aspect, int amount,@Modifiable Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> metDrainers) {
+    public int drainEssentiaRemote(Aspect aspect, int amount, @Modifiable Set<IRemoteEssentiaDrainerBlockEntity> metDrainers) {
         int drained = Math.min(amount,this.owningAspects.get(aspect));
         if (drained != 0){
             decreaseAspectAmount(aspect,amount);
@@ -181,14 +190,14 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
         return drained;
     }
 
-    protected int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
     public void serverTick(){
         if (level == null){return;}
         tickCount+=1;
         if (tickCount % 5 == 0 && !capacityFullForAddEssentia()) {
             var facing = getConnectableDirection();
             var drainFromPos = getBlockPos().relative(facing);
-            var drainFromBE = level.getBlockEntity(drainFromPos);
+            var drainFromBE = LevelBlockEntityAccessing.getExistingBlockEntity(level, drainFromPos);
             if (drainFromBE instanceof IEssentiaTransportOutBlockEntity outBE){
                 var beOutToDir = facing.getOpposite();
                 var outAspect = outBE.getEssentiaType(beOutToDir);
@@ -207,7 +216,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
     }
     public boolean canFillAspectContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             Aspect aspect
     ) {
         return owningAspects.get(aspect) != 0;
@@ -215,7 +224,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
 
     public boolean fillAspectContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             int minAmount
     ) {
         if (this.level == null){
@@ -224,7 +233,7 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
         return owningAspects.forEachWithBreak(
                 (aspect,amountBefore) -> {
                     if (amountBefore >= minAmount) {
-                        int remaining = itemToFill.storeAspect(this.level,getBlockPos(),stackToFill, aspect, amountBefore);
+                        int remaining = itemToFill.storeEssentia(this.level,getBlockPos(),stackToFill, aspect, amountBefore);
                         setAspectAmount(aspect,remaining);
 
                         if (remaining != amountBefore) {

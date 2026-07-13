@@ -1,28 +1,30 @@
 package thaumcraft.common.tiles.crafted.lamp;
 
 import com.google.common.collect.HashMultimap;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IEssentiaTransportInBlockEntity;
-import thaumcraft.api.aspects.IEssentiaTransportOutBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
 import thaumcraft.api.listeners.lamp.fertility.check.FertilityLampAffectiveManager;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.ArrayList;
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.FertilityArcaneLampTagAccessors.CHARGE;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
 import static thaumcraft.api.listeners.lamp.fertility.apply.FertilityLampAffectManager.affectEntity;
 import static thaumcraft.common.blocks.crafted.lamps.ArcaneLampBlock.FACING;
 import static thaumcraft.common.blocks.crafted.lamps.GrowthArcaneLampBlock.LIT;
@@ -32,7 +34,7 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
         super(blockEntityType, blockPos, blockState);
     }
     public FertilityArcaneLampBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.FERTILITY_ARCANE_LAMP, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.FERTILITY_ARCANE_LAMP(), blockPos, blockState);
     }
 
     public static final int CHARGES_PER_ESSENTIA = 1;
@@ -102,7 +104,7 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
         }
         var facing = getFacing();
         var facingOpposite = facing.getOpposite();
-        if (level.getBlockEntity(getBlockPos().relative(facing)) instanceof IEssentiaTransportOutBlockEntity outBE) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, getBlockPos().relative(facing)) instanceof IEssentiaTransportOutBlockEntity outBE) {
             if (!outBE.canOutputTo(facingOpposite)) {return 0;}
             if (outBE.getMinimumSuctionToDrainOut() > this.getSuctionAmount(facing)){
                 return 0;
@@ -210,7 +212,7 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
         HashMultimap<Class<? extends Entity>,Entity> entityMap = HashMultimap.create();
         final var entityLimitTotal = getEntityLimitTotal();
         this.level.getEntities(
-                EntityTypeTest.forClass(Entity.class),
+                ENTITY_TEST,
                 AABB.of(new BoundingBox(getBlockPos())).inflate(getAffectRadius()),
                 e -> this.isAffectiveEntity(e, entityMap),
                 new ArrayList<>(entityLimitTotal),

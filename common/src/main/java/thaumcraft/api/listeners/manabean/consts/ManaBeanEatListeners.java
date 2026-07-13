@@ -7,9 +7,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import thaumcraft.api.listeners.manabean.ManaBeanEatContext;
 import thaumcraft.api.listeners.manabean.listeners.ManaBeanEatListener;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.network.playerdata.PacketAspectPoolS2C;
-import thaumcraft.common.lib.research.ResearchManager;
+import thaumcraft.api.research.ResearchAndScannedInfo;
 
 import java.util.List;
 import java.util.Set;
@@ -49,13 +47,8 @@ public enum ManaBeanEatListeners {
                     }
                     var aspect = context.aspectOwning;
                     if (!aspect.isEmpty() && level.random.nextInt(4) == 0){
-                        Thaumcraft.playerKnowledge.addAspectPool(player, aspect, (short)1);
-                        ResearchManager.scheduleSave(player);
-                        new PacketAspectPoolS2C(
-                                aspect,
-                                1,
-                                Thaumcraft.playerKnowledge.getAspectPoolFor(player, aspect)
-                        ).sendTo(player);
+                        var info = ResearchAndScannedInfo.getFromLiving(player);
+                        info.addResearchAspectAndTrySyncToPlayer(aspect,1,player);
                     }
                 }
             }

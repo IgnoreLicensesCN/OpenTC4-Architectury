@@ -1,6 +1,6 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.basic.array;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 
 public class ByteArrayTagAccessor extends CompoundTagAccessor<byte[]> {

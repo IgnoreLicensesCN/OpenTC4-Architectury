@@ -15,8 +15,8 @@ import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileMirror;
-import thaumcraft.common.tiles.TileMirrorEssentia;
+import thaumcraft.common.tiles.junkbox.TileMirror;
+import thaumcraft.common.tiles.junkbox.TileMirrorEssentia;
 
 import java.nio.FloatBuffer;
 import java.util.Random;

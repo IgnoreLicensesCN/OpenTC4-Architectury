@@ -1,19 +1,21 @@
 package thaumcraft.api;
 
-import com.linearity.opentc4.simpleutils.SimplePair;
+import com.linearity.opentc4.utils.collectionlike.SimplePair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.crafting.*;
-import thaumcraft.api.internal.WeightedRandomCollection;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.research.*;
+import thaumcraft.api.research.client.ResearchCategory;
+import thaumcraft.api.research.client.ResearchPage;
 import thaumcraft.api.research.interfaces.IResearchWarpOwner;
 import thaumcraft.api.research.scan.IScanEventHandler;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
+import thaumcraft.common.lootbag.ThaumcraftLootBags;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -85,15 +87,6 @@ public class ThaumcraftApi {
     }
 
     /**
-     * not really working atm, so ignore it for now
-     *
-     * @param scanEventHandler
-     */
-    public static void registerScanEventhandler(IScanEventHandler scanEventHandler) {
-        scanEventhandlers.add(scanEventHandler);
-    }
-
-    /**
      * This is used to add aspects to entities which you can then scan using a thaumometer.
      * Also used to calculate vis drops from mobs.
      *
@@ -101,8 +94,8 @@ public class ThaumcraftApi {
      * @param aspects
      * @param nbt        you can specify certain nbt keys and their values
      *                   to differentiate between mobs. <br>For example the normal and wither skeleton:
-     *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new AspectList<>()).add(Aspect.DEATH, 5));
-     *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new AspectList<>()).add(Aspect.DEATH, 8), new NBTTagByte("SkeletonType",(byte) 1));
+     *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new LinkedTreeAspectList<>()).add(Aspect.DEATH, 5));
+     *                   <br>ThaumcraftApi.registerEntityTag("Skeleton", (new LinkedTreeAspectList<>()).add(Aspect.DEATH, 8), new NBTTagByte("SkeletonType",(byte) 1));
      */
     public static void registerEntityTag(String entityName, AspectList<Aspect>aspects, EntityTagsNBT... nbt) {
         scanEntities.add(new EntityTags(entityName, aspects, nbt));
@@ -160,7 +153,7 @@ public class ThaumcraftApi {
                         for (CrucibleRecipe cr : crs) {
                             if (cr.matchViaOutput(stack)) {
                                 keyCache.put(key, new ResearchKeyAndPage(ri.key, a));
-                                if (ri.isPlayerCompletedResearch(player))
+                                if (ri.isLivingEntityCompletedResearch(player))
                                     return new ResearchKeyAndPage(ri.key, a);
                             }
                         }
@@ -169,7 +162,7 @@ public class ThaumcraftApi {
                             && Objects.equals(page.recipeOutput.getItem(), stack.getItem())
                     ) {
                         keyCache.put(key, new ResearchKeyAndPage(ri.key, a));
-                        if (ri.isPlayerCompletedResearch(player))
+                        if (ri.isLivingEntityCompletedResearch(player))
                             return new ResearchKeyAndPage(ri.key, a);
                         else
                             return null;
@@ -204,7 +197,7 @@ public class ThaumcraftApi {
 //     */
 //    @Deprecated(forRemoval = true,since = "prepare for new api")
 //    public static void registerObjectTag(String tagString, AspectList<Aspect>aspects) {
-//        if (aspects == null) aspects = new AspectList<>();
+//        if (aspects == null) aspects = new LinkedTreeAspectList<>();
 //        List<ItemStack> ores = platformUtils.getItemsFromTag(tagString).stream().map(ItemStack::new).toList();
 //        if (!ores.isEmpty()) {
 //            for (ItemStack ore : ores) {
@@ -220,7 +213,7 @@ public class ThaumcraftApi {
 //     * Used to assign aspects to the given item/block.
 //     * Attempts to automatically generate aspect tags by checking registered recipes.
 //     * Here is an example of the declaration for pistons:<p>
-//     * <i>ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.cobblestone), (new AspectList<>()).add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 4));</i>
+//     * <i>ThaumcraftApi.registerComplexObjectTag(new ItemStack(Blocks.cobblestone), (new LinkedTreeAspectList<>()).add(Aspect.MECHANISM, 2).add(Aspect.MOTION, 4));</i>
 //     * IMPORTANT - this should only be used if you are not happy with the default aspects the object would be assigned.
 //     *
 //     * @param item,   pass OreDictionary.WILDCARD_VALUE to meta if all damage values of this item/block should have the same aspects
@@ -302,18 +295,18 @@ public class ThaumcraftApi {
     @Deprecated(forRemoval = true,since = "add directly to lootBagCommon/lootBagUncommon/lootBagRare")
     public static void addLootBagItem(Function<RandomSource,ItemStack> item, int weight, int... bagTypes) {
         if (bagTypes == null || bagTypes.length == 0)
-            WeightedRandomCollection.lootBagCommon.add(item, weight);
+            ThaumcraftLootBags.LOOT_BAG_COMMON_DROPS.add(item, weight);
         else {
             for (int rarity : bagTypes) {
                 switch (rarity) {
                     case 0:
-                        WeightedRandomCollection.lootBagCommon.add(item, weight);
+                        ThaumcraftLootBags.LOOT_BAG_COMMON_DROPS.add(item, weight);
                         break;
                     case 1:
-                        WeightedRandomCollection.lootBagUncommon.add(item, weight);
+                        ThaumcraftLootBags.LOOT_BAG_UNCOMMON_DROPS.add(item, weight);
                         break;
                     case 2:
-                        WeightedRandomCollection.lootBagRare.add(item, weight);
+                        ThaumcraftLootBags.LOOT_BAG_RARE_DROPS.add(item, weight);
                         break;
                 }
             }

@@ -2,6 +2,24 @@ architectury {
     common rootProject.enabled_platforms.split(',')
 }
 
+repositories {
+    maven { url 'https://maven.wispforest.io/releases' }
+    maven { url 'https://maven.su5ed.dev/releases' }
+    maven { url 'https://maven.fabricmc.net' }
+    maven { url 'https://maven.shedaniel.me/' }
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+
+    maven {
+        url 'https://api.modrinth.com/maven'
+    }
+    maven { url = "https://maven.blamejared.com" }
+}
+
 dependencies {
     // We depend on Fabric Loader here to use the Fabric @Environment annotations,
     // which get remapped to the correct annotations on each platform.
@@ -9,4 +27,5 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
 
     modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
+    modImplementation("io.wispforest:accessories-common:${project.accessories_version}")
 }

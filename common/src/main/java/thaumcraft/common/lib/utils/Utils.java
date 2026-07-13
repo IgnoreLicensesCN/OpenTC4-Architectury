@@ -4,7 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.MapMaker;
 import com.linearity.colorannotation.annotation.RGBColor;
-import com.linearity.opentc4.mixin.ClientPacketListenerAccessor;
+import com.linearity.opentc4.mixin.client.ClientPacketListenerAccessor;
 import com.linearity.opentc4.mixin.ServerGamePacketListenerImplAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -14,12 +14,6 @@ import net.minecraft.nbt.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BoneMealItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -35,41 +29,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 public class Utils {
-    public static HashMap<Item, ItemStack> specialMiningResult = new HashMap<>();
-    public static HashMap<Item, Float> specialMiningChance = new HashMap<>();
     public static final String[] colorNames = new String[]{"White", "Orange", "Magenta", "Light Blue", "Yellow", "Lime", "Pink", "Gray", "Light Gray", "Cyan", "Purple", "Blue", "Brown", "Green", "Red", "Black"};
     public static final int[] colors = new int[]{15790320, 15435844, 12801229, 6719955, 14602026, 4312372, 14188952, 4408131, 10526880, 2651799, 8073150, 2437522, 5320730, 3887386, 11743532, 1973019};
 //    public static HashMap<WorldCoordinates, Long> effectBuffer = new HashMap<>();
     public static Map<Level,Cache<BlockPos,Boolean>> effectBuffer = new MapMaker().weakKeys().makeMap();
-
-    public static boolean isChunkLoaded(Level world, int x, int z) {
-        int chunkX = x >> 4;
-        int chunkZ = z >> 4;
-        return world.hasChunk(chunkX, chunkZ);
-    }
-
-    public static boolean useBonemealAtLoc(Level world, Player player, int x, int y, int z) {
-        BlockPos pos = new BlockPos(x, y, z);
-        ItemStack fake = new ItemStack(Items.BONE_MEAL);
-        if (BoneMealItem.growCrop(fake, world, pos)) {
-            if (!world.isClientSide) {
-                world.levelEvent(1505, pos, 0);
-            }
-            return true;
-        }
-
-        return false;
-    }
-
-    public static boolean hasColor(byte[] colors) {
-        for (byte col : colors) {
-            if (col >= 0) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     public static int getFirstUncoveredY(Level world, int x, int z) {
         int y = Math.max(5, world.getMinBuildHeight());
@@ -81,20 +44,6 @@ public class Utils {
         }
 
         return y;
-    }
-
-    @Deprecated(forRemoval = true, since = "I dont get Equivalent Exchange 3 in 1.20.1")
-    public static boolean isEETransmutionItem(Item item) {
-//      try {
-//         String itemClass = "com.pahimar.ee3.item.ITransmutationStone";
-//         Class ee = Class.forName(itemClass);
-//         if (ee.isAssignableFrom(item.getClass())) {
-//            return true;
-//         }
-//      } catch (Exception ignored) {
-//      }
-
-        return false;
     }
 //never used
 //   public static void copyFile(File sourceFile, File destFile) throws IOException {
@@ -110,29 +59,7 @@ public class Utils {
 
     public static int getFirstUncoveredBlockHeight(Level world, int par1, int par2) {
         return getFirstUncoveredY(world, par1, par2);
-//      int var3;
-//      for(var3 = 10; !world.isAirBlock(par1, var3 + 1, par2) || var3 > 250; ++var3) {
-//      }
-//
-//      return var3;
-    }
 
-    public static void addSpecialMiningResult(ItemStack in, ItemStack out, float chance) {
-        specialMiningResult.put(in.getItem(), out);
-        specialMiningChance.put(in.getItem(), chance);
-    }
-
-    public static ItemStack findSpecialMiningResult(ItemStack is, float chance, RandomSource rand) {
-        ItemStack dropped = is.copy();
-        float r = rand.nextFloat();
-        var key = is.getItem();
-        if (specialMiningResult.containsKey(key) && r <= chance * specialMiningChance.get(key)) {
-            dropped = specialMiningResult.get(key)
-                    .copy();
-            dropped.setCount(dropped.getCount() * is.getCount());
-        }
-
-        return dropped;
     }
 
     public static float clamp_float(float par0, float par1, float par2) {
@@ -244,7 +171,7 @@ public class Utils {
 //      }
 //   }
 
-    public static void resetFloatCounter(ServerPlayer player) {
+    public static void resetAboveGroundCounter(ServerPlayer player) {
         ((ServerGamePacketListenerImplAccessor) player.connection).opentc4$setAboveGroundTickCount(0);
     }
 
@@ -341,31 +268,6 @@ public class Utils {
 
     }
 
-    public static boolean isLyingInCone(double[] x, double[] t, double[] b, float aperture) {
-        double halfAperture = aperture / 2.0F;
-        double[] apexToXVect = dif(t, x);
-        double[] axisVect = dif(t, b);
-        boolean isInInfiniteCone = dotProd(apexToXVect, axisVect) / magn(apexToXVect) / magn(axisVect) > Math.cos(
-                halfAperture);
-        if (!isInInfiniteCone) {
-            return false;
-        } else {
-            boolean isUnderRoundCap = dotProd(apexToXVect, axisVect) / magn(axisVect) < magn(axisVect);
-            return isUnderRoundCap;
-        }
-    }
-
-    public static double dotProd(double[] a, double[] b) {
-        return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-    }
-
-    public static double[] dif(double[] a, double[] b) {
-        return new double[]{a[0] - b[0], a[1] - b[1], a[2] - b[2]};
-    }
-
-    public static double magn(double[] a) {
-        return Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
-    }
 
     public static Vec3 calculateVelocity(Vec3 from, Vec3 to, double heightGain, double gravity) {
         double endGain = to.y() - from.y();

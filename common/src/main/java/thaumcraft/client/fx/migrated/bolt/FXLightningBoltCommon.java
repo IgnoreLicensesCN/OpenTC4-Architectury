@@ -156,7 +156,7 @@ public class FXLightningBoltCommon {
     }
 
     private void calculateCollisionAndDiffs() {
-        HashMap lastactivesegment = new HashMap<>();
+        var lastactivesegment = new HashMap<>();
         this.segments.sort(new FXLightningBoltCommon.SegmentSorter());
         int lastsplitcalc = 0;
         int lastactiveseg = 0;

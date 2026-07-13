@@ -9,7 +9,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.renderers.models.entities.ModelTaintSpore;
-import thaumcraft.common.entities.monster.EntityTaintSpore;
+import thaumcraft.common.entities.monster.tainted.EntityTaintSpore;
 
 @SideOnly(Side.CLIENT)
 public class RenderTaintSpore extends RenderLiving {

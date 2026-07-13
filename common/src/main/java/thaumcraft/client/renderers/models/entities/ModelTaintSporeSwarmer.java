@@ -7,7 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.entities.monster.EntityTaintSporeSwarmer;
+import thaumcraft.common.entities.monster.tainted.EntityTaintSporeSwarmer;
 
 public class ModelTaintSporeSwarmer extends ModelBase {
    ModelRenderer cube;

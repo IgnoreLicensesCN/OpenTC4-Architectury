@@ -6,11 +6,14 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.inventory.ResultSlot;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
 import thaumcraft.common.inventory.ArcaneWorkbenchResultContainer;
 import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
 
+import static thaumcraft.api.crafting.arcane.AbstractArcaneRecipe.ARCANE_RECIPES_VIEW;
 import static thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator.getConsumptionModifier;
+import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CONSUMPTION_CRAFTING;
 
 public class ArcaneWorkbenchOutputSlot extends ResultSlot {
 
@@ -30,11 +33,11 @@ public class ArcaneWorkbenchOutputSlot extends ResultSlot {
 
     protected CentiVisList<Aspect> getFinalCentiVisCost(Player player) {
         var centiVisCostOriginal = workbenchResultContainer.getCostsCentiVis();
-        var centiVisCostFinal = CentiVisList.of();
+        CentiVisList<Aspect> centiVisCostFinal = new LinkedHashCentiVisList<>();
         var wandStack = workbench.getStackInWandSlot();
-        for (var aspect:centiVisCostOriginal.getAspects().keySet()){
-            float modifier = getConsumptionModifier(wandStack.getItem(),wandStack,player,aspect,true);
-            centiVisCostFinal.addAll(aspect, (int) (centiVisCostOriginal.getAmount(aspect) * modifier));
+        for (var aspect:centiVisCostOriginal.keySet()){
+            float modifier = getConsumptionModifier(wandStack.getItem(),wandStack,player,aspect, CONSUMPTION_CRAFTING);
+            centiVisCostFinal.addAll(aspect, (int) (centiVisCostOriginal.get(aspect) * modifier));
         }
         return centiVisCostFinal;
     }
@@ -44,9 +47,16 @@ public class ArcaneWorkbenchOutputSlot extends ResultSlot {
 
     @Override
     public void onTake(Player player, ItemStack itemStack) {
-        super.onTake(player, itemStack);
         if (!workbench.consumeCentiVisNoThrow(player,getFinalCentiVisCost(player))){
             OpenTC4.LOGGER.warn("failed to consume CentiVis");
-        };
+        }
+        var recipe = ARCANE_RECIPES_VIEW.get(workbench.getRecipeResourceLocation());
+        if (recipe != null) {
+            recipe.afterCrafting(workbench,player.level(),player);
+        }
+//        else {
+//            OpenTC4.LOGGER.warn("failed to find recipe for location {}", workbench.getRecipeResourceLocation());
+//        }
+        super.onTake(player, itemStack);
     }
 }

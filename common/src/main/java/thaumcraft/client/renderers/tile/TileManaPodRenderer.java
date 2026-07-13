@@ -13,7 +13,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelManaPod;
-import thaumcraft.common.tiles.TileManaPod;
+import thaumcraft.common.tiles.junkbox.TileManaPod;
 
 import java.awt.*;
 

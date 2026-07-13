@@ -13,14 +13,14 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.tiles.TileMagicWorkbenchCharger;
+import thaumcraft.common.tiles.junkbox.TileMagicWorkbenchCharger;
 
 import java.awt.*;
 
 @SideOnly(Side.CLIENT)
 public class TileMagicWorkbenchChargerRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation RELAY = new ResourceLocation("thaumcraft", "textures/models/vis_relay.obj");
+   private static final ResourceLocation RELAY = new ResourceLocation("thaumcraft", "textures/models/vis_relay.left");
 
    public TileMagicWorkbenchChargerRenderer() {
       this.model = AdvancedModelLoader.loadModel(RELAY);

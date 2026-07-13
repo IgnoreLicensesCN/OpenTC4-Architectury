@@ -8,10 +8,11 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectView;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceUpperFenceBlock;
@@ -25,14 +26,14 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
         super(blockEntityType, blockPos, blockState);
     }
     public AdvancedAlchemicalFurnaceBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ADVANCED_ALCHEMICAL_FURNACE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ADVANCED_ALCHEMICAL_FURNACE(), blockPos, blockState);
     }
 
     public static final int ASPECT_CAPACITY = 500;
     public static final int FUEL_VIS_CAPACITY = 500;
 
-    public AspectList<Aspect> aspects = new AspectList<>();
-    public UnmodifiableAspectList<Aspect> aspectsView = UnmodifiableAspectList.EMPTY;
+    public AspectList<Aspect> aspects = new LinkedHashAspectList<>();
+    public UnmodifiableAspectView<Aspect> aspectsView = UnmodifiableAspectView.EMPTY;
     public int fuelVisAmouontFire = 0;
     private int fuelVisAmountEntropy = 0;
     private int fuelVisAmountWater = 0;
@@ -50,7 +51,7 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
         aspects = ASPECTS_OWNING.readFromCompoundTag(compoundTag);
-        aspectsView = new UnmodifiableAspectList<>(aspects);
+        aspectsView = new UnmodifiableAspectView<>(aspects);
         fuelVisAmouontFire = FUEL_AMOUNT_FIRE.readIntFromCompoundTag(compoundTag);
         fuelVisAmountEntropy = FUEL_AMOUNT_ENTROPY.readIntFromCompoundTag(compoundTag);
         fuelVisAmountWater = FUEL_AMOUNT_WATER.readIntFromCompoundTag(compoundTag);
@@ -64,7 +65,7 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
         return FUEL_VIS_CAPACITY;
     }
     
-    public int tickCount = 0;
+    public int tickCount  = System.identityHashCode(this) & 63;
     public int burnItemTickCooldown = 0;
 
 
@@ -93,15 +94,15 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
         var pos = getBlockPos();
         int pt = this.fuelVisAmouontFire--;
         if (this.fuelVisAmouontFire <= getFuelVisCapacity()) {
-            this.fuelVisAmouontFire += VisNetHandler.drainVis(this.level, pos, Aspects.FIRE, 50);
+            this.fuelVisAmouontFire += VisNetHandler.drainCentiVis(this.level, pos, Aspects.FIRE, 50);
         }
 
         if (this.fuelVisAmountEntropy <= getFuelVisCapacity()) {
-            this.fuelVisAmountEntropy += VisNetHandler.drainVis(this.level, pos, Aspects.ENTROPY, 50);
+            this.fuelVisAmountEntropy += VisNetHandler.drainCentiVis(this.level, pos, Aspects.ENTROPY, 50);
         }
 
         if (this.fuelVisAmountWater <= getFuelVisCapacity()) {
-            this.fuelVisAmountWater += VisNetHandler.drainVis(this.level, pos, Aspects.WATER, 50);
+            this.fuelVisAmountWater += VisNetHandler.drainCentiVis(this.level, pos, Aspects.WATER, 50);
         }
 
         if (pt / 50 != this.fuelVisAmouontFire / 50) {

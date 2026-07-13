@@ -28,9 +28,9 @@ import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.wands.ItemFocusBasic;
+import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
 import thaumcraft.client.gui.GuiResearchPopup;
 import thaumcraft.client.gui.GuiResearchRecipe;
 import thaumcraft.client.gui.MappingThread;
@@ -38,7 +38,6 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.junkbox.ItemJarFilled;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.relics.ItemSanityChecker;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.items.wands.WandManager;
 import thaumcraft.common.items.wands.foci.ItemFocusTrade;
@@ -46,7 +45,7 @@ import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 import thaumcraft.common.lib.effects.DeathGazeEffect;
 import thaumcraft.common.lib.events.EssentiaRemoteDrainHandler;
 import thaumcraft.common.lib.research.ScanManager;
-import thaumcraft.common.tiles.TileInfusionMatrix;
+import thaumcraft.common.tiles.junkbox.TileInfusionMatrix;
 
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -396,7 +395,7 @@ public class ClientTickEventsFML {
       AspectList<Aspect>aspects = wand.getAllVis(wandstack);
 
       for(Aspect aspect : aspects.getAspects()) {
-         int amt = aspects.getAmount(aspect);
+         int amt = aspects.get(aspect);
          GL11.glPushMatrix();
          if (!Config.dialBottom) {
             GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
@@ -423,11 +422,11 @@ public class ClientTickEventsFML {
             GL11.glPopMatrix();
          }
 
-         if (this.oldvals.get(player.inventory.currentItem).getAmount(aspect) > amt) {
+         if (this.oldvals.get(player.inventory.currentItem).get(aspect) > amt) {
             GL11.glPushMatrix();
             UtilsFX.drawTexturedQuad(-4, -8 - sh, 128, 0, 8, 8, -90.0F);
             GL11.glPopMatrix();
-         } else if (this.oldvals.get(player.inventory.currentItem).getAmount(aspect) < amt) {
+         } else if (this.oldvals.get(player.inventory.currentItem).get(aspect) < amt) {
             GL11.glPushMatrix();
             UtilsFX.drawTexturedQuad(-4, -8 - sh, 120, 0, 8, 8, -90.0F);
             GL11.glPopMatrix();
@@ -440,7 +439,7 @@ public class ClientTickEventsFML {
             mc.ingameGUI.drawString(mc.fontRenderer, msg, -32, -4, 16777215);
             GL11.glPopMatrix();
             if (focus != null && focus.getVisCost(focusStack).getAmount(aspect) > 0) {
-               float mod = wand.getConsumptionModifier(wandstack, player, aspect, false);
+               float mod = wand.getConsumptionModifier(wandstack, player, aspect, ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS);
                GL11.glPushMatrix();
                GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
                msg = this.myFormatter.format((float)focus.getVisCost(focusStack).getAmount(aspect) * mod / 100.0F);
@@ -457,13 +456,13 @@ public class ClientTickEventsFML {
 
       if (focus != null) {
          ItemStack picked = null;
-         if (focus instanceof ItemFocusTrade) {
-            ItemFocusTrade wt = (ItemFocusTrade)focus;
-            picked = wt.getPickedBlock(player.inventory.getCurrentItem());
-            if (picked != null) {
-               this.renderWandTradeHud(partialTicks, player, time, picked);
-            }
-         }
+//         if (focus instanceof ItemFocusTrade) {
+//            ItemFocusTrade wt = (ItemFocusTrade)focus;
+//            picked = wt.getPickedBlock(player.inventory.getCurrentItem());
+//            if (picked != null) {
+//               this.renderWandTradeHud(partialTicks, player, time, picked);
+//            }
+//         }
 
          if (picked == null) {
             GL11.glPushMatrix();
@@ -556,7 +555,7 @@ public class ClientTickEventsFML {
          if (jar != null && jar.getItem() instanceof ItemJarFilled && jar.hasTagCompound()) {
             AspectList<Aspect>aspects = ((ItemJarFilled)jar.getItem()).getAspects(jar);
             if (aspects != null && aspects.size() > 0) {
-               fuel = (short)aspects.getAmount(Aspects.ENERGY);
+               fuel = (short)aspects.get(Aspects.ENERGY);
             }
          }
       }
@@ -699,7 +698,7 @@ public class ClientTickEventsFML {
                            GL11.glDisable(GL11.GL_BLEND);
                            GL11.glPopMatrix();
                            if (Thaumcraft.proxy.playerKnowledge.hasDiscoveredAspect(player.getCommandSenderName(), tag)) {
-                              UtilsFX.drawTag(x + shiftx, y + shifty, tag, (float)tags.getAmount(tag), 0, UtilsFX.getGuiZLevel(gui));
+                              UtilsFX.drawTag(x + shiftx, y + shifty, tag, (float)tags.get(tag), 0, UtilsFX.getGuiZLevel(gui));
                            } else {
                               UtilsFX.bindTexture("textures/aspects/_unknown.png");
                               GL11.glPushMatrix();

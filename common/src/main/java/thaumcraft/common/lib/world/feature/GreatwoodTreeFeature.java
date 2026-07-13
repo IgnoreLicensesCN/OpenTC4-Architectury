@@ -26,11 +26,13 @@ import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.Arrays;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+
 //okay i'm lack of algorithm so WTF is this azanor?--ignoreLicensesCN
 public class GreatwoodTreeFeature extends Feature<TreeConfiguration> {
-    private static final BlockState logFaceY = ThaumcraftBlocks.GREATWOOD_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
-    private static final BlockState logFaceX = ThaumcraftBlocks.GREATWOOD_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
-    private static final BlockState logFaceZ = ThaumcraftBlocks.GREATWOOD_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+    private static final BlockState logFaceY = ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+    private static final BlockState logFaceX = ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.X);
+    private static final BlockState logFaceZ = ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG().defaultBlockState().setValue(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 
     private static final double heightAttenuation = 0.618;
     static final byte[] otherCoordPairs = new byte[]{2, 0, 0, 1, 2, 1};
@@ -156,7 +158,7 @@ public class GreatwoodTreeFeature extends Feature<TreeConfiguration> {
                                 blockState.isAir()
                                         || blockState.is(BlockTags.LEAVES)
                                         || blockState.is(BlockTags.REPLACEABLE_BY_TREES);
-                        if ((blockState.isAir() || blockState.is(ThaumcraftBlocks.GREATWOOD_LEAVES)) 
+                        if ((blockState.isAir() || blockState.is(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LEAVES()))
                                 && canReplace) {
                             level.setBlock(setBlockPos, par6.defaultBlockState(), 3);
                         }
@@ -199,7 +201,7 @@ public class GreatwoodTreeFeature extends Feature<TreeConfiguration> {
 
         for(int var5 = par2 + leafDistanceLimit; var4 < var5; ++var4) {
             float var6 = this.leafSize(var4 - par2);
-            this.genTreeLayer(level,par1, var4, par3, var6, (byte)1, ThaumcraftBlocks.GREATWOOD_LEAVES);
+            this.genTreeLayer(level,par1, var4, par3, var6, (byte)1, ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LEAVES());
         }
 
     }
@@ -276,17 +278,17 @@ public class GreatwoodTreeFeature extends Feature<TreeConfiguration> {
         int var4 = placeContext.basePos[2];
         int[] var5 = new int[]{var1, var2, var4};
         int[] var6 = new int[]{var1, var3, var4};
-        this.placeBlockLine(level,var5, var6, ThaumcraftBlocks.GREATWOOD_LOG);
+        this.placeBlockLine(level,var5, var6, ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG());
         if (trunkSize == 2) {
             var5[0]++;
             var6[0]++;
-            this.placeBlockLine(level,var5, var6, ThaumcraftBlocks.GREATWOOD_LOG);
+            this.placeBlockLine(level,var5, var6, ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG());
             var5[2]++;
             var6[2]++;
-            this.placeBlockLine(level,var5, var6, ThaumcraftBlocks.GREATWOOD_LOG);
+            this.placeBlockLine(level,var5, var6, ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG());
             var5[0] -= 1;
             var6[0] -= 1;
-            this.placeBlockLine(level,var5, var6, ThaumcraftBlocks.GREATWOOD_LOG);
+            this.placeBlockLine(level,var5, var6, ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG());
         }
 
     }
@@ -301,7 +303,7 @@ public class GreatwoodTreeFeature extends Feature<TreeConfiguration> {
             var3[1] = var4[3];
             int var6 = var3[1] - placeContext.basePos[1];
             if (this.leafNodeNeedsBase(placeContext,var6)) {
-                this.placeBlockLine(level,var3, var5, ThaumcraftBlocks.GREATWOOD_LOG);
+                this.placeBlockLine(level,var3, var5, ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG());
             }
         }
 
@@ -344,7 +346,7 @@ public class GreatwoodTreeFeature extends Feature<TreeConfiguration> {
 
                 try {
                     BlockState var16 = level.getBlockState(new BlockPos(var13[0], var13[1], var13[2]));
-                    if (!var16.isAir() && !var16.is(ThaumcraftBlocks.GREATWOOD_LEAVES)) {
+                    if (!var16.isAir() && !var16.is(ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LEAVES())) {
                         break;
                     }
                 } catch (Exception ignored) {
@@ -456,7 +458,7 @@ public class GreatwoodTreeFeature extends Feature<TreeConfiguration> {
 
                 //idk what does 0 and 3 use
                 worldGenLevel.setBlock(spawnerBlockPos, Blocks.SPAWNER.defaultBlockState(), 3);
-                BlockEntity var14 = worldGenLevel.getBlockEntity(spawnerBlockPos);
+                BlockEntity var14 = getExistingBlockEntity(worldGenLevel, spawnerBlockPos);
                 if (var14 instanceof SpawnerBlockEntity spawner) {
                     spawner.setEntityId(EntityType.CAVE_SPIDER,trueLevel.random);
 //                    var14.func_145881_a().setEntityName("CaveSpider");
@@ -469,15 +471,15 @@ public class GreatwoodTreeFeature extends Feature<TreeConfiguration> {
                         if (worldGenLevel.getBlockState(randomizedBlockPos).isAir()
                                 && (BlockUtils.isBlockTouching(worldGenLevel,
                                 randomizedBlockPos,
-                                ThaumcraftBlocks.GREATWOOD_LEAVES) 
+                                ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LEAVES())
                                 || BlockUtils.isBlockTouching(
-                                        worldGenLevel, randomizedBlockPos, ThaumcraftBlocks.GREATWOOD_LOG))) {
+                                        worldGenLevel, randomizedBlockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.GREATWOOD_LOG()))) {
                             worldGenLevel.setBlock(randomizedBlockPos,Blocks.COBWEB.defaultBlockState(),3);
                         }
                     }
 
                     worldGenLevel.setBlock(lootChestBlockPos, Blocks.CHEST.defaultBlockState(), 3);
-                    BlockEntity var16 = worldGenLevel.getBlockEntity(lootChestBlockPos);
+                    BlockEntity var16 = getExistingBlockEntity(worldGenLevel, lootChestBlockPos);
                     if (var16 instanceof ChestBlockEntity chest) {
                         ResourceLocation lootTable = BuiltInLootTables.SIMPLE_DUNGEON; // 或你自己的
                         chest.setLootTable(lootTable, random.nextLong());

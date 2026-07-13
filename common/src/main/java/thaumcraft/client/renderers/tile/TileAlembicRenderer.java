@@ -10,16 +10,16 @@ import net.minecraftforge.client.model.IModelCustom;
 import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.aspects.IEssentiaTransportBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportBlockEntity;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBoreBase;
-import thaumcraft.common.tiles.TileAlembic;
-import thaumcraft.common.tiles.TileTube;
+import thaumcraft.common.tiles.junkbox.TileAlembic;
+import thaumcraft.common.tiles.junkbox.TileTube;
 
 @SideOnly(Side.CLIENT)
 public class TileAlembicRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation ALEMBIC = new ResourceLocation("thaumcraft", "textures/models/alembic.obj");
+   private static final ResourceLocation ALEMBIC = new ResourceLocation("thaumcraft", "textures/models/alembic.left");
    private ModelBoreBase modelBore;
 
    public TileAlembicRenderer() {

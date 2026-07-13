@@ -9,7 +9,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBellows;
-import thaumcraft.common.tiles.TileBellows;
+import thaumcraft.common.tiles.junkbox.TileBellows;
 
 public class TileBellowsRenderer extends TileEntitySpecialRenderer {
    private ModelBellows model = new ModelBellows();

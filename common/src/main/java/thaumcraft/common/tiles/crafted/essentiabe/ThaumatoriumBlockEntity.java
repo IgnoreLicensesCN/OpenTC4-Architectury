@@ -1,6 +1,7 @@
 package thaumcraft.common.tiles.crafted.essentiabe;
 
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,8 +23,12 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.crafting.CrucibleRecipe;
-import thaumcraft.api.tile.TileThaumcraftWithMenu;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
+import thaumcraft.common.tiles.TileThaumcraftWithMenu;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.abstracts.IThaumatoriumAttachmentBlock;
 import thaumcraft.common.lib.utils.InventoryUtils;
@@ -37,6 +42,7 @@ import java.util.List;
 
 import static com.linearity.opentc4.Consts.ThaumatoriumBlockEntityTagAccessors.OWNING_ASPECTS;
 import static com.linearity.opentc4.Consts.ThaumatoriumBlockEntityTagAccessors.RECIPES;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.blocks.crafted.essentia.thaumatorium.ThaumatoriumBottomBlock.FACING;
 
 public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<ThaumatoriumMenu,ThaumatoriumBlockEntity> implements
@@ -50,13 +56,13 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
         super(blockEntityType, blockPos, blockState,ThaumatoriumMenu::new);
     }
     public ThaumatoriumBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.THAUMATORIUM, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.THAUMATORIUM(), blockPos, blockState);
     }
     public static final int INPUT_SLOT = 0;
     public static final int[] SLOTS = new int[]{INPUT_SLOT};//output ItemEntity
     public @NotNull NonNullList<ItemStack> inventory = NonNullList.withSize(SLOTS.length,ItemStack.EMPTY);
     public final @Modifiable @NotNull List<CrucibleRecipe> rememberedRecipes = new ArrayList<>();
-    public final AspectList<Aspect> aspectsOwning = new AspectList<>();
+    public final AspectList<Aspect> aspectsOwning = new LinkedHashAspectList<>();
 
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
@@ -75,7 +81,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
     }
 
     public int currentCraftingIndexCache = Integer.MIN_VALUE;
-    protected AspectList<Aspect> aspectRequiredCache = new AspectList<>();
+    protected AspectList<Aspect> aspectRequiredCache = new LinkedHashAspectList<>();
 
     //returns >= 0(recipe index)if input matched some recipe
     protected int checkAndCalculateIndexCache() {
@@ -105,7 +111,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
         if (this.level == null) {
             return false;
         }
-        if (level.getBlockEntity(getBlockPos().below()) instanceof CrucibleBlockEntity crucible) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, getBlockPos().below()) instanceof CrucibleBlockEntity crucible) {
             return crucible.isHeating();
         }
         return false;
@@ -154,7 +160,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
         return getBlockState().getValue(FACING);
     }
 
-    protected int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
 
     public int getRunningTickDelay(){
         return 5;
@@ -180,7 +186,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
             var outResult = checkAndCompleteRecipe();
             if (outResult != null) {
                 var facing = getFacing();
-                if (level.getBlockEntity(getBlockPos().relative(facing)) instanceof Container container){
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(level, getBlockPos().relative(facing)) instanceof Container container){
                     outResult = InventoryUtils.placeItemStackIntoInventory(outResult, container, facing.getOpposite(), true);
                 }
                 if (!outResult.isEmpty()) {
@@ -242,9 +248,9 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
         }
         var recipe = rememberedRecipes.get(recipeIndex);
         var aspectsRequired = recipe.getAspectRequirement(getCatalyst());
-        for (var aspectTypeRequired:aspectsRequired.getAspectTypes()){
-            var aspectAmountRequired = aspectsRequired.getAmount(aspectTypeRequired);
-            int amountRemaining = aspectAmountRequired - aspectsOwning.getAmount(aspectTypeRequired);
+        for (var aspectTypeRequired:aspectsRequired.keySet()){
+            var aspectAmountRequired = aspectsRequired.get(aspectTypeRequired);
+            int amountRemaining = aspectAmountRequired - aspectsOwning.get(aspectTypeRequired);
             aspectRequiredCache.put(aspectTypeRequired, amountRemaining);
         }
     }
@@ -257,7 +263,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
         if (recipeIndex < 0){
             return Aspect.EMPTY;
         }
-        for (var aspect:aspectRequiredCache.getAspectTypes()){
+        for (var aspect:aspectRequiredCache.keySet()){
             return aspect;
         }
         return Aspects.EMPTY;
@@ -271,7 +277,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
         if (!this.isHeating()){
             return amountCanAdd;
         }
-        var requiredAmount = aspectRequiredCache.getAmount(couldBeRequired);
+        var requiredAmount = aspectRequiredCache.get(couldBeRequired);
         if (!couldBeRequired.isEmpty() && requiredAmount > 0) {
             int added = Math.min(requiredAmount, amountCanAdd);
             this.aspectsOwning.addAll(couldBeRequired, added);
@@ -298,7 +304,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
     }
     
     public boolean addRecipe(CrucibleRecipe recipe,Player player){
-        if (!recipe.research.isPlayerCompletedResearch(player)){
+        if (!recipe.research.isLivingEntityCompletedResearch(player)){
             return false;
         }
         if (rememberedRecipes.size() >= getRecipeSizeLimit()){
@@ -347,9 +353,9 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
         if (!recipe.matches(aspectsOwning,inStack)){
             return null;
         }
-        recipe.removeMatching(aspectsOwning);
+        recipe.removeMatching(aspectsOwning,inStack);
         inStack.shrink(1);
-        var out = recipe.getRecipeOutput().copy();
+        var out = recipe.getRecipeOutput(inStack);
         if (inStack.isEmpty()){
             currentCraftingIndexCache = Integer.MIN_VALUE;
         }
@@ -395,7 +401,7 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
                     var te = level.getBlockState(getBlockPos().above(y).relative(dir));
                     if (te instanceof IEssentiaTransportOutBlockEntity outBE
                     ) {
-                        var iterator = aspectRequiredCache.getAspectTypes().iterator();
+                        var iterator = aspectRequiredCache.keySet().iterator();
                         var requirement = iterator.hasNext() ? iterator.next() : Aspects.EMPTY;
                         if (!requirement.isEmpty()) {
                             int ess = outBE.takeEssentiaWithSuction(

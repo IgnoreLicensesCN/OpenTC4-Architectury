@@ -11,7 +11,7 @@ import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelTubeValve;
 import thaumcraft.common.blocks.junkbox.BlockTube;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileTubeValve;
+import thaumcraft.common.tiles.junkbox.TileTubeValve;
 
 public class TileTubeValveRenderer extends TileEntitySpecialRenderer {
    private ModelTubeValve model = new ModelTubeValve();

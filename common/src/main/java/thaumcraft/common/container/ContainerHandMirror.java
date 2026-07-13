@@ -7,8 +7,6 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import thaumcraft.common.items.relics.ItemHandMirror;
 
 public class ContainerHandMirror extends Container {
    private World worldObj;

@@ -96,44 +96,44 @@ public class ArcaneLampBlock extends SuppressedWarningBlock {
     @Override
     public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         super.randomTick(blockState, serverLevel, blockPos, randomSource);
-        var pickX = randomSource.nextInt(LIGHT_RADIUS * 2 + 1) - LIGHT_RADIUS;
-        var pickZ = randomSource.nextInt(LIGHT_RADIUS * 2 + 1) - LIGHT_RADIUS;
+        var pickX = randomSource.nextInt(getLightRadius() * 2 + 1) - getLightRadius();
+        var pickZ = randomSource.nextInt(getLightRadius() * 2 + 1) - getLightRadius();
+        //not too low
         var pickBlockPos = blockPos.offset(
                 pickX,
-                Math.max(
-                        serverLevel.getMinBuildHeight(),//not too low
+                Math.clamp(
+                        serverLevel.getHeight(Heightmap.Types.WORLD_SURFACE, pickX, pickZ) + 4,
+                        serverLevel.getMinBuildHeight(),
                         Math.min(
-                                Math.min(
-                                        serverLevel.getHeight(Heightmap.Types.WORLD_SURFACE, pickX, pickZ) + 4,
-//height limit for lamp
-                                        randomSource.nextInt(33) - 16
-                                ),//pickY
+                                randomSource.nextInt(33) - 16,//height limit for lamp
                                 serverLevel.getMaxBuildHeight()//not too high
-                        )
-                ),
+                        )),
                 pickZ
         );
         var pickBlockState = serverLevel.getBlockState(pickBlockPos);
         if (pickBlockState.isAir() && !(pickBlockState.is(GLIMMER_OF_LIGHT_WONT_OVERRIDE))
         ) {
-            serverLevel.setBlockAndUpdate(pickBlockPos, ThaumcraftBlocks.GLIMMER_OF_LIGHT.defaultBlockState());
+            serverLevel.setBlockAndUpdate(pickBlockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.GLIMMER_OF_LIGHT().defaultBlockState());
         }
     }
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!level.isClientSide) {
-            removeLight(level, pos,LIGHT_RADIUS);
+            removeLight(level, pos,getLightRadius());
         }
         super.onRemove(state, level, pos, newState, isMoving);
     }
 
+    protected int getLightRadius(){
+        return LIGHT_RADIUS;
+    }
     protected void removeLight(Level level, BlockPos blockPos,int lightRadius) {
         for (int xOffset = -lightRadius; xOffset <= lightRadius; xOffset++) {
             for (int zOffset = -lightRadius; zOffset <= lightRadius; zOffset++) {
                 for (int yOffset = -lightRadius; yOffset <= lightRadius; yOffset++) {
                     var pickPos = blockPos.offset(xOffset, yOffset, zOffset);
-                    if (level.getBlockState(pickPos).is(ThaumcraftBlocks.GLIMMER_OF_LIGHT)) {
+                    if (level.getBlockState(pickPos).is(ThaumcraftBlocks.ThaumcraftBlockInstances.GLIMMER_OF_LIGHT())) {
                         level.setBlockAndUpdate(pickPos, Blocks.AIR.defaultBlockState());
                     }
                 }

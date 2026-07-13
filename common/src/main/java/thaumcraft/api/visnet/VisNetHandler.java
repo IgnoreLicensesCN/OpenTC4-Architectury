@@ -1,6 +1,7 @@
 package thaumcraft.api.visnet;
 
-import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
+import com.linearity.opentc4.annotations.forvalue.CentiVisAmount;
+import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -19,9 +20,9 @@ import static thaumcraft.common.lib.utils.Utils.generateVisEffect;
 public class VisNetHandler {
     public static final Collection<
             Map<
-                    Level,
+                    VisNetNodeTypeResourceLocation,
                     Map<
-                            VisNetNodeTypeResourceLocation,
+                            Level,
                             CubeChunkedWeakLookups<VisNetNodeBlockEntity>
                             >
                     >
@@ -41,12 +42,13 @@ public class VisNetHandler {
      * @param amount how much to drain
      * @return how much was actually drained
      */
-    public static int drainVis(Level world, BlockPos pos, Aspect aspect, int amount) {
+    public static @CentiVisAmount int drainCentiVis(Level world, BlockPos pos, Aspect aspect, int amount) {
         var drainedAmount = new AtomicInteger(0);
-        for (var map : visNetNodeLookups) {
-            var lookupMap = map.get(world);
-            if (lookupMap != null) {
-                for (var lookup : lookupMap.values()) {
+        for (var typeAndMap : visNetNodeLookups) {
+            for (var entry : typeAndMap.entrySet()) {
+                var map = entry.getValue();
+                var lookup = map.get(world);
+                if (lookup != null) {
                     lookup.forItemsNearPosWithBreak(
                             pos, netNode -> {
 

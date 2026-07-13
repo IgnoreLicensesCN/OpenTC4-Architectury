@@ -7,12 +7,12 @@ import thaumcraft.common.menu.ThaumcraftGUI;
 import thaumcraft.common.menu.menu.abstracts.AbstractThaumcraftMenu;
 import thaumcraft.common.tiles.crafted.essentiabe.ThaumatoriumBlockEntity;
 
-//TODO:set recipe
+//TODO:set recipe and more logic
 public class ThaumatoriumMenu extends AbstractThaumcraftMenu<ThaumatoriumBlockEntity> {
     public ThaumatoriumMenu(int containerID,
                             Inventory inventory,
                             ThaumatoriumBlockEntity thaumatoriumBlockEntity) {
-        this(ThaumcraftGUI.THAUMATORIUM,containerID,inventory,thaumatoriumBlockEntity);
+        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.THAUMATORIUM(),containerID,inventory,thaumatoriumBlockEntity);
     }
     public ThaumatoriumMenu(
             MenuType<?> menuType,

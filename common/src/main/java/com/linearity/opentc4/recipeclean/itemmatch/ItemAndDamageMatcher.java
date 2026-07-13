@@ -4,7 +4,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -14,8 +13,8 @@ public class ItemAndDamageMatcher extends RecipeItemMatcher{
     private record ItemAndDamageCacheKey(Item item, int damage) {
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof ItemAndDamageCacheKey that)) return false;
-            return damage == that.damage && Objects.equals(item, that.item);
+            if (!(o instanceof ItemAndDamageCacheKey(Item item1, int damage1))) return false;
+            return damage == damage1 && Objects.equals(item, item1);
         }
 
         @Override
@@ -60,4 +59,8 @@ public class ItemAndDamageMatcher extends RecipeItemMatcher{
         return cache.computeIfAbsent(new ItemAndDamageCacheKey(item,damage),ItemAndDamageMatcher::new);
     }
 
+    @Override
+    public String toString() {
+        return  "ItemAndDamageMatcher{" + "item=" + item + ", damage=" + damage + '}';
+    }
 }

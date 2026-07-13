@@ -2,7 +2,8 @@ package thaumcraft.common.tiles.crafted.essentiabe;
 
 import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
-import com.linearity.opentc4.mixinaccessors.EssentiaCrystallizerBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinaccessors.clientbe.EssentiaCrystallizerBlockEntityClientAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +18,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.api.aspects.essentiabe.IEssentiaForceInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
@@ -27,18 +31,19 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 
 import static com.linearity.opentc4.Consts.EssentiaCrystallizerBlockEntityTagAccessors.ASPECT_CRYSTALLIZING;
-import static thaumcraft.common.items.ThaumcraftItems.CRYSTAL_ESSENCE;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+import static thaumcraft.common.items.ThaumcraftItemInstances.CRYSTAL_ESSENCE;
 
 public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
         implements
         IEssentiaTransportInBlockEntity,
-        IAspectInBlockEntity<Aspect>,
+        IEssentiaForceInBlockEntity<Aspect>,
         IValueContainerBasedComparatorSignalProviderBlockEntity {
     public EssentiaCrystallizerBlockEntity(BlockEntityType<? extends EssentiaCrystallizerBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaCrystallizerBlockEntity( BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ESSENTIA_CRYSTALLIZER, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_CRYSTALLIZER(), blockPos, blockState);
     }
     protected @NotNull("null -> empty") Aspect crystallizingAspect = Aspects.EMPTY;
 
@@ -71,7 +76,7 @@ public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
             if (this.crystallizingAspect.isEmpty()) {
                 this.fillReservoir();
             } else {
-                this.progressTickCount += 1 + VisNetHandler.drainVis(
+                this.progressTickCount += 1 + VisNetHandler.drainCentiVis(
                         this.level, pos.getX(),pos.getY(),pos.getZ(),
                         Aspects.EARTH,
                         Math.min(20, Math.max(1, (maxProgress - this.progressTickCount) / 2))) * 2;
@@ -118,8 +123,8 @@ public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
         var pos = getBlockPos();
         var selfOutputFacing = getOutFacing();
         var outToPos = pos.relative(selfOutputFacing);
-        var outStack = CRYSTAL_ESSENCE.ofAspect(crystallizingAspect);
-        if (this.level.getBlockEntity(outToPos) instanceof Container container) {
+        var outStack = CRYSTAL_ESSENCE().ofAspect(crystallizingAspect);
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(this.level, outToPos) instanceof Container container) {
             outStack = InventoryUtils.placeItemStackIntoInventory(
                     outStack,
                     container,
@@ -175,7 +180,7 @@ public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
                 stack);
         ie2.setDeltaMovement(offsetVec.getX()*0.04F,offsetVec.getY()*0.04F,offsetVec.getZ()*0.04F);
 
-        this.level.blockEvent(bpos, ThaumcraftBlocks.ESSENTIA_CRYSTALLIZER, 0, 0);
+        this.level.blockEvent(bpos, ThaumcraftBlocks.ThaumcraftBlockInstances.ESSENTIA_CRYSTALLIZER(), 0, 0);
         return this.level.addFreshEntity(ie2);
     }
 

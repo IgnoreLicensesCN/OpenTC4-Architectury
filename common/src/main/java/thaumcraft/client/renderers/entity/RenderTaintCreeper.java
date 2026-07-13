@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.entities.monster.EntityTaintCreeper;
+import thaumcraft.common.entities.monster.tainted.EntityTaintCreeper;
 
 public class RenderTaintCreeper extends RenderLiving {
    private ModelBase field_27008_a = new ModelCreeper(2.0F);

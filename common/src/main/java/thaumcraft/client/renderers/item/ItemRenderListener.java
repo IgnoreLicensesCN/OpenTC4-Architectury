@@ -1,6 +1,8 @@
 package thaumcraft.client.renderers.item;
 
+import com.linearity.opentc4.mixinaccessors.ItemRendererAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -29,4 +31,8 @@ public abstract class ItemRenderListener implements Comparable<ItemRenderListene
             int j,
             BakedModel bakedModel
     );
+
+    public ItemRendererAccessor getItemRenderer() {
+        return ((ItemRendererAccessor) Minecraft.getInstance().getItemRenderer());
+    }
 }

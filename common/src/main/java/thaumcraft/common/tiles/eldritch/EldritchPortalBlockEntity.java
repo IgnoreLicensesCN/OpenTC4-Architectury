@@ -1,26 +1,25 @@
 package thaumcraft.common.tiles.eldritch;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
-import static thaumcraft.common.researches.ThaumcraftResearches.ENTER_OUTER;
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.SERVER_PLAYER_TEST;
+import static thaumcraft.api.research.ThaumcraftResearches.ENTER_OUTER;
 
 public class EldritchPortalBlockEntity extends TileThaumcraft {
     public EldritchPortalBlockEntity(BlockEntityType<? extends EldritchPortalBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchPortalBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ELDRITCH_PORTAL,blockPos,blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_PORTAL(),blockPos,blockState);
     }
-    private int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
 
     public int getTickCount() {
         return tickCount;
@@ -35,7 +34,7 @@ public class EldritchPortalBlockEntity extends TileThaumcraft {
             return;
         }
         var pickedPlayerList = this.level.getEntities(
-                EntityTypeTest.forClass(ServerPlayer.class),
+                SERVER_PLAYER_TEST,
                 new AABB(getBlockPos()).inflate(0.5,1,0.5),
                 e -> true
         );
@@ -59,8 +58,8 @@ public class EldritchPortalBlockEntity extends TileThaumcraft {
                             player.getXRot(),
                             player.getYRot()
                     );
-                    if (!ENTER_OUTER.isPlayerCompletedResearch(player)) {
-                        ENTER_OUTER.completeResearch(player);
+                    if (!ENTER_OUTER.isLivingEntityCompletedResearch(player)) {
+                        ENTER_OUTER.completeResearchFor(player);
                     }
                 }
             });

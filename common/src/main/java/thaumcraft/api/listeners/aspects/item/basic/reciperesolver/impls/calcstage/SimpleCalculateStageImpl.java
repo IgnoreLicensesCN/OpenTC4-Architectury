@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage;
 
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.AbstractRecipeResolver;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.RecipeCalculateStage;
 

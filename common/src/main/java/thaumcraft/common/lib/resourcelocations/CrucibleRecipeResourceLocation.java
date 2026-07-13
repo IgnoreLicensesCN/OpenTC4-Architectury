@@ -2,7 +2,7 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +39,7 @@ public class CrucibleRecipeResourceLocation extends AbstractRecipeResourceLocati
     public static CrucibleRecipeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> CrucibleRecipeResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new CrucibleRecipeResourceLocation(namespace,path));
     }
     public static CrucibleRecipeResourceLocation of(String namespaceAndPath){
         if (namespaceAndPath.isEmpty()){

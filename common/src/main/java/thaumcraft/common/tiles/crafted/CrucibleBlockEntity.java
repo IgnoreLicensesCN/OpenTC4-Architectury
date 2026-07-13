@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.crafted;
 
-import com.linearity.opentc4.mixinaccessors.CrucibleBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinaccessors.clientbe.CrucibleBlockEntityClientAccessor;
 import dev.architectury.fluid.FluidStack;
 import io.netty.util.internal.UnstableApi;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -23,42 +23,44 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.CompoundAspect;
 import thaumcraft.api.aspects.PrimalAspect;
-import thaumcraft.api.crafting.CrucibleRecipe;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.ICrucibleAttachmentBlock;
 import thaumcraft.common.blocks.liquid.FiniteLiquidBlock;
 import thaumcraft.common.blocks.liquid.ThaumcraftFluids;
-import thaumcraft.common.entities.EntitySpecialItem;
+import thaumcraft.common.entities.SpecialItemEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.abstracts.SingleFluidContainerBlockEntity;
 
 import java.awt.*;
 
 import static com.linearity.opentc4.Consts.CrucibleTagAccessors.*;
-import static dev.architectury.fluid.FluidStack.create;
 import static thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator.getBonusAspects;
 
-public class CrucibleBlockEntity extends TileThaumcraft
-        implements
-        IValueContainerBasedComparatorSignalProviderBlockEntity
+public class CrucibleBlockEntity extends SingleFluidContainerBlockEntity
 {
     private long counter;
     public static final int ASPECT_CAPACITY = 100;
     public static final int BOILING_HEAT = 150;
     public static final int LIQUID_CAPACITY = 2000;
 
+    @Override
+    public int getLiquidCapacity() {
+        return LIQUID_CAPACITY;
+    }
+
     public CrucibleBlockEntity(BlockEntityType<? extends CrucibleBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public CrucibleBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.CRUCIBLE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.CRUCIBLE(), blockPos, blockState);
     }
     protected int tempCalculatedCapacity = getInitialAspectCapacity();
     protected int getInitialAspectCapacity() {
@@ -74,66 +76,15 @@ public class CrucibleBlockEntity extends TileThaumcraft
     public int getBoilingHeat() {
         return BOILING_HEAT;
     }
-    public int getLiquidCapacity() {
-        return LIQUID_CAPACITY;
-    }
 
-
-    public @NotNull FluidStack getFluidStack() {
-        return fluidStack;
-    }
-
-    public long getFluidAmount() {
-        return fluidStack.getAmount();
-    }
-
-    //return inserted
-    public long insertFluid(Fluid fluid,long maxCanInsert){
-        return insertFluid(fluid,maxCanInsert,true);
-    }
-    public long insertFluid(Fluid fluid,long maxCanInsert,boolean doIt) {
-        if (!canAcceptFluid(fluid)) {
-            return 0;
-        }
-        if (fluid != fluidStack.getFluid() && !fluidStack.isEmpty()) {
-            return 0;
-        }
-        long currentAmount = fluidStack.getAmount();
-        if (currentAmount < 0){
-            currentAmount = 0;
-            fluidStack.setAmount(0);
-        }
-        long spaceToInsert = getLiquidCapacity() - currentAmount;
-        if (spaceToInsert < 0){
-            spaceToInsert = 0;
-            fluidStack.setAmount(getLiquidCapacity());
-        }
-        long inserted = Math.min(spaceToInsert, maxCanInsert);
-        if (doIt){
-            fluidStack.setAmount(currentAmount + inserted);
-        }
-        return inserted;
-    }
-
-    public long extractFluid(Fluid fluid, long maxCanExtract) {
-        return 0L;//no out
-    }
-    protected void decreaseFluid(long amount) {
-        this.fluidStack.setAmount(Math.max(0, this.fluidStack.getAmount() - amount));
-    }
-
+    @Override
     public boolean canAcceptFluid(@NotNull Fluid fluid) {
         return fluid.isSame(Fluids.WATER);
     }
 
-
-    public final AspectList<Aspect> owningAspects = new AspectList<>();
+    public final AspectList<Aspect> owningAspects = new LinkedHashAspectList<>();
     public int heat = 0;
-    protected @NotNull FluidStack fluidStack = create(Fluids.EMPTY, 0);//keep it a instance
 
-    public void setFluidStack(@NotNull FluidStack fluidStack) {
-        this.fluidStack = fluidStack;
-    }
 
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
@@ -141,7 +92,6 @@ public class CrucibleBlockEntity extends TileThaumcraft
         this.addedAspect = true;
         this.owningAspects.addAll(OWNING_ASPECTS.readFromCompoundTag(compoundTag));
         this.heat = HEAT.readIntFromCompoundTag(compoundTag);
-        this.fluidStack = FLUID.readFromCompoundTag(compoundTag);
     }
 
     @Override
@@ -149,7 +99,6 @@ public class CrucibleBlockEntity extends TileThaumcraft
         super.writeCustomNBT(compoundTag);
         OWNING_ASPECTS.writeToCompoundTag(compoundTag, owningAspects);
         HEAT.writeIntToCompoundTag(compoundTag, heat);
-        FLUID.writeToCompoundTag(compoundTag, fluidStack);
     }
 
     public boolean isHeating() {
@@ -281,7 +230,7 @@ public class CrucibleBlockEntity extends TileThaumcraft
 
                 this.decreaseFluid(2);
                 this.owningAspects.reduceAndRemoveIfNotPositive(a, 1);
-                if (a instanceof CompoundAspect compoundAspect) {
+                if (a instanceof CompoundAspect compoundAspect && !a.isEmpty()) {
                     if (random.nextBoolean()) {
                         this.addedAspect = true;
                         this.owningAspects.addAll(compoundAspect.components.aspectA(), 1);
@@ -308,12 +257,12 @@ public class CrucibleBlockEntity extends TileThaumcraft
             var blockAbove = stateAbove.getBlock();
             if (stateAbove.isAir()) {
                 if (this.level.random.nextBoolean()) {
-                    this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.FLUX_GAS.defaultBlockState());
+                    this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS().defaultBlockState());
                 } else {
-                    this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.FLUX_GOO.defaultBlockState());
+                    this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO().defaultBlockState());
                 }
             } else {
-                if (blockAbove == ThaumcraftBlocks.FLUX_GAS || blockAbove == ThaumcraftBlocks.FLUX_GOO) {
+                if (blockAbove == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS() || blockAbove == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO()) {
                     if (blockAbove instanceof FiniteLiquidBlock finiteLiquidBlock){
                         //stacking flux
                         int fluidLevel = stateAbove.getValue(finiteLiquidBlock.finiteFluid.liquidLevel);
@@ -331,13 +280,13 @@ public class CrucibleBlockEntity extends TileThaumcraft
                     if (pickState.isAir()){
                         //TODO:[maybe wont finished]set gas or goo(or more things such as tainted junks if you like) api
                         if (this.level.random.nextBoolean()) {
-                            this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.FLUX_GAS.defaultBlockState());
+                            this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS().defaultBlockState());
                         } else {
-                            this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.FLUX_GOO.defaultBlockState());
+                            this.level.setBlockAndUpdate(posAbove, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO().defaultBlockState());
                         }
                     }
                     //i added this part.just think it's obviously reasonable
-                    else if (pickBlock == ThaumcraftBlocks.FLUX_GAS || pickBlock == ThaumcraftBlocks.FLUX_GOO) {
+                    else if (pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS() || pickBlock == ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO()) {
                         //also stacking flux
                         if (pickBlock instanceof FiniteLiquidBlock finiteLiquidBlock){
                             int fluidLevel = stateAbove.getValue(finiteLiquidBlock.finiteFluid.liquidLevel);
@@ -363,7 +312,7 @@ public class CrucibleBlockEntity extends TileThaumcraft
 
             this.owningAspects.clear();
             if (this.level != null) {
-                this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.CRUCIBLE, 2, 5);
+                this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE(), 2, 5);
             }
         }
 
@@ -371,7 +320,7 @@ public class CrucibleBlockEntity extends TileThaumcraft
 
     @SuppressWarnings("UnusedReturnValue")
     public AspectList<Aspect> takeRandomFromSource(RandomSource random) {
-        AspectList<Aspect>output = new AspectList<>();
+        AspectList<Aspect>output = new LinkedHashAspectList<>();
         if (!this.owningAspects.isEmpty()) {
             Aspect tag = this.owningAspects.randomAspect(random);
             output.addAll(tag, 1);
@@ -443,13 +392,14 @@ public class CrucibleBlockEntity extends TileThaumcraft
                 CrucibleRecipe recipeChosen = cachedRecipe;
                 if (recipeChosen == null){
                     recipeChosen = CrucibleRecipe.findRecipeCanUse(player,stack,this.owningAspects);
+                    cachedRecipe = recipeChosen;
                 }
 
                 if (recipeChosen != null && this.getFluidAmount() > 0) {
                     burnIntoAspect = false;
-                    recipeChosen.removeMatching(this.owningAspects);
+                    recipeChosen.removeMatching(this.owningAspects,stack);
                     this.decreaseFluid(50);
-                    ItemStack out = recipeChosen.getRecipeOutput().copy();
+                    ItemStack out = recipeChosen.getRecipeOutput(stack);
                     this.ejectItem(out);
 
 //                TODO:better crucible crafting API
@@ -465,18 +415,7 @@ public class CrucibleBlockEntity extends TileThaumcraft
             if (burnIntoAspect){
                 var burntInto = getBonusAspects(stack,!(level.isClientSide));
                 if (burntInto.isEmpty()) {
-                    itemEntity.addDeltaMovement(new Vec3(
-                            (this.level.random.nextFloat() - this.level.random.nextFloat()) * 0.2F,
-                                    .35F,
-                            (this.level.random.nextFloat() - this.level.random.nextFloat()) * 0.2F
-                    ));
-                    this.level.playSound(
-                            itemEntity,
-                            getBlockPos(),
-                            SoundEvents.ITEM_PICKUP,
-                            SoundSource.BLOCKS,
-                            0.2F,
-                            1.0F + (this.level.random.nextFloat() - this.level.random.nextFloat()) * 0.4F);
+                    throwOutItemCantBurnIntoAspect(itemEntity);
                     return;
                 }
                 this.addedAspect = true;
@@ -491,40 +430,63 @@ public class CrucibleBlockEntity extends TileThaumcraft
         if (bubble) {
             this.level.playSound(null,getBlockPos(), ThaumcraftSounds.BUBBLE,SoundSource.BLOCKS, 0.2F, 1.0F + this.level.random.nextFloat() * 0.4F);
             markDirtyAndUpdateSelf();
-            this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.CRUCIBLE, 2, 1);
+            this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE(), 2, 1);
         }
 
         if (event) {
             markDirtyAndUpdateSelf();
-            this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.CRUCIBLE, 2, 5);
+            this.level.blockEvent(getBlockPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE(), 2, 5);
         }
 
         if (stack.isEmpty()) {
             itemEntity.setItem(ItemStack.EMPTY);
             itemEntity.discard();
-        } else {
+        }
+        else {
             itemEntity.setItem(stack);
         }
         this.setChanged();
     }
-    public void ejectItem(ItemStack items) {
-        boolean first = true;
 
+    private void throwOutItemCantBurnIntoAspect(ItemEntity itemEntity) {
+        var level = itemEntity.level();
+        itemEntity.addDeltaMovement(new Vec3(
+                (level.random.nextFloat() - level.random.nextFloat()) * 0.2F,
+                        .35F,
+                (level.random.nextFloat() - level.random.nextFloat()) * 0.2F
+        ));
+        level.playSound(
+                itemEntity,
+                getBlockPos(),
+                SoundEvents.ITEM_PICKUP,
+                SoundSource.BLOCKS,
+                0.2F,
+                1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.4F);
+    }
+
+    public void ejectItem(ItemStack stack) {
+        boolean first = true;
+        if (level == null){
+            return;
+        }
         do {
-            ItemStack spitout = items.copy();
+            ItemStack spitout = stack.copy();
             if (spitout.getCount() > spitout.getMaxStackSize()) {
                 spitout.setCount(spitout.getMaxStackSize());
             }
-            items.setCount(items.getCount() - spitout.getCount());
+            stack.setCount(stack.getCount() - spitout.getCount());
 
             //TODO:SpecialItemEntity
-            EntitySpecialItem entityitem = new EntitySpecialItem(this.level(), (float)this.xCoord + 0.5F, (float)this.yCoord + 0.71F, (float)this.zCoord + 0.5F, spitout);
-            entityitem.motionY = 0.1F;
-            entityitem.motionX = first ? (double)0.0F : (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.01F);
-            entityitem.motionZ = first ? (double)0.0F : (double)((this.level().rand.nextFloat() - this.level().rand.nextFloat()) * 0.01F);
-            this.level.spawnEntityInWorld(entityitem);
+            var bpos = getBlockPos();
+            var entityitem = new SpecialItemEntity(this.level, bpos.getX() + 0.5F, bpos.getY() + 0.71F, bpos.getZ() + 0.5F, spitout);
+            var movement = new Vec3(
+                    first ? (double)0.0F : (double)((this.level.random.nextFloat()) * 0.02F - 0.01F),
+                    0.1F,
+                    first ? (double)0.0F : (double)((this.level.random.nextFloat()) * 0.02F - 0.01F));
+            entityitem.setDeltaMovement(movement);
+            this.level.addFreshEntity(entityitem);
             first = false;
-        } while(!items.isEmpty());
+        } while(!stack.isEmpty());
 
     }
     

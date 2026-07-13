@@ -14,15 +14,14 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.tiles.TileEldritchAltar;
+import thaumcraft.common.items.ThaumcraftItemInstances;
+import thaumcraft.common.tiles.junkbox.TileEldritchAltar;
 
 import static thaumcraft.client.renderers.tile.TileBlockInfoGetter.getBlockTypeSafely;
 
 public class TileEldritchCapRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation CAP = new ResourceLocation("thaumcraft", "textures/models/obelisk_cap.obj");
+   private static final ResourceLocation CAP = new ResourceLocation("thaumcraft", "textures/models/obelisk_cap.left");
    private String tex = "textures/models/obelisk_cap.png";
    private String tex2 = "textures/models/obelisk_cap_2.png";
    private ItemStack eye = null;
@@ -61,7 +60,7 @@ public class TileEldritchCapRenderer extends TileEntitySpecialRenderer {
          GL11.glPushMatrix();
          GL11.glTranslatef((float)x + 0.5F, (float)y + 0.0F, (float)z + 0.5F);
          if (this.entityitem == null || this.eye == null) {
-            this.eye = new ItemStack(ThaumcraftItems.ELDRITCH_EYE);
+            this.eye = new ItemStack(ThaumcraftItemInstances.ELDRITCH_EYE());
             this.entityitem = new EntityItem(te.getLevel(), 0.0F, 0.0F, 0.0F, this.eye);
             this.entityitem.hoverStart = 0.0F;
          }

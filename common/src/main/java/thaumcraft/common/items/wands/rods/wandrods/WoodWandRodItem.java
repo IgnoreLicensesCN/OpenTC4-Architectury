@@ -1,24 +1,25 @@
 package thaumcraft.common.items.wands.rods.wandrods;
 
+import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.wands.INodeHarmfulComponent;
-import thaumcraft.api.wands.WorkAsWandRod;
 import thaumcraft.common.items.wands.componentbase.ThaumcraftWandRodItem;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
-import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCasted;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
 
-//dont add crafting method for this,just redirect stick here.
-public class WoodWandRodItem extends ThaumcraftWandRodItem implements WorkAsWandRod, INodeHarmfulComponent {
+public class WoodWandRodItem extends ThaumcraftWandRodItem {
     public WoodWandRodItem() {
         super(new Properties());
     }
 
-    private final @UnmodifiableView CentiVisList<Aspect> capacity = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(25 * CENTIVIS_MULTIPLIER);
+    private final @UnmodifiableView CalcCacheableCentiVisList<Aspect> capacity =
+            new CalcCacheableCentiVisList<>(
+                    getPrimalAspectCentiVisListWithValueCastedUnmodifiable(25 * CENTIVIS_MULTIPLIER),
+                    true
+            );
     @Override
-    public @UnmodifiableView CentiVisList<Aspect> getCentiVisCapacity() {
+    public @UnmodifiableView CalcCacheableCentiVisList<Aspect> getCentiVisCapacity() {
         return capacity;
     }
 

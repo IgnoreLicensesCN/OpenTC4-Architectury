@@ -11,7 +11,7 @@ import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.entities.monster.EntityTaintSpider;
+import thaumcraft.common.entities.monster.tainted.EntityTaintSpider;
 
 @SideOnly(Side.CLIENT)
 public class RenderTaintSpider extends RenderLiving {

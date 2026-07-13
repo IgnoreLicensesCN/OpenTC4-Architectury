@@ -15,7 +15,7 @@ import java.util.Random;
 @SideOnly(Side.CLIENT)
 public class RenderFrostShard extends Render {
    private IModelCustom model;
-   private static final ResourceLocation ORB = new ResourceLocation("thaumcraft", "textures/models/orb.obj");
+   private static final ResourceLocation ORB = new ResourceLocation("thaumcraft", "textures/models/orb.left");
    private static final ResourceLocation rl = new ResourceLocation("thaumcraft", "textures/blocks/frostshard.png");
 
    public RenderFrostShard() {

@@ -15,4 +15,8 @@ public interface DefaultAttributesAccessor {
     static Map<EntityType<? extends LivingEntity>, AttributeSupplier> opentc4$getSuppliers() {
         throw new AssertionError("Mixin accessor dummy");
     }
+    @Accessor("SUPPLIERS")
+    static void opentc4$setSuppliers(Map<EntityType<? extends LivingEntity>, AttributeSupplier> setTo) {
+        throw new AssertionError("Mixin accessor dummy");
+    }
 }

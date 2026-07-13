@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.crafted.essentia;
 
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
@@ -18,18 +19,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectContainerItem;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
-import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
+import thaumcraft.api.aspects.IEssentiaContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.common.blocks.abstracts.IEssentiaContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.blocks.liquid.FluxGasBlock;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.essentiabe.EssentiaReservoirBlockEntity;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+
 //TODO:Smaller bound
 public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
-        IAspectContainerItemFillerBlock<Aspect>,
+        IEssentiaContainerItemFillerBlock<Aspect>,
         IWandInteractableBlockOrBlockEntity,
         EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -50,7 +53,7 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
 
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
-        if (level.getBlockEntity(blockPos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity provider){
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity provider){
             return provider.getComparatorSignal();
         }
         return 0;
@@ -58,14 +61,14 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
 
 
     @Override
-    public boolean canFillAspectContainerItem(
+    public boolean canFillEssentiaContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             @NotNull("empty -> any") Aspect aspect) {
-        if (level.getBlockEntity(blockPos) instanceof EssentiaReservoirBlockEntity reservoir) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof EssentiaReservoirBlockEntity reservoir) {
             return reservoir.canFillAspectContainerItem(stackToFill, itemToFill, aspect);
         }
         return false;
@@ -73,16 +76,16 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
 
     @Override
     @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
-    public boolean fillAspectContainerItem(
+    public boolean fillEssentiaContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             int minAmount
     ) {
         if (level.isClientSide()) {return false;}
-        if (level.getBlockEntity(blockPos) instanceof EssentiaReservoirBlockEntity reservoir) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof EssentiaReservoirBlockEntity reservoir) {
             return reservoir.fillAspectContainerItem(stackToFill, itemToFill,minAmount);
         }
         return false;
@@ -99,7 +102,7 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
                 var clickedPos = useOnContext.getClickedPos();
                 var oldState = level.getBlockState(clickedPos);
                 BlockState newState = oldState.setValue(FACING, player.isShiftKeyDown()?clickedFace:clickedFace.getOpposite());
-                var be = level.getBlockEntity(clickedPos);
+                var be = LevelBlockEntityAccessing.getExistingBlockEntity(level, clickedPos);
                 if (be instanceof EssentiaReservoirBlockEntity reservoir){
                     reservoir.setBlockStateAndUpdate(newState);
                 }
@@ -119,7 +122,7 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == ThaumcraftBlockEntities.ESSENTIA_RESERVOIR) {
+        if (blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_RESERVOIR()) {
             if (level.isClientSide()) {
                 return (level1, blockPos, blockState1, blockEntity) -> {
                     if (blockEntity instanceof EssentiaReservoirBlockEntity reservoir) {
@@ -140,7 +143,7 @@ public class EssentiaReservoirBlock extends SuppressedWarningBlock implements
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         super.onRemove(state, level, pos, newState, isMoving);
-        var be = level.getBlockEntity(pos);
+        var be = LevelBlockEntityAccessing.getExistingBlockEntity(level, pos);
         if (be instanceof EssentiaReservoirBlockEntity reservoir) {
             var gooAndGasAmount = Math.min(reservoir.getGooAndGasAmountOnRemove(),50);
             if (gooAndGasAmount > 0){

@@ -1,16 +1,23 @@
 package thaumcraft.api.nodes;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.IWorldlyCentiVisContainerBlockEntity;
+import thaumcraft.common.lib.resourcelocations.NodeLockResourceLocation;
 
-public interface INodeBlockEntity extends IWorldlyCentiVisContainerBlockEntity<Aspect> {
+public interface INodeBlockEntity extends IWorldlyCentiVisContainerBlockEntity<Aspect>, INodeInfoProviderBlockEntity {
 
 	/**
 	 * Unique identifier to distinguish nodes. Normal node id's are based on world id and coordinates
 	 * @return
 	 */
-    String getId();
+    ResourceLocation getId();
 	
 	AspectList<Aspect> getAspectsBase();
 	
@@ -49,5 +56,25 @@ public interface INodeBlockEntity extends IWorldlyCentiVisContainerBlockEntity<A
 	 * @return
 	 */
     void setNodeVisBase(Aspect aspect, short nodeVisBase);
-	
+
+	@Nullable INodeLockBlock getCurrentNodeLock();
+
+	@NotNull BlockPos getNodeLockPos();
+
+	Level getLevel();
+
+	BlockPos getBlockPos();
+
+
+	void setRegenerationTickPeriod(int regenerationTickPeriod);
+	int getRegenerationTickPeriod();
+
+	void setChanged();
+	BlockState getBlockState();
+	NodeLockResourceLocation getLockId();
+	Aspect takeRandomPrimalFromSource();
+	int getTickCount();
+	void nodeChange();
+
+	void setWait(int wait);
 }

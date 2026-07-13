@@ -16,14 +16,14 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileAlchemyFurnaceAdvanced;
+import thaumcraft.common.tiles.junkbox.TileAlchemyFurnaceAdvanced;
 
 import static thaumcraft.client.renderers.tile.TileBlockInfoGetter.getBlockTypeSafely;
 
 @SideOnly(Side.CLIENT)
 public class TileAlchemyFurnaceAdvancedRenderer extends TileEntitySpecialRenderer {
    public static IModelCustom model = null;
-   public static final ResourceLocation FURNACE = new ResourceLocation("thaumcraft", "textures/models/adv_alch_furnace.obj");
+   public static final ResourceLocation FURNACE = new ResourceLocation("thaumcraft", "textures/models/adv_alch_furnace.left");
 
    public TileAlchemyFurnaceAdvancedRenderer() {
       if (model == null){

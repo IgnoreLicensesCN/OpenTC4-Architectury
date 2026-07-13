@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.essentia;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,6 +20,8 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.abstracts.AbstractExtendedMenuProviderContainerBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.essentiabe.AlchemicalFurnaceBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class AlchemicalFurnaceBlock extends AbstractExtendedMenuProviderContainerBlock {
     public static final DirectionProperty FACING = AbstractFurnaceBlock.FACING;
@@ -69,7 +72,7 @@ public class AlchemicalFurnaceBlock extends AbstractExtendedMenuProviderContaine
         if (
                 level != null
                 && blockState.getBlock() == this
-                        && blockEntityType == ThaumcraftBlockEntities.ALCHEMICAL_FURNACE
+                        && blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.ALCHEMICAL_FURNACE()
         ) {
             if ((!level.isClientSide)){
                 return (level1, blockPos, blockState2, blockEntity) ->{
@@ -116,6 +119,6 @@ public class AlchemicalFurnaceBlock extends AbstractExtendedMenuProviderContaine
 
     @Override
     public int getAnalogOutputSignal(BlockState arg, Level arg2, BlockPos arg3) {
-        return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(arg2.getBlockEntity(arg3));
+        return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(LevelBlockEntityAccessing.getExistingBlockEntity(arg2, arg3));
     }
 }

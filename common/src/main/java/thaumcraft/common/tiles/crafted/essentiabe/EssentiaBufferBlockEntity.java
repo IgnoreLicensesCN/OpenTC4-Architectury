@@ -13,8 +13,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.tile.TileThaumcraft;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.ArrayAspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectView;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
+import thaumcraft.common.tiles.TileThaumcraft;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.abstracts.IAdditionalSuctionProviderBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -77,7 +82,7 @@ public class EssentiaBufferBlockEntity
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaBufferBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ESSENTIA_BUFFER, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_BUFFER(), blockPos, blockState);
     }
 
     private int tickCount = System.identityHashCode(this) & 31;
@@ -121,8 +126,8 @@ public class EssentiaBufferBlockEntity
         lastFillIndex = 0;
     }
 
-    private final AspectList<Aspect> aspects = new AspectList<>();
-    private final AspectList<Aspect> aspectsView = new UnmodifiableAspectView<>(aspects);
+    private final AspectList<Aspect> aspects = new ArrayAspectList<>();
+    public final AspectList<Aspect> aspectsView = new UnmodifiableAspectView<>(aspects);
 
     @Override
     public @NotNull @UnmodifiableView AspectList<Aspect> getAspectsToDisplay() {
@@ -215,7 +220,7 @@ public class EssentiaBufferBlockEntity
         if (!canOutputTo(outputToDirection)) {
             return 0;
         }
-        int visRemaining = aspects.getAmount(aspect);
+        int visRemaining = aspects.get(aspect);
         if (visRemaining == 0) {
             return 0;
         }

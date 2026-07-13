@@ -1,0 +1,9 @@
+{
+  "_comment": "if considered affective,elemental hoe will call random tick for these blocks",
+  "replace": false,
+  "values": [
+    "minecraft:pumpkin_stem",
+    "minecraft:melon_stem",
+    "thaumcraft:mana_bean"
+  ]
+}

@@ -10,10 +10,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.tiles.TileArcaneWorkbench;
-import thaumcraft.common.tiles.TileDeconstructionTable;
-import thaumcraft.common.tiles.TileResearchTable;
-import thaumcraft.common.tiles.TileTable;
+import thaumcraft.common.tiles.junkbox.TileArcaneWorkbench;
+import thaumcraft.common.tiles.junkbox.TileDeconstructionTable;
+import thaumcraft.common.tiles.junkbox.TileResearchTable;
+import thaumcraft.common.tiles.junkbox.TileTable;
 
 public class BlockTableRenderer extends BlockRenderer implements ISimpleBlockRenderingHandler {
    TileResearchTable trt = new TileResearchTable();

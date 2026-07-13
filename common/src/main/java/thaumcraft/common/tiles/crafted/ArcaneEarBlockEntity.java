@@ -1,7 +1,7 @@
 package thaumcraft.common.tiles.crafted;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.ArcaneEarBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
@@ -48,7 +48,7 @@ public class ArcaneEarBlockEntity extends TileThaumcraft {
     }
 
     public ArcaneEarBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ARCANE_EAR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_EAR(), blockPos, blockState);
     }
 
     @Override

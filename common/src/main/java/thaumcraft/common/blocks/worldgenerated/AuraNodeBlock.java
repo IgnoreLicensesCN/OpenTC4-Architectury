@@ -1,8 +1,7 @@
 package thaumcraft.common.blocks.worldgenerated;
 
-import net.minecraft.client.multiplayer.ClientLevel;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
@@ -10,7 +9,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -26,16 +24,16 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.nodes.INodeBlock;
 import thaumcraft.client.lib.UtilsFXMigrated;
-import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
+import thaumcraft.common.blocks.abstracts.AbstractNodeBlock;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.node.NodeBlockEntity;
-import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
-public class AuraNodeBlock extends SuppressedWarningBlock implements EntityBlock, INodeBlock {
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+
+public class AuraNodeBlock extends AbstractNodeBlock {
     private static final VoxelShape SELECT_SHAPE =
             Block.box(0.3 * 16, 0.3 * 16, 0.3 * 16,
                     0.7 * 16, 0.7 * 16, 0.7 * 16);
@@ -70,28 +68,6 @@ public class AuraNodeBlock extends SuppressedWarningBlock implements EntityBlock
             UtilsFXMigrated.infusedStoneSparkle(level, blockPos.getX(),blockPos.getY(),blockPos.getZ(), 0);
         }
     }
-
-    @Override
-    public void onRemove(
-            BlockState state,
-            Level level,
-            BlockPos pos,
-            BlockState newState,
-            boolean isMoving
-    ) {
-        if (level instanceof ClientLevel clientLevel && state.getBlock() != newState.getBlock()) {
-            var x = pos.getX();
-            var y = pos.getY();
-            var z = pos.getZ();
-            // 粒子
-            ClientFXUtils.burst(clientLevel, (double)x + (double)0.5F, (double)y + (double)0.5F, (double)z + (double)0.5F, 1.0F);
-        }
-        if (level instanceof ServerLevel serverLevel && newState.isAir()) {
-            //TODO:wispEssences
-        }
-        super.onRemove(state, level, pos, newState, isMoving);
-    }
-
 
     @Override
     public @NotNull RenderShape getRenderShape(BlockState blockState) {
@@ -173,7 +149,7 @@ public class AuraNodeBlock extends SuppressedWarningBlock implements EntityBlock
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
-        var bEntity = level.getBlockEntity(blockPos);
+        var bEntity = LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos);
         if (bEntity instanceof NodeBlockEntity node){
             node.clientAnimateTickByBlockHandle();
         }
@@ -187,7 +163,7 @@ public class AuraNodeBlock extends SuppressedWarningBlock implements EntityBlock
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType != ThaumcraftBlockEntities.AURA_NODE){
+        if (blockEntityType != ThaumcraftBlockEntities.BlockEntityTypeInstances.AURA_NODE()){
             return null;
         }
         if (level.isClientSide){
@@ -198,11 +174,6 @@ public class AuraNodeBlock extends SuppressedWarningBlock implements EntityBlock
                 AbstractNodeBlockEntity.serverTick(abstractNodeBlockEntity);
             }
         };
-    }
-
-    @Override
-    public boolean preventAttackFromAnotherNode() {
-        return false;
     }
 
     @Override

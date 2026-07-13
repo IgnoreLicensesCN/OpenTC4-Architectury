@@ -34,7 +34,7 @@ public class ItemJarFilled /*extends Item implements IEssentiaContainerItem*/ {
 //         if (Thaumcraft.proxy.playerKnowledge.hasDiscoveredAspect(player.getCommandSenderName(), tag)) {
 //            list.add("§5" + tag.getName());
 //         } else {
-//            list.add("§5" + Component.translatable("tc.aspect.unknown"));
+//            list.add("§5" + Component.translatable("aspect.thaumcraft.unknown"));
 //         }
 //      }
 //
@@ -125,7 +125,7 @@ public class ItemJarFilled /*extends Item implements IEssentiaContainerItem*/ {
 //
 //   public AspectList<Aspect>getAspects(ItemStack itemstack) {
 //      if (itemstack.hasTagCompound()) {
-//         AspectList<Aspect>aspects = new AspectList<>();
+//         AspectList<Aspect>aspects = new LinkedTreeAspectList<>();
 //         aspects.readFromNBT(itemstack.getTagCompound());
 //         return aspects.size() > 0 ? aspects : null;
 //      } else {

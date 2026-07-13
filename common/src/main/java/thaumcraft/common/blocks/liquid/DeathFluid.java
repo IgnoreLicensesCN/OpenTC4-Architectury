@@ -15,9 +15,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.client.fx.migrated.particles.FXSlimyBubble;
-import thaumcraft.common.items.ThaumcraftItems;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 
-import static thaumcraft.common.blocks.ThaumcraftBlocks.DEATH_FLUID;
+import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.DEATH_FLUID;
 
 public class DeathFluid extends FiniteFlowingFluid {
 
@@ -29,7 +29,7 @@ public class DeathFluid extends FiniteFlowingFluid {
     }
 
     public @NotNull Item getBucket() {
-        return ThaumcraftItems.DEATH_FLUID_BUCKET;
+        return ThaumcraftItemInstances.DEATH_FLUID_BUCKET();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class DeathFluid extends FiniteFlowingFluid {
 
     @Override
     protected BlockState createLegacyBlock(FluidState fluidState) {
-        return DEATH_FLUID.defaultBlockState().setValue(liquidLevel, fluidState.getValue(liquidLevel));
+        return DEATH_FLUID().defaultBlockState().setValue(liquidLevel, fluidState.getValue(liquidLevel));
     }
 
     @Override

@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.container.ContainerSpa;
-import thaumcraft.common.tiles.TileSpa;
+import thaumcraft.common.tiles.junkbox.TileSpa;
 
 import java.util.ArrayList;
 import java.util.List;

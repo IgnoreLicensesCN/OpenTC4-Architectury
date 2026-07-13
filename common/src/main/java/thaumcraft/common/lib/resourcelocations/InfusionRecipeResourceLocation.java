@@ -3,8 +3,7 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.crafting.CrucibleRecipe;
-import thaumcraft.api.crafting.InfusionRecipe;
+import thaumcraft.api.crafting.infusion.InfusionRecipe;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,7 +40,7 @@ public class InfusionRecipeResourceLocation extends AbstractRecipeResourceLocati
     public static InfusionRecipeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> InfusionRecipeResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new InfusionRecipeResourceLocation(namespace,path));
     }
     public static InfusionRecipeResourceLocation of(String namespaceAndPath){
         if (namespaceAndPath.isEmpty()){

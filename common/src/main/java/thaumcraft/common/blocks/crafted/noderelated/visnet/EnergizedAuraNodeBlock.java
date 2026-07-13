@@ -31,7 +31,7 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.blocks.crafted.noderelated.NodeTransducerBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.visnet.EnergizedAuraNodeBlockEntity;
 
 import static thaumcraft.common.blocks.worldgenerated.AuraNodeBlock.NODE_SOUND;
 
@@ -211,9 +211,9 @@ public class EnergizedAuraNodeBlock extends SuppressedWarningBlock implements En
             if (world.getBlockState(pickPos)
                     .isAir()) {
                 if (pickPos.getY() < atPos.getY()) {
-                    world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.FLUX_GOO.defaultBlockState());
+                    world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO().defaultBlockState());
                 } else {
-                    world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.FLUX_GAS.defaultBlockState());
+                    world.setBlockAndUpdate(pickPos, ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GAS().defaultBlockState());
                 }
             }
         }
@@ -245,7 +245,7 @@ public class EnergizedAuraNodeBlock extends SuppressedWarningBlock implements En
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == ThaumcraftBlockEntities.ENERGIZED_NODE && blockState.getBlock() == this) {
+        if (blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.ENERGIZED_NODE() && blockState.getBlock() == this) {
             return ((level1, blockPos, blockState1, blockEntity) -> {
                 if (blockEntity instanceof EnergizedAuraNodeBlockEntity energizedNode) {
                     energizedNode.tick();

@@ -175,7 +175,7 @@ public class BlockManaPod /*extends Block */{
 //
 //           for (int k1 = 0; k1 < dropCount; ++k1) {
 //               ItemStack i = new ItemStack(ConfigItems.itemManaBean);
-//               ((ItemManaBean) i.getItem()).setAspects(i, (new AspectList<>()).addAll(aspect, 1));
+//               ((ItemManaBean) i.getItem()).setAspects(i, (new LinkedTreeAspectList<>()).addAll(aspect, 1));
 //               dropped.add(i);
 //           }
 //

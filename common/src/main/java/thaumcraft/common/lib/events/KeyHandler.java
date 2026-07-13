@@ -9,8 +9,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.Keys;
 import thaumcraft.common.entities.golems.ItemGolemBell;
-import thaumcraft.common.items.armor.Hover;
-import thaumcraft.common.items.armor.ItemHoverHarness;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.misc.PacketFocusChangeToServer;

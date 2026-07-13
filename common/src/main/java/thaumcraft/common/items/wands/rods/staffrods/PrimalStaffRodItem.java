@@ -1,5 +1,7 @@
 package thaumcraft.common.items.wands.rods.staffrods;
 
+import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -7,26 +9,33 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.wands.*;
-import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.component.ICraftingCostAspectOwnerComponentItem;
+import thaumcraft.common.items.abstracts.wandabstraction.component.IFocusUpgradeModifierComponentItem;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
+import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenStaffRodItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.getPrimalAspectCentiVisListWithValueCastedUnmodifiable;
 
-public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwnerComponent<Aspect>, IWandUpgradeModifier {
+public class PrimalStaffRodItem extends ThaumcraftAspectRegenStaffRodItem implements ICraftingCostAspectOwnerComponentItem<Aspect>, IFocusUpgradeModifierComponentItem {
     public PrimalStaffRodItem() {
         super(new Properties().rarity(Rarity.RARE), getPrimalAspectCentiVisListWithValueCastedUnmodifiable(25 * CENTIVIS_MULTIPLIER));
     }
 
-    private final CentiVisList<Aspect> capacity = getPrimalAspectCentiVisListWithValueCastedUnmodifiable(250 * CENTIVIS_MULTIPLIER);
+    private final CalcCacheableCentiVisList<Aspect> capacity =
+            new CalcCacheableCentiVisList<>(
+                    getPrimalAspectCentiVisListWithValueCastedUnmodifiable(250 * CENTIVIS_MULTIPLIER),
+                    true
+            );
     @Override
     @UnmodifiableView
-    public CentiVisList<Aspect> getCentiVisCapacity() {
+    public CalcCacheableCentiVisList<Aspect> getCentiVisCapacity() {
         return capacity;
     }
 
@@ -38,13 +47,13 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenWandRodItem impleme
     }
 
     @Override
-    public Map<FocusUpgradeType, Integer> modifyWandUpgrades(ItemStack componentStack,Map<FocusUpgradeType, Integer> wandUpgrades) {
-        wandUpgrades.merge(FocusUpgradeType.potency,1,Integer::sum);
+    public Object2IntMap<FocusUpgradeType> modifyWandUpgrades(ItemStack componentStack, Object2IntMap<FocusUpgradeType> wandUpgrades) {
+        wandUpgrades.merge(ThaumcraftFocusUpgradeTypes.POTENCY,1,Integer::sum);
         return wandUpgrades;
     }
 
     @Override
-    public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean bl) {
+    public void tickAsComponent(@NotNull ItemStack finalParentStack, @NotNull ItemStack usingWand, @NotNull ItemStack selfStack, Level level, Entity owner, int finalParentAtContainerIndex, boolean parentSelected) {
         var wandItem = usingWand.getItem();
         if (wandItem instanceof ICentiVisContainerItem<? extends Aspect> containerNotCasted){
             var container = (ICentiVisContainerItem<Aspect>)containerNotCasted;

@@ -1,5 +1,6 @@
 package thaumcraft.api.listeners.warp.listeners;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.api.listeners.warp.PickWarpEventContext;
 
@@ -23,7 +24,7 @@ public abstract class WarpEventListenerBefore implements Comparable<WarpEventLis
     /**
      * trigger after the event
      * @param e event triggered
-     * @param player victim
+     * @param living victim
      */
-    public abstract void onWarpEvent(@NotNull PickWarpEventContext warpContext, @NotNull WarpEvent e, @NotNull Player player);
+    public abstract void onWarpEvent(@NotNull PickWarpEventContext warpContext, @NotNull WarpEvent e, @NotNull LivingEntity living);
 }

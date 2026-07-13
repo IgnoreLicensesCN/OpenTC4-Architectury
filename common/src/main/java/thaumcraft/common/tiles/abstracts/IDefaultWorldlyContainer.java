@@ -21,7 +21,7 @@ public interface IDefaultWorldlyContainer extends WorldlyContainer {
 
     @Override
     default boolean canPlaceItemThroughFace(int i, ItemStack itemStack, @Nullable Direction direction) {
-        return true;
+        return canPlaceItem(i, itemStack);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -9,13 +10,19 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
+import thaumcraft.api.aspects.essentiabe.IEssentiaForceOutBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceNozzleBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+
 public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
     implements
-        IAspectOutBlockEntity<Aspect>,
+        IEssentiaForceOutBlockEntity<Aspect>,
         IEssentiaTransportOutBlockEntity,
         IValueContainerBasedComparatorSignalProviderBlockEntity {
 
@@ -23,7 +30,7 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
         super(type, pos, state);
     }
     public AdvancedAlchemicalFurnaceNozzleBlockEntity(BlockPos pos, BlockState state) {
-        this(ThaumcraftBlockEntities.ADVANCED_ALCHEMICAL_FURNACE_NOZZLE,pos,state);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ADVANCED_ALCHEMICAL_FURNACE_NOZZLE(),pos,state);
     }
     public Direction getFacing() {
         return this.getBlockState().getValue(AdvancedAlchemicalFurnaceNozzleBlock.FACING);
@@ -39,7 +46,7 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
         if (checkedBaseBEAtGameTime != currentGT) {
             checkedBaseBEAtGameTime = currentGT;
             baseBECurrentTick = null;
-            if ((this.level.getBlockEntity(getBlockPos().relative(getFacing().getOpposite()))
+            if ((LevelBlockEntityAccessing.getExistingBlockEntity(this.level, getBlockPos().relative(getFacing().getOpposite()))
                     instanceof AdvancedAlchemicalFurnaceBlockEntity furnace)){
                 baseBECurrentTick = furnace;
             }
@@ -62,7 +69,7 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
         if (base == null) {
             return false;
         }
-        if (base.aspects.getAmount(aspect) >= amount) {
+        if (base.aspects.get(aspect) >= amount) {
             base.aspects.reduceAndRemoveIfNotPositive(aspect, amount);
             base.markDirtyAndUpdateSelf();
             return true;
@@ -145,6 +152,6 @@ public class AdvancedAlchemicalFurnaceNozzleBlockEntity extends TileThaumcraft
         if (type.isEmpty()) {
             return 0;
         }
-        return base.aspectsView.getAmount(getEssentiaType(face));
+        return base.aspectsView.get(getEssentiaType(face));
     }
 }

@@ -5,7 +5,6 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Range;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.interfaces.IResearchParentsOwner;
-import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.List;
@@ -16,24 +15,17 @@ public abstract class ResearchNoteUnlockedResearchWithParents
     List<ResearchItemResourceLocation> parents;
     public ResearchNoteUnlockedResearchWithParents(
             ResearchItemResourceLocation key,
-            ResearchCategoryResourceLocation category,
             @Range(from = 1, to = 3) int complexity,
             List<ResearchItemResourceLocation> parents
             ) {
-        super(key, category, complexity);
+        super(key, complexity);
         this.parents = parents;
-    }
-
-    @Override
-    public boolean canPlayerCreateResearchNote(Player player) {
-        return researchedAllParents(player);
     }
 
     @Override
     public List<ResearchItemResourceLocation> getParents() {
         return parents;
     }
-
 
     @Override
     public boolean canPlayerResearch(Player player) {
@@ -47,7 +39,7 @@ public abstract class ResearchNoteUnlockedResearchWithParents
                 OpenTC4.LOGGER.error("Research not found: {}",researchKey);
                 return false;
             }
-            if (!researchParent.isPlayerCompletedResearch(player)) {
+            if (!researchParent.isLivingEntityCompletedResearch(player)) {
                 return false;
             }
         }

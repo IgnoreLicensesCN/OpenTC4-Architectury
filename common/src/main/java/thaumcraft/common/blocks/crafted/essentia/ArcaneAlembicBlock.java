@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.essentia;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,19 +27,21 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IAspectContainerItem;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.api.aspects.IEssentiaContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.blocks.abstracts.IAspectContainerItemFillerBlock;
+import thaumcraft.common.blocks.abstracts.IEssentiaContainerItemFillerBlock;
 import thaumcraft.common.blocks.abstracts.IAspectLabelAttachableBlock;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.essentiabe.ArcaneAlembicBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class ArcaneAlembicBlock extends SuppressedWarningBlock
         implements EntityBlock,
         IWandInteractableBlockOrBlockEntity,
         IAspectLabelAttachableBlock,
-        IAspectContainerItemFillerBlock<Aspect>
+        IEssentiaContainerItemFillerBlock<Aspect>
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public ArcaneAlembicBlock(Properties properties) {
@@ -73,7 +76,7 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide){
-            if (level.getBlockEntity(blockPos) instanceof ArcaneAlembicBlockEntity alembic && !player.isCrouching() && player.getItemInHand(interactionHand).isEmpty()) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ArcaneAlembicBlockEntity alembic && !player.isCrouching() && player.getItemInHand(interactionHand).isEmpty()) {
                 var stackInHand = player.getItemInHand(interactionHand);
                 if (!player.isCrouching()) {
                     if (stackInHand.isEmpty()) {
@@ -124,29 +127,29 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
     }
 
     @Override
-    public boolean canFillAspectContainerItem(
+    public boolean canFillEssentiaContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             @NotNull Aspect aspect) {
-        if (level.getBlockEntity(blockPos) instanceof ArcaneAlembicBlockEntity alembic) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ArcaneAlembicBlockEntity alembic) {
             return alembic.canFillAspectContainerItem(stackToFill, itemToFill, aspect);
         }
         return false;
     }
 
     @Override
-    public boolean fillAspectContainerItem(
+    public boolean fillEssentiaContainerItem(
             Level level,
             BlockPos blockPos,
             BlockState blockState,
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             int minAmount
     ) {
-        if (level.getBlockEntity(blockPos) instanceof ArcaneAlembicBlockEntity alembic) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ArcaneAlembicBlockEntity alembic) {
             return alembic.fillAspectContainerItem(stackToFill, itemToFill,minAmount);
         }
         return false;

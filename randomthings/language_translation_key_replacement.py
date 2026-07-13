@@ -1,7 +1,7 @@
 import json
 import os
 from pathlib import Path
-
+import typing
 block_with_item_names = [
     ['tile.blockWoodenDevice.0.name', ['arcane_bellow']],
     ['tile.blockWoodenDevice.6.name', ['greatwood_planks']],
@@ -81,7 +81,162 @@ block_with_item_names = [
     ['tile.blockLootUrn.name','urn_loot'],
     ['tile.blockLootCrate.name','crate_loot'],
     ['tile.blockMirror.0.name','mirror'],
-    ['tile.blockMirror.6.name','essentia_mirror']
+    ['tile.blockMirror.6.name','essentia_mirror'],
+    ['tile.blockStoneDevice.1.name','arcane_pedestal'],
+    ['tile.blockStoneDevice.3.name','infusion_pillar'],
+    ['tile.blockStoneDevice.4.name','infusion_pillar'],
+    ['tile.blockStoneDevice.6.name','infusion_pillar'],
+    ['tile.blockStoneDevice.7.name','infusion_pillar'],
+    ['tile.blockStoneDevice.2.name','infusion_matrix'],
+    ['tile.blockStoneDevice.5.name','wand_recharge_pedestal'],
+    ['tile.blockStoneDevice.8.name','compound_recharge_focus'],
+    ['tile.blockStoneDevice.12.name','arcane_spa'],
+    ['tile.blockStoneDevice.13.name','focal_manipulator'],
+    ['tile.blockStoneDevice.14.name','flux_scrubber'],
+    ['item.ItemPrimalCrusher.name','primal_crusher'],
+    ['item.ItemSwordVoid.name','void_sword'],
+    ['item.ItemShovelVoid.name','void_shovel'],
+    ['item.ItemPickVoid.name','void_pickaxe'],
+    ['item.ItemAxeVoid.name','void_axe'],
+    ['item.ItemHoeVoid.name','void_hoe'],
+    ['item.ItemSwordThaumium.name','thaumium_sword'],
+    ['item.ItemShovelThaumium.name','thaumium_shovel'],
+    ['item.ItemPickThaumium.name','thaumium_pickaxe'],
+    ['item.ItemAxeThaumium.name','thaumium_axe'],
+    ['item.ItemHoeThaumium.name','thaumium_hoe'],
+    ['item.ItemHoeThaumium.name','thaumium_hoe'],
+    ['item.ItemHelmetVoid.name','void_helmet'],
+    ['item.ItemChestplateVoid.name','void_chestplate'],
+    ['item.ItemLeggingsVoid.name','void_leggings'],
+    ['item.ItemBootsVoid.name','void_boots'],
+    ['item.ItemHelmetThaumium.name','thaumium_helmet'],
+    ['item.ItemChestplateThaumium.name','thaumium_chestplate'],
+    ['item.ItemLeggingsThaumium.name','thaumium_leggings'],
+    ['item.ItemBootsThaumium.name','thaumium_boots'],
+    ['item.ItemBucketDeath.name','death_fluid_bucket'],
+    ['item.ItemBucketPure.name','pure_fluid_bucket'],
+    ['item.ItemBathSalts.name','bath_salts'],
+    ['item.ItemNugget.5.name','quicksilver_drop'],
+    ['item.ItemNugget.6.name','thaumium_nugget'],
+    ['item.ItemNugget.7.name','void_nugget'],
+    ['item.ItemNugget.1.name','copper_nugget'],
+    ['tile.blockFluxGas.name','flux_gas'],
+    ['tile.blockFluxGoo.name','flux_goo'],
+    ['tile.blockFluidPure.name','pure_fluid'],
+    ['tile.blockMirror.name','mirror'],
+    ['tile.blockPortalEldritch.name','eldritch_portal'],
+    ['item.ItemShovelElemental.name','elemental_shovel'],
+    ['item.ItemPickaxeElemental.name','elemental_pickaxe'],
+    ['item.ItemSwordElemental.name','elemental_sword'],
+    ['item.ItemAxeElemental.name','elemental_axe'],
+    ['item.ItemHoeElemental.name','elemental_hoe'],
+    ['item.ItemBowBone.name','bone_bow'],
+    ['item.ItemSwordCrimson.name','crimson_sword'],
+    ['item.ItemPrimalArrow.0.name','air_arrow'],
+    ['item.ItemPrimalArrow.1.name','fire_arrow'],
+    ['item.ItemPrimalArrow.2.name','water_arrow'],
+    ['item.ItemPrimalArrow.3.name','earth_arrow'],
+    ['item.ItemPrimalArrow.4.name','order_arrow'],
+    ['item.ItemPrimalArrow.5.name','entropy_arrow'],
+    ['item.ItemChestplateRobe.name','robe_chestplate'],
+    ['item.ItemBootsRobe.name','robe_boots'],
+    ['item.ItemLeggingsRobe.name','robe_leggings'],
+    ['item.HoverHarness.name','thaumostatic_harness'],
+    ['item.BootsTraveller.name','traveller_boots'],
+    ['item.ItemBootsCultist.name','cultist_boots'],
+    ['item.ItemChestplateCultistPlate.name','cultist_plate_chestplate'],
+    ['item.ItemLeggingsCultistPlate.name','cultist_plate_leggings'],
+    ['item.ItemHelmetCultistPlate.name','cultist_plate_helmet'],
+    ['item.ItemChestplateCultistRobe.name','cultist_robe_chestplate'],
+    ['item.ItemLeggingsCultistRobe.name','cultist_robe_leggings'],
+    ['item.ItemHelmetCultistRobe.name','cultist_robe_helmet'],
+    ['item.ItemChestplateCultistLeaderPlate.name','cultist_leader_plate_chestplate'],
+    ['item.ItemLeggingsCultistLeaderPlate.name','cultist_leader_plate_leggings'],
+    ['item.ItemHelmetCultistLeaderPlate.name','cultist_leader_plate_helmet'],
+    ['item.ItemLeggingsVoidRobe.name','void_robe_leggings'],
+    ['item.ItemChestplateVoidRobe.name','void_robe_chestplate'],
+    ['item.ItemHelmetVoidRobe.name','void_robe_helmet'],
+
+    ['item.ItemHelmetFortress.name','thaumium_fortress_helmet'],
+    ['item.ItemChestplateFortress.name','thaumium_fortress_chestplate'],
+    ['item.ItemLeggingsFortress.name','thaumium_fortress_leggings'],
+
+    ['item.HelmetFortress.mask.0','grinning_devil_mask'],
+    ['item.HelmetFortress.mask.1','angry_ghost_mask'],
+    ['item.HelmetFortress.mask.2','sipping_fiend_mask'],
+    ['item.HelmetFortress.mask.2','sipping_fiend_mask'],
+    ['item.ItemEssence.1.name','essentia_phial'],
+    ['item.ItemCompassStone.name','compass_stone'],
+
+    ['item.ItemNuggetChicken.name','chicken_nugget'],
+    ['item.ItemNuggetBeef.name','beef_nugget'],
+    ['item.ItemNuggetPork.name','pork_nugget'],
+    ['item.ItemNuggetFish.name','cod_nugget'],
+    ['item.TripleMeatTreat.name','triple_meat'],
+    ['item.HandMirror.name','hand_mirror'],
+    ['item.ItemNugget.16.name','iron_cluster'],
+    ['item.ItemNugget.17.name','copper_cluster'],
+    ['item.ItemNugget.18.name','tin_cluster'],
+    ['item.ItemNugget.19.name','silver_cluster'],
+    ['item.ItemNugget.20.name','lead_cluster'],
+    ['item.ItemNugget.21.name','cinnabar_cluster'],
+    ['item.ItemNugget.31.name','gold_cluster'],
+    ['tile.blockCosmeticSolid.9.name','golem_fetter'],
+    ['tile.blockCosmeticSolid.13.name','ancient_stone'],
+    ['item.ItemSanityChecker.name','sanity_checker'],
+    ['item.ItemSanitySoap.name','sanity_soap'],
+    ['item.ArcaneDoorKey.0.name','iron_key'],
+    ['item.ArcaneDoorKey.1.name','gold_key'],
+
+    ['item.ItemAmuletVis.0.name','vis_amulet'],
+    ['item.ItemAmuletVis.1.name','reinforced_vis_amulet'],
+
+    ['item.ItemBaubleBlanks.0.name',"mundane_amulet"],
+    ['item.ItemBaubleBlanks.1.name',"mundane_ring"],
+    ['item.ItemBaubleBlanks.2.name',"mundane_belt"],
+    ['item.ItemBaubleBlanks.3.name',[
+        ["air_apprentices_ring",["%TYPE","Aer"]],
+        ["water_apprentices_ring",["%TYPE","Aqua"]],
+        ["fire_apprentices_ring",["%TYPE","Ignis"]],
+        ["earth_apprentices_ring",["%TYPE","Terra"]],
+        ["order_apprentices_ring",["%TYPE","Ordo"]],
+        ["entropy_apprentices_ring",["%TYPE","Perditio"]]
+    ]],
+
+    ['item.ItemRingRunic.0.name','protection_ring'],
+    ['item.ItemRingRunic.1.name','runic_shield_ring'],
+    ['item.ItemRingRunic.2.name','charged_runic_shield_ring'],
+    ['item.ItemRingRunic.3.name','revitalizing_runic_shield_ring'],
+
+    ['item.ItemLootBag.0.name','common_loot_bag'],
+    ['item.ItemLootBag.1.name','uncommon_loot_bag'],
+    ['item.ItemLootBag.2.name','rare_loot_bag'],
+
+    ['item.ItemGirdleHover.name','hover_girdle'],
+    
+    ['item.ItemAmuletRunic.0.name','runic_amulet'],
+    ['item.ItemAmuletRunic.1.name','emergency_runic_amulet'],
+
+    ['item.ItemGirdleRunic.0.name','runic_girdle'],
+    ['item.ItemGirdleRunic.1.name','kinetic_runic_girdle'],
+    ['item.FocusPouch.name','focus_pouch'],
+
+    ['item.ItemResonator.name','essentia_resonator'],
+    ['item.ItemBottleTaint.name','taint_bottle'],
+    ['item.FocusExcavation.name','excavation_focus'],
+    ['item.FocusFire.name','fire_focus'],
+    ['item.FocusShock.name','shock_focus'],
+    ['item.FocusFrost.name','frost_focus'],
+    ['item.FocusHellbat.name','hell_bat_focus'],
+    ['item.FocusPech.name','pech_focus'],
+    ['item.FocusPortableHole.name','portable_hole_focus'],
+    ['item.FocusPrimal.name','primal_focus'],
+
+    # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
+    # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
+    # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],
+    # ['tc.research_name.RUNICHEALING',['tc.research_name.RUNICHEALING','runic_shield.thaumcraft.runic_healing']],
+    # ['tc.research_name.RUNICKINETIC',['tc.research_name.RUNICKINETIC','runic_shield.thaumcraft.runic_kinetic']],
 ]
 
 force_add_keys = {
@@ -91,6 +246,39 @@ force_add_keys = {
 }
 
 language_file_folder = Path('../common/src/main/resources/assets/thaumcraft/lang')
+
+ruleset:list[typing.Callable[[str], bool]]= [
+    lambda s: s.startswith("mundane_"),
+    lambda s: s.endswith("_arrow"),
+    lambda s: s.endswith("_apprentices_ring"),
+    lambda s: s.endswith("_candle"),
+    lambda s: s.endswith("_girdle"),
+    lambda s: s.endswith("_amulet"),
+    lambda s: s.endswith("_ring"),
+    lambda s: s.endswith("_focus") and (len(s.split("_")) == 2 or s == 'hell_bat_focus'),
+    lambda s: s.endswith("_wand_cap"),
+    lambda s: s.endswith("_wand_rod"),
+    lambda s: s.endswith("_staff_rod"),
+]
+
+def special_key_sort_weight(parts:list[str]):
+    counter = 0
+    for checker in ruleset:
+        counter += 1
+        if checker(parts[-1]):
+            return counter
+    return 0
+
+def key_sorter(key_string):
+    parts = key_string.split('.')
+
+    part_count = len(parts)
+    partsCopy = parts.copy()
+    for i in range(len(partsCopy)):
+        if partsCopy[i].isdigit():
+            partsCopy[i] = "%04d" % int(partsCopy[i])
+
+    return (parts[0],part_count, parts[1],special_key_sort_weight(parts),partsCopy)
 
 for fileName in os.listdir(language_file_folder):
     if fileName.endswith('.json'):
@@ -118,13 +306,26 @@ for fileName in os.listdir(language_file_folder):
                 # if key is not None:
                 language_dict.pop(key)
                 for remappedKeyItem in remappedKey:
-                    language_dict[f'block.thaumcraft.{remappedKeyItem}'] = value
-                    language_dict[f'item.thaumcraft.{remappedKeyItem}'] = value
+                    if (isinstance(remappedKeyItem,list)
+                        and len(remappedKeyItem) == 2
+                        and isinstance(remappedKeyItem[0],str)
+                        and isinstance(remappedKeyItem[1],list)
+                        and len(remappedKeyItem[1]) == 2
+                        and isinstance(remappedKeyItem[1][0],str)
+                        and isinstance(remappedKeyItem[1][1],str)
+                        ):
+                        replacedValue = value.replace(remappedKeyItem[1][0], remappedKeyItem[1][1])
+                        language_dict[f'block.thaumcraft.{remappedKeyItem[0]}'] = replacedValue
+                        language_dict[f'item.thaumcraft.{remappedKeyItem[0]}'] = replacedValue
+                    else:
+                        language_dict[f'block.thaumcraft.{remappedKeyItem}'] = value
+                        language_dict[f'item.thaumcraft.{remappedKeyItem}'] = value
             else:
                 raise Exception(str(block_with_item_name_pair))
-        language_dict = dict(sorted(language_dict.items()))
+        sorted_keys = (sorted(list(language_dict.keys()), key=key_sorter))
+        language_dict_final = {k: language_dict[k] for k in sorted_keys}
         with open(language_file_path, mode='w', encoding='utf-8') as f2write:
-            json.dump(language_dict, f2write, indent=2, ensure_ascii=False)
+            json.dump(language_dict_final, f2write, indent=2, ensure_ascii=False)
 
             # replace_pattern = ''
             # if isinstance(block_with_item_name_pair[1],list):

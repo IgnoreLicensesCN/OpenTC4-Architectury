@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchAltarBlock;
 import thaumcraft.common.entities.monster.EntityCultist;
 import thaumcraft.common.entities.monster.EntityCultistCleric;
@@ -20,10 +20,10 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
         super(blockEntityType, blockPos, blockState);
     }
     public EldritchAltarBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ELDRITCH_ALTAR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ELDRITCH_ALTAR(), blockPos, blockState);
     }
 
-    public int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
 
     public void serverTick() {
         if (this.level == null || this.level.isClientSide) {
@@ -51,7 +51,6 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
                 }
             }
         }
-        //TODO
     }
 
     private void spawnClerics() {
@@ -102,7 +101,7 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
         if (success > 2) {
             BlockState state = serverLevel.getBlockState(this.getBlockPos());
             state.setValue(EldritchAltarBlock.SPAWNED_CLERICS,true);
-            serverLevel.setBlock(this.getBlockPos(),state,3);
+            serverLevel.setBlockAndUpdate(this.getBlockPos(),state);
         }
 
     }

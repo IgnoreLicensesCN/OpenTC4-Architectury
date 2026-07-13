@@ -13,7 +13,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 
@@ -65,7 +64,7 @@ public class FibrousTaintBlock extends AbstractTaintFibreBlock{
     @Override
     public void randomTick(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
         if (Platform.getEnvironment() != Env.CLIENT) {
-            BiomeUtils.taintBiomeSpread(world, blockPos, random, this);
+            BiomeUtils.taintBiomeSpread(world, blockPos, random);
             if (isOnlyAdjacentToTaint(world, blockPos) || !world.getBiome(blockPos).is(ThaumcraftBiomeIDs.TAINT_KEY)) {
                 world.setBlock(blockPos, Blocks.AIR.defaultBlockState(),3);
                 return;

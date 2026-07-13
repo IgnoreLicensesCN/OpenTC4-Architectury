@@ -8,6 +8,53 @@
     "thaumcraft:void_helmet",
     "thaumcraft:void_chestplate",
     "thaumcraft:void_leggings",
-    "thaumcraft:void_boots"
+    "thaumcraft:void_boots",
+    "thaumcraft:robe_helmet",
+    "thaumcraft:robe_chestplate",
+    "thaumcraft:robe_leggings",
+    "thaumcraft:robe_boots",
+
+    "thaumcraft:thaumium_fortress_helmet",
+    "thaumcraft:thaumium_fortress_chestplate",
+    "thaumcraft:thaumium_fortress_leggings",
+
+    "thaumcraft:goggles_of_revealing",
+    "thaumcraft:thaumostatic_harness",
+    "thaumcraft:traveller_boots",
+
+    "thaumcraft:cultist_boots",
+    "thaumcraft:cultist_plate_chestplate",
+    "thaumcraft:cultist_plate_helmet",
+    "thaumcraft:cultist_plate_leggings",
+    "thaumcraft:cultist_leader_plate_chestplate",
+    "thaumcraft:cultist_leader_plate_helmet",
+    "thaumcraft:cultist_leader_plate_leggings",
+    "thaumcraft:cultist_robe_chestplate",
+    "thaumcraft:cultist_robe_helmet",
+    "thaumcraft:cultist_robe_leggings",
+    "thaumcraft:void_robe_leggings",
+    "thaumcraft:void_robe_chestplate",
+    "thaumcraft:void_robe_helmet",
+
+    "thaumcraft:thaumium_sword",
+    "thaumcraft:thaumium_shovel",
+    "thaumcraft:thaumium_pickaxe",
+    "thaumcraft:thaumium_hoe",
+    "thaumcraft:thaumium_axe",
+    "thaumcraft:void_sword",
+    "thaumcraft:void_shovel",
+    "thaumcraft:void_pickaxe",
+    "thaumcraft:void_hoe",
+    "thaumcraft:void_axe",
+
+    "thaumcraft:primal_crusher",
+    "thaumcraft:crimson_sword",
+    "thaumcraft:bone_bow",
+
+    "thaumcraft:elemental_shovel",
+    "thaumcraft:elemental_pickaxe",
+    "thaumcraft:elemental_sword",
+    "thaumcraft:elemental_hoe",
+    "thaumcraft:elemental_axe"
   ]
 }

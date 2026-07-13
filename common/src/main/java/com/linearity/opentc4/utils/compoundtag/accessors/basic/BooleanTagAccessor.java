@@ -1,5 +1,6 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.basic;
 
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 
@@ -21,7 +22,7 @@ public class BooleanTagAccessor extends CompoundTagAccessor<Boolean> {
     public void writeToCompoundTag(CompoundTag tag, Boolean value) {
         tag.putBoolean(tagKey, value);
     }
-    public boolean readByteFromCompoundTag(CompoundTag tag) {
+    public boolean readBooleanFromCompoundTag(CompoundTag tag) {
         return tag.getBoolean(tagKey);
     }
     public void writeBooleanToCompoundTag(CompoundTag tag, boolean value) {

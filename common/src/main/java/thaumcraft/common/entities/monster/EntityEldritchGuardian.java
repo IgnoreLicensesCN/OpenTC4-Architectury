@@ -17,7 +17,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.damagesource.DamageSource;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.Difficulty;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.Thaumcraft;
@@ -26,8 +26,8 @@ import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.entities.ai.combat.AIAttackOnCollide;
 import thaumcraft.common.entities.ai.combat.AILongRangeAttack;
 import thaumcraft.common.entities.projectile.EntityEldritchOrb;
-import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.items.misc.ItemWispEssence;
+import thaumcraft.common.items.ThaumcraftItemInstances;
+import thaumcraft.common.items.junkbox.ItemWispEssence;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXSonic;
 import thaumcraft.common.lib.network.misc.PacketMiscEvent;
@@ -152,15 +152,15 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
    protected void dropFewItems(boolean flag, int i) {
       if (this.rand.nextBoolean()) {
          ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
-         new AspectList<>();
-         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList<>()).addAll(Aspects.UNDEAD, 2));
+         new LinkedHashAspectList<>();
+         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new LinkedHashAspectList<>()).addAll(Aspects.UNDEAD, 2));
          this.entityDropItem(ess, 1.0F);
       }
 
       if (this.rand.nextBoolean()) {
          ItemStack ess = new ItemStack(ConfigItems.itemWispEssence);
-         new AspectList<>();
-         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new AspectList<>()).addAll(Aspects.ELDRITCH, 2));
+         new LinkedHashAspectList<>();
+         ((ItemWispEssence)ess.getItem()).setAspects(ess, (new LinkedHashAspectList<>()).addAll(Aspects.ELDRITCH, 2));
          this.entityDropItem(ess, 1.0F);
       }
 
@@ -172,7 +172,7 @@ public class EntityEldritchGuardian extends EntityMob implements IRangedAttackMo
    }
 
    protected void dropRareDrop(int p_70600_1_) {
-      this.dropItem(ThaumcraftItems.ELDRITCH_EYE);
+      this.dropItem(ThaumcraftItemInstances.ELDRITCH_EYE());
    }
 
    public void writeEntityToNBT(NBTTagCompound p_70014_1_) {

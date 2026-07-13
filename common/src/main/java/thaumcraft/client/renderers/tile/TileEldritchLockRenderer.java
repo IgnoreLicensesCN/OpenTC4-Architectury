@@ -16,8 +16,8 @@ import net.minecraft.core.Direction;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelCube;
-import thaumcraft.common.items.ThaumcraftItems;
-import thaumcraft.common.tiles.TileEldritchLock;
+import thaumcraft.common.items.ThaumcraftItemInstances;
+import thaumcraft.common.tiles.junkbox.TileEldritchLock;
 
 import java.nio.FloatBuffer;
 import java.util.Random;
@@ -38,7 +38,7 @@ public class TileEldritchLockRenderer extends TileEntitySpecialRenderer {
       double var10004 = te.zCoord;
       this.inrange = Minecraft.getMinecraft().renderViewEntity.getDistanceSq(var10002, var10003, var10004 + (double)0.5F) < (double)512.0F;
       if (this.is == null) {
-         this.is = new ItemStack(ThaumcraftItems.RUNED_TABLET);
+         this.is = new ItemStack(ThaumcraftItemInstances.RUNED_TABLET());
       }
 
       float bob = 0.0F;

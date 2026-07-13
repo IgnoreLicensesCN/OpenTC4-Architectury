@@ -2,15 +2,14 @@ package thaumcraft.common.lib.effects;
 
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.entity.EntityTypeTest;
-import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.effects.PreventMilkRemoveEffect;
+import thaumcraft.api.effects.IPreventMilkRemoveEffect;
 
 import java.util.List;
 
-public class InfectiousVisExhaustEffect extends VisExhaustEffect implements PreventMilkRemoveEffect {
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.LIVING_TEST;
+
+public class InfectiousVisExhaustEffect extends VisExhaustEffect implements IPreventMilkRemoveEffect {
     public InfectiousVisExhaustEffect() {
         super(MobEffectCategory.HARMFUL,0x665577);
     }
@@ -19,13 +18,13 @@ public class InfectiousVisExhaustEffect extends VisExhaustEffect implements Prev
     public void applyEffectTick(LivingEntity target, int amplifier) {
         var box = target.getBoundingBox().inflate(4.f);
         List<LivingEntity> targets = target.level().getEntities(
-                EntityTypeTest.forClass(LivingEntity.class),
+                LIVING_TEST,
                 box,livingEntity -> !livingEntity.hasEffect(this));
         for(LivingEntity e : targets) {
             if (amplifier > 0) {
                 e.addEffect(new MobEffectInstance(this, 6000, amplifier - 1, false,true));
             } else {
-                e.addEffect(new MobEffectInstance(ThaumcraftEffects.VIS_EXHAUST, 6000, 0, false,true));
+                e.addEffect(new MobEffectInstance(ThaumcraftEffects.ThaumcraftEffectTypeInstances.VIS_EXHAUST(), 6000, 0, false,true));
             }
         }
     }

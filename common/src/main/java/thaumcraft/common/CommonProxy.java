@@ -29,7 +29,7 @@ import tc4tweak.network.MessageSendConfiguration;
 import tc4tweak.network.MessageSendConfigurationV2;
 import tc4tweak.network.NetworkedConfiguration;
 import tc4tweak.network.TileHoleSyncPacket;
-import thaumcraft.api.research.ResearchCategory;
+import thaumcraft.api.research.client.ResearchCategory;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.container.*;
 import thaumcraft.common.entities.ContainerPech;
@@ -39,7 +39,7 @@ import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.golems.EntityTravelingTrunk;
 import thaumcraft.common.entities.monster.EntityPech;
 import thaumcraft.common.entities.projectile.EntityPrimalArrow;
-import thaumcraft.common.tiles.*;
+import thaumcraft.common.tiles.junkbox.*;
 
 public class CommonProxy implements IGuiHandler {
 //   public PlayerKnowledge playerKnowledge;

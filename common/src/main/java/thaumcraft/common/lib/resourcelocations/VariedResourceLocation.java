@@ -3,8 +3,9 @@ package thaumcraft.common.lib.resourcelocations;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
+//LocationReferredType and ResourceLocationType just for copy and paste
 public abstract class VariedResourceLocation<
-        LocationReferredType,
+        LocationReferredType,//this is purly documented for usage
         ResourceLocationType extends VariedResourceLocation<LocationReferredType, ResourceLocationType>
         > extends ResourceLocation {
 

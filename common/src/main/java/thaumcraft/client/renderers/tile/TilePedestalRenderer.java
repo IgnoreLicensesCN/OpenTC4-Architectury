@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import org.lwjgl.opengl.GL11;
-import thaumcraft.common.tiles.TilePedestal;
+import thaumcraft.common.tiles.junkbox.TilePedestal;
 
 @SideOnly(Side.CLIENT)
 public class TilePedestalRenderer extends TileEntitySpecialRenderer {

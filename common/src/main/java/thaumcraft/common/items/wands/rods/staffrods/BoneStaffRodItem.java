@@ -1,25 +1,29 @@
 package thaumcraft.common.items.wands.rods.staffrods;
 
+import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.wands.ICraftingCostAspectOwnerComponent;
-import thaumcraft.api.wands.WorkAsStaffRod;
-import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenWandRodItem;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
+import thaumcraft.common.items.abstracts.wandabstraction.component.ICraftingCostAspectOwnerComponentItem;
+import thaumcraft.common.items.wands.componentbase.ThaumcraftAspectRegenStaffRodItem;
 
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
 import static thaumcraft.api.wands.WandUtils.*;
 
-public class BoneStaffRodItem extends ThaumcraftAspectRegenWandRodItem implements WorkAsStaffRod, ICraftingCostAspectOwnerComponent<Aspect> {
+public class BoneStaffRodItem extends ThaumcraftAspectRegenStaffRodItem implements ICraftingCostAspectOwnerComponentItem<Aspect> {
     public BoneStaffRodItem() {
-        super(new Properties(), getAspectsCentiVisListWithValue(Aspects.ENTROPY,17 * CENTIVIS_MULTIPLIER));
+        super(new Properties(), UnmodifiableCentiVisList.of(Aspects.ENTROPY,17 * CENTIVIS_MULTIPLIER));
     }
 
-    private final CentiVisList<Aspect> capacity = (getPrimalAspectCentiVisListWithValueCastedUnmodifiable(175 * CENTIVIS_MULTIPLIER));
+    private final CalcCacheableCentiVisList<Aspect> capacity = new CalcCacheableCentiVisList<>(
+            getPrimalAspectCentiVisListWithValueCastedUnmodifiable(175 * CENTIVIS_MULTIPLIER),
+            true
+    );
     @Override
     @Unmodifiable
-    public CentiVisList<Aspect> getCentiVisCapacity() {
+    public CalcCacheableCentiVisList<Aspect> getCentiVisCapacity() {
         return capacity;
     }
     private final CentiVisList<Aspect> cost = (getPrimalAspectCentiVisListWithValueCastedUnmodifiable(14 * CENTIVIS_MULTIPLIER));

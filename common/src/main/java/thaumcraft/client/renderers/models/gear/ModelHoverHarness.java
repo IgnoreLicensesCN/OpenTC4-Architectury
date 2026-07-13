@@ -15,7 +15,6 @@ import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.items.armor.ItemHoverHarness;
 import thaumcraft.common.lib.utils.BlockUtils;
 
 import java.util.HashMap;
@@ -23,7 +22,7 @@ import java.util.HashMap;
 @SideOnly(Side.CLIENT)
 public class ModelHoverHarness extends ModelBiped {
    HashMap<Integer,Long> timingShock = new HashMap<>();
-   private static final ResourceLocation HARNESS = new ResourceLocation("thaumcraft", "textures/models/hoverharness.obj");
+   private static final ResourceLocation HARNESS = new ResourceLocation("thaumcraft", "textures/models/hoverharness.left");
    private IModelCustom modelBack;
 
    public ModelHoverHarness() {

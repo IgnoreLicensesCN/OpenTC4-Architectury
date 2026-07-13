@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.noteblock;
 
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;

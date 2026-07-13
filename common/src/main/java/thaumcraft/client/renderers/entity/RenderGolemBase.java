@@ -37,7 +37,7 @@ import java.awt.*;
 public class RenderGolemBase extends RenderLiving {
    ModelBase damage;
    ModelBase accessories;
-   private static final ResourceLocation BUCKET = new ResourceLocation("thaumcraft", "textures/models/bucket.obj");
+   private static final ResourceLocation BUCKET = new ResourceLocation("thaumcraft", "textures/models/bucket.left");
    IIcon icon = null;
    private IModelCustom model;
    private static final ResourceLocation clay = new ResourceLocation("thaumcraft", "textures/models/golem_clay.png");

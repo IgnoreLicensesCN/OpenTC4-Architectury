@@ -5,8 +5,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.common.items.misc.ItemBathSalts;
-import thaumcraft.common.tiles.TileSpa;
+import thaumcraft.common.items.junkbox.ItemBathSalts;
+import thaumcraft.common.tiles.junkbox.TileSpa;
 
 public class ContainerSpa extends Container {
    private TileSpa spa;

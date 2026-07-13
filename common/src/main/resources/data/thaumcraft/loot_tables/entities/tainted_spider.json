@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "thaumcraft:tainted_goo",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "thaumcraft:taint_tendril",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 100
+        }
+      ]
+    }
+  ],
+  "random_sequence": "thaumcraft:entities/tainted_spider"
+}

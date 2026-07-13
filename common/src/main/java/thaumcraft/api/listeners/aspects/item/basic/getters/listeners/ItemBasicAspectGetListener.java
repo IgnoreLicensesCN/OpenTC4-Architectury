@@ -1,7 +1,6 @@
 package thaumcraft.api.listeners.aspects.item.basic.getters.listeners;
 
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetContext;
 
 public abstract class ItemBasicAspectGetListener implements Comparable<ItemBasicAspectGetListener> {

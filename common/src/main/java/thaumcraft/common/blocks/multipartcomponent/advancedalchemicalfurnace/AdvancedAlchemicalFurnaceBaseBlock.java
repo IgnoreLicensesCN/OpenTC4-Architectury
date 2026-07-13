@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.multipartcomponent.advancedalchemicalfurnace;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -27,6 +28,8 @@ import thaumcraft.client.fx.migrated.particles.FXSlimyBubble;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.crafted.essentiabe.advancedalchemicalfurnace.AdvancedAlchemicalFurnaceBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class AdvancedAlchemicalFurnaceBaseBlock extends AbstractAdvancedAlchemicalFurnaceComponent
         implements EntityBlock {
@@ -56,7 +59,7 @@ public class AdvancedAlchemicalFurnaceBaseBlock extends AbstractAdvancedAlchemic
     @Override
     public void onMultipartDestroyed(Level level, BlockState state, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel) {
-            serverLevel.setBlock(pos, ThaumcraftBlocks.ALCHEMICAL_FURNACE.defaultBlockState(), 3);
+            serverLevel.setBlock(pos, ThaumcraftBlocks.ThaumcraftBlockInstances.ALCHEMICAL_FURNACE().defaultBlockState(), 3);
         }
     }
 
@@ -70,7 +73,7 @@ public class AdvancedAlchemicalFurnaceBaseBlock extends AbstractAdvancedAlchemic
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        if (blockEntityType == ThaumcraftBlockEntities.ADVANCED_ALCHEMICAL_FURNACE && blockState.getBlock() == this && !level.isClientSide()) {
+        if (blockEntityType == ThaumcraftBlockEntities.BlockEntityTypeInstances.ADVANCED_ALCHEMICAL_FURNACE() && blockState.getBlock() == this && !level.isClientSide()) {
             return ((level1, blockPos, blockState1, blockEntity) -> {
                 if (blockEntity instanceof AdvancedAlchemicalFurnaceBlockEntity furnace) {
                     furnace.serverTick();
@@ -83,16 +86,14 @@ public class AdvancedAlchemicalFurnaceBaseBlock extends AbstractAdvancedAlchemic
     @Override
     public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
         super.entityInside(blockState, level, blockPos, entity);
-        if (entity instanceof ItemEntity itemEntity && level.getBlockEntity(
-                blockPos) instanceof AdvancedAlchemicalFurnaceBlockEntity furnace) {
+        if (entity instanceof ItemEntity itemEntity && LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof AdvancedAlchemicalFurnaceBlockEntity furnace) {
             furnace.handleItemEntity(itemEntity);
         }
     }
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource rand) {
-        if (level.getBlockEntity(
-                blockPos) instanceof AdvancedAlchemicalFurnaceBlockEntity furnace && furnace.aspects.visSize() > 0 && level.isClientSide) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof AdvancedAlchemicalFurnaceBlockEntity furnace && furnace.aspects.visSize() > 0 && level.isClientSide) {
             if (level instanceof ClientLevel clientLevel) {
                 var x = blockPos.getX();
                 var y = blockPos.getY();

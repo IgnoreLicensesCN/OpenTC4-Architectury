@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:melon",
+    "minecraft:pumpkin",
+    "minecraft:carved_pumpkin",
+    "minecraft:jack_o_lantern",
+    "minecraft:chorus_plant",
+    "minecraft:chorus_flower",
+    "thaumcraft:cactus",
+    {
+      "id": "#minecraft:logs",
+      "required": false
+    }
+  ]
+}

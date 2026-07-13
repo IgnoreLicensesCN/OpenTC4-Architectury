@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import thaumcraft.codechicken.lib.math.MathHelper;
-import thaumcraft.common.tiles.TileMagicWorkbench;
+import thaumcraft.common.tiles.junkbox.TileMagicWorkbench;
 
 import java.awt.*;
 import java.lang.reflect.Field;

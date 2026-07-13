@@ -2,8 +2,8 @@ package thaumcraft.common.items.eldritch;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -13,10 +13,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.research.ThaumcraftResearches;
 
 import java.util.List;
-
-import static thaumcraft.common.lib.research.ResearchManager.unlockResearchForPlayer;
 
 public class CrimsonRitesItem extends Item {
     public CrimsonRitesItem() {
@@ -36,9 +35,10 @@ public class CrimsonRitesItem extends Item {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
 
-        if (player instanceof ServerPlayer serverPlayer) {
-            unlockResearchForPlayer(level, serverPlayer, "CRIMSON");
+        if (!level.isClientSide) {
+            ThaumcraftResearches.CRIMSON.completeResearchFor(player);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, new ItemStack(this));
         }
-        return super.use(level, player, interactionHand);
+        return new  InteractionResultHolder<>(InteractionResult.CONSUME, new ItemStack(this));
     }
 }

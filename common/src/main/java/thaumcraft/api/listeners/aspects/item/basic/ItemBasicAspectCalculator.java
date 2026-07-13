@@ -1,10 +1,10 @@
 package thaumcraft.api.listeners.aspects.item.basic;
 
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.UnmodifiableAspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.AbstractRecipeResolver;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.RecipeCalculateStage;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.RecipeResolveContext;

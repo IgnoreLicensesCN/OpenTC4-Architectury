@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBoreBase;
-import thaumcraft.common.tiles.TileArcaneBoreBase;
+import thaumcraft.common.tiles.junkbox.TileArcaneBoreBase;
 
 public class TileArcaneBoreBaseRenderer extends TileEntitySpecialRenderer {
    private ModelBoreBase model = new ModelBoreBase();

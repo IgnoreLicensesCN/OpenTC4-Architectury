@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks.crafted.essentia;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.tiles.crafted.essentiabe.EssentiaCrystallizerBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class EssentiaCrystallizerBlock
         extends SuppressedWarningBlock
@@ -47,7 +50,7 @@ public class EssentiaCrystallizerBlock
             var poweredBefore = blockState.getValue(POWERED);
             var poweredAfter = level.hasNeighborSignal(blockPos);
             if (poweredBefore != poweredAfter) {
-                if (level.getBlockEntity(blockPos) instanceof EssentiaCrystallizerBlockEntity crystallizer){
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof EssentiaCrystallizerBlockEntity crystallizer){
                     crystallizer.setBlockStateAndUpdate(blockState.setValue(POWERED,poweredAfter));
                 }
             }
@@ -61,7 +64,7 @@ public class EssentiaCrystallizerBlock
 
     @Override
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        return !(level.getBlockEntity(pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
+        return !(LevelBlockEntityAccessing.getExistingBlockEntity(level, pos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity signalProvider)
                 ? 0 : signalProvider.getComparatorSignal();
     }
 
@@ -89,7 +92,7 @@ public class EssentiaCrystallizerBlock
     @Override
     public boolean triggerEvent(BlockState blockState, Level level, BlockPos blockPos, int i, int j) {
         if (level.isClientSide() && i == 0 && j == 0) {
-            if (level.getBlockEntity(blockPos) instanceof EssentiaCrystallizerBlockEntity crystallizer) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof EssentiaCrystallizerBlockEntity crystallizer) {
                 EssentiaCrystallizerBlockEntity.ClientTickContext.doVenting(crystallizer);
             }
         }

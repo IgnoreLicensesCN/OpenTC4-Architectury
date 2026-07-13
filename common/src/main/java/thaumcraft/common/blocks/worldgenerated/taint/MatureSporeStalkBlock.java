@@ -3,13 +3,12 @@ package thaumcraft.common.blocks.worldgenerated.taint;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.AABB;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.entities.monster.EntityTaintSpore;
+import thaumcraft.common.entities.monster.tainted.EntityTaintSpore;
 
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class MatureSporeStalkBlock extends AbstractTaintFibreBlock{
         List<EntityTaintSpore> sporesNearby = world.getEntitiesOfClass(EntityTaintSpore.class, box);
 
         if (sporesNearby.isEmpty()) {
-            world.setBlockAndUpdate(blockPos, ThaumcraftBlocks.SPORE_STALK.defaultBlockState());
+            world.setBlockAndUpdate(blockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.SPORE_STALK().defaultBlockState());
         }
     }
 }

@@ -1,32 +1,37 @@
 package thaumcraft.api.visnet;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.utils.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
+import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.lib.resourcelocations.VisNetNodeTypeResourceLocation;
+import thaumcraft.common.tiles.abstracts.ICubeChunkBasedWeakLookupOwner;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static com.linearity.opentc4.Consts.TileVisNodeCompoundTagAccessors.PARENT_POS_ACCESSOR;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.visnet.VisNetHandler.visNetNodeLookups;
 
-public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
+public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements ICubeChunkBasedWeakLookupOwner<VisNetNodeBlockEntity> {
     public static final int DEFAULT_RANGE = 8;
-    public static final Map<Level, Map<VisNetNodeTypeResourceLocation,CubeChunkedWeakLookups<VisNetNodeBlockEntity>>> DEFAULT_VIS_NET_NODE_LOOKUPS = new MapMaker().weakKeys().makeMap();
+    public static final Map<VisNetNodeTypeResourceLocation, Map<Level,CubeChunkedWeakLookups<VisNetNodeBlockEntity>>> DEFAULT_VIS_NET_NODE_LOOKUPS = new MapMaker().weakKeys().makeMap();
     static {
         visNetNodeLookups.add(DEFAULT_VIS_NET_NODE_LOOKUPS);
     }
-    protected Map<Level, Map<VisNetNodeTypeResourceLocation,CubeChunkedWeakLookups<VisNetNodeBlockEntity>>> getVisNetNodeLookups() {
+    protected Map<VisNetNodeTypeResourceLocation, Map<Level,CubeChunkedWeakLookups<VisNetNodeBlockEntity>>> getVisNetNodeLookups() {
         return DEFAULT_VIS_NET_NODE_LOOKUPS;
     }
     public VisNetNodeBlockEntity(BlockEntityType<? extends VisNetNodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -50,12 +55,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
-        if (parentPos == null){
-            PARENT_POS_ACCESSOR.writeToCompoundTag(compoundTag, BlockPosAccessor.NULL_POS_TO_WRITE);
-        }
-        else{
-            PARENT_POS_ACCESSOR.writeToCompoundTag(compoundTag, parentPos);
-        }
+        PARENT_POS_ACCESSOR.writeToCompoundTag(compoundTag, Objects.requireNonNullElse(parentPos, BlockPosAccessor.NULL_POS_TO_WRITE));
     }
 
     /**
@@ -71,7 +71,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
     public abstract boolean isSource();
 
     /**
-     * This method should never be called directly. Use {@link VisNetHandler#drainVis} instead
+     * This method should never be called directly. Use {@link VisNetHandler#drainCentiVis} instead
      * <p>IgnoreLicensesCN:maybe you can call it in some ways?if you really want to drain from someone directly.</p>
      * @param aspect what aspect to drain
      * @param vis how much to drain
@@ -90,21 +90,25 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
         }
         return 0;
     }
-    public void triggerConsumeEffect(Aspect aspect) {	}
+    public void triggerConsumeEffect(Aspect aspect) {
+
+    }
     
     @Nullable
     public VisNetNodeBlockEntity getParent() {
         if (this.level == null) return null;
         if (this.parentPos == null) return null;
-        if (!(this.level.getBlockEntity(this.parentPos) instanceof VisNetNodeBlockEntity visNetNodeBlockEntity)) return null;
+        if (!(LevelBlockEntityAccessing.getExistingBlockEntity(this.level, this.parentPos) instanceof VisNetNodeBlockEntity visNetNodeBlockEntity)) return null;
         return visNetNodeBlockEntity;
     }
 
     public VisNetNodeBlockEntity getRootSource() {
-        var parent = getParent();
-        return parent != null ?
-                parent.getRootSource() : this.isSource() ?
-                this : null;
+        var parent = this;
+        while (true){
+            if (parent == null) return null;
+            if (parent.isSource()) return parent;
+            parent = parent.getParent();
+        }
     }
     public void setParent(VisNetNodeBlockEntity parent) {
         this.parentPos = parent.getBlockPos();
@@ -121,7 +125,7 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
             var parentPosBefore = this.parentPos;
             //check for changes
             if (parentPos != null) {
-                if (level.getBlockEntity(parentPos) instanceof VisNetNodeBlockEntity parentNodeBE) {
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(level, parentPos) instanceof VisNetNodeBlockEntity parentNodeBE) {
                     if (!VisNetHandler.canNodeBeSeen(this, parentNodeBE)) {
                         this.parentPos = null;
                     }
@@ -141,37 +145,48 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
 
     @FunctionalInterface
     public interface VisNetNodeComparator{
-        int compare(VisNetNodeBlockEntity parent1, VisNetNodeBlockEntity parent2,VisNetNodeBlockEntity base);
+        int compare(ObjectIntPair<VisNetNodeBlockEntity> parent1, ObjectIntPair<VisNetNodeBlockEntity> parent2,VisNetNodeBlockEntity base);
     }
-    public static final VisNetNodeComparator DEFAULT_NODE_PARENT_COMPARING = ((parent1, parent2, base) -> {
+    public static final VisNetNodeComparator DEFAULT_NODE_PARENT_COMPARING = ((parent1Pair, parent2Pair, base) -> {
         var basePos = base.getBlockPos();
+        var compareNodeDistance = Integer.compare(parent1Pair.rightInt(), parent2Pair.rightInt());
+        if (compareNodeDistance != 0) {
+            return compareNodeDistance;
+        }
         return Integer.compare(
-                parent1.getBlockPos().distManhattan(basePos),
-                parent2.getBlockPos().distManhattan(basePos)
+                parent1Pair.left().getBlockPos().distManhattan(basePos),
+                parent2Pair.left().getBlockPos().distManhattan(basePos)
         );
     });
-    protected final boolean nodeWontConnectToSelf(VisNetNodeBlockEntity another){
-        var parentForAnother = another.getParent();
-        if (parentForAnother == null) return true;
-        if (parentForAnother == this) return false;
-        return nodeWontConnectToSelf(parentForAnother);
+    //-1 if connect to self
+    protected final int getNodesToFinalParent(VisNetNodeBlockEntity another){
+        int result = 0;
+        while (true){
+            var parentForAnother = another.getParent();
+            if (parentForAnother == null) return result;
+            if (parentForAnother == this) return -1;
+            result += 1;
+            another = parentForAnother;
+        }
     }
     public void findNewParent() {
-        AtomicReference<VisNetNodeBlockEntity> probablyBestParent = new AtomicReference<>(null);
+        AtomicReference<ObjectIntPair<VisNetNodeBlockEntity>> probablyBestParent = new AtomicReference<>(null);
         final Consumer<VisNetNodeBlockEntity> chooseNodeInLoop = (anotherNode) -> {
+            int toFinalParentNodes = getNodesToFinalParent(anotherNode);
             if (anotherNode.canConnect(VisNetNodeBlockEntity.this)
                     && VisNetNodeBlockEntity.this.canConnect(anotherNode)
-                    && nodeWontConnectToSelf(anotherNode)
+                    && toFinalParentNodes >= 0
             ) {
+                var anotherNodeAndDistance = new ObjectIntPair<>(anotherNode,toFinalParentNodes);
                 var currentParent = probablyBestParent.get();
                 if (currentParent == null) {
-                    probablyBestParent.set(anotherNode);
+                    probablyBestParent.set(anotherNodeAndDistance);
                 }else {
                     var compareResult = DEFAULT_NODE_PARENT_COMPARING.compare(
-                            currentParent,anotherNode,VisNetNodeBlockEntity.this
+                            currentParent,anotherNodeAndDistance,VisNetNodeBlockEntity.this
                     );
                     if (compareResult > 0){
-                        probablyBestParent.set(anotherNode);
+                        probablyBestParent.set(anotherNodeAndDistance);
                     }
                 }
             }
@@ -179,20 +194,23 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
         var selfPos = getBlockPos();
         for (var lookupLevelledMap : visNetNodeLookups) {
             if (lookupLevelledMap == null) continue;
-            var lookupTypedMap = lookupLevelledMap.get(level);
+            var lookupTypedMap = getVisNetNodeLookups().get(SOURCE);
             if (lookupTypedMap == null) continue;
-            var sourceLookup = lookupTypedMap.get(SOURCE);
+            var sourceLookup = lookupTypedMap.get(level);
             if (sourceLookup != null) {
                 sourceLookup.forItemsNearPosWithRange(selfPos,chooseNodeInLoop,getRange());
             }
             if (probablyBestParent.get() == null){
-                var relayLookup = lookupTypedMap.get(RELAY);
-                if (relayLookup != null) {
-                    relayLookup.forItemsNearPosWithRange(selfPos,chooseNodeInLoop,getRange());
+                var relayLookupLevelled = getVisNetNodeLookups().get(RELAY);
+                if (relayLookupLevelled != null) {
+                    var relayLookup = relayLookupLevelled.get(level);
+                    if (relayLookup != null) {
+                        relayLookup.forItemsNearPosWithRange(selfPos, chooseNodeInLoop, getRange());
+                    }
                 }
             }
         }
-        this.parentPos = probablyBestParent.get().parentPos;
+        this.parentPos = probablyBestParent.get().left().parentPos;
     }
     
     public void parentChanged() { }
@@ -223,55 +241,34 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft {
     public static final VisNetNodeTypeResourceLocation RELAY =
             VisNetNodeTypeResourceLocation.of("thaumcraft","relay");
 
-    protected void storeToLookup(Level level){
-        if (level != this.level){
-            var pos = getBlockPos();
-            if (this.level != null) {
-                var lookupWithType = getVisNetNodeLookups().get(this.level);
-                if (lookupWithType != null) {
-                    var lookup = lookupWithType.get(getVisNetNodeType());
-                    if (lookup != null){
-                        lookup.remove(pos,this);
-                    }
-                }
-            }
-            if (level != null){
-                byte rangeBitsNeeded = 3;
-                int range = getRange();
-                while ((1<<rangeBitsNeeded) < range && rangeBitsNeeded < 28){
-                    rangeBitsNeeded += 1;
-                }
-                byte finalRangeBitsNeeded = rangeBitsNeeded;
-                getVisNetNodeLookups().computeIfAbsent(
-                        level,
-                        _ignored -> new HashMap<>()
-                ).computeIfAbsent(getVisNetNodeType(),_ignored -> new CubeChunkedWeakLookups<>(finalRangeBitsNeeded))
-                        .store(pos,this);
-
-            }
-        }
-    }
-
     @Override
     public void setRemoved() {
+        unregisterFromWeakLookup(this.level);
         super.setRemoved();
-        if (this.level != null){
-            var lookupWithType = getVisNetNodeLookups().get(this.level);
-            if (lookupWithType != null) {
-                var selfType = getVisNetNodeType();
-                if (selfType != null) {
-                    var lookup = lookupWithType.get(selfType);
-                    if (lookup != null) {
-                        lookup.remove(getBlockPos(),this);
-                    }
-                }
-            }
-        }
     }
 
     @Override
     public void setLevel(Level level) {
-        storeToLookup(level);
+
+        registerToCubeLookup(
+                level,
+                this.level
+
+        );
         super.setLevel(level);
+    }
+
+    @Override
+    public @Nullable Map<Level, CubeChunkedWeakLookups<VisNetNodeBlockEntity>> getSelfLookupMap() {
+        return getVisNetNodeLookups()
+                .computeIfAbsent(
+                        getVisNetNodeType(),
+                        _ignored -> new MapMaker().weakKeys().makeMap()
+                );
+    }
+
+    @Override
+    public @NotNull VisNetNodeBlockEntity getStoreItemForLookup() {
+        return this;
     }
 }

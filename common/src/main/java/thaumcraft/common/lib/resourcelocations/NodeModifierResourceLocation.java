@@ -40,7 +40,7 @@ public class NodeModifierResourceLocation extends VariedResourceLocation<NodeMod
     public static NodeModifierResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
                 .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> NodeModifierResourceLocation.of(namespace,path));
+                .computeIfAbsent(path, p -> new NodeModifierResourceLocation(namespace,path));
     }
     public static NodeModifierResourceLocation of(String namespaceAndPath){
         if (namespaceAndPath.isEmpty()){

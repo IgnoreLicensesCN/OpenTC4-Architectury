@@ -1,9 +1,12 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.colorannotation.annotation.RGBColor;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
+import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
@@ -11,11 +14,10 @@ import java.util.Objects;
 
 import static thaumcraft.api.aspects.Aspects.PRIMAL_ASPECTS;
 
-public class PrimalAspect extends Aspect {
+public class PrimalAspect extends Aspect implements IAspectReducibleToPrimal {
     public static final PrimalAspect EMPTY = new PrimalAspect(
             AspectResourceLocation.of(Thaumcraft.MOD_ID,"empty_primal"),
             0x000000,
-            new ResourceLocation(Thaumcraft.MOD_ID,"textures/aspects/empty.png"),
             1,
             true
     ){
@@ -44,8 +46,8 @@ public class PrimalAspect extends Aspect {
     }
 
     @SuppressWarnings("unused")
-    private PrimalAspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, @NotNull ResourceLocation image, int blend, boolean noRegisterArg) {
-        super(aspectKey,color,image,blend);
+    private PrimalAspect(@NotNull AspectResourceLocation aspectKey, @RGBColor int color, int blend, boolean noRegisterArg) {
+        super(aspectKey,color,blend,noRegisterArg);
         this.chatcolor = "0";
     }
 
@@ -55,7 +57,6 @@ public class PrimalAspect extends Aspect {
                 "chatcolor='" + chatcolor + '\'' +
                 ", aspectKey=" + aspectKey +
                 ", color=" + color +
-                ", image=" + image +
                 ", blend=" + blend +
                 '}';
     }
@@ -68,12 +69,12 @@ public class PrimalAspect extends Aspect {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), chatcolor);
+    public boolean hasPlayerDiscovered(@NotNull Player player) {
+        return true;
     }
 
     @Override
-    public boolean hasPlayerDiscovered(@NotNull Player player) {
-        return true;
+    public @Unmodifiable @NotNull AspectList<PrimalAspect> reduceToPrimal(boolean merge) {
+        return UnmodifiableAspectList.of(this);
     }
 }

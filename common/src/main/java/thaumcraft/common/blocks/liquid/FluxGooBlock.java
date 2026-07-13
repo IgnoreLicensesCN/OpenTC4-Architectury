@@ -8,15 +8,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.entities.monster.EntityThaumicSlime;
+import thaumcraft.common.entities.monster.tainted.ThaumicSlimeEntity;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
-import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.FLUX_GOO_FLUID;
+import static thaumcraft.common.blocks.liquid.ThaumcraftFluids.ThaumcraftFluidInstances.FLUX_GOO_FLUID;
 
 public class FluxGooBlock extends FiniteLiquidBlock {
     public FluxGooBlock() {
         super(
-                FLUX_GOO_FLUID,
+                FLUX_GOO_FLUID(),
                 Properties.of()
                         .mapColor(MapColor.COLOR_PURPLE)
                         .strength(-1.0F, 3600000.0F)
@@ -27,7 +27,7 @@ public class FluxGooBlock extends FiniteLiquidBlock {
         );
     }
     public static BlockState fullOfGoo(){
-        var blockInstance = ThaumcraftBlocks.FLUX_GOO;
+        var blockInstance = ThaumcraftBlocks.ThaumcraftBlockInstances.FLUX_GOO();
         return blockInstance.defaultBlockState().setValue(
                 blockInstance.finiteFluid.liquidLevel,
                 blockInstance.finiteFluid.maxLevel
@@ -39,9 +39,9 @@ public class FluxGooBlock extends FiniteLiquidBlock {
         var fluidState = state.getFluidState();
         int lvl = fluidState.getAmount();
 
-        if (entity instanceof EntityThaumicSlime slime) {
-            if (slime.getSlimeSize() < lvl && level.random.nextBoolean()) {
-                slime.setSlimeSize(slime.getSlimeSize() + 1);
+        if (entity instanceof ThaumicSlimeEntity slime) {
+            if (slime.getSize() < lvl && level.random.nextBoolean()) {
+                slime.setSize(slime.getSize() + 1,true);
                 finiteFluid.decreaseOrRemove(level, pos, fluidState);
             }
             return;
@@ -55,7 +55,7 @@ public class FluxGooBlock extends FiniteLiquidBlock {
         if (entity instanceof LivingEntity living) {
             MobEffectInstance eff =
                     new MobEffectInstance(
-                            ThaumcraftEffects.VIS_EXHAUST,
+                            ThaumcraftEffects.ThaumcraftEffectTypeInstances.VIS_EXHAUST(),
                             600,
                             lvl / 3,
                             true, false);

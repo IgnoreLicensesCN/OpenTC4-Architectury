@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.crafted.lamp;
 
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -7,10 +8,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import static com.linearity.opentc4.Consts.GrowthArcaneLampTagAccessors.CHARGE;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.listeners.lamp.growth.apply.GrowthLampAffectManager.affectPlant;
 import static thaumcraft.api.listeners.lamp.growth.check.GrowthLampAffectiveManager.isAffectivePlant;
 import static thaumcraft.common.blocks.crafted.lamps.ArcaneLampBlock.FACING;
@@ -22,7 +26,7 @@ public class GrowthArcaneLampBlockEntity extends TileThaumcraft implements IEsse
     }
 
     public GrowthArcaneLampBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.GROWTH_ARCANE_LAMP, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.GROWTH_ARCANE_LAMP(), blockPos, blockState);
     }
 
     public static final int CHARGES_PER_ESSENTIA = 100;
@@ -91,7 +95,7 @@ public class GrowthArcaneLampBlockEntity extends TileThaumcraft implements IEsse
         }
         var facing = getFacing();
         var facingOpposite = facing.getOpposite();
-        if (level.getBlockEntity(getBlockPos().relative(facing)) instanceof IEssentiaTransportOutBlockEntity outBE) {
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, getBlockPos().relative(facing)) instanceof IEssentiaTransportOutBlockEntity outBE) {
             return outBE.takeEssentiaWithSuction(
                     getSuctionAmount(facingOpposite),
                     Aspects.PLANT,

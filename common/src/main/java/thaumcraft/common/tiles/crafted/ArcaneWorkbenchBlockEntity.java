@@ -16,17 +16,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.tile.TileThaumcraftWithMenu;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.common.tiles.TileThaumcraftWithMenu;
 import thaumcraft.api.visnet.IVisNetChargeRelayChargeableContainer;
-import thaumcraft.api.wands.IArcaneCraftingWandItem;
-import thaumcraft.api.wands.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IArcaneCraftingWandItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
+import thaumcraft.common.lib.resourcelocations.AbstractArcaneRecipeResourceLocation;
 import thaumcraft.common.menu.menu.ArcaneWorkbenchMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.IArcaneWorkbenchContainer;
 import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
 
 import java.util.List;
+
+import static com.linearity.opentc4.Consts.ArcaneWorkbenchBlockEntityTagAccessors.CURRENT_RECIPE;
 
 //TODO:Cache recipes to make this faster?
 public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWorkbenchMenu,ArcaneWorkbenchBlockEntity>
@@ -43,22 +46,25 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
     public static final int INPUT_SIZE = INPUT_AND_WAND_SLOTS.length;
     protected final NonNullList<ItemStack> inventory = NonNullList.withSize(INPUT_SIZE, ItemStack.EMPTY);
     protected final List<ItemStack> inputSlotsView = inventory.subList(0,INPUT_SLOTS.length);
+    protected @NotNull AbstractArcaneRecipeResourceLocation recipeResourceLocation = AbstractArcaneRecipeResourceLocation.EMPTY;
     public ArcaneWorkbenchBlockEntity(BlockEntityType<? extends ArcaneWorkbenchBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState,ArcaneWorkbenchMenu::new);
     }
     public ArcaneWorkbenchBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ARCANE_WORKBENCH, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_WORKBENCH(), blockPos, blockState);
     }
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
         ContainerHelper.loadAllItems(compoundTag, inventory);
+        recipeResourceLocation = AbstractArcaneRecipeResourceLocation.of(CURRENT_RECIPE.readFromCompoundTag(compoundTag));
     }
 
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
         ContainerHelper.saveAllItems(compoundTag, inventory);
+        CURRENT_RECIPE.writeToCompoundTag(compoundTag, recipeResourceLocation);
     }
 
     @Override
@@ -73,11 +79,8 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
     public boolean canPlaceItemThroughFace(int slot, ItemStack itemStack, @Nullable Direction direction) {
         if (direction == Direction.UP || slot == WAND_SLOT) {
             var item = itemStack.getItem();
-            if (item instanceof IArcaneCraftingWandItem craftingWand
-            && craftingWand.canInsertIntoArcaneCraftingTable(itemStack)) {
-                return true;
-            }
-            return false;
+            return item instanceof IArcaneCraftingWandItem craftingWand
+                    && craftingWand.canInsertIntoArcaneCraftingTable(itemStack);
         }
         return true;
     }
@@ -118,7 +121,6 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
         return List.copyOf(inventory.subList(0, WAND_SLOT));
     }
 
-
     public boolean canWandSatisfyCentiVisConsumption(CentiVisList<Aspect> centiVisList){
         if (centiVisList.isEmpty()){
             return true;
@@ -135,6 +137,15 @@ public class ArcaneWorkbenchBlockEntity extends TileThaumcraftWithMenu<ArcaneWor
         var visOwning = visContainer.getAllCentiVisOwning(wandStack);
         return !centiVisList.forEachWithBreak((asp, amount) -> visOwning.get(asp) < amount);
     }
+
+    public @NotNull AbstractArcaneRecipeResourceLocation getRecipeResourceLocation() {
+        return recipeResourceLocation;
+    }
+
+    public void setRecipeResourceLocation(@NotNull AbstractArcaneRecipeResourceLocation recipeResourceLocation) {
+        this.recipeResourceLocation = recipeResourceLocation;
+    }
+
     public boolean consumeCentiVisNoThrow(Player player, CentiVisList<Aspect> centiVisList) {
         if (centiVisList.isEmpty()){
             return true;

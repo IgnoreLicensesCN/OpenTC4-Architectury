@@ -1,6 +1,7 @@
 package thaumcraft.common.tiles.crafted.essentiabe.jars;
 
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,15 +15,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.tile.TileThaumcraft;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableSingleAspectListFromSupplier;
+import thaumcraft.api.aspects.essentiabe.*;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.essentia.jars.EssentiaJarBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.EssentiaJarBlockEntityTagAccessors.*;
-import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.registerToRemoteDrainables;
-import static thaumcraft.api.aspects.IRemoteDrainableAspectSourceBlockEntity.unregisterFromRemoteDrainables;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.registerToRemoteDrainables;
+import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.unregisterFromRemoteDrainables;
 
 //maybe i should make an AbstractEssentiaJarBlockEntity
 public class EssentiaJarBlockEntity extends TileThaumcraft
@@ -31,12 +36,14 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         IValueContainerBasedComparatorSignalProviderBlockEntity,
         IAspectFilterAccessibleBlockEntity,
         IAspectDisplayBlockEntity<Aspect>,
-        IRemoteDrainableAspectSourceBlockEntity<Aspect>{
+        IRemoteDrainableEssentiaSourceBlockEntity,
+        UnmodifiableSingleAspectListFromSupplier.SingleAspectAndAmountSupplier<Aspect>
+{
     public EssentiaJarBlockEntity(BlockEntityType<? extends EssentiaJarBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaJarBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ESSENTIA_JAR, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_JAR(), blockPos, blockState);
     }
 
     public static final int ASPECT_CAPACITY = 64;
@@ -115,9 +122,18 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
     protected int aspectAmountCurrent = 0;
     protected @NotNull Aspect aspectFilter = Aspects.EMPTY;
     protected final UnmodifiableSingleAspectListFromSupplier<Aspect> aspOwningCurrent = new UnmodifiableSingleAspectListFromSupplier<>(
-            () -> this.aspectCurrent,() -> this.aspectAmountCurrent
+            this
     );
 
+    @Override
+    public Aspect getAspectAsSupplier() {
+        return this.aspectCurrent;
+    }
+
+    @Override
+    public int getAmountAsSupplier() {
+        return this.aspectAmountCurrent;
+    }
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
@@ -255,7 +271,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public int drainAspectRemote(Aspect aspect, int amount,@Modifiable Set<IRemoteAspectDrainerBlockEntity<? extends Aspect>> metDrainers) {
+    public int drainEssentiaRemote(Aspect aspect, int amount, @Modifiable Set<IRemoteEssentiaDrainerBlockEntity> metDrainers) {
         if (aspect == aspectCurrent){
             int drained = Math.min(amount,this.aspectAmountCurrent);
             decreaseAspectAmount(drained);
@@ -264,13 +280,13 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         return 0;
     }
 
-    protected int tickCount = 0;
+    protected int tickCount = System.identityHashCode(this) & 63;
     public void serverTick(){
         if (level == null){return;}
         tickCount+=1;
         if (tickCount % 5 == 0){
             var posAbove = getBlockPos().above();
-            var be = level.getBlockEntity(posAbove);
+            var be = LevelBlockEntityAccessing.getExistingBlockEntity(level, posAbove);
             if (be instanceof IEssentiaTransportOutBlockEntity outBE){
                 var selfInDir = getConnectableDirection();
                 var beOutToDir = selfInDir.getOpposite();
@@ -297,17 +313,37 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
             }
         }
     }
-    public boolean canFillAspectContainerItem(
+    public boolean canFillEssentiaContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             Aspect aspect
     ) {
         return (aspect == this.aspectCurrent || aspect.isEmpty()) && this.aspectAmountCurrent != 0;
     }
+    public boolean canBeFilledWithEssentiaContainerItem(
+            ItemStack stackFiller,
+            IEssentiaContainerItem<Aspect> itemFiller,
+            @NotNull("not empty") Aspect aspect
+    ) {
+        if (aspect.isEmpty()){
+            return false;
+        }
+        if (this.aspectAmountCurrent >= getAspectCapacity() && !this.aspectCurrent.isEmpty()){
+            return false;
+        }
+        var hasFilter = !this.aspectFilter.isEmpty();
+        if (!hasFilter){
+            return aspect == this.aspectCurrent;
+        }
+        if (this.aspectCurrent != this.aspectFilter){
+            return false;
+        }
+        return aspect == this.aspectCurrent;
+    }
 
-    public boolean fillAspectContainerItem(
+    public boolean fillEssentiaContainerItem(
             ItemStack stackToFill,
-            IAspectContainerItem<Aspect> itemToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
             int minAmount
     ) {
         if (level == null){
@@ -318,7 +354,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
             return false;
         }
         var amountBefore = aspectAmountCurrent;
-        setAspectAmount(itemToFill.storeAspect(level,getBlockPos(),stackToFill, aspectCurrent, amountBefore));
+        setAspectAmount(itemToFill.storeEssentia(level,getBlockPos(),stackToFill, aspectCurrent, amountBefore));
         if (aspectAmountCurrent != amountBefore) {
             markDirtyAndUpdateSelf();
             if (level != null) {
@@ -335,6 +371,42 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
 
         return true;
     }
+
+    public boolean fillWithEssentiaContainerItem(
+            ItemStack stackToFill,
+            IEssentiaContainerItem<Aspect> itemToFill,
+            Aspect aspectToFill,
+            int exactAmount) {
+        if (this.aspectCurrent.isEmpty()){
+            this.aspectAmountCurrent = 0;
+        }
+        if (aspectToFill.isEmpty()){
+            return false;
+        }
+        if (!this.aspectCurrent.isEmpty() && aspectToFill != this.aspectCurrent){
+            return false;
+        }
+        if (this.aspectAmountCurrent + exactAmount >= getAspectCapacity()){
+            return false;
+        }
+        this.aspectCurrent = aspectToFill;
+        this.aspectAmountCurrent += exactAmount;
+        markDirtyAndUpdateSelf();
+        if (level != null) {
+            level.playSound(
+                    null,
+                    getBlockPos(),
+                    SoundEvents.PLAYER_SWIM,
+                    SoundSource.BLOCKS,
+                    .5F,
+                    1.F + (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.3F
+            );
+        }
+
+        return true;
+
+    }
+
 
     @Override
     public boolean canOutputTo(@NotNull Direction face) {
@@ -371,4 +443,5 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
     protected int getBaseSuction(){
         return 32;
     }
+
 }

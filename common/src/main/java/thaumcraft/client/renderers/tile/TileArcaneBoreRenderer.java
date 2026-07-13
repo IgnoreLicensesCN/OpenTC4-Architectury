@@ -9,7 +9,7 @@ import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelBore;
 import thaumcraft.client.renderers.models.ModelBoreEmit;
 import thaumcraft.client.renderers.models.ModelJar;
-import thaumcraft.common.tiles.TileArcaneBore;
+import thaumcraft.common.tiles.junkbox.TileArcaneBore;
 
 public class TileArcaneBoreRenderer extends TileEntitySpecialRenderer {
    private ModelBoreEmit modelEmit = new ModelBoreEmit();

@@ -3,7 +3,7 @@ package thaumcraft.common.lib.world.dim;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
-import thaumcraft.common.tiles.TileEldritchLock;
+import thaumcraft.common.tiles.junkbox.TileEldritchLock;
 
 import java.util.Random;
 

@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.crafted.essentia.pipes;
 
 import com.linearity.colorannotation.annotation.RGBColor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
@@ -10,6 +11,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.tiles.crafted.essentiabe.pipes.EssentiaTubeBlockEntity;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class EssentiaTubeBlock extends AbstractEssentiaTubeBlock
         implements
@@ -46,7 +49,7 @@ public class EssentiaTubeBlock extends AbstractEssentiaTubeBlock
     @Override
     public boolean triggerEvent(BlockState blockState, Level level, BlockPos blockPos, int i,@RGBColor int color) {
         if (level.isClientSide()){
-            if (level.getBlockEntity(blockPos) instanceof EssentiaTubeBlockEntity tube){
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof EssentiaTubeBlockEntity tube){
                 EssentiaTubeBlockEntity.ClientTickContext.tubeVenting(tube,color);
                 return true;
             }

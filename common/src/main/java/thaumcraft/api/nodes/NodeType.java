@@ -3,13 +3,10 @@ package thaumcraft.api.nodes;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -18,27 +15,27 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.aspects.CentiVisList;
-import thaumcraft.api.research.scan.ScanResult;
+import thaumcraft.api.aspects.Aspects;
+import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.monster.EntityGiantBrainyZombie;
-import thaumcraft.common.lib.research.ResearchManager;
-import thaumcraft.common.lib.research.ScanManager;
 import thaumcraft.common.lib.resourcelocations.NodeTypeResourceLocation;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeLookups;
-import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
-import thaumcraft.common.tiles.crafted.visnet.EnergizedAuraNodeBlockEntity;
+import thaumcraft.common.tiles.crafted.vis.visnet.EnergizedAuraNodeBlockEntity;
 
 import java.util.*;
 
-import static com.linearity.opentc4.Consts.PURE_NODE_Y_RANGE;
-import static com.linearity.opentc4.Consts.TAINT_SPREAD_UP_DISTANCE;
+import static com.linearity.opentc4.Consts.*;
+import static thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetterManager.getAspectsForEntity;
+import static thaumcraft.common.lib.world.biomes.BiomeUtils.setPosTaint;
 
 public class NodeType {
     private static final Map<NodeTypeResourceLocation, NodeType> BY_NAME = new LinkedHashMap<>();
@@ -47,17 +44,14 @@ public class NodeType {
     public static final NodeType NORMAL = new NodeType(NodeTypeResourceLocation.of("thaumcraft:normal"),1.f){
 
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
-            var result = super.nodeTypeTick(thisNode);
-            
-            
-            
-            return result;
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
+            return super.nodeTypeTick(thisNode);
         }
+
     };
     public static final NodeType UNSTABLE = new NodeType(NodeTypeResourceLocation.of("thaumcraft:unstable"),1.f){
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
             var pos = thisNode.getBlockPos();
 
@@ -89,7 +83,7 @@ public class NodeType {
             var level = node.getLevel();
             if (level != null) {
                 if (level.random.nextInt(500) == 0){
-                    node.setCentiVisBase(new CentiVisList<>());
+                    node.setCentiVisBase(new LinkedHashCentiVisList<>());
                 }
             }
             super.nodeTypeTickEnergized(node);
@@ -103,10 +97,15 @@ public class NodeType {
             }
             return centiVisAmount;
         }
-    };
-    public static final NodeType DARK = new NodeType(NodeTypeResourceLocation.of("thaumcraft:dark"),1.f){
+
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+        public AspectList<Aspect> getScanAdditionalAspects() {
+            return UnmodifiableAspectList.of(Aspects.ENTROPY, 4);
+        }
+    };
+    public static final NodeType DARK = new NodeType(NodeTypeResourceLocation.of("thaumcraft","dark"),1.f){
+        @Override
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var result = super.nodeTypeTick(thisNode);
 
             if (!(thisNode.getLevel() instanceof ServerLevel serverLevel)) return false;
@@ -124,8 +123,6 @@ public class NodeType {
 //                    && thisNode.getVisNetNodeType() == NodeType.DARK &&
                     thisNode.getTickCount() % 50 == 0
             ) {
-                int x = pos.getX() + serverLevel.random.nextInt(12) - serverLevel.random.nextInt(12);
-                int z = pos.getZ() + serverLevel.random.nextInt(12) - serverLevel.random.nextInt(12);
                 var randomPickPos = pos.offset(
                         serverLevel.random.nextInt(23)-11,
                         serverLevel.random.nextInt(23)-11,
@@ -159,11 +156,10 @@ public class NodeType {
                         double d0 = (double) pos.getX() + (serverLevel.random.nextDouble() - serverLevel.random.nextDouble()) * (double) 5.0F;
                         double d3 = pos.getY() + serverLevel.random.nextInt(3) - 1;
                         double d4 = (double) pos.getZ() + (serverLevel.random.nextDouble() - serverLevel.random.nextDouble()) * (double) 5.0F;
-                        LivingEntity entityliving = entity;
                         entity.moveTo(d0, d3, d4, serverLevel.random.nextFloat() * 360.0F, 0.0F);
                         if (entity.checkSpawnRules(serverLevel, MobSpawnType.EVENT)
                                 && entity.checkSpawnObstruction(serverLevel)) {
-                            serverLevel.addFreshEntity(entityliving);
+                            serverLevel.addFreshEntity(entity);
                             serverLevel.levelEvent(LevelEvent.PARTICLES_MOBBLOCK_SPAWN, pos, 0);
 //                            serverLevel.playAuxSFX(2004, pos.getX(), pos.getY(), pos.getZ(), 0);
                             entity.spawnAnim();
@@ -174,10 +170,15 @@ public class NodeType {
             
             return result;
         }
+
+        @Override
+        public AspectList<Aspect> getScanAdditionalAspects() {
+            return UnmodifiableAspectList.of(Aspects.DEATH, 2,Aspects.DARKNESS,2);
+        }
     };
     public static final NodeType TAINTED = new NodeType(NodeTypeResourceLocation.of("thaumcraft:tainted"),1.f){
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
             if (!(level instanceof ServerLevel serverLevel)) return false;
             var pos = thisNode.getBlockPos();
@@ -191,35 +192,37 @@ public class NodeType {
                 var biome = serverLevel.getBiome(randomPickPos);
                 if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
                     var holderTaint = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,ThaumcraftBiomeIDs.TAINT_KEY);
-                    for (int i=0;i<TAINT_SPREAD_UP_DISTANCE;i+=1){
-                        Utils.setBiomeAt(serverLevel, randomPickPos.above(i), holderTaint);
-                    }
+                    setPosTaint(serverLevel,randomPickPos,holderTaint);
                 }
 
                 if (Config.hardNode && serverLevel.random.nextBoolean()) {
-                    if (AbstractTaintFibreBlock.spreadFibres(
+                    AbstractTaintFibreBlock.spreadFibres(
                             serverLevel,
                             pos.offset(
-                                    serverLevel.random.nextInt(9)-4,
-                                    serverLevel.random.nextInt(9)-4,
-                                    serverLevel.random.nextInt(9)-4
+                                    serverLevel.random.nextInt(9) - 4,
+                                    serverLevel.random.nextInt(9) - 4,
+                                    serverLevel.random.nextInt(9) - 4
                             )
-                    )) {
-                    }
+                    );
                 }
             }
             
             return false;
         }
+
+        @Override
+        public AspectList<Aspect> getScanAdditionalAspects() {
+            return UnmodifiableAspectList.of(Aspects.TAINT, 4);
+        }
     };
     public static final NodeType HUNGRY = new NodeType(NodeTypeResourceLocation.of("thaumcraft:hungry"),1.5f){
         @Override
-        public int getAttackAnotherNodePeriod(AbstractNodeBlockEntity thisNode) {
+        public int getAttackAnotherNodePeriod(INodeBlockEntity thisNode) {
             return 1;
         }
 
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var result = super.nodeTypeTick(thisNode);
 
             var pos = thisNode.getBlockPos();
@@ -286,20 +289,19 @@ public class NodeType {
                                                 .fellOutOfWorld(), 1.0F
                                 );
                                 if (!entity.isAlive()) {
-                                    ScanResult scan = new ScanResult((byte) 2, (Item) null, entity, "");
-                                    AspectList<Aspect>al = ScanManager.getScanAspects(scan, serverLevel);
-                                    if (al != null && !al.isEmpty()) {
-                                        al = (AspectList<Aspect>)(AspectList<?>)ResearchManager.reduceToPrimals(al.copy());
+                                    AspectList<Aspect>al = getAspectsForEntity(entity);
+                                    if (!al.isEmpty()) {
+                                        al = (AspectList<Aspect>)(AspectList<?>) IAspectReducibleToPrimal.reduceToPrimals(al);
                                         if (!al.isEmpty()) {
                                             Aspect a = al
                                                     .keySet()
                                                     .toArray(new Aspect[0])[serverLevel.random.nextInt(al.size())];
                                             if (thisNode.getAspects()
-                                                    .getAmount(a) < thisNode.getNodeVisBase(a)) {
+                                                    .get(a) < thisNode.getNodeVisBase(a)) {
                                                 thisNode.addToContainer(a, 1);
                                                 result = true;
                                             } else if (serverLevel.random.nextInt(
-                                                    1 + thisNode.getNodeVisBase(a) * 2) < al.getAmount(a)) {
+                                                    1 + thisNode.getNodeVisBase(a) * 2) < al.get(a)) {
                                                 thisNode.getAspectsBase().addAll(a, 1);
                                                 result = true;
                                             }
@@ -365,10 +367,15 @@ public class NodeType {
             
             return result;
         }
+
+        @Override
+        public AspectList<Aspect> getScanAdditionalAspects() {
+            return UnmodifiableAspectList.of(Aspects.HUNGER, 4);
+        }
     };
     public static final NodeType PURE = new NodeType(NodeTypeResourceLocation.of("thaumcraft:pure"),1.f){
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
 
             if (!(thisNode.getLevel() instanceof ServerLevel serverLevel)) return false;
             var pos = thisNode.getBlockPos();
@@ -398,14 +405,16 @@ public class NodeType {
             
             return false;
         }
+
+        @Override
+        public AspectList<Aspect> getScanAdditionalAspects() {
+            return UnmodifiableAspectList.of(Aspects.HEAL,2,Aspects.ORDER,2);
+        }
     };
     public static final NodeType EMPTY = new NodeType(NodeTypeResourceLocation.of("thaumcraft:empty"),1.f){
         @Override
-        public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
-            var result = super.nodeTypeTick(thisNode);
-            
-            
-            return result;
+        public boolean nodeTypeTick(INodeBlockEntity thisNode) {
+            return super.nodeTypeTick(thisNode);
         }
     };
 
@@ -482,14 +491,14 @@ public class NodeType {
         return attackBiggerNodeChangeModifier;
     }
 
-    public boolean allowToAttackAnotherNode(AbstractNodeBlockEntity thisNode) {
+    public boolean allowToAttackAnotherNode(INodeBlockEntity thisNode) {
         return true;
     }
-    public int getAttackAnotherNodePeriod(AbstractNodeBlockEntity thisNode){
+    public int getAttackAnotherNodePeriod(INodeBlockEntity thisNode){
         return 2;
     }
 
-    public boolean nodeTypeTick(AbstractNodeBlockEntity thisNode) {
+    public boolean nodeTypeTick(INodeBlockEntity thisNode) {
         var level = thisNode.getLevel();
         if (!(level instanceof ServerLevel serverLevel)) return false;
         var pos = thisNode.getBlockPos();
@@ -510,8 +519,9 @@ public class NodeType {
         }
         node.setCentiVisBase(node.getCentiVisBase());
     }
-
-
+    public AspectList<Aspect> getScanAdditionalAspects() {
+        return UnmodifiableAspectList.EMPTY;
+    }
     public int onSetupEnergizedNodeAspectAmount(EnergizedAuraNodeBlockEntity node, Aspect aspect, int centiVisAmount){
         return centiVisAmount;
     }

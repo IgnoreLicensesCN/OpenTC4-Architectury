@@ -25,7 +25,7 @@ public class FXShieldRunes extends ThaumcraftParticle {
     Entity target = null;
     float yaw = 0.0F;
     float pitch = 0.0F;
-    private final BakedModel model = platformUtils.getModel(new ResourceLocation("thaumcraft", "models/special/hemis.obj"));
+    private final BakedModel model = platformUtils.getModel(new ResourceLocation("thaumcraft", "models/special/hemis.left"));
 
     public FXShieldRunes(ClientLevel world, double d, double d1, double d2, Entity target, int age, float yaw, float pitch) {
         super(world, d, d1, d2, 0.0F, 0.0F, 0.0F);

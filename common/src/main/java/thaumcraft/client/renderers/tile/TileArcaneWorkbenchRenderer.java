@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.client.renderers.models.ModelArcaneWorkbench;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
-import thaumcraft.common.tiles.TileArcaneWorkbench;
+import thaumcraft.common.tiles.junkbox.TileArcaneWorkbench;
 
 @SideOnly(Side.CLIENT)
 public class TileArcaneWorkbenchRenderer extends TileEntitySpecialRenderer {

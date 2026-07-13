@@ -5,7 +5,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.blocks.junkbox.ItemJarFilled;
 
@@ -71,7 +71,7 @@ public class InventoryHoverHarness implements IInventory {
    public boolean isItemValidForSlot(int i, ItemStack jar) {
       if (jar != null && jar.getItem() instanceof ItemJarFilled && jar.hasTagCompound()) {
          AspectList<Aspect>aspects = ((ItemJarFilled)jar.getItem()).getAspects(jar);
-          return aspects != null && aspects.size() > 0 && aspects.getAmount(Aspects.ENERGY) > 0;
+          return aspects != null && aspects.size() > 0 && aspects.get(Aspects.ENERGY) > 0;
       }
 
       return false;

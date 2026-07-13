@@ -25,8 +25,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.researchtable.IResearchTableAspectEditToolItem;
-import thaumcraft.api.wands.IArcaneCraftingWandItem;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IArcaneCraftingWandItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 
@@ -84,13 +84,13 @@ public class TableBlock extends SuppressedWarningBlock implements IWandInteracta
                     if (probablyRightPartState.getBlock() == this && probablyRightPartState.getValue(AXIS) == thisAxis) {
                         level.setBlockAndUpdate(
                                 blockPos,
-                                ThaumcraftBlocks.RESEARCH_TABLE_LEFT_PART
+                                ThaumcraftBlocks.ThaumcraftBlockInstances.RESEARCH_TABLE_LEFT_PART()
                                         .defaultBlockState()
                                         .setValue(FACING,probablyLeftPartDirection)
                         );
                         level.setBlockAndUpdate(
                                 probablyRightPartPos,
-                                ThaumcraftBlocks.RESEARCH_TABLE_RIGHT_PART
+                                ThaumcraftBlocks.ThaumcraftBlockInstances.RESEARCH_TABLE_RIGHT_PART()
                                         .defaultBlockState()
                                         .setValue(FACING,probablyLeftPartDirection.getOpposite())
                         );
@@ -107,7 +107,7 @@ public class TableBlock extends SuppressedWarningBlock implements IWandInteracta
         var usingWand = useOnContext.getItemInHand();
         if (usingWand.getItem() instanceof IArcaneCraftingWandItem craftingWand && craftingWand.canInsertIntoArcaneCraftingTable(usingWand)) {
             var level = useOnContext.getLevel();
-            level.setBlockAndUpdate(useOnContext.getClickedPos(), ThaumcraftBlocks.ARCANE_WORKBENCH.defaultBlockState());
+            level.setBlockAndUpdate(useOnContext.getClickedPos(), ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_WORKBENCH().defaultBlockState());
             level.playSound(
                     useOnContext.getPlayer(),
                     useOnContext.getClickedPos(),

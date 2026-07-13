@@ -15,14 +15,14 @@ import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.nodes.INodeBlockEntity;
 import thaumcraft.api.nodes.IRevealer;
 import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.items.misc.ThaumometerItem;
-import thaumcraft.common.tiles.TileJarNode;
+import thaumcraft.common.items.research.ThaumometerItem;
+import thaumcraft.common.tiles.junkbox.TileJarNode;
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 @SideOnly(Side.CLIENT)
@@ -82,12 +82,12 @@ public class TileNodeRenderer extends TileEntitySpecialRenderer {
                alpha = (float)((double)alpha * (double)1.5F);
             }
 
-            average += (float)aspects.getAmount(aspect);
+            average += (float)aspects.get(aspect);
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(770, aspect.getBlend());
             scale = MathHelper.sin((float)viewer.ticksExisted / (14.0F - (float)count)) * bscale + bscale * 2.0F;
-            scale = 0.2F + scale * ((float)aspects.getAmount(aspect) / 50.0F);
+            scale = 0.2F + scale * ((float)aspects.get(aspect) / 50.0F);
             scale *= size;
             angle = (float)(time % (5000 + 500L * count)) / (5000.0F + (float)(500 * count)) * rad;
 //            UtilsFX.renderFacingStrip

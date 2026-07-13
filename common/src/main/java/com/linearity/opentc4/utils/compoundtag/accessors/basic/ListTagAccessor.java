@@ -1,5 +1,6 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.basic;
 
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -12,7 +13,7 @@ public class ListTagAccessor extends CompoundTagAccessor<ListTag> {
 
     @Override
     public ListTag readFromCompoundTag(CompoundTag tag) {
-        return tag.getList(tagKey, Tag.TAG_COMPOUND); // 默认 ListTag 存放 CompoundTag
+        return tag.getList(tagKey, Tag.TAG_LIST);
     }
 
     @Override

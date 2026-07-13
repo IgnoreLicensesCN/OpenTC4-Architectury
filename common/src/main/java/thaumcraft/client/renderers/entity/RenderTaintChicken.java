@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.resources.ResourceLocation;
-import thaumcraft.common.entities.monster.EntityTaintChicken;
+import thaumcraft.common.entities.monster.tainted.EntityTaintChicken;
 
 public class RenderTaintChicken extends RenderLiving {
    private static final ResourceLocation rl = new ResourceLocation("thaumcraft", "textures/models/chicken.png");

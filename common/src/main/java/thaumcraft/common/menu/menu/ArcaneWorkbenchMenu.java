@@ -12,7 +12,10 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
+import thaumcraft.common.lib.resourcelocations.AbstractArcaneRecipeResourceLocation;
 import thaumcraft.common.menu.ThaumcraftGUI;
 import thaumcraft.common.menu.menu.abstracts.AbstractThaumcraftMenu;
 import thaumcraft.common.menu.slot.ArcaneWorkbenchOutputSlot;
@@ -23,7 +26,7 @@ import thaumcraft.common.tiles.crafted.ArcaneWorkbenchBlockEntity;
 import java.util.List;
 import java.util.Optional;
 
-import static thaumcraft.api.crafting.interfaces.IArcaneRecipe.getIArcaneRecipes;
+import static thaumcraft.api.crafting.arcane.AbstractArcaneRecipe.getAbstractArcaneRecipes;
 
 public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchBlockEntity> {
 
@@ -35,7 +38,7 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
             int containerID,
             Inventory inventory,
             ArcaneWorkbenchBlockEntity workbench){
-        this(ThaumcraftGUI.ARCANE_WORKBENCH,containerID,inventory,workbench);
+        this(ThaumcraftGUI.ThaumcraftMenuTypeInstances.ARCANE_WORKBENCH(),containerID,inventory,workbench);
     }
 
     public ArcaneWorkbenchMenu(
@@ -161,19 +164,21 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
         if (!level.isClientSide) {
             ServerPlayer serverPlayer = (ServerPlayer)player;
             ItemStack itemStack = ItemStack.EMPTY;
-            var aspects = CentiVisList.of();
+            CentiVisList<Aspect> costAspects = new LinkedHashCentiVisList<>();
             var workbench = arcaneWorkbenchMenu.blockEntity;
-            for (var arcaneRecipe: getIArcaneRecipes()) {
+            for (var arcaneRecipe: getAbstractArcaneRecipes()) {
                 if (arcaneRecipe.matches(workbench,level,serverPlayer)){
                     itemStack = arcaneRecipe.getCraftingResult(workbench);
                     if (!itemStack.isEmpty()){
-                        aspects = arcaneRecipe.getAspects(workbench);
+                        costAspects = arcaneRecipe.getCentiVisCost(workbench);
+                        arcaneWorkbenchMenu.blockEntity.setRecipeResourceLocation(arcaneRecipe.getRecipeID());
                         break;
                     }
                 }
             }
             if (itemStack.isEmpty()) {
-                aspects = CentiVisList.of();
+                arcaneWorkbenchMenu.blockEntity.setRecipeResourceLocation(AbstractArcaneRecipeResourceLocation.EMPTY);
+                costAspects = new LinkedHashCentiVisList<>();
                 Optional<CraftingRecipe> optional = level.getServer().getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftingContainer, level);
                 if (optional.isPresent()) {
                     CraftingRecipe craftingRecipe = optional.get();
@@ -187,7 +192,7 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
             }
 
             resultContainer.setItem(0, itemStack);
-            resultContainer.setCostsAspects(aspects);
+            resultContainer.setCostsAspects(costAspects);
             arcaneWorkbenchMenu.setRemoteSlot(0, itemStack);
             serverPlayer.connection
                     .send(
@@ -197,11 +202,12 @@ public class ArcaneWorkbenchMenu extends AbstractThaumcraftMenu<ArcaneWorkbenchB
                                     0,
                                     itemStack)
                     );
+
         }
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(Player player, int index) {
         ItemStack ret = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
 

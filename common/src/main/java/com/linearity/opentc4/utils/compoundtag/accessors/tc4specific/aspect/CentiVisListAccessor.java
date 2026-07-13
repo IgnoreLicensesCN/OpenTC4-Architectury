@@ -1,13 +1,14 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
 
 public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspect>> {
     protected final ListTagAccessor listTagAccessorInternal;
@@ -30,7 +31,17 @@ public class CentiVisListAccessor extends CompoundTagAccessor<CentiVisList<Aspec
             var hexType = valueAccessor.readIntFromCompoundTag(compoundTag);
             result.put(hexCoord, hexType);
         }
-        return new CentiVisList<>(result);
+        return new LinkedHashCentiVisList<>(result);
+    }
+
+    public void readFromCompoundTagInto(CompoundTag tag,CentiVisList<Aspect> into) {
+        var listTag = listTagAccessorInternal.readFromCompoundTag(tag);
+        for (int i = 0; i < listTag.size(); i++) {
+            var compoundTag = listTag.getCompound(i);
+            var hexCoord = keyAccessor.readFromCompoundTag(compoundTag);
+            var hexType = valueAccessor.readIntFromCompoundTag(compoundTag);
+            into.addAll(hexCoord, hexType);
+        }
     }
 
     @Override

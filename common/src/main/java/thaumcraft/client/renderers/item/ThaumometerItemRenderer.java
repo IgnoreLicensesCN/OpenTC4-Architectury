@@ -24,7 +24,7 @@ public class ThaumometerItemRenderer extends ItemRenderListener {
 
     public static final ThaumometerItemRenderer INSTANCE = new ThaumometerItemRenderer(100);
 
-//    private static final ResourceLocation SCANNER_OBJ = new ResourceLocation("thaumcraft", "textures/models/scanner.obj");//loaded
+//    private static final ResourceLocation SCANNER_OBJ = new ResourceLocation("thaumcraft", "textures/models/scanner.left");//loaded
     private static final ResourceLocation SCAN_SCREEN = new ResourceLocation("thaumcraft", "textures/item/scanscreen.png");
 
     public ThaumometerItemRenderer(int weight) {
@@ -88,34 +88,45 @@ public class ThaumometerItemRenderer extends ItemRenderListener {
             }
             default -> {}
         }
-        if (player.isUsingItem() && stack == player.getUseItem()){
-            switch (context){
-                case FIRST_PERSON_RIGHT_HAND, THIRD_PERSON_RIGHT_HAND -> {
-                    poseStack.translate(horizonalOffset, closingOffset, verticalOffset);
+        if (player != null) {
+            if (player.isUsingItem() && stack == player.getUseItem()) {
+                switch (context) {
+                    case FIRST_PERSON_RIGHT_HAND, THIRD_PERSON_RIGHT_HAND -> {
+                        poseStack.translate(horizonalOffset, closingOffset, verticalOffset);
+                    }
+                    case FIRST_PERSON_LEFT_HAND, THIRD_PERSON_LEFT_HAND -> {
+                        poseStack.translate(
+                                leftHandHorizonalOffset + leftHandFixHorizonalOffset,
+                                leftHandClosingOffset + leftHandFixClosingOffset,
+                                leftHandVerticalOffset + leftHandFixVerticalOffset);
+                    }
+                    default -> {
+                    }
                 }
-                case FIRST_PERSON_LEFT_HAND, THIRD_PERSON_LEFT_HAND -> {
-                    poseStack.translate(
-                            leftHandHorizonalOffset + leftHandFixHorizonalOffset,
-                            leftHandClosingOffset + leftHandFixClosingOffset,
-                            leftHandVerticalOffset + leftHandFixVerticalOffset);
-                }
-                default -> {}
             }
         }
 
         poseStack.scale(totalMultiplier, totalMultiplier, totalMultiplier);
         VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityTranslucent(SCAN_SCREEN));
 
-        poseStack.scale(glassScaleMultiplier, glassScaleMultiplier, glassScaleMultiplier);
+        poseStack.scale(
+                glassScaleMultiplier,
+                glassScaleMultiplier,
+                glassScaleMultiplier
+        );
         poseStack.translate(0, glassYOffset, 0);
         renderScanScreen(poseStack, consumer,light,overlay);
         poseStack.translate(0, -glassYOffset, 0);
 
-        poseStack.scale(frameScaleMultiplier/glassScaleMultiplier, frameScaleMultiplier/glassScaleMultiplier, frameScaleMultiplier/glassScaleMultiplier);
+        poseStack.scale(
+                frameScaleMultiplier/glassScaleMultiplier,
+                frameScaleMultiplier/glassScaleMultiplier,
+                frameScaleMultiplier/glassScaleMultiplier
+        );
         consumer = bufferSource.getBuffer(RenderType.entitySolid(TextureAtlas.LOCATION_BLOCKS));
-        ((ItemRendererAccessor) Minecraft.getInstance().getItemRenderer()).opentc4$renderModelLists(
+        getItemRenderer().opentc4$renderModelLists(
                 bakedModel, stack, light, overlay, poseStack, consumer
-        );//dont forget to render obj part :)
+        );//dont forget to render left part :)
         poseStack.popPose();
         return true;
     }

@@ -3,12 +3,18 @@ package thaumcraft.common.lib.research;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 import thaumcraft.api.aspects.*;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Deprecated(forRemoval = true,since =
+        "we can make things like this instances inside Player instance" +
+                " and save them with player data now"
+)
 public class PlayerKnowledge {
    public final Map<String, List<ResearchItemResourceLocation>> researchCompleted = new ConcurrentHashMap<>();
    public final Map<String, Set<ClueResourceLocation>> clueCompleted = new ConcurrentHashMap<>();
@@ -51,7 +57,7 @@ public class PlayerKnowledge {
    }
 
    public boolean hasDiscoveredParentAspects(Player player, Aspect aspect) {
-      if (!(aspect instanceof CompoundAspect compoundAspect)) {
+      if (!(aspect instanceof CompoundAspect compoundAspect) || aspect.isEmpty()) {
          return false;
       }
       var components = compoundAspect.components;
@@ -62,7 +68,7 @@ public class PlayerKnowledge {
    public void addDiscoveredPrimalAspects(Player player) {
       AspectList<Aspect> known = this.aspectsDiscovered.get(player.getGameProfile().getName());
       if (known == null) {
-         known = new AspectList<>();
+         known = new LinkedHashAspectList<>();
       }
       for (var asp: Aspects.getPrimalAspects()){
 
@@ -91,13 +97,13 @@ public class PlayerKnowledge {
 
    public short getAspectPoolFor(Player player, Aspect aspect) {
       AspectList<Aspect> known = this.getAspectsDiscovered(player);
-      return known != null ? (short)known.getAmount(aspect) : 0;
+      return known != null ? (short)known.get(aspect) : 0;
    }
 
    public boolean addAspectPool(Player player, Aspect aspect, int amount) {
       AspectList<Aspect> al = this.getAspectsDiscovered(player);
       if (al == null) {
-         al = new AspectList<>();
+         al = new LinkedHashAspectList<>();
       }
 
       if (aspect != null && amount != 0) {
@@ -105,7 +111,7 @@ public class PlayerKnowledge {
          if (amount > 0) {
             al.addAll(aspect, amount);
             ret = true;
-         } else if (al.getAmount(aspect) > 0) {
+         } else if (al.get(aspect) > 0) {
             al.tryReduce(aspect, -amount);
             ret = true;
          }
@@ -123,7 +129,7 @@ public class PlayerKnowledge {
    public boolean setAspectPool(Player player, Aspect aspect, int amount) {
       AspectList<Aspect> al = this.getAspectsDiscovered(player);
       if (al == null) {
-         al = new AspectList<>();
+         al = new LinkedHashAspectList<>();
       }
 
       if (aspect != null) {
@@ -135,6 +141,7 @@ public class PlayerKnowledge {
       }
    }
 
+   @Deprecated(forRemoval = true)
    public int getWarpCounter(Player player) {
       int known = 0;
       var playerName = player.getGameProfile().getName();
@@ -147,14 +154,17 @@ public class PlayerKnowledge {
       return known;
    }
 
+   @Deprecated(forRemoval = true)
    public void setWarpCounter(Player player, int amount) {
       this.warpCount.put(player.getGameProfile().getName(), amount);
    }
 
+   @Deprecated(forRemoval = true)
    public int getWarpTotal(Player player) {
       return this.getWarpPerm(player) + this.getWarpTemp(player) + this.getWarpSticky(player);
    }
 
+   @Deprecated(forRemoval = true)
    public int getWarpPerm(Player player) {
       int known = 0;
       var playerName = player.getGameProfile().getName();
@@ -167,6 +177,7 @@ public class PlayerKnowledge {
       return known;
    }
 
+   @Deprecated(forRemoval = true)
    public int getWarpTemp(Player player) {
       int known = 0;
       var playerName = player.getGameProfile().getName();
@@ -179,6 +190,7 @@ public class PlayerKnowledge {
       return known;
    }
 
+   @Deprecated(forRemoval = true)
    public int getWarpSticky(Player player) {
       int known = 0;
       var playerName = player.getGameProfile().getName();
@@ -191,29 +203,35 @@ public class PlayerKnowledge {
       return known;
    }
 
+   @Deprecated(forRemoval = true)
    public void addWarpTemp(Player player, int amount) {
       int er = this.getWarpTemp(player) + amount;
       this.warpTemp.put(player.getGameProfile().getName(), Math.max(0, er));
    }
 
+   @Deprecated(forRemoval = true)
    public void addWarpPerm(Player player, int amount) {
       int er = this.getWarpPerm(player) + amount;
       this.warp.put(player.getGameProfile().getName(), Math.max(0, er));
    }
 
+   @Deprecated(forRemoval = true)
    public void addWarpSticky(Player player, int amount) {
       int er = this.getWarpSticky(player) + amount;
       this.warpSticky.put(player.getGameProfile().getName(), Math.max(0, er));
    }
 
+   @Deprecated(forRemoval = true)
    public void setWarpSticky(Player player, int amount) {
       this.warpSticky.put(player.getGameProfile().getName(), Math.max(0, amount));
    }
 
+   @Deprecated(forRemoval = true)
    public void setWarpPerm(Player player, int amount) {
       this.warp.put(player.getGameProfile().getName(), Math.max(0, amount));
    }
 
+   @Deprecated(forRemoval = true)
    public void setWarpTemp(Player player, int amount) {
       this.warpTemp.put(player.getGameProfile().getName(), Math.max(0, amount));
    }

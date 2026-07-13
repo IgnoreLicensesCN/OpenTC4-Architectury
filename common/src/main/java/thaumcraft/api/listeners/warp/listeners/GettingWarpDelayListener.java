@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.warp.listeners;
 
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 
 public abstract class GettingWarpDelayListener implements Comparable<GettingWarpDelayListener>{
     public final int priority;
@@ -8,7 +8,7 @@ public abstract class GettingWarpDelayListener implements Comparable<GettingWarp
         this.priority = priority;
     }
 
-    public abstract int onGettingWarpEventDelayForPlayer(Player player);
+    public abstract int onGettingWarpEventDelayForLiving(LivingEntity living);
 
     @Override
     public int compareTo(GettingWarpDelayListener o) {

@@ -17,10 +17,10 @@ import thaumcraft.client.renderers.models.ModelJar;
 import thaumcraft.common.blocks.junkbox.BlockJar;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.tiles.TileJar;
-import thaumcraft.common.tiles.TileJarBrain;
-import thaumcraft.common.tiles.TileJarFillable;
-import thaumcraft.common.tiles.TileJarNode;
+import thaumcraft.common.tiles.junkbox.TileJar;
+import thaumcraft.common.tiles.junkbox.TileJarBrain;
+import thaumcraft.common.tiles.junkbox.TileJarFillable;
+import thaumcraft.common.tiles.junkbox.TileJarNode;
 
 @SideOnly(Side.CLIENT)
 public class TileJarRenderer extends TileEntitySpecialRenderer {

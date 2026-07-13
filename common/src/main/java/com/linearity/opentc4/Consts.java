@@ -8,7 +8,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.mc.DirectionTagAccessor
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.ItemStackTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.NullableCrucibleRecipeAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectListAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.ModifiableAspectListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.CentiVisListAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.CompoundAspectAccessor;
@@ -16,19 +16,24 @@ import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.node.NodeIn
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches.HexGridAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.*;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableListAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableSetTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableStringSetTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.NullFilteredModifiableListAccessor;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.crafting.CrucibleRecipe;
+import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 public class Consts {
+    public static final int TAINT_SPREAD_DOWN_DISTANCE = -1;
     public static final int TAINT_SPREAD_UP_DISTANCE = 64;
     public static final int PURE_NODE_Y_RANGE = 8;
 
 
     public static class PlayerDataAccessors {
-        public static final AspectListAccessor PLAYER_RESEARCH_ASPECTS = new AspectListAccessor("player_research_aspects");
+        public static final ModifiableAspectListAccessor PLAYER_RESEARCH_ASPECTS = new ModifiableAspectListAccessor("player_research_aspects");
         private static final String CLUE = "THAUMCRAFT.CLUE";
         public static final ModifiableSetTagAccessor<ClueResourceLocation> THAUMCRAFT_PLAYER_CLUE_ACCESSOR =
                 new ModifiableSetTagAccessor<>(
@@ -41,54 +46,6 @@ public class Consts {
                         RESEARCH,
                         new ResearchItemResourceLocationTagAccessor(RESEARCH + "_key")
                 );
-    }
-
-    public static class ThaumcraftPlayerCompoundTagAccessors {
-        private static final String WARP_PERM = "Thaumcraft.eldritch";
-        public static final IntTagAccessor THAUMCRAFT_PLAYER_WARP_PERM_ACCESSOR =
-                new IntTagAccessor(WARP_PERM);
-
-        private static final String WARP_TEMP = "Thaumcraft.eldritch.temp";
-        public static final IntTagAccessor THAUMCRAFT_PLAYER_WARP_TEMP_ACCESSOR =
-                new IntTagAccessor(WARP_TEMP);
-
-        private static final String WARP_STICKY = "Thaumcraft.eldritch.sticky";
-        public static final IntTagAccessor THAUMCRAFT_PLAYER_WARP_STICKY_ACCESSOR =
-                new IntTagAccessor(WARP_STICKY);
-
-        private static final String WARP_COUNTER = "Thaumcraft.eldritch.counter";
-        public static final IntTagAccessor THAUMCRAFT_PLAYER_WARP_COUNTER_ACCESSOR =
-                new IntTagAccessor(WARP_COUNTER);
-
-        private static final String SHIELDING = "Thaumcraft.shielding";
-        public static final IntTagAccessor THAUMCRAFT_PLAYER_SHIELDING_ACCESSOR =
-                new IntTagAccessor(SHIELDING);
-        public static final ResearchItemResourceLocationTagAccessor LIST_TAG_RESEARCH_ACCESSOR =
-                new ResearchItemResourceLocationTagAccessor("research");
-
-        private static final String SCAN_OBJECTS = "THAUMCRAFT.SCAN.OBJECTS";
-        public static final ListTagAccessor THAUMCRAFT_PLAYER_SCAN_OBJECTS_ACCESSOR =
-                new ListTagAccessor(SCAN_OBJECTS);
-
-        private static final String SCAN_ENTITIES = "THAUMCRAFT.SCAN.ENTITIES";
-        public static final ListTagAccessor THAUMCRAFT_PLAYER_SCAN_ENTITIES_ACCESSOR =
-                new ListTagAccessor(SCAN_ENTITIES);
-
-        private static final String SCAN_PHENOMENA = "THAUMCRAFT.SCAN.PHENOMENA";
-        public static final ListTagAccessor THAUMCRAFT_PLAYER_SCAN_PHENOMENA_ACCESSOR =
-                new ListTagAccessor(SCAN_PHENOMENA);
-
-
-        private static final String SCAN_OBJECT_ITEM = "scannedObj";
-        public static final StringTagAccessor LIST_TAG_SCANNED_OBJECT_ACCESSOR =
-                new StringTagAccessor(SCAN_OBJECT_ITEM);
-
-        private static final String SCAN_ENTITY_ITEM = "scannedEntity";
-        public static final StringTagAccessor LIST_TAG_SCANNED_ENTITY_ACCESSOR =
-                new StringTagAccessor(SCAN_ENTITY_ITEM);
-        private static final String SCAN_PHENOMENA_ITEM = "scannedPhenomena";
-        public static final StringTagAccessor LIST_TAG_SCANNED_PHENOMENA_ACCESSOR =
-                new StringTagAccessor(SCAN_PHENOMENA_ITEM);
     }
 
     public static class WorldCoordsCompoundTagAccessors {
@@ -114,10 +71,6 @@ public class Consts {
 
         private static final String BLOCK_Z = "b_z"; // int
         public static final IntTagAccessor BLOCK_Z_ACCESSOR = new IntTagAccessor(BLOCK_Z);
-    }
-
-    public static class EnchantmentConsts{
-
     }
 
     public static class ResearchNoteCompoundTagAccessors {
@@ -166,14 +119,13 @@ public class Consts {
     }
 
     public static class WandCastingCompoundTagAccessors {
-        private static final String WAND_CAP = "cap";
-        private static final String WAND_ROD = "rod";
-        private static final String WAND_FOCUS = "focus";
-        private static final String WAND_OWING_VIS = "owningVis";
-        public static final ItemStackTagAccessor WAND_CAP_ACCESSOR = new ItemStackTagAccessor(WAND_CAP);
-        public static final ItemStackTagAccessor WAND_ROD_ACCESSOR = new ItemStackTagAccessor(WAND_ROD);
-        public static final ItemStackTagAccessor WAND_FOCUS_ACCESSOR = new ItemStackTagAccessor(WAND_FOCUS);
-        public static final CentiVisListAccessor WAND_OWING_VIS_ACCESSOR = new CentiVisListAccessor(WAND_OWING_VIS);
+        public static final ItemStackTagAccessor WAND_CAP_ACCESSOR = new ItemStackTagAccessor("cap");
+        public static final ItemStackTagAccessor WAND_ROD_ACCESSOR = new ItemStackTagAccessor("rod");
+        public static final ItemStackTagAccessor WAND_FOCUS_ACCESSOR = new ItemStackTagAccessor("focus");
+        public static final CentiVisListAccessor WAND_OWING_VIS_ACCESSOR = new CentiVisListAccessor("owning_vis");
+    }
+    public static class VisAmuletCompoundTagAccessors {
+        public static final CentiVisListAccessor VIS_AMULET_OWING_VIS = new CentiVisListAccessor("owning_vis");
     }
 
     public static class FocusUpgradeCompoundTagAccessors {
@@ -191,10 +143,12 @@ public class Consts {
     }
 
     public static class OwnedBlockEntityTagAccessors {
-        private static final String OWNERS = "owners";
-        public static final ModifiableStringSetTagAccessor OWNERS_ACCESSOR = new ModifiableStringSetTagAccessor(OWNERS);
+        public static final ModifiableStringSetTagAccessor OWNERS_ACCESSOR = new ModifiableStringSetTagAccessor("owners");
     }
 
+    public static class ArcaneDoorBlockEntityTagAccessors {
+        public static final ModifiableStringSetTagAccessor USERS = new ModifiableStringSetTagAccessor("users");
+    }
     public static class InfernalFurnaceBlockEntityTagAccessors {
         private static final String PROCESSED_TICKS = "processed_ticks";
         public static final IntTagAccessor PROCESSED_TICKS_ACCESSOR = new IntTagAccessor(PROCESSED_TICKS);
@@ -212,7 +166,7 @@ public class Consts {
         private static final String TICK_COUNT = "tick_count";
         public static final IntTagAccessor TICK_COUNT_ACCESSOR = new IntTagAccessor(TICK_COUNT);
         private static final String BONUS_ASPECT = "bonus_aspect";
-        public static final AspectListAccessor BONUS_ASPECT_ACCESSOR = new AspectListAccessor(BONUS_ASPECT);
+        public static final ModifiableAspectListAccessor BONUS_ASPECT_ACCESSOR = new ModifiableAspectListAccessor(BONUS_ASPECT);
     }
     public static class EnergizedAuraNodeBlockEntityTagAccessors {
         public static final NodeInfoAccessor NODE_INFO = NodeBlockEntityCompoundTagAccessors.NODE_INFO;
@@ -223,11 +177,14 @@ public class Consts {
         public static final IntTagAccessor TRANSDUCER_STATUS_CODE = new IntTagAccessor("status_code");
     }
     public static class AlchemicalFurnaceBlockEntityTagAccessors {
-        public static final AspectListAccessor ASPECTS_OWNING = new AspectListAccessor("aspects_owning");
+        public static final ModifiableAspectListAccessor ASPECTS_OWNING = new ModifiableAspectListAccessor("aspects_owning");
         public static final IntTagAccessor COOKED_TIME = new IntTagAccessor("cooked_time");
         public static final IntTagAccessor REQUIRED_COOK_TIME = new IntTagAccessor("required_cook_time");
         public static final IntTagAccessor FUEL_REMAINING_TIME = new IntTagAccessor("fuel_remaining_time");
         public static final IntTagAccessor FUEL_TOTAL_TIME = new IntTagAccessor("fuel_total_time");
+    }
+    public static class ArcaneWorkbenchBlockEntityTagAccessors {
+        public static final ResourceLocationTagAccessor CURRENT_RECIPE =  new ResourceLocationTagAccessor("current_recipe");
     }
     public static class ArcaneAlembicBlockEntityTagAccessors {
         public static final IntTagAccessor ASPECT_AMOUNT = new IntTagAccessor("aspect_amount");
@@ -240,10 +197,10 @@ public class Consts {
         public static final AspectAccessor ASPECT_FILTER = new AspectAccessor("aspect_filter");
     }
     public static class EssentiaReservoirBlockEntityTagAccessors {
-        public static final AspectListAccessor ASPECTS_OWNING = new AspectListAccessor("aspects_owning");
+        public static final ModifiableAspectListAccessor ASPECTS_OWNING = new ModifiableAspectListAccessor("aspects_owning");
     }
     public static class AdvancedAlchemicalFurnaceBlockEntityTagAccessors {
-        public static final AspectListAccessor ASPECTS_OWNING = new AspectListAccessor("aspects_owning");
+        public static final ModifiableAspectListAccessor ASPECTS_OWNING = new ModifiableAspectListAccessor("aspects_owning");
         public static final IntTagAccessor FUEL_AMOUNT_FIRE = new IntTagAccessor("fuel_amount_fire");
         public static final IntTagAccessor FUEL_AMOUNT_ENTROPY = new IntTagAccessor("fuel_amount_entropy");
         public static final IntTagAccessor FUEL_AMOUNT_WATER = new IntTagAccessor("fuel_amount_water");
@@ -256,6 +213,9 @@ public class Consts {
         public static final AspectAccessor ASPECT_FILTER = new AspectAccessor("aspect_filter");
         public static final IntTagAccessor AMOUNT = new IntTagAccessor("amount");
     }
+    public static class EssentiaPhialTagAccessors {
+        public static final AspectAccessor ASPECT = new AspectAccessor("aspect");
+    }
     public static class BrainJarTagAccessors {
         public static final IntTagAccessor EXP = new IntTagAccessor("exp");
     }
@@ -263,8 +223,10 @@ public class Consts {
         public static final NodeInfoAccessor NODE_INFO = new NodeInfoAccessor("jar_node_info");
     }
     public static class CrucibleTagAccessors {
-        public static final AspectListAccessor OWNING_ASPECTS = new AspectListAccessor("aspects");
+        public static final ModifiableAspectListAccessor OWNING_ASPECTS = new ModifiableAspectListAccessor("aspects");
         public static final IntTagAccessor HEAT = new IntTagAccessor("heat");
+    }
+    public static class SingleFluidContainerBlockEntityTagAccessors{
         public static final FluidStackTagAccessor FLUID = new FluidStackTagAccessor("fluid");
     }
     public static class GrowthArcaneLampTagAccessors {
@@ -276,7 +238,7 @@ public class Consts {
 
     public static class ThaumatoriumBlockEntityTagAccessors {
         public static final NullFilteredModifiableListAccessor<CrucibleRecipe> RECIPES = new NullFilteredModifiableListAccessor<>("recipes",new NullableCrucibleRecipeAccessor("recipe"));
-        public static final AspectListAccessor OWNING_ASPECTS = new AspectListAccessor("aspects");
+        public static final ModifiableAspectListAccessor OWNING_ASPECTS = new ModifiableAspectListAccessor("aspects");
     }
 
     public static class ManaBeanBlockEntityOrItemStackTagAccessors {
@@ -295,7 +257,7 @@ public class Consts {
     }
 
     public static class EssentiaBufferBlockEntityTagAccessors {
-        public static final AspectListAccessor OWNING_ASPECTS = new AspectListAccessor("owning_aspects");
+        public static final ModifiableAspectListAccessor OWNING_ASPECTS = new ModifiableAspectListAccessor("owning_aspects");
         public static final ByteTagAccessor OPEN_SIDES = new ByteTagAccessor("open_sides");
         public static final ByteArrayTagAccessor SUCTION_LIMITS = new ByteArrayTagAccessor("suction_limits");
 
@@ -308,6 +270,9 @@ public class Consts {
         public static final AspectAccessor ASPECT_CRYSTALLIZING = new AspectAccessor("aspect_crystallizing");
     }
     public static class CrystalEssenceItemTagAccessors {
+        public static final AspectAccessor OWNING_ASPECT = new AspectAccessor("owning_aspect");
+    }
+    public static class WispEssenceItemTagAccessors {
         public static final AspectAccessor OWNING_ASPECT = new AspectAccessor("owning_aspect");
     }
     public static class ArcaneEarTagAccessors {
@@ -333,5 +298,61 @@ public class Consts {
         );
         public static final IntTagAccessor INSTABILITY = new IntTagAccessor("instability");
     }
+    public static class AbstractPedestalBlockEntityTagAccessors {
+        public static final ItemStackTagAccessor STORED_ITEM = new ItemStackTagAccessor("stored_item");
+    }
 
+    public static class InfusionMatrixBlockEntityTagAccessors {
+        public static final ModifiableAspectListAccessor REQUIRING_ASPECTS = new ModifiableAspectListAccessor("requiring_aspects");
+        public static final ModifiableListAccessor<ItemStack> REQUIRING_ITEMS = new ModifiableListAccessor<>("requiring_items",new ItemStackTagAccessor("i"));
+        public static final ModifiableListAccessor<ItemStack> RETURNING_ITEMS = new ModifiableListAccessor<>("returning_items",new ItemStackTagAccessor("i"));
+        public static final ItemStackTagAccessor CENTER_STACK = new ItemStackTagAccessor("center_stack");
+        public static final ItemStackTagAccessor RESULT =  new ItemStackTagAccessor("result");
+        public static final StringTagAccessor PLAYER_LAUNCHED_CRAFTING = new StringTagAccessor("player_launching_crafting");
+        public static final ResourceLocationTagAccessor INFUSION_RECIPE_LOCATION = new ResourceLocationTagAccessor("infusion_recipe");
+        public static final IntTagAccessor INSTABILITY = new IntTagAccessor("instability");
+        public static final BooleanTagAccessor CRAFTING = new BooleanTagAccessor("crafting");
+
+    }
+    public static class ArcaneSpaBlockEntityTagAccessors {
+        public static final ItemStackTagAccessor STORED_ITEM = new ItemStackTagAccessor("stored_item");
+    }
+    public static class FocalManipulatorBlockEntityTagAccessors {
+        public static final CentiVisListAccessor CENTIVIS_REQUIRING = new CentiVisListAccessor("centivis_requiring");
+        public static final ResourceLocationTagAccessor UPGRADE_TP_APPLY = new ResourceLocationTagAccessor("upgrade_tp_apply");
+        public static final ItemStackTagAccessor STORED_ITEM = new ItemStackTagAccessor("stored_item");
+    }
+    public static class AugmentationRunicShieldTagAccessors {
+        public static final IntTagAccessor RUNIC_AUGMENTATION_LEVEL = new IntTagAccessor("runic_augmentation_level");
+    }
+    public static class BundleLikeItemTagAccessors {
+        public static final ModifiableListAccessor<ItemStack> BUNDLE_STACKS = new ModifiableListAccessor<>(
+                "bundle_stacks",
+                new ItemStackTagAccessor("stack")
+        );
+    }
+    public static class ThaumiumFortressHelmetItemTagAccessors {
+        public static final ItemStackTagAccessor GOGGLES = new ItemStackTagAccessor("goggles");
+        public static final ItemStackTagAccessor MASK = new ItemStackTagAccessor("mask");
+    }
+    public static class KeyTagAccessors {
+        public static final StringTagAccessor KEY_TYPE = new StringTagAccessor("key_type");
+        public static final BlockPosAccessor KEY_POS = new BlockPosAccessor("key_pos");
+    }
+    public static class ExplosiveOrbEntityTagAccessors {
+        public static final IntTagAccessor STRENGTH = new IntTagAccessor("strength");
+        public static final BooleanTagAccessor ON_FIRE = new BooleanTagAccessor("on_fire");
+    }
+    public static class FrostShardEntityTagAccessors {
+        public static final FloatTagAccessor BOUNCE = new FloatTagAccessor("bounce");
+        public static final IntTagAccessor BOUNCE_LIMIT = new IntTagAccessor("bounce_limit");
+        public static final BooleanTagAccessor FRAGILE = new BooleanTagAccessor("fragile");
+        public static final FloatTagAccessor DAMAGE = new FloatTagAccessor("damage");
+        public static final IntTagAccessor FROSTY = new IntTagAccessor("frosty");
+    }
+    public static class FireBatEntityTagAccessors {
+        public static final ByteTagAccessor FLAGS = new ByteTagAccessor("flags");
+        public static final IntTagAccessor DAMAGE_BONUS = new IntTagAccessor("damage_bonus");
+        public static final UUIDTagAccessor OWNER =  new UUIDTagAccessor("owner");
+    }
 }

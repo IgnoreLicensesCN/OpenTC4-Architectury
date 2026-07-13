@@ -1,0 +1,6 @@
+{
+    "parent": "item/compass_stone",
+    "textures": {
+        "layer0": "item/compass_stone_found"
+    }
+}

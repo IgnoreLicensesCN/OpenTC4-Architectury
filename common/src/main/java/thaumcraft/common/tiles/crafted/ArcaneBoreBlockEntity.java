@@ -2,7 +2,8 @@ package thaumcraft.common.tiles.crafted;
 
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
-import com.linearity.opentc4.mixinaccessors.ArcaneBoreBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinaccessors.clientbe.ArcaneBoreBlockEntityClientAccessor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -20,27 +21,30 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.IRepairable;
+import thaumcraft.common.items.abstracts.IRepairableItem;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.tile.TileThaumcraftWithMenu;
+import thaumcraft.api.aspects.aspectlists.CentiVisList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
+import thaumcraft.api.aspects.essentiabe.IEssentiaForceInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
+import thaumcraft.api.wands.focus.upgrade.ThaumcraftFocusUpgradeTypes;
+import thaumcraft.common.tiles.IThaumcraftBEWithMenu;
+import thaumcraft.common.tiles.TileThaumcraftWithMenu;
 import thaumcraft.api.visnet.VisNetHandler;
-import thaumcraft.api.wands.FocusUpgradeType;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.client.fx.migrated.beams.FXBeamBore;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.items.abstracts.IDowsingTool;
-import thaumcraft.common.items.wands.foci.FocusExcavationItem;
+import thaumcraft.common.items.wands.foci.ExcavationFocusItem;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.lib.network.misc.PacketBoreDigS2C;
 import thaumcraft.common.lib.utils.InventoryUtils;
-import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.menu.menu.ArcaneBoreMenu;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.IDefaultWorldlyContainer;
@@ -49,10 +53,10 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.ThaumcraftApiHelper.rayTraceIgnoringSource;
 import static thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreBaseBlock.*;
 import static thaumcraft.common.blocks.crafted.arcanebore.ArcaneBoreDrillBlock.DRILL_FACING;
-import static thaumcraft.common.items.wands.foci.FocusExcavationItem.getResourceFromBlockCanHarvest;
 
 //TODO[Maybe wont finished]:faster this shit
 public class ArcaneBoreBlockEntity
@@ -60,7 +64,7 @@ public class ArcaneBoreBlockEntity
         implements
         IDefaultWorldlyContainer,
         IEssentiaTransportInBlockEntity,
-        IAspectInBlockEntity<PrimalAspect>,
+        IEssentiaForceInBlockEntity<PrimalAspect>,
         IWandInteractableBlockOrBlockEntity
 {
 
@@ -79,17 +83,17 @@ public class ArcaneBoreBlockEntity
     private int lastY = 0;
     private int lastZ = 0;
     private @Nullable BlockPos digPos = null;
-    private @NotNull CentiVisList<PrimalAspect> repairCost = new CentiVisList<>();
-    private final @Modifiable CentiVisList<Aspect> currentRepairVis = new CentiVisList<>();
+    private @NotNull CentiVisList<PrimalAspect> repairCost = new LinkedHashCentiVisList<>();
+    private final @Modifiable CentiVisList<Aspect> currentRepairVis = new LinkedHashCentiVisList<>();
     public static final int[] SLOTS = { FOCUS_SLOT,PICKAXE_SLOT };
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(SLOTS.length, ItemStack.EMPTY);
     private int spiral = 0;
 
-    public ArcaneBoreBlockEntity(BlockEntityType<? extends ArcaneBoreBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState, TileThaumcraftWithMenuFactory<ArcaneBoreMenu, ArcaneBoreBlockEntity> menuFactory) {
+    public ArcaneBoreBlockEntity(BlockEntityType<? extends ArcaneBoreBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState, IThaumcraftBEWithMenu.IThaumcraftBEWithMenuFactory<ArcaneBoreMenu, ArcaneBoreBlockEntity> menuFactory) {
         super(blockEntityType, blockPos, blockState, menuFactory);
     }
     public ArcaneBoreBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ARCANE_BORE, blockPos, blockState, ArcaneBoreMenu::new);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ARCANE_BORE(), blockPos, blockState, ArcaneBoreMenu::new);
     }
     public @NotNull BlockPos getDrillPos(){
         var pos = this.getBlockPos();
@@ -126,69 +130,27 @@ public class ArcaneBoreBlockEntity
         repairPickaxe();
     }
 
-    protected int getFortuneLevel(){
-        int result = 0;
-        var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof FocusExcavationItem focusExcavationItem) {
-            var upgrades = focusExcavationItem.getWandUpgradesWithWandModifiers(focusStack,null);
-            result += upgrades.get(FocusUpgradeType.treasure);
-        }
-        var pickaxeStack = getPickaxe();
-        if (!pickaxeStack.isEmpty() && pickaxeStack.getItem() instanceof PickaxeItem) {
-            result += EnchantmentHelper.getEnchantments(pickaxeStack).getOrDefault(Enchantments.BLOCK_FORTUNE, 0);
-        }
-        return result;
-    }
     protected int getEnlargeLevel(){
         int result = 0;
         var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof FocusExcavationItem focusExcavationItem) {
-            var upgrades = focusExcavationItem.getWandUpgradesWithWandModifiers(focusStack,null);
-            result += upgrades.get(FocusUpgradeType.enlarge);
+        if (!focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem excavationFocusItem) {
+            var upgrades = excavationFocusItem.getFocusUpgradesWithWandModifiers(focusStack,null);
+            result += upgrades.getInt(ThaumcraftFocusUpgradeTypes.ENLARGE);
         }
         return result;
     }
     protected int getSpeedLevel(){
         int result = 0;
         var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof FocusExcavationItem focusExcavationItem) {
-            var upgrades = focusExcavationItem.getWandUpgradesWithWandModifiers(focusStack,null);
-            result += upgrades.get(FocusUpgradeType.potency);
+        if (!focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem excavationFocusItem) {
+            var upgrades = excavationFocusItem.getFocusUpgradesWithWandModifiers(focusStack,null);
+            result += upgrades.getInt(ThaumcraftFocusUpgradeTypes.POTENCY);
         }
         var pickaxeStack = getPickaxe();
         if (!pickaxeStack.isEmpty() && pickaxeStack.getItem() instanceof PickaxeItem) {
             result += EnchantmentHelper.getEnchantments(pickaxeStack).getOrDefault(Enchantments.BLOCK_EFFICIENCY, 0);
         }
         return result;
-    }
-    protected boolean hasSilkTouch(){
-        var pickaxeStack = getPickaxe();
-        if (!pickaxeStack.isEmpty() && pickaxeStack.getItem() instanceof PickaxeItem) {
-            if (EnchantmentHelper.getEnchantments(pickaxeStack).getOrDefault(Enchantments.SILK_TOUCH, 0) > 0){
-                return true;
-            }
-        }
-
-        var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof FocusExcavationItem focusExcavationItem) {
-            var upgrades = focusExcavationItem.getWandUpgradesWithWandModifiers(focusStack,null);
-            return upgrades.get(FocusUpgradeType.silktouch) > 0;
-        }
-        return false;
-    }
-    protected boolean hasDowsing(){
-        var pickaxeStack = getPickaxe();
-        if (!pickaxeStack.isEmpty() && pickaxeStack.getItem() instanceof IDowsingTool dowsingTool && dowsingTool.canDowsing()) {
-            return true;
-        }
-
-        var focusStack = getFocus();
-        if (!focusStack.isEmpty() && focusStack.getItem() instanceof FocusExcavationItem focusExcavationItem) {
-            var upgrades = focusExcavationItem.getWandUpgradesWithWandModifiers(focusStack,null);
-            return upgrades.get(FocusExcavationItem.dowsing) > 0;
-        }
-        return false;
-
     }
 
     protected void dig(){
@@ -207,9 +169,7 @@ public class ArcaneBoreBlockEntity
             generateDrop();
             damagePickaxe();
             if (digPos != null) {
-//                TODO:Add break particle(method below works only in client side?and im lazy)
-//                this.level.addDestroyBlockEffect(digPos, this.level.getBlockState(digPos));
-                this.level.setBlockAndUpdate(digPos, Blocks.AIR.defaultBlockState());
+                this.level.destroyBlock(digPos, false);
             }
 //            if (this.base != null) {
 //                for (int lb = 2; lb < 6; ++lb) {
@@ -367,25 +327,28 @@ public class ArcaneBoreBlockEntity
     }
 
     private void generateDrop() {
+        if (this.level == null) {return;}
         BlockPos pos = getBlockPos();
         if (digPos != null) {
             var digState = this.level.getBlockState(digPos);
             if (!digState.isAir()) {
-                int fortuneLevel = getFortuneLevel();
-                boolean silktouch = hasSilkTouch();
 
 //                    this.level.blockEvent(
 //                            pos,
 //                            getBlockState().getBlock(), 99, Block.getIdFromBlock(bi) + (md << 12));
                 List<ItemStack> items = new ArrayList<>();
-                getResourceFromBlockCanHarvest(
-                        this.level,
-                        digState,
-                        digPos,
-                        silktouch,
-                        fortuneLevel,
-                        items::add
-                );
+                var focusStack = getFocus();
+                if (focusStack.getItem() instanceof ExcavationFocusItem focusItem) {
+                    focusItem.getResourceFromBlock(
+                            focusStack,
+                            null,
+                            this.level,
+                            digState,
+                            digPos,
+                            getPickaxe(),
+                            items::add
+                    );
+                }
 
 //                    TODO[if arcane bore produces more itemEntity than expected]:remove itemEntity
 //                    List<EntityItem> targets = this.level().getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(this.digX, this.digY, this.digZ, this.digX + 1, this.digY + 1, this.digZ + 1).expand(1.0F, 1.0F, 1.0F));
@@ -399,17 +362,18 @@ public class ArcaneBoreBlockEntity
                 if (!items.isEmpty()) {
                     for (ItemStack is : items) {
                         ItemStack dropped = is.copy();
-                        boolean canDowsing = hasDowsing();
-                        if (!silktouch && canDowsing) {
-                            dropped = Utils.findSpecialMiningResult(
-                                    is,
-                                    0.2F + (float) fortuneLevel * 0.075F,
-                                    this.level.random
-                            );
-                        }
+                        //TODO:Migrate to drop listener
+//                        boolean canDowsing = hasDowsing();
+//                        if (!silktouch && canDowsing) {
+//                            dropped = Utils.findSpecialMiningResult(
+//                                    is,
+//                                    0.2F + (float) fortuneLevel * 0.075F,
+//                                    this.level.random
+//                            );
+//                        }
                         var outDir = getOutputDirection();
                         var outPos = pos.relative(outDir);
-                        if (this.level.getBlockEntity(outPos) instanceof WorldlyContainer container) {
+                        if (LevelBlockEntityAccessing.getExistingBlockEntity(this.level, outPos) instanceof WorldlyContainer container) {
                             dropped = InventoryUtils.placeItemStackIntoInventory(
                                     dropped, container, outDir.getOpposite(), true);
                         }
@@ -431,7 +395,7 @@ public class ArcaneBoreBlockEntity
     protected void gainSpeedyTime(){
         var selfPos = getBlockPos();
         if (this.speedyTime < 20){
-            this.speedyTime +=  Math.ceilDiv(VisNetHandler.drainVis(this.level, selfPos, getRequiredAspect(), 100) , 5);
+            this.speedyTime +=  Math.ceilDiv(VisNetHandler.drainCentiVis(this.level, selfPos, getRequiredAspect(), 100) , 5);
         }
         if (this.speedyTime < 20.0F) {
             drawEssentia();
@@ -448,7 +412,7 @@ public class ArcaneBoreBlockEntity
     }
     protected boolean hasFocus(){
         var focusStack = getFocus();
-        return !focusStack.isEmpty() && focusStack.getItem() instanceof FocusExcavationItem;
+        return !focusStack.isEmpty() && focusStack.getItem() instanceof ExcavationFocusItem;
     }
     protected boolean hasPickaxe(){
         var pickaxeStack = getPickaxe();
@@ -465,9 +429,9 @@ public class ArcaneBoreBlockEntity
             if (!this.repairCost.isEmpty() && this.repairCounter % 5L == 0L) {
                 this.repairCost.forEach(
                         (aspect,requiredAmount) -> {
-                            if (this.currentRepairVis.getAmount(aspect) < requiredAmount) {
+                            if (this.currentRepairVis.get(aspect) < requiredAmount) {
                                 this.currentRepairVis.addAll(aspect,
-                                        VisNetHandler.drainVis(this.level, selfPos, aspect, requiredAmount)
+                                        VisNetHandler.drainCentiVis(this.level, selfPos, aspect, requiredAmount)
                                 );
                             }
                         }
@@ -477,20 +441,20 @@ public class ArcaneBoreBlockEntity
     }
     @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.SERVER)
     private void doRepair(ItemStack is) {
-        int enchantmentRepairLevel = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.REPAIR,0);
+        int enchantmentRepairLevel = EnchantmentHelper.getEnchantments(is).getOrDefault(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.REPAIR(),0);
         if (enchantmentRepairLevel > 0) {
             CentiVisList<PrimalAspect> repairCostForStack = null;
-            if (is.getItem() instanceof IRepairable repairable){
+            if (is.getItem() instanceof IRepairableItem repairable){
                 repairCostForStack = repairable.getRepairCost(is,enchantmentRepairLevel);
             }else {
-                repairCostForStack = IRepairable.getRepairCostDefault(is,enchantmentRepairLevel);
+                repairCostForStack = IRepairableItem.getRepairCostDefault(is,enchantmentRepairLevel);
             }
 
             if (!repairCostForStack.isEmpty()) {
                 this.repairCost = repairCostForStack;
                 if (!repairCostForStack.forEachWithBreak(
                         ((primalAspect, requiredAmount)
-                                -> this.currentRepairVis.getAmount(primalAspect) < requiredAmount)
+                                -> this.currentRepairVis.get(primalAspect) < requiredAmount)
                 )){
                     repairCostForStack.forEach(this.currentRepairVis::reduceAndRemoveIfNotPositive);
                     is.setDamageValue(is.getDamageValue()-enchantmentRepairLevel);
@@ -531,7 +495,7 @@ public class ArcaneBoreBlockEntity
             var selfPos = getBlockPos();
             for (var dir:Direction.values()){
                 var pickPos = selfPos.relative(dir);
-                if (level.getBlockEntity(pickPos) instanceof IEssentiaTransportOutBlockEntity outBE){
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(level, pickPos) instanceof IEssentiaTransportOutBlockEntity outBE){
                     aspectAmount += outBE.takeEssentiaWithSuction(getSuctionAmount(dir),requiredAspect,1,dir.getOpposite());
                 }
             }

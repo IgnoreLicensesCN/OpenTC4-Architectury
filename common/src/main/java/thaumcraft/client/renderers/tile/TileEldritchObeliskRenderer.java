@@ -26,7 +26,7 @@ public class TileEldritchObeliskRenderer extends TileEntitySpecialRenderer {
    FloatBuffer fBuffer = GLAllocation.createDirectFloatBuffer(16);
    private boolean inrange;
    private IModelCustom model;
-   private static final ResourceLocation CAP = new ResourceLocation("thaumcraft", "textures/models/obelisk_cap.obj");
+   private static final ResourceLocation CAP = new ResourceLocation("thaumcraft", "textures/models/obelisk_cap.left");
    private String t1 = "textures/misc/tunnel.png";
    private String t2 = "textures/misc/particlefield.png";
    private String t3 = "textures/misc/particlefield32.png";

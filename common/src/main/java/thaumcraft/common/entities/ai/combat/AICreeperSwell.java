@@ -2,7 +2,7 @@ package thaumcraft.common.entities.ai.combat;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import thaumcraft.common.entities.monster.EntityTaintCreeper;
+import thaumcraft.common.entities.monster.tainted.EntityTaintCreeper;
 
 public class AICreeperSwell extends EntityAIBase {
    EntityTaintCreeper swellingCreeper;

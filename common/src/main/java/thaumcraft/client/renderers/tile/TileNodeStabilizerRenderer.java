@@ -13,14 +13,14 @@ import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
 import thaumcraft.client.lib.UtilsFX;
-import thaumcraft.common.tiles.TileNodeStabilizer;
+import thaumcraft.common.tiles.junkbox.TileNodeStabilizer;
 
 import static thaumcraft.client.renderers.tile.TileBlockInfoGetter.getBlockTypeSafely;
 
 @SideOnly(Side.CLIENT)
 public class TileNodeStabilizerRenderer extends TileEntitySpecialRenderer {
    private IModelCustom model;
-   private static final ResourceLocation MODEL = new ResourceLocation("thaumcraft", "textures/models/node_stabilizer.obj");
+   private static final ResourceLocation MODEL = new ResourceLocation("thaumcraft", "textures/models/node_stabilizer.left");
 
    public TileNodeStabilizerRenderer() {
       this.model = AdvancedModelLoader.loadModel(MODEL);

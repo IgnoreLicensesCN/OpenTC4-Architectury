@@ -1,8 +1,12 @@
 package thaumcraft.common.tiles.abstracts;
 
-import com.linearity.opentc4.utils.BlockPosWithDim;
+import com.google.common.collect.MapMaker;
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
+import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
@@ -20,17 +24,17 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.tile.TileThaumcraft;
-import thaumcraft.api.WorldCoordinates;
+import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.lib.resourcelocations.NodeIDResourceLocation;
+import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
 import thaumcraft.api.aspects.PrimalAspect;
 import thaumcraft.api.nodes.*;
-import thaumcraft.api.wands.INodeHarmfulComponent;
-import thaumcraft.api.wands.ICentiVisContainerItem;
-import thaumcraft.api.wands.IWandComponentsOwnerItem;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
-import thaumcraft.common.items.misc.ItemCompassStone;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.IWandComponentsOwnerItem;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.lib.NodeInfo;
 import thaumcraft.common.lib.network.fx.PacketFXBlockZapS2C;
 import thaumcraft.common.lib.resourcelocations.NodeLockResourceLocation;
@@ -40,26 +44,30 @@ import java.util.*;
 import java.util.List;
 
 import static com.linearity.opentc4.Consts.NodeBlockEntityCompoundTagAccessors.*;
-import static com.linearity.opentc4.utils.BlockPosWithDim.UNKNOWN_DIM;
+
 import com.linearity.opentc4.Color;
-import static thaumcraft.api.wands.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
-import static thaumcraft.common.researches.ThaumcraftResearches.*;
+
+import static thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem.CENTIVIS_MULTIPLIER;
+import static thaumcraft.api.research.ThaumcraftResearches.*;
 
 //i think it would be suitable to abstract this since we have 3 types.
+@UtilityLikeAbstraction
 public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         implements
-        INodeBlockEntity
-        , IWandInteractableBlockOrBlockEntity {
+        INodeBlockEntity,
+        IWandInteractableBlockOrBlockEntity,
+        ICubeChunkBasedWeakLookupOwner<AbstractNodeBlockEntity> {
+    public static final Map<Level, CubeChunkedWeakLookups<AbstractNodeBlockEntity>> ALL_NODES = new MapMaker().weakKeys().makeMap();
+
     long lastActiveMillis = 0L;
-    protected AspectList<Aspect> aspects = new AspectList<>();
-    protected AspectList<Aspect> aspectsBase = new AspectList<>();
-    public static HashMap<String, BlockPosWithDim> nodeIdToLocations = new HashMap<>();
+    protected AspectList<Aspect> aspects = new LinkedHashAspectList<>();
+    protected AspectList<Aspect> aspectsBase = new LinkedHashAspectList<>();
     private @NotNull NodeType nodeType;
     private @NotNull NodeModifier nodeModifier;
     int tickCount;
     public int regenerationTickPeriod;
     int wait;
-    public String id;
+    public ResourceLocation id;
     public NodeLockResourceLocation nodeLockId;
     boolean catchUp;
     public int drainColor;
@@ -69,6 +77,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     public Entity drainEntity;
     public HitResult drainCollision;
 
+    @Override
     public int getTickCount() {
         return tickCount;
     }
@@ -90,7 +99,8 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         this.color = new Color(0XFFFFFF);
     }
 
-    public String getId() {
+    @Override
+    public ResourceLocation getId() {
         if (this.id == null) {
             this.id = this.generateId();
         }
@@ -98,27 +108,31 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         return this.id;
     }
 
-    public String generateId() {
+    public ResourceLocation generateId() {
         var pos = this.getBlockPos();
         var level = this.level;
-        var posWithDim = new BlockPosWithDim(
-                level == null ? UNKNOWN_DIM:level.dimension().location(), pos
+        var levelResLoc = level == null ? new ResourceLocation(Thaumcraft.MOD_ID,"unknown") : level.dimension().location();
+        this.id = NodeIDResourceLocation.of(
+                levelResLoc.getNamespace() + "_" + levelResLoc.getPath(),
+                String.valueOf(pos.getX()).replace('-','_')
+                        + "_" + String.valueOf(pos.getY()).replace('-','_')
+                        + "_" + String.valueOf(pos.getZ()).replace('-','_')
         );
-        this.id = posWithDim.toString();
-        if (level != null && nodeIdToLocations != null) {
-            nodeIdToLocations.put(this.id, posWithDim);
-        }
 
         return this.id;
     }
 
     @Override
     public void setRemoved() {
-        if (nodeIdToLocations != null) {
-            nodeIdToLocations.remove(this.id);
-        }
+        unregisterFromWeakLookup(this.level);
 
         super.setRemoved();
+    }
+
+    @Override
+    public void setLevel(Level level) {
+        this.registerToCubeLookup(level, this.level);
+        super.setLevel(level);
     }
 
     public static void serverTick(AbstractNodeBlockEntity thiz) {
@@ -148,12 +162,10 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         ++this.tickCount;
         this.checkLock();
 
-        if (this.getNodeType() == NodeType.DARK && this.tickCount % 50 == 0) {
-            ItemCompassStone.sinisterNodes.put(new WorldCoordinates(this), System.currentTimeMillis());
-        }
     }
 
 
+    @Override
     public void nodeChange() {
         this.regenerationTickPeriod = -1;
         markDirtyAndUpdateSelf();
@@ -181,10 +193,12 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             player.stopUsingItem();
             return;
         }
-        if (!(usingWand.getItem() instanceof ICentiVisContainerItem<? extends Aspect> visContainerNotCasted) || !(usingWand.getItem() instanceof IWandComponentsOwnerItem componentsOwner)) {
+        if (!(usingWand.getItem() instanceof ICentiVisContainerItem<? extends Aspect> visContainerNotCasted)
+                || !(usingWand.getItem() instanceof IWandComponentsOwnerItem componentsOwner)
+        ) {
             return;
         }
-        var visContainer = (ICentiVisContainerItem<Aspect>)visContainerNotCasted;
+        var visContainer = (ICentiVisContainerItem<Aspect>) visContainerNotCasted;
         HitResult hitResult = EntityUtils.getHitResultFromPlayer(this.level, player, true);
         if (hitResult.getType() != Type.BLOCK) {
             player.stopUsingItem();
@@ -204,49 +218,46 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         }
 
         if (tickCount % 5 == 0) {
-            int tap = 1;
+            int amountToDrain = 1;
             //TODO:[maybe wont finished]NodeDrainAPI?
-            if (NODE_TAKE_IT_ALL.isPlayerCompletedResearch(player)) {
-                ++tap;
+            if (NODE_TAKE_IT_ALL.isLivingEntityCompletedResearch(player)) {
+                ++amountToDrain;
             }
 
-            if (MASTER_NODE_TRAPPING.isPlayerCompletedResearch(player)
+            if (MASTER_NODE_TRAPPING.isLivingEntityCompletedResearch(player)
             ) {
-                ++tap;
+                ++amountToDrain;
             }
 
-            boolean hasNodeHarmfulComponentsFlag = false;
-            for (var component : componentsOwner.getWandComponents(usingWand)) {
-                if (component.getItem() instanceof INodeHarmfulComponent) {
-                    hasNodeHarmfulComponentsFlag = true;
-                    break;
-                }
-            }
-            boolean preserve = !player.isCrouching()
-                    && NODE_PRESERVE.isPlayerCompletedResearch(player)
-                    && !hasNodeHarmfulComponentsFlag;
+            boolean isNodeHarmful =
+                    componentsOwner.isWandNodeHarmful(usingWand);
+
+            boolean preserve =
+                    !player.isCrouching()
+                            && NODE_PRESERVE.isLivingEntityCompletedResearch(player)
+                            && !isNodeHarmful;
             boolean success = false;
             Aspect aspect;
             if ((aspect = this.chooseRandomFilteredFromSource(
                     visContainer.getAspectsWithRoomRemaining(usingWand), preserve)) != null) {
-                int amt = this.getAspects()
-                        .getAmount(aspect);
-                if (tap > amt) {
-                    tap = amt;
+                int amountCanDrain = this.getAspects()
+                        .get(aspect);
+                if (amountToDrain > amountCanDrain) {
+                    amountToDrain = amountCanDrain;
                 }
 
-                if (preserve && tap == amt) {
-                    --tap;
+                if (preserve && amountToDrain == amountCanDrain) {
+                    --amountToDrain;
                 }
 
-                if (tap > 0) {
+                if (amountToDrain > 0) {
                     var serverFlag = !this.level.isClientSide;
                     int remainingCentiVis = visContainer.addCentiVis(
-                            usingWand, aspect, tap * CENTIVIS_MULTIPLIER, serverFlag);
-                    if (remainingCentiVis < tap) {
+                            usingWand, aspect, amountToDrain * CENTIVIS_MULTIPLIER, serverFlag);
+                    if (remainingCentiVis < amountToDrain) {
                         this.drainColor = aspect.getColor();
                         if (serverFlag) {
-                            this.takeFromContainer(aspect, tap - remainingCentiVis);
+                            this.takeFromContainer(aspect, amountToDrain - remainingCentiVis);
                             mfu = true;
                         }
 
@@ -280,25 +291,30 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         }
     }
 
+    @Override
     public AspectList<Aspect> getAspects() {
         return this.aspects;
     }
 
+    @Override
     public AspectList<Aspect> getAspectsBase() {
         return this.aspectsBase;
     }
 
+    @Override
     public void setAspectsWithBase(AspectList<Aspect> aspects) {
         this.aspects = aspects;
         this.aspectsBase = aspects.copy();
     }
+
+    @Override
     public void setAspectsBase(AspectList<Aspect> aspects) {
         this.aspectsBase = aspects.copy();
     }
 
     @Override
     public int addToContainer(Aspect aspect, int amount) {
-        int left = amount + this.aspects.getAmount(aspect) - this.aspectsBase.getAmount(aspect);
+        int left = amount + this.aspects.get(aspect) - this.aspectsBase.get(aspect);
         left = Math.max(left, 0);
         this.aspects.addAll(aspect, amount - left);
         return left;
@@ -309,9 +325,10 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         return this.aspects.tryReduce(aspect, amount);
     }
 
+    @Override
     public Aspect takeRandomPrimalFromSource() {
         AspectList<PrimalAspect> primals = this.aspects.getPrimalAspects();
-        Aspect asp = primals.randomAspect(this.level != null?this.level.random: RandomSource.createNewThreadLocalInstance());//[this.level.random.nextInt(primals.length)];
+        Aspect asp = primals.randomAspect(this.level != null ? this.level.random : RandomSource.createNewThreadLocalInstance());//[this.level.random.nextInt(primals.length)];
         return asp != null && this.aspects.tryReduce(asp, 1) ? asp : null;
     }
 
@@ -319,18 +336,15 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         int min = preserve ? 1 : 0;
         ArrayList<Aspect> validaspects = new ArrayList<>();
 
-        for (var entry : this.aspects
-                .entrySet()) {
-            var prim = entry.getKey();
-            var amount = entry.getValue();
-            if (filter.getAmount(prim) > 0 && amount > min) {
+        this.aspects.forEach((prim, amount) -> {
+            if (filter.get(prim) > 0 && amount > min) {
                 validaspects.add(prim);
             }
-        }
+        });
 
         if (this.level != null && !validaspects.isEmpty()) {
             Aspect asp = validaspects.get(this.level.random.nextInt(validaspects.size()));
-            if (asp != null && this.aspects.getAmount(asp) > min) {
+            if (asp != null && this.aspects.get(asp) > min) {
                 return asp;
             }
         }
@@ -359,34 +373,35 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
     @Override
     public int getNodeVisBase(Aspect aspect) {
-        return this.aspectsBase.getAmount(aspect);
+        return this.aspectsBase.get(aspect);
     }
 
     @Override
     public void setNodeVisBase(Aspect aspect, short nodeVisBase) {
-        if (this.aspectsBase.getAmount(aspect) < nodeVisBase) {
+        if (this.aspectsBase.get(aspect) < nodeVisBase) {
             this.aspectsBase.mergeWithHighest(aspect, nodeVisBase);
         } else {
-            this.aspectsBase.tryReduce(aspect, this.aspectsBase.getAmount(aspect) - nodeVisBase);
+            this.aspectsBase.tryReduce(aspect, this.aspectsBase.get(aspect) - nodeVisBase);
         }
 
     }
 
     public void readNodeInfo(NodeInfo nodeInfo) {
-
         this.id = nodeInfo.nodeId;
         this.nodeType = nodeInfo.nodeType;
         this.nodeModifier = nodeInfo.nodeModifier;
         this.aspects = nodeInfo.nodeAspects;
         this.aspectsBase = nodeInfo.nodeAspectsBase;
     }
+    public NodeInfo getNodeInfo() {
+        return new NodeInfo(this.id, this.nodeType, this.nodeModifier, this.aspects, this.aspectsBase);
+    }
 
     @Override
     public void readCustomNBT(CompoundTag tag) {
         var nodeInfo = NODE_INFO.readFromCompoundTag(tag);
         readNodeInfo(nodeInfo);
-        addNodeToCache();
-        this.lastActiveMillis = NODE_LAST_ACTIVE_ACCESSOR.readFromCompoundTag(tag);
+        this.lastActiveMillis = NODE_LAST_ACTIVE_ACCESSOR.readLongFromCompoundTag(tag);
 
         var modifier = this.getNodeModifier();
         int regen = modifier.getRegenValue(this);
@@ -399,25 +414,13 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     }
 
 
-    public void addNodeToCache() {
-        if (this.level != null && nodeIdToLocations != null) {
-            nodeIdToLocations.put(
-                    this.id, new BlockPosWithDim(
-                            this.level.dimension()
-                                    .location(), this.getBlockPos()
-                    )
-            );
-        }
-    }
-
     @Override
     public void writeCustomNBT(CompoundTag tag) {
         if (this.id == null) {
             this.id = this.generateId();
         }
-        NODE_INFO.writeToCompoundTag(tag,new NodeInfo(this.id,this.nodeType,this.nodeModifier,this.aspects,this.aspectsBase));
-        NODE_LAST_ACTIVE_ACCESSOR.writeToCompoundTag(tag, this.lastActiveMillis);
-        addNodeToCache();
+        NODE_INFO.writeToCompoundTag(tag, getNodeInfo());
+        NODE_LAST_ACTIVE_ACCESSOR.writeLongToCompoundTag(tag, this.lastActiveMillis);
     }
 
     //attack another node(zap~),take vis from there.
@@ -427,7 +430,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         var pos = this.getBlockPos();
         var nodeType = this.getNodeType();
         var nodeModifier = this.getNodeModifier();
-        if (nodeLock != null && !nodeLock.allowToAttackAnotherNode(level,this.getNodeLockPos())) {
+        if (nodeLock != null && !nodeLock.allowToAttackAnotherNode(level, this.getNodeLockPos())) {
             return false;
         }
         if (nodeModifier.allowToAttackAnotherNode(this)) {
@@ -436,7 +439,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
         float nodeTypeAttackBiggerNodeChangeModifier = nodeType.getAttackBiggerNodeChangeModifier();
         float nodeModifierAttackBiggerNodeChangeModifier = nodeModifier.getAttackBiggerNodeChangeModifier();
-        float attackBiggerNodeChangeModifier = Math.max(nodeTypeAttackBiggerNodeChangeModifier,nodeModifierAttackBiggerNodeChangeModifier);
+        float attackBiggerNodeChangeModifier = Math.max(nodeTypeAttackBiggerNodeChangeModifier, nodeModifierAttackBiggerNodeChangeModifier);
         int attackPeriod;
         attackPeriod = Math.min(nodeType.getAttackAnotherNodePeriod(this), nodeModifier.getAttackAnotherNodePeriod(this));
 
@@ -451,15 +454,15 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         }
 
         var pos2 = new BlockPos(pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset);
-        BlockEntity probablyAnotherNode = this.level.getBlockEntity(pos2);
-        if (probablyAnotherNode instanceof AbstractNodeBlockEntity anotherNode
+        BlockEntity probablyAnotherNode = LevelBlockEntityAccessing.getExistingBlockEntity(this.level, pos2);
+        if (probablyAnotherNode instanceof INodeBlockEntity anotherNode
                 && this.level.getBlockState(pos2).getBlock() instanceof INodeBlock nodeBlock
                 && !nodeBlock.preventAttackFromAnotherNode()
         ) {
-            var anotherNodeLock =anotherNode.getCurrentNodeLock();
-            if (anotherNodeLock != null){
+            var anotherNodeLock = anotherNode.getCurrentNodeLock();
+            if (anotherNodeLock != null) {
                 var probablyAnotherLockPos = anotherNode.getNodeLockPos();
-                if (anotherNodeLock.allowBeingAttackedFromAnotherNode(level,probablyAnotherLockPos)){
+                if (anotherNodeLock.allowBeingAttackedFromAnotherNode(level, probablyAnotherLockPos)) {
                     return false;
                 }
             }
@@ -475,7 +478,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
             ) {
                 Aspect aspectToTake = anotherNode.getAspects()
                         .randomAspect(this.level.getRandom());
-                int canTakeAmountOfAnother = this.getAspects().getAmount(aspectToTake);
+                int canTakeAmountOfAnother = this.getAspects().get(aspectToTake);
                 int aspectCapacityAmountOfThis = this.getNodeVisBase(aspectToTake);
 
                 boolean didAttackNode = false;
@@ -494,7 +497,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
                 }
 
                 if (didAttackNode) {
-                    anotherNode.wait = anotherNode.regenerationTickPeriod / 2;
+                    anotherNode.setWait(anotherNode.getRegenerationTickPeriod() / 2);
                     probablyAnotherNode.setChanged();
                     if (probablyAnotherNode.hasLevel() && probablyAnotherNode.getLevel() != null) {
                         probablyAnotherNode.getLevel()
@@ -531,6 +534,11 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         return false;
     }
 
+    @Override
+    public void setWait(int wait) {
+        this.wait = wait;
+    }
+
     private boolean handleRecharge() {
         if (level == null) return false;
         var modifier = this.getNodeModifier();
@@ -539,7 +547,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
             this.regenerationTickPeriod = modifier.getRegenValue(this);
             if (nodeLock != null) {
-                this.regenerationTickPeriod *= nodeLock.nodeRegenerationDelayMultiplier(level,this.getNodeLockPos());
+                this.regenerationTickPeriod *= nodeLock.nodeRegenerationDelayMultiplier(level, this.getNodeLockPos());
             }
         }
 
@@ -559,22 +567,22 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         }
 
         if (this.tickCount % 1200 == 0) {
-            for (var aspectEntry : this.getAspects()
-                    .entrySet()) {
-                var aspect = aspectEntry.getKey();
-                var amount = aspectEntry.getValue();
-                if (amount <= 0) {
-                    //so if we're unlucky to meet this period,aspect size will -1!
-                    this.setNodeVisBase(aspect, (short) (this.getNodeVisBase(aspect) - 1));
-                    if (this.level.random.nextInt(20) == 0 || this.getNodeVisBase(aspect) <= 0) {
-                        this.getAspects().remove(aspect);
-                        this.getNodeModifier().onPeriodicReduceSize(this);
-                        this.nodeChange();
-                        break;
-                    }
-                    this.nodeChange();
-                }
-            }
+            this.getAspects().forEachWithBreak(
+                    ((aspect, amount) -> {
+                        if (amount <= 0) {
+                            //so if we're unlucky to meet this period,aspect size will -1!
+                            this.setNodeVisBase(aspect, (short) (this.getNodeVisBase(aspect) - 1));
+                            if (this.level.random.nextInt(20) == 0 || this.getNodeVisBase(aspect) <= 0) {
+                                this.getAspects().remove(aspect);
+                                this.getNodeModifier().onPeriodicReduceSize(this);
+                                this.nodeChange();
+                                return true;
+                            }
+                            this.nodeChange();
+                        }
+                        return false;
+                    })
+            );
 
             if (this.getAspects()
                     .size() <= 0) {
@@ -600,21 +608,21 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
 
         return false;
     }
-    private List<Aspect> getVisCanRegen(){
+
+    private List<Aspect> getVisCanRegen() {
         List<Aspect> result = new ArrayList<>(this.getAspects().size());
-        for (var aspectEntry : this.getAspects()
-                .entrySet()) {
-            var aspect = aspectEntry.getKey();
-            var amount = aspectEntry.getValue();
-            if (amount < this.getNodeVisBase(aspect)) {
-                result.add(aspect);
-            }
-        }
+        this.getAspects().forEach(
+                (aspect, amount) -> {
+                    if (amount < this.getNodeVisBase(aspect)) {
+                        result.add(aspect);
+                    }
+                }
+        );
         return result;
     }
 
 
-    //TODO:If you are silverTree log or something contains a node,override it
+    //If you are silverTree log or something contains a node,override it
     public abstract void removeNode();
 
 
@@ -650,7 +658,28 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     public @Nullable INodeLockBlock getCurrentNodeLock() {
         return INodeLockBlock.getNodeLock(this.getLockId());
     }
+
     public @NotNull BlockPos getNodeLockPos() {
         return this.getBlockPos().below();
+    }
+
+    @Override
+    public @NotNull AbstractNodeBlockEntity getStoreItemForLookup() {
+        return this;
+    }
+
+    @Override
+    public @Nullable Map<Level, CubeChunkedWeakLookups<AbstractNodeBlockEntity>> getSelfLookupMap() {
+        return ALL_NODES;
+    }
+
+    @Override
+    public void setRegenerationTickPeriod(int regenerationTickPeriod) {
+        this.regenerationTickPeriod = regenerationTickPeriod;
+    }
+
+    @Override
+    public int getRegenerationTickPeriod() {
+        return regenerationTickPeriod;
     }
 }

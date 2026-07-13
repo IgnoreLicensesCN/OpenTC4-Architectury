@@ -1,9 +1,6 @@
 package com.linearity.opentc4.annotations;//package vazkii.botania.common.annotations;//yes i stole code
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * A purely-documentative annotation.
@@ -17,6 +14,8 @@ import java.lang.annotation.Target;
  * The intent is that we audit such sites every major Minecraft version or so, to ensure
  * that they still properly override the intended target.
  *///doc from Botania source(in fact we dont call "xplat" here we call "common"(architectury) )
+@Documented
+@StoleFrom("botania")
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.METHOD)
 public @interface SoftImplement {

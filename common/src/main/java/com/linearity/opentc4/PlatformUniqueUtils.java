@@ -1,7 +1,5 @@
 package com.linearity.opentc4;
 
-import com.linearity.opentc4.simpleutils.bauble.BaubleConsumer;
-import com.linearity.opentc4.simpleutils.bauble.EquippedBaubleSlot;
 import com.mojang.brigadier.CommandDispatcher;
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.client.KeyMapping;
@@ -9,33 +7,25 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 
 import java.util.List;
-import java.util.Optional;
 
 //a impl for fabric and one for forge
 public abstract class PlatformUniqueUtils {
 
-    public abstract List<Item> getItemsFromTag(String key);
     public abstract List<Item> getItemsFromTag(TagKey<Item> key);
-    public abstract List<String> getTagsFromItem(ItemStack stack);
-    public boolean isItemStackMatchTag(ItemStack stack, String tag){
-        return stack.is(
-                TagKey.create(Registries.ITEM, new ResourceLocation(tag))
-        );
-    };
+
     public abstract MinecraftServer getServer();
     public abstract KeyMapping registerKeyBinding(String key, int glfwKeyCode, String categoryName);
     public abstract void registerKeyBinding(KeyMapping mapping);
@@ -49,36 +39,6 @@ public abstract class PlatformUniqueUtils {
     public abstract void registerOnLeftClickBlockListenerForItem(IAttackBlockListenerItem listener, Item forItem);
     public abstract BakedModel getModel(ResourceLocation modelLocation);
     public void registerModel(ResourceLocation modelLocation){};
-    public abstract Optional<ItemStack> getEquippedItem(
-            Player player,
-            EquippedBaubleSlot slotKey
-    );
-
-    public abstract List<EquippedBaubleSlot> listEquippedSlots(Player player);
-    public abstract boolean forEachBauble(
-            Player player,
-            BaubleConsumer<Item> consumer
-    );
-
-    public abstract <T> boolean forEachBauble(
-            Player player,
-            Class<T> expectedItemType,
-            BaubleConsumer<T> consumer
-    );
-    public abstract boolean forEachBaubleWithType(
-            String baubleType,
-            Player player,
-            BaubleConsumer<Item> consumer
-    );
-
-    public abstract <T> boolean forEachBaubleWithType(
-            String baubleType,
-            Player player,
-            Class<T> expectedItemType,
-            BaubleConsumer<T> consumer
-    );
-
-    public abstract String[] listBaubleTypes(LivingEntity livingEntity);
 
     public abstract @Nullable FluidStack copyFluidStackFromItemStack(ItemStack itemStack);
     public abstract long decreaseFluidStackToItemStack(ItemStack itemStack,FluidStack fluidStack);

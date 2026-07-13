@@ -8,9 +8,9 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.api.aspects.AspectList;
+import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
-import thaumcraft.common.tiles.TileAlchemyFurnace;
+import thaumcraft.common.tiles.junkbox.TileAlchemyFurnace;
 
 public class ContainerAlchemyFurnace extends Container {
    private TileAlchemyFurnace furnace;

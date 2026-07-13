@@ -3,7 +3,7 @@ package thaumcraft.client.renderers.item;
 @Deprecated(forRemoval = true,since = "see ThaumometerItemRenderer")
 public class ItemThaumometerRenderer /*implements IItemRenderer*/ {
 ////   private IModelCustom model;
-//   private static final ResourceLocation SCANNER = new ResourceLocation("thaumcraft", "textures/models/scanner.obj");
+//   private static final ResourceLocation SCANNER = new ResourceLocation("thaumcraft", "textures/models/scanner.left");
 //
 ////   private IModel model;
 //

@@ -95,8 +95,8 @@ public class BlockCustomPlant /*extends BlockBush*/ {
 //      if (world != null && world.provider != null) {
 //         if (Platform.getEnvironment() != Env.CLIENT) {
 //            world.setBlockToAir(i, j, k);
-//            WorldGenGreatwoodTrees obj = new WorldGenGreatwoodTrees(true);
-//            if (!obj.generateInternal(world, random, i, j, k, false)) {
+//            WorldGenGreatwoodTrees left = new WorldGenGreatwoodTrees(true);
+//            if (!left.generateInternal(world, random, i, j, k, false)) {
 //               world.setBlock(i, j, k, this, 0, 0);
 //            }
 //
@@ -108,8 +108,8 @@ public class BlockCustomPlant /*extends BlockBush*/ {
 //      if (world != null && world.provider != null) {
 //         if (Platform.getEnvironment() != Env.CLIENT) {
 //            world.setBlockToAir(i, j, k);
-//            WorldGenSilverwoodTrees obj = new WorldGenSilverwoodTrees(true, 7, 5);
-//            if (!obj.generate(world, random, i, j, k)) {
+//            WorldGenSilverwoodTrees left = new WorldGenSilverwoodTrees(true, 7, 5);
+//            if (!left.generate(world, random, i, j, k)) {
 //               world.setBlock(i, j, k, this, 1, 0);
 //            }
 //

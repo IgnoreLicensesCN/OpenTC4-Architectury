@@ -2,6 +2,7 @@ package thaumcraft.common.tiles.crafted.essentiabe.pipes;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.colorannotation.annotation.RGBColor;
+import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,8 +17,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
 import thaumcraft.api.aspects.*;
-import thaumcraft.api.tile.TileThaumcraft;
-import thaumcraft.api.wands.IWandInteractableBlockOrBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
+import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
+import thaumcraft.common.tiles.TileThaumcraft;
+import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -25,6 +28,8 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.Map;
 
 import static com.linearity.opentc4.Consts.EssentiaTubeBlockEntityTagAccessors.*;
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+
 //This part is not efficiency but i have no better way unless we have Thaumic Energistics
 public class EssentiaTubeBlockEntity extends TileThaumcraft
         implements
@@ -63,7 +68,7 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
         super(blockEntityType, blockPos, blockState);
     }
     public EssentiaTubeBlockEntity(BlockPos blockPos, BlockState blockState) {
-        this(ThaumcraftBlockEntities.ESSENTIA_TUBE, blockPos, blockState);
+        this(ThaumcraftBlockEntities.BlockEntityTypeInstances.ESSENTIA_TUBE(), blockPos, blockState);
     }
 
 
@@ -93,7 +98,7 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
         for(var dirToAnotherBE:Direction.values()) {
             if (this.isConnectable(dirToAnotherBE)) {
                 var dirToSelf = dirToAnotherBE.getOpposite();
-                if (this.level.getBlockEntity(pos.relative(dirToAnotherBE)) instanceof IEssentiaTransportInBlockEntity ic) {
+                if (LevelBlockEntityAccessing.getExistingBlockEntity(this.level, pos.relative(dirToAnotherBE)) instanceof IEssentiaTransportInBlockEntity ic) {
                     int inBESuction = ic.getSuctionAmount(dirToSelf);
                     if (this.suction > 0
                             && (inBESuction == this.suction || inBESuction == this.suction - 1)
@@ -116,7 +121,7 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
                 if ((orderedFacing == null || orderedFacing != dirToAnotherBE.getOpposite())
                         && this.isConnectable(dirToAnotherBE)) {
                     var dirToSelf = dirToAnotherBE.getOpposite();
-                    if (this.level.getBlockEntity(pos.relative(dirToAnotherBE)) instanceof IEssentiaTransportOutBlockEntity outBE) {
+                    if (LevelBlockEntityAccessing.getExistingBlockEntity(this.level, pos.relative(dirToAnotherBE)) instanceof IEssentiaTransportOutBlockEntity outBE) {
                         if (outBE.canOutputTo(dirToSelf)
                                 &&
                                 (this.getSuctionType(dirToAnotherBE).isEmpty()
@@ -288,7 +293,7 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
             Direction toAnotherBEDirection){
         if (this.level == null){return;}
         var facingFromAnotherToSelf = toAnotherBEDirection.getOpposite();
-        var anotherBE = this.level.getBlockEntity(getBlockPos().relative(toAnotherBEDirection));
+        var anotherBE = LevelBlockEntityAccessing.getExistingBlockEntity(this.level, getBlockPos().relative(toAnotherBEDirection));
         if (!(anotherBE instanceof IEssentiaTransportInBlockEntity outBE)){
             return;
         }

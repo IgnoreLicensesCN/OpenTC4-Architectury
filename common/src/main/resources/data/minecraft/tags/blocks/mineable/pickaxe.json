@@ -76,6 +76,14 @@
     "thaumcraft:essentia_crystallizer",
     "thaumcraft:arcane_pressure_plate",
     "thaumcraft:arcane_bore",
-    "thaumcraft:arcane_ear"
+    "thaumcraft:arcane_ear",
+    "thaumcraft:arcane_pedestal",
+    "thaumcraft:infusion_pillar",
+    "thaumcraft:infusion_matrix",
+    "thaumcraft:wand_recharge_pedestal",
+    "thaumcraft:compound_recharge_focus",
+    "thaumcraft:arcane_spa",
+    "thaumcraft:focal_manipulator",
+    "thaumcraft:flux_scrubber"
   ]
 }

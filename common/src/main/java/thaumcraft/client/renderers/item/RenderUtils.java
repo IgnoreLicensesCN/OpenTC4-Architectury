@@ -1,14 +1,17 @@
 package thaumcraft.client.renderers.item;
 
-import com.linearity.opentc4.simpleutils.ListenerManager;
+import com.linearity.opentc4.utils.collectionlike.ListenerManager;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
-import static thaumcraft.common.items.ThaumcraftItems.THAUMOMETER;
+import static thaumcraft.common.items.ThaumcraftItemInstances.COMPASS_STONE;
+import static thaumcraft.common.items.ThaumcraftItemInstances.THAUMOMETER;
 
 public class RenderUtils {
 
@@ -19,8 +22,8 @@ public class RenderUtils {
     public static void init(){
         if (inited){return;}
         inited = true;
-        ITEM_RENDERERS.computeIfAbsent(THAUMOMETER,item -> new ListenerManager<>()).registerListener(ThaumometerItemRenderer.INSTANCE);
-        platformUtils.registerModelForItem(THAUMOMETER, ResourceLocation.tryParse("thaumcraft:models/item/scanner.obj"));
-        platformUtils.registerModel(ResourceLocation.tryParse("thaumcraft:models/special/hemis.obj"));
+        ITEM_RENDERERS.computeIfAbsent(THAUMOMETER(),item -> new ListenerManager<>()).registerListener(ThaumometerItemRenderer.INSTANCE);
+        platformUtils.registerModelForItem(THAUMOMETER(), ResourceLocation.tryParse("thaumcraft:models/item/scanner.left"));
+        platformUtils.registerModel(ResourceLocation.tryParse("thaumcraft:models/special/hemis.left"));
     }
 }
