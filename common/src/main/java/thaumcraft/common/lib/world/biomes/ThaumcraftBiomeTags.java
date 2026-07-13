@@ -9,5 +9,7 @@ import thaumcraft.common.Thaumcraft;
 public class ThaumcraftBiomeTags {
     public static final TagKey<Biome> MANA_BEAN_SURVIVES = TagKey.create(Registries.BIOME, new ResourceLocation(
             Thaumcraft.MOD_ID,"mana_bean_survives"));
+    public static final TagKey<Biome> SMALL_TAINTACLE_CAN_SPAWN = TagKey.create(Registries.BIOME, new ResourceLocation(
+            Thaumcraft.MOD_ID,"small_taintacle_can_spawn"));
     public static void init(){}
 }

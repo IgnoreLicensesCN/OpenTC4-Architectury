@@ -5,6 +5,7 @@
   "minVersion": "0.8",
   "client": [
     "client.ClientChunkCacheStorageMixin",
+    "client.ClientPacketListenerAccessor",
     "client.ClientPacketListenerMixin",
     "client.FontRendererMixin",
     "client.LivingEntityClientMixin",
@@ -18,10 +19,9 @@
     "client.clientbe.EssentiaReservoirBlockEntityClientMixin",
     "client.clientbe.InfusionMatrixBlockEntityClientMixin",
     "client.clientbe.VisNetRelayBlockEntityClientMixin",
+    "client.entity.TaintedSwarmEntityMixin",
     "client.render.ItemRendererMixin",
-    "client.render.ModelPredicateProviderRegistryAccessor",
-    "client.ClientPacketListenerAccessor",
-    "client.entity.TaintedSwarmEntityMixin"
+    "client.render.ModelPredicateProviderRegistryAccessor"
   ],
   "mixins": [
     "AbstractFurnaceBlockEntityMixin",
@@ -62,7 +62,8 @@
     "SlimeMixin$SlimeMoveControlAccessor",
     "SpiderMixin",
     "VillagerMixin",
-    "ZombieMixin"
+    "ZombieMixin",
+    "client.entity.TaintacleEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

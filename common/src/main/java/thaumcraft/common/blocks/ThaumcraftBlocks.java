@@ -1606,5 +1606,11 @@ public class ThaumcraftBlocks {
         public static final TagKey<Block> CAN_BE_CONVERTED_TO_FIBROUS_TAINT = TagKey.create(
                 Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "can_be_converted_to_fibrous_taint")
         );
+        public static final TagKey<Block> TAINTACLE_CAN_SPAWN = TagKey.create(
+                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "taintacle_can_spawn")
+        );
+        public static final TagKey<Block> SMALL_TAINTACLE_CAN_SPAWN = TagKey.create(
+                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "small_taintacle_can_spawn")
+        );
     }
 }

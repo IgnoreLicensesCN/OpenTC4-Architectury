@@ -1,5 +1,6 @@
 package thaumcraft.common.entities;
 
+import dev.architectury.registry.level.entity.SpawnPlacementsRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -13,9 +14,9 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.levelgen.Heightmap;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
 import thaumcraft.common.entities.monster.tainted.*;
@@ -96,6 +97,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<TaintedSwarmEntity> TAINTED_SWARM() {
             return Registry.SUPPLIER_TAINTED_SWARM.get();
+        }
+        public static EntityType<TaintacleEntity> TAINTACLE() {
+            return Registry.SUPPLIER_TAINTACLE.get();
         }
     }
 
@@ -231,6 +235,13 @@ public class ThaumcraftEntities {
                         .clientTrackingRange(10)
                         .build("tainted_swarm")
         );
+        public static final RegistrySupplier<EntityType<TaintacleEntity>> SUPPLIER_TAINTACLE = ENTITIES.register(
+                "taintacle",
+                () -> EntityType.Builder.<TaintacleEntity>of(TaintacleEntity::new, MobCategory.MONSTER)
+                        .sized(0.66F, 3)
+                        .clientTrackingRange(10)
+                        .build("taintacle")
+        );
     }
 
     public static class EntityTags {
@@ -240,10 +251,17 @@ public class ThaumcraftEntities {
         public static final TagKey<EntityType<?>> TAINTED = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"tainted_entity"));
         public static final TagKey<EntityType<?>> ELDRITCH = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"eldritch_entity"));
         public static final TagKey<EntityType<?>> NOT_TAINT_CONVERTABLE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"not_taint_convertable"));
+        public static final TagKey<EntityType<?>> CAN_SPAWN_SMALL_TAINTACLE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"can_spawn_small_taintacle"));
     }
 
     public static void init(){
         ENTITIES.register();
+        registerAttributes();
+
+        registerSpawnPlacements();
+    }
+
+    private static void registerAttributes() {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.FIRE_BAT(),FireBatEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_CREEPER(),TaintedCreeperEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_COW(),TaintedCowEntity.createAttributes().build());
@@ -252,7 +270,18 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_PIG(),TaintedPigEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.THAUMIC_SLIME(), ThaumicSlimeEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_SWARM(), TaintedSwarmEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTACLE(), TaintacleEntity.createAttributes().build());
     }
+
+    private static void registerSpawnPlacements() {
+        SpawnPlacementsRegistry.register(
+                Registry.SUPPLIER_TAINTACLE,
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                TaintacleEntity::checkTaintacleSpawnRules
+        );
+    }
+
 
     public static void registerDefaultAttribute(EntityType<? extends LivingEntity> entityType,AttributeSupplier attributeSupplier){
         ensureAttributeSuppliersModifiable();
@@ -301,7 +330,7 @@ public class ThaumcraftEntities {
         var taintedSelf = taintedEntityType.create(level);
         var tags = new CompoundTag();
 
-        notTainted.saveWithoutId(tags);
+        notTainted.saveWithoutId(tags);//TODO:I want to keep some features but idk if it's suitable
         tags.putUUID("UUID", taintedSelf.getUUID());
         taintedSelf.load(tags);
         if (taintedSelf instanceof LivingEntity living && notTainted instanceof LivingEntity notTaintedLiving){
