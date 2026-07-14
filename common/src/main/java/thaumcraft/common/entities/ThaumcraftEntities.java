@@ -1,5 +1,6 @@
 package thaumcraft.common.entities;
 
+import com.linearity.opentc4.OpenTC4;
 import dev.architectury.registry.level.entity.SpawnPlacementsRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -100,6 +101,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<TaintacleEntity> TAINTACLE() {
             return Registry.SUPPLIER_TAINTACLE.get();
+        }
+        public static EntityType<SmallTaintacleEntity> SMALL_TAINTACLE() {
+            return Registry.SUPPLIER_SMALL_TAINTACLE.get();
         }
     }
 
@@ -242,6 +246,13 @@ public class ThaumcraftEntities {
                         .clientTrackingRange(10)
                         .build("taintacle")
         );
+        public static final RegistrySupplier<EntityType<SmallTaintacleEntity>> SUPPLIER_SMALL_TAINTACLE = ENTITIES.register(
+                "small_taintacle",
+                () -> EntityType.Builder.<SmallTaintacleEntity>of(SmallTaintacleEntity::new, MobCategory.MONSTER)
+                        .sized(0.22F, 1)
+                        .clientTrackingRange(10)
+                        .build("small_taintacle")
+        );
     }
 
     public static class EntityTags {
@@ -257,7 +268,6 @@ public class ThaumcraftEntities {
     public static void init(){
         ENTITIES.register();
         registerAttributes();
-
         registerSpawnPlacements();
     }
 
@@ -271,6 +281,7 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.THAUMIC_SLIME(), ThaumicSlimeEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_SWARM(), TaintedSwarmEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTACLE(), TaintacleEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.SMALL_TAINTACLE(), SmallTaintacleEntity.createAttributes().build());
     }
 
     private static void registerSpawnPlacements() {
@@ -328,16 +339,20 @@ public class ThaumcraftEntities {
 
         var level = notTainted.level();
         var taintedSelf = taintedEntityType.create(level);
-        var tags = new CompoundTag();
+        if (taintedSelf != null){
+            var tags = new CompoundTag();
 
-        notTainted.saveWithoutId(tags);//TODO:I want to keep some features but idk if it's suitable
-        tags.putUUID("UUID", taintedSelf.getUUID());
-        taintedSelf.load(tags);
-        if (taintedSelf instanceof LivingEntity living && notTainted instanceof LivingEntity notTaintedLiving){
-            living.setHealth(living.getMaxHealth() *(notTaintedLiving.getHealth() / notTaintedLiving.getMaxHealth()));
+            notTainted.saveWithoutId(tags);//TODO:I want to keep some features but idk if it's suitable
+            tags.putUUID("UUID", taintedSelf.getUUID());
+            taintedSelf.load(tags);
+            if (taintedSelf instanceof LivingEntity living && notTainted instanceof LivingEntity notTaintedLiving){
+                living.setHealth(living.getMaxHealth() *(notTaintedLiving.getHealth() / notTaintedLiving.getMaxHealth()));
+            }
+
+            level.addFreshEntity(taintedSelf);
+            notTainted.discard();
+        }else {
+            OpenTC4.LOGGER.error("failed to convert entity to tainted mob,consider call #usualTaintedMobConversion in server (logical) side");
         }
-
-        level.addFreshEntity(taintedSelf);
-        notTainted.discard();
     }
 }

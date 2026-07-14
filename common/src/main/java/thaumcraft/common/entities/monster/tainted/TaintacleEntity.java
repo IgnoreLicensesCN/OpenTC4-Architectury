@@ -2,11 +2,13 @@ package thaumcraft.common.entities.monster.tainted;
 
 import com.linearity.opentc4.mixinaccessors.cliententity.TaintacleEntityClientAccessor;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -20,10 +22,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
+import thaumcraft.common.entities.abstracts.IMobAttackDamageTypeReplaceable;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
@@ -35,7 +39,7 @@ import java.util.EnumSet;
 
 import static thaumcraft.common.entities.ThaumcraftEntities.taintedMobWontAttack;
 
-public class TaintacleEntity extends Monster {
+public class TaintacleEntity extends Monster implements IMobAttackDamageTypeReplaceable {
     public TaintacleEntity(Level level) {
         this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTACLE(), level);
     }
@@ -94,32 +98,44 @@ public class TaintacleEntity extends Monster {
             if (attackGoal != null) {
                 attackGoal.ticksUntilNextAttack = 40 + level.random.nextInt(20);
             }
-            var smallTaintacle = new SmallTaintacleEntity(level);
-            smallTaintacle.setLocationAndAngles(entity.posX + (double)level.rand.nextFloat() - (double)level.rand.nextFloat(), entity.posY, entity.posZ + (double)level.rand.nextFloat() - (double)level.rand.nextFloat(), 0.0F, 0.0F);
-            level.addFreshEntity(smallTaintacle);
+            var smallType = getSmallTaintacleType();
+            if (smallType != null){
+                var smallTaintacle = smallType.create(level);
+                if (smallTaintacle != null) {
+                    smallTaintacle.setPos(
+                            spawnAtPos.getX() + 2 * random.nextFloat() - 1, spawnAtPos.getY(),
+                            spawnAtPos.getZ() + 2 * random.nextFloat() - 1
+                    );
+                    level.addFreshEntity(smallTaintacle);
+                }
 
-            this.playSound(ThaumcraftSounds.TENTACLE, this.getSoundVolume(), this.getVoicePitch());
-            if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)
-                    && (spawnAtState.isAir())
-                    && BlockUtils.isAdjacentToSolidBlock(level, spawnAtPos)
-                    && level instanceof ServerLevel serverLevel
-            ) {
-                Utils.setBiomeAt(serverLevel, spawnAtPos, ThaumcraftBiomeLookups.biomeHolderForLevel(
-                        level,ThaumcraftBiomeIDs.TAINT_KEY
-                ));
-                level.setBlockAndUpdate(
-                        spawnAtPos,
-                        level.random.nextInt(4) == 0
-                                ? ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_GRASS().defaultBlockState()
-                                : ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT().defaultBlockState()
-                );
+                this.playSound(ThaumcraftSounds.TENTACLE, this.getSoundVolume(), this.getVoicePitch());
+                if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)
+                        && (spawnAtState.isAir())
+                        && BlockUtils.isAdjacentToSolidBlock(level, spawnAtPos)
+                        && level instanceof ServerLevel serverLevel
+                ) {
+                    Utils.setBiomeAt(
+                            serverLevel, spawnAtPos, ThaumcraftBiomeLookups.biomeHolderForLevel(
+                                    level, ThaumcraftBiomeIDs.TAINT_KEY
+                            )
+                    );
+                    level.setBlockAndUpdate(
+                            spawnAtPos,
+                            level.random.nextInt(4) == 0
+                                    ? ThaumcraftBlocks.ThaumcraftBlockInstances.TAINTED_GRASS()
+                                    .defaultBlockState()
+                                    : ThaumcraftBlocks.ThaumcraftBlockInstances.FIBROUS_TAINT()
+                                    .defaultBlockState()
+                    );
+                }
             }
         }
     }
+
     @Override
-    public boolean doHurtTarget(Entity entity) {
-        //TODO
-        return super.doHurtTarget(entity);
+    public ResourceKey<DamageType> replaceDamageTypeWith() {
+        return ThaumcraftDamageSources.TENTACLE;
     }
 
     @Override
@@ -275,11 +291,21 @@ public class TaintacleEntity extends Monster {
             }
         }
 
-        protected void checkAndPerformAttack(LivingEntity livingEntity) {
+        protected void checkAndPerformAttack(LivingEntity target) {
             if (this.ticksUntilNextAttack <= 0 && getAgitationState()) {
-                this.resetAttackCooldown();
-                this.mob.swing(InteractionHand.MAIN_HAND);
-                this.mob.doHurtTarget(livingEntity);
+                var distanceSqr = this.mob.distanceToSqr(target);
+                var heightSqr = this.mob.getBbHeight() * this.mob.getBbHeight();
+
+                var selfBb = this.mob.getBoundingBox();
+                var targetBb = target.getBoundingBox();
+                if (distanceSqr <= heightSqr && targetBb.maxY > selfBb.minY && targetBb.minY < selfBb.maxY) {
+                    this.resetAttackCooldown();
+                    this.mob.swing(InteractionHand.MAIN_HAND);
+                    this.mob.doHurtTarget(target);
+                    this.mob.playSound(ThaumcraftSounds.TENTACLE, this.mob.getSoundVolume(), this.mob.getVoicePitch());
+                } else if (distanceSqr > heightSqr && target.onGround() && this.mob.getType().is(ThaumcraftEntities.EntityTags.CAN_SPAWN_SMALL_TAINTACLE)) {
+                    this.mob.spawnTentacles(target.blockPosition());
+                }
             }
         }
 
@@ -338,5 +364,9 @@ public class TaintacleEntity extends Monster {
     @Override
     public int getAmbientSoundInterval() {
         return 200;
+    }
+
+    protected @Nullable EntityType<?> getSmallTaintacleType(){
+        return ThaumcraftEntities.ThaumcraftEntityTypeInstances.SMALL_TAINTACLE();
     }
 }

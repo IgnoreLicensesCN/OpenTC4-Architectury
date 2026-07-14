@@ -34,6 +34,7 @@
     "ClimateSettingsMixin",
     "CowMixin",
     "CreeperMixin",
+    "DamageSourcesMixin",
     "DefaultAttributesAccessor",
     "DropExperienceBlockMixin",
     "EnchantmentCategoryWeaponMixin",

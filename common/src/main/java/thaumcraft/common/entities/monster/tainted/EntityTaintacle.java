@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.tainted;
 
+@Deprecated(forRemoval = true)
 public class EntityTaintacle /*extends EntityMob implements ITaintedMob*/ {
 //   public float flailIntensity = 1.0F;
 
@@ -110,57 +111,61 @@ public class EntityTaintacle /*extends EntityMob implements ITaintedMob*/ {
 //
 //   }
 
-   protected void attackEntity(Entity entity, float par2) {
-      if (this.attackTime <= 0) {
-         if (par2 <= this.height && entity.boundingBox.maxY > this.boundingBox.minY && entity.boundingBox.minY < this.boundingBox.maxY) {
-            this.attackTime = 20;
-            this.attackEntityAsMob(entity);
-            this.playSound("thaumcraft:tentacle", this.getSoundVolume(), this.getSoundPitch());
-         } else if (par2 > this.height && entity.onGround && !(this instanceof EntityTaintacleSmall)) {
-            this.spawnTentacles(entity);
-         }
-      }
+//   protected void attackEntity(Entity entity, float distance) {
+//      if (this.attackTime <= 0) {
+//         if (distance <= this.height && entity.boundingBox.maxY > this.boundingBox.minY && entity.boundingBox.minY < this.boundingBox.maxY) {
+//            this.attackTime = 20;
+//            this.attackEntityAsMob(entity);
+//            this.playSound("thaumcraft:tentacle", this.getSoundVolume(), this.getSoundPitch());
+//         } else if (distance > this.height && entity.onGround && !(this instanceof EntityTaintacleSmall)) {
+//            this.spawnTentacles(entity);
+//         }
+//      }
+//
+//   }
 
-   }
-
-   public boolean attackEntityAsMob(Entity par1Entity) {
-      float i = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
-      if (this.isPotionActive(Potion.damageBoost)) {
-         i += (float)(3 << this.getActivePotionEffect(Potion.damageBoost).getAmplifier());
-      }
-
-      if (this.isPotionActive(Potion.weakness)) {
-         i -= (float)(2 << this.getActivePotionEffect(Potion.weakness).getAmplifier());
-      }
-
-      int j = 0;
-      if (par1Entity instanceof EntityLivingBase) {
-         i += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)par1Entity);
-         j += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)par1Entity);
-      }
-
-      boolean flag = par1Entity.attackEntityFrom(ThaumcraftDamageSources.causeTentacleDamage(this), i);
-      if (flag) {
-         if (j > 0) {
-            par1Entity.addVelocity(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)j * 0.5F, 0.1, MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)j * 0.5F);
-            this.motionX *= 0.6;
-            this.motionZ *= 0.6;
-         }
-
-         int k = EnchantmentHelper.getFireAspectModifier(this);
-         if (k > 0) {
-            par1Entity.setFire(k * 4);
-         }
-
-         if (par1Entity instanceof EntityLivingBase) {
-            EnchantmentHelper.func_151384_a((EntityLivingBase)par1Entity, this);
-         }
-
-         EnchantmentHelper.func_151385_b(this, par1Entity);
-      }
-
-      return flag;
-   }
+//   public boolean attackEntityAsMob(Entity par1Entity) {
+//      float i = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
+//      if (this.isPotionActive(Potion.damageBoost)) {
+//         i += (float)(3 << this.getActivePotionEffect(Potion.damageBoost).getAmplifier());
+//      }
+//
+//      if (this.isPotionActive(Potion.weakness)) {
+//         i -= (float)(2 << this.getActivePotionEffect(Potion.weakness).getAmplifier());
+//      }
+//
+//      int j = 0;
+//      if (par1Entity instanceof EntityLivingBase) {
+//         i += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)par1Entity);
+//         j += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)par1Entity);
+//      }
+//
+//      boolean flag = par1Entity.attackEntityFrom(ThaumcraftDamageSources.causeTentacleDamage(this), i);
+//      if (flag) {
+//         if (j > 0) {
+//            par1Entity.addVelocity(
+//                    -MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)j * 0.5F,
+//                    0.1,
+//                    MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)j * 0.5F
+//            );
+//            this.motionX *= 0.6;
+//            this.motionZ *= 0.6;
+//         }
+//
+//         int k = EnchantmentHelper.getFireAspectModifier(this);
+//         if (k > 0) {
+//            par1Entity.setFire(k * 4);
+//         }
+//
+//         if (par1Entity instanceof EntityLivingBase) {
+//            EnchantmentHelper.func_151384_a((EntityLivingBase)par1Entity, this);
+//         }
+//
+//         EnchantmentHelper.func_151385_b(this, par1Entity);
+//      }
+//
+//      return flag;
+//   }
 
 //   protected void spawnTentacles(Entity entity) {
 //      int i = MathHelper.floor_double(entity.posX);
