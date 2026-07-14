@@ -1,7 +1,6 @@
 package thaumcraft.common.items.equipment.armor.thaumaturge;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.utils.collectionlike.IntIntPair;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -15,17 +14,10 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnmodifiableView;
-import thaumcraft.common.items.abstracts.IVisDiscountGearItem;
+import thaumcraft.common.items.abstracts.*;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.aspects.IAspectDisplayItem;
-import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.baseimpl.HashAspectList;
 import thaumcraft.common.items.ThaumcraftToolAndArmorMaterial;
-import thaumcraft.common.items.abstracts.IBundleLikeItem;
-import thaumcraft.common.items.abstracts.IEssentiaFuelProviderItem;
-import thaumcraft.common.items.abstracts.IFlyingAbilityProviderWearing;
 import thaumcraft.common.lib.enchantment.ThaumcraftEnchantments;
 import thaumcraft.common.runicshield.IAugmentationRunicShieldProviderItem;
 
@@ -39,8 +31,7 @@ import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategor
 public class ThaumostaticHarnessItem extends ArmorItem implements
         IVisDiscountGearItem,
         IAugmentationRunicShieldProviderItem,
-        IBundleLikeItem,
-        IAspectDisplayItem<Aspect>,
+        IDefaultEssentiaFueledItem,
         IFlyingAbilityProviderWearing
 {
     public ThaumostaticHarnessItem(ArmorMaterial armorMaterial,Type type, Properties properties) {
@@ -61,21 +52,6 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
     }
 
     @Override
-    public void bundleOverrideNotEmptyOnSelf(ItemStack bundleStack, ItemStack stackInSlot, Slot slot, ClickAction clickAction, Player player, SlotAccess slotAccess) {
-        if (canInsertStackToBundle(bundleStack,stackInSlot)){
-            var extracted = extractStackAtLastOfBundle(bundleStack);
-            if (!extracted.isEmpty()){
-                slotAccess.set(extracted);
-            }
-            insertStackToBundle(bundleStack,stackInSlot);
-            this.playInsertToBundleSound(player);
-            if (!stackInSlot.isEmpty()) {
-                player.addItem(stackInSlot);
-            }
-        }
-    }
-
-    @Override
     public int getVisCostPercentDecrease(ItemStack stack, @Nullable LivingEntity living, @Nullable Aspect aspect) {
         return aspect == Aspects.AIR?5:2;
     }
@@ -89,59 +65,8 @@ public class ThaumostaticHarnessItem extends ArmorItem implements
     }
 
     @Override
-    public int getBundleMaxItemCount(ItemStack bundleStack) {
-        return 1;
-    }
-
-    @Override
-    public boolean canInsertStackToBundle(ItemStack bundleStack, ItemStack stackToInsert) {
-        return stackToInsert.getItem() instanceof IEssentiaFuelProviderItem;
-    }
-
-    @Override
-    public @NotNull @UnmodifiableView AspectList<Aspect> getAspectsToDisplay(ItemStack itemStack) {
-        AspectList<Aspect> owningAspects = new HashAspectList<>();
-        var stacksInside = getStacksInsideBundle(itemStack);
-        if (!stacksInside.isEmpty()) {
-            for (var stackInside : stacksInside) {
-                if (stackInside.getItem() instanceof IEssentiaFuelProviderItem fuelProviderItem) {
-                    owningAspects.addAll(fuelProviderItem.getEssentiaOwning(stackInside));
-                }
-            }
-        }
-        return owningAspects;
-    }
-
-    protected Aspect getRequiringAspect() {
+    public Aspect getRequiringAspect() {
         return Aspects.ENERGY;
-    }
-
-    protected boolean consumeFuel(ItemStack harnessStack){
-        var stacks = getStacksInsideBundle(harnessStack);
-        for (var stack : stacks) {
-            if (stack.getItem() instanceof IEssentiaFuelProviderItem fuelProviderItem) {
-                if (fuelProviderItem.consumeFuelEssentiaAmount(stack,getRequiringAspect(),1) > 0){
-                    setStacksInsideBundle(harnessStack,stacks);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
-    protected IntIntPair getFuelProgressAndMaxProgress(ItemStack harnessStack) {
-        AtomicInteger capacity = new AtomicInteger(0);
-        AtomicInteger progress = new AtomicInteger(0);
-        var stacksInside = getStacksInsideBundle(harnessStack);
-        var requiringAspect = getRequiringAspect();
-        stacksInside.forEach(stack -> {
-            if (stack.getItem() instanceof IEssentiaFuelProviderItem fuelProviderItem) {
-                capacity.addAndGet(fuelProviderItem.getMaxFuelEssentiaAmount(stack, requiringAspect));
-                progress.addAndGet(fuelProviderItem.getFuelEssentiaAmount(stack, requiringAspect));
-            }
-        });
-        return new IntIntPair(capacity.get(), progress.get());
     }
 
     @Override
