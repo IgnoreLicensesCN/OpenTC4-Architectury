@@ -355,4 +355,7 @@ public class Consts {
         public static final IntTagAccessor DAMAGE_BONUS = new IntTagAccessor("damage_bonus");
         public static final UUIDTagAccessor OWNER =  new UUIDTagAccessor("owner");
     }
+    public static class TaintSporeEntityTagAccessors {
+        public static final IntTagAccessor SIZE = new IntTagAccessor("size");
+    }
 }

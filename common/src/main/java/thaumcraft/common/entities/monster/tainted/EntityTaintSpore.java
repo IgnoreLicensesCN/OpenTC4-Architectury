@@ -28,55 +28,55 @@ public class EntityTaintSpore extends Monster implements ITaintedMob, IEntityAdd
    protected int growth = 0;
    public float displaySize = 0.0F;
 
-   public EntityTaintSpore(Level par1World) {
-      super(par1World);
-      this.setSporeSize(2);
-   }
+//   public EntityTaintSpore(Level par1World) {
+//      super(par1World);
+//      this.setSporeSize(2);
+//   }
+//
+//   protected void entityInit() {
+//      super.entityInit();
+//      this.dataWatcher.addObject(16, (byte) 1);
+//   }
+//
+//   public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
+//      super.writeEntityToNBT(par1NBTTagCompound);
+//      par1NBTTagCompound.setInteger("Size", this.getSporeSize() - 1);
+//   }
+//
+//   public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
+//      super.readEntityFromNBT(par1NBTTagCompound);
+//      this.setSporeSize(par1NBTTagCompound.getInteger("Size") + 1);
+//   }
 
-   protected void entityInit() {
-      super.entityInit();
-      this.dataWatcher.addObject(16, (byte) 1);
-   }
+//   public void setSporeSize(int par1) {
+//      this.dataWatcher.updateObject(16, (byte) par1);
+//      float size = Math.max(0.15F * (float)par1, 0.5F);
+//      this.setSize(size, size);
+//      this.setPosition(this.posX, this.posY, this.posZ);
+//      this.experienceValue = par1;
+//   }
 
-   public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
-      super.writeEntityToNBT(par1NBTTagCompound);
-      par1NBTTagCompound.setInteger("Size", this.getSporeSize() - 1);
-   }
+//   public int getSporeSize() {
+//      return this.dataWatcher.getWatchableObjectByte(16);
+//   }
 
-   public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {
-      super.readEntityFromNBT(par1NBTTagCompound);
-      this.setSporeSize(par1NBTTagCompound.getInteger("Size") + 1);
-   }
+//   protected void applyEntityAttributes() {
+//      super.applyEntityAttributes();
+//      this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1.0F);
+//      this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0F);
+//   }
 
-   public void setSporeSize(int par1) {
-      this.dataWatcher.updateObject(16, (byte) par1);
-      float size = Math.max(0.15F * (float)par1, 0.5F);
-      this.setSize(size, size);
-      this.setPosition(this.posX, this.posY, this.posZ);
-      this.experienceValue = par1;
-   }
+//   public float getShadowSize() {
+//      return 0.0F;
+//   }
 
-   public int getSporeSize() {
-      return this.dataWatcher.getWatchableObjectByte(16);
-   }
+//   public boolean canBeCollidedWith() {
+//      return true;
+//   }
 
-   protected void applyEntityAttributes() {
-      super.applyEntityAttributes();
-      this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1.0F);
-      this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0F);
-   }
-
-   public float getShadowSize() {
-      return 0.0F;
-   }
-
-   public boolean canBeCollidedWith() {
-      return true;
-   }
-
-   public boolean canBePushed() {
-      return false;
-   }
+//   public boolean canBePushed() {
+//      return false;
+//   }
 
    public void moveEntity(double par1, double par3, double par5) {
       par1 = 0.0F;
@@ -96,63 +96,69 @@ public class EntityTaintSpore extends Monster implements ITaintedMob, IEntityAdd
    protected void updateEntityActionState() {
    }
 
-   public boolean isInRangeToRenderDist(double par1) {
-      return par1 < (double)4096.0F;
-   }
+//   public boolean isInRangeToRenderDist(double par1) {
+//      return par1 < (double)4096.0F;
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public int getBrightnessForRender(float par1) {
+//      return 15728880;
+//   }
+//
+//   public float getBrightness(float par1) {
+//      return 1.0F;
+//   }
 
-   @SideOnly(Side.CLIENT)
-   public int getBrightnessForRender(float par1) {
-      return 15728880;
-   }
+//   public void onUpdate() {
+//      super.onUpdate();
+//      if (Platform.getEnvironment() != Env.CLIENT
+//              && this.ticksExisted % 20 == 0
+//              && this.level().getBiomeGenForCoords(
+//                      MathHelper.floor_double(this.posX),
+//              MathHelper.floor_double(this.posZ)).biomeID
+//              != Config.biomeTaintID
+//      ) {
+//         this.damageEntity(DamageSource.starve, 1.0F);
+//      }
+//
+//      this.sporeOnUpdate();
+//   }
 
-   public float getBrightness(float par1) {
-      return 1.0F;
-   }
-
-   public void onUpdate() {
-      super.onUpdate();
-      if (Platform.getEnvironment() != Env.CLIENT && this.ticksExisted % 20 == 0 && this.level().getBiomeGenForCoords(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posZ)).biomeID != Config.biomeTaintID) {
-         this.damageEntity(DamageSource.starve, 1.0F);
-      }
-
-      this.sporeOnUpdate();
-   }
-
-   protected void sporeOnUpdate() {
-      if (this.getSporeSize() < 10 && this.growth++ == 1200) {
-         this.setSporeSize(this.getSporeSize() + 1);
-         this.growth = 0;
-      }
-
-      if (ClientFXUtils.checkPlatformClient()) {
-         if (this.displaySize < (float)this.getSporeSize()) {
-            this.displaySize += 0.02F;
-         }
-
-         for(int a = 0; a < this.swarm.size(); ++a) {
-            if (this.swarm.get(a) == null || (this.swarm.get(a)).isDead) {
-               this.swarm.remove(a);
-               break;
-            }
-         }
-
-         if (this.swarm.size() < this.getSporeSize() / 3) {
-            this.swarm.add(ClientFXUtils.swarmParticleFX(this.level(), this, 0.1F, 10.0F, 0.0F));
-         }
-      }
-
-      int x = MathHelper.floor_double(this.posX);
-      int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
-      int z = MathHelper.floor_double(this.posZ);
-      if (this.level().getBlock(x, y, z) == ConfigBlocks.blockTaintFibres && this.level().getBlockMetadata(x, y, z) == 4) {
-         if (this.deathTime > 0) {
-            this.spiderBurst();
-         }
-      } else {
-         this.spiderBurst();
-      }
-
-   }
+//   protected void sporeOnUpdate() {
+//      if (this.getSporeSize() < 10 && this.growth++ == 1200) {
+//         this.setSporeSize(this.getSporeSize() + 1);
+//         this.growth = 0;
+//      }
+//
+//      if (ClientFXUtils.checkPlatformClient()) {
+//         if (this.displaySize < (float)this.getSporeSize()) {
+//            this.displaySize += 0.02F;
+//         }
+//
+//         for(int a = 0; a < this.swarm.size(); ++a) {
+//            if (this.swarm.get(a) == null || (this.swarm.get(a)).isDead) {
+//               this.swarm.remove(a);
+//               break;
+//            }
+//         }
+//
+//         if (this.swarm.size() < this.getSporeSize() / 3) {
+//            this.swarm.add(ClientFXUtils.swarmParticleFX(this.level(), this, 0.1F, 10.0F, 0.0F));
+//         }
+//      }
+//
+//      int x = MathHelper.floor_double(this.posX);
+//      int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
+//      int z = MathHelper.floor_double(this.posZ);
+//      if (this.level().getBlock(x, y, z) == ConfigBlocks.blockTaintFibres && this.level().getBlockMetadata(x, y, z) == 4) {
+//         if (this.deathTime > 0) {
+//            this.spiderBurst();
+//         }
+//      } else {
+//         this.spiderBurst();
+//      }
+//
+//   }
 
    public void onCollideWithPlayer(Player par1Player) {
       this.spiderBurst();

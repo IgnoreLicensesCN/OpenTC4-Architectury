@@ -105,6 +105,9 @@ public class ThaumcraftEntities {
         public static EntityType<SmallTaintacleEntity> SMALL_TAINTACLE() {
             return Registry.SUPPLIER_SMALL_TAINTACLE.get();
         }
+        public static EntityType<TaintSporeEntity> TAINT_SPORE() {
+            return Registry.SUPPLIER_TAINT_SPORE.get();
+        }
     }
 
     public static class Registry {
@@ -253,6 +256,13 @@ public class ThaumcraftEntities {
                         .clientTrackingRange(10)
                         .build("small_taintacle")
         );
+        public static final RegistrySupplier<EntityType<TaintSporeEntity>> SUPPLIER_TAINT_SPORE = ENTITIES.register(
+                "taint_spore",
+                () -> EntityType.Builder.<TaintSporeEntity>of(TaintSporeEntity::new, MobCategory.MONSTER)
+                        .sized(1, 1)
+                        .clientTrackingRange(10)
+                        .build("taint_spore")
+        );
     }
 
     public static class EntityTags {
@@ -282,6 +292,7 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTED_SWARM(), TaintedSwarmEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINTACLE(), TaintacleEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.SMALL_TAINTACLE(), SmallTaintacleEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINT_SPORE(), TaintSporeEntity.createAttributes().build());
     }
 
     private static void registerSpawnPlacements() {

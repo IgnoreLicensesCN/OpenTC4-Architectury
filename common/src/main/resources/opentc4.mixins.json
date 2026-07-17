@@ -20,6 +20,8 @@
     "client.clientbe.InfusionMatrixBlockEntityClientMixin",
     "client.clientbe.VisNetRelayBlockEntityClientMixin",
     "client.entity.TaintedSwarmEntityMixin",
+    "client.entity.TaintacleEntityMixin",
+    "client.entity.TaintSporeEntityMixin",
     "client.render.ItemRendererMixin",
     "client.render.ModelPredicateProviderRegistryAccessor"
   ],
@@ -63,8 +65,7 @@
     "SlimeMixin$SlimeMoveControlAccessor",
     "SpiderMixin",
     "VillagerMixin",
-    "ZombieMixin",
-    "client.entity.TaintacleEntityMixin"
+    "ZombieMixin"
   ],
   "injectors": {
     "defaultRequire": 1

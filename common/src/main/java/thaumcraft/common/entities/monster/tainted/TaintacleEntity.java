@@ -152,13 +152,19 @@ public class TaintacleEntity extends Monster implements IMobAttackDamageTypeRepl
         super.tick();
         var level = level();
         if (!level.isClientSide){
-            if (tickCount % 20 == 0 && !level.getBiome(blockPosition()).is(ThaumcraftBiomeIDs.TAINT_ID)){
-                this.hurt(level.damageSources().starve(), 1.0F);
-            }
+            damageIfNotInTainted();
         }else {
             ClientTickContext.clientTick(this);
         }
     }
+
+    protected void damageIfNotInTainted() {
+        var level = level();
+        if (tickCount % 20 == 0 && !level.getBiome(blockPosition()).is(ThaumcraftBiomeIDs.TAINT_ID)){
+            this.hurt(level.damageSources().starve(), 1.0F);
+        }
+    }
+
     public static class ClientTickContext {
 
         public float flailIntensity;

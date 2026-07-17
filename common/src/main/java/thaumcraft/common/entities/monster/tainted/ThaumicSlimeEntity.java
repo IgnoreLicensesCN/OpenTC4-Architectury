@@ -8,8 +8,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -132,8 +134,15 @@ public class ThaumicSlimeEntity extends Slime {
         super.setSize(i, bl);
         int j = Mth.clamp(i, 1, 127);
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(j);
-        float ss = (float)Math.sqrt(i);
-        this.xpReward = (int) Mth.clamp(ss, 1, 127);
+        reapplyPosition();
+        refreshDimensions();
+        this.xpReward = (int) Mth.clamp(Mth.sqrt(i), 1, 127);
+    }
+
+    @Override
+    public EntityDimensions getDimensions(Pose pose) {
+        var size = 0.25F * Mth.sqrt(this.getSize()) + 0.25F;
+        return new EntityDimensions(size,size,false);
     }
 
     public static class ThaumicSlimeAttackGoal extends Goal {

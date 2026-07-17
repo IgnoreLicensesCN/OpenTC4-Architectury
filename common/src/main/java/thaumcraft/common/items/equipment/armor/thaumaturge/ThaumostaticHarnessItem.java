@@ -29,9 +29,9 @@ import static com.linearity.opentc4.utils.equip.ArmorSlotAccess.CHESTPLATE_ACCES
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.*;
 
 public class ThaumostaticHarnessItem extends ArmorItem implements
+        IDefaultEssentiaFueledItem,
         IVisDiscountGearItem,
         IAugmentationRunicShieldProviderItem,
-        IDefaultEssentiaFueledItem,
         IFlyingAbilityProviderWearing
 {
     public ThaumostaticHarnessItem(ArmorMaterial armorMaterial,Type type, Properties properties) {
