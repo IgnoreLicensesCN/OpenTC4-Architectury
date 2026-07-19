@@ -1,32 +1,11 @@
 package thaumcraft.common.entities.monster.tainted;
 
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.damagesource.DamageSource;
-import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.world.level.Level;
-import thaumcraft.api.entities.ITaintedMob;
-import thaumcraft.common.ClientFXUtils;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
 
-import java.util.ArrayList;
-
-public class EntityTaintSpore extends Monster implements ITaintedMob, IEntityAdditionalSpawnData {
-   public ArrayList swarm = new ArrayList<>();
-   protected int growth = 0;
-   public float displaySize = 0.0F;
+@Deprecated(forRemoval = true)
+public class EntityTaintSpore /*extends Monster implements ITaintedMob, IEntityAdditionalSpawnData*/ {
+//   public ArrayList swarm = new ArrayList<>();
+//   protected int growth = 0;
+//   public float displaySize = 0.0F;
 
 //   public EntityTaintSpore(Level par1World) {
 //      super(par1World);
@@ -78,23 +57,23 @@ public class EntityTaintSpore extends Monster implements ITaintedMob, IEntityAdd
 //      return false;
 //   }
 
-   public void moveEntity(double par1, double par3, double par5) {
-      par1 = 0.0F;
-      par5 = 0.0F;
-      if (par3 > (double)0.0F) {
-         par3 = 0.0F;
-      }
-
-      int x = MathHelper.floor_double(this.posX);
-      int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
-      int z = MathHelper.floor_double(this.posZ);
-      if (this.level().getBlock(x, y, z) != ConfigBlocks.blockTaintFibres || this.level().getBlockMetadata(x, y, z) != 4) {
-         super.moveEntity(par1, par3, par5);
-      }
-   }
-
-   protected void updateEntityActionState() {
-   }
+//   public void moveEntity(double par1, double par3, double par5) {
+//      par1 = 0.0F;
+//      par5 = 0.0F;
+//      if (par3 > (double)0.0F) {
+//         par3 = 0.0F;
+//      }
+//
+//      int x = MathHelper.floor_double(this.posX);
+//      int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
+//      int z = MathHelper.floor_double(this.posZ);
+//      if (this.level().getBlock(x, y, z) != ConfigBlocks.blockTaintFibres || this.level().getBlockMetadata(x, y, z) != 4) {
+//         super.moveEntity(par1, par3, par5);
+//      }
+//   }
+//
+//   protected void updateEntityActionState() {
+//   }
 
 //   public boolean isInRangeToRenderDist(double par1) {
 //      return par1 < (double)4096.0F;
@@ -160,84 +139,84 @@ public class EntityTaintSpore extends Monster implements ITaintedMob, IEntityAdd
 //
 //   }
 
-   public void onCollideWithPlayer(Player par1Player) {
-      this.spiderBurst();
-   }
+//   public void onCollideWithPlayer(Player par1Player) {
+//      this.spiderBurst();
+//   }
 
-   protected void spiderBurst() {
-      if (Platform.getEnvironment() != Env.CLIENT) {
-         this.level().playSoundAtEntity(this, "thaumcraft:gore", 1.0F, 0.9F + this.level().rand.nextFloat() * 0.1F);
-         int q = this.getSporeSize() / 3 + this.level().rand.nextInt(this.getSporeSize() / 2 + 1);
+//   protected void spiderBurst() {
+//      if (Platform.getEnvironment() != Env.CLIENT) {
+//         this.level().playSoundAtEntity(this, "thaumcraft:gore", 1.0F, 0.9F + this.level().rand.nextFloat() * 0.1F);
+//         int q = this.getSporeSize() / 3 + this.level().rand.nextInt(this.getSporeSize() / 2 + 1);
+//
+//         for(int a = 0; a < q; ++a) {
+//            EntityTaintSpider spiderling = new EntityTaintSpider(this.level());
+//            spiderling.setLocationAndAngles(this.posX + (double)this.level().rand.nextFloat() - (double)this.level().rand.nextFloat(), this.posY + (double)this.level().rand.nextFloat(), this.posZ + (double)this.level().rand.nextFloat() - (double)this.level().rand.nextFloat(), this.level().rand.nextFloat() * 360.0F, 0.0F);
+//            this.level().spawnEntityInWorld(spiderling);
+//         }
+//
+//         int x = MathHelper.floor_double(this.posX);
+//         int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
+//         int z = MathHelper.floor_double(this.posZ);
+//         if (this.level().getBlock(x, y, z) == ConfigBlocks.blockTaintFibres && this.level().getBlockMetadata(x, y, z) == 4) {
+//            this.level().setBlockMetadataWithNotify(x, y, z, 3, 3);
+//         }
+//
+//         this.setDead();
+//      } else {
+//         this.sploosh(50);
+//      }
+//
+//   }
+//
+//   protected void sploosh(int amt) {
+//      for(int a = 0; a < amt; ++a) {
+//         Thaumcraft.proxy.splooshFX(this);
+//      }
+//
+//   }
 
-         for(int a = 0; a < q; ++a) {
-            EntityTaintSpider spiderling = new EntityTaintSpider(this.level());
-            spiderling.setLocationAndAngles(this.posX + (double)this.level().rand.nextFloat() - (double)this.level().rand.nextFloat(), this.posY + (double)this.level().rand.nextFloat(), this.posZ + (double)this.level().rand.nextFloat() - (double)this.level().rand.nextFloat(), this.level().rand.nextFloat() * 360.0F, 0.0F);
-            this.level().spawnEntityInWorld(spiderling);
-         }
+//   public void writeSpawnData(ByteBuf data) {
+//      data.writeFloat((float)this.getSporeSize());
+//   }
+//
+//   public void readSpawnData(ByteBuf data) {
+//      try {
+//         this.displaySize = data.readFloat();
+//      } catch (Exception ignored) {
+//      }
+//
+//   }
 
-         int x = MathHelper.floor_double(this.posX);
-         int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
-         int z = MathHelper.floor_double(this.posZ);
-         if (this.level().getBlock(x, y, z) == ConfigBlocks.blockTaintFibres && this.level().getBlockMetadata(x, y, z) == 4) {
-            this.level().setBlockMetadataWithNotify(x, y, z, 3, 3);
-         }
+//   protected float getSoundVolume() {
+//      return 0.1F;
+//   }
 
-         this.setDead();
-      } else {
-         this.sploosh(50);
-      }
+//   public int getTalkInterval() {
+//      return 200;
+//   }
 
-   }
+//   protected String getLivingSound() {
+//      return "thaumcraft:swarm";
+//   }
 
-   protected void sploosh(int amt) {
-      for(int a = 0; a < amt; ++a) {
-         Thaumcraft.proxy.splooshFX(this);
-      }
+//   protected String getHurtSound() {
+//      return "thaumcraft:gore";
+//   }
 
-   }
+//   protected String getDeathSound() {
+//      return "thaumcraft:gore";
+//   }
 
-   public void writeSpawnData(ByteBuf data) {
-      data.writeFloat((float)this.getSporeSize());
-   }
-
-   public void readSpawnData(ByteBuf data) {
-      try {
-         this.displaySize = data.readFloat();
-      } catch (Exception ignored) {
-      }
-
-   }
-
-   protected float getSoundVolume() {
-      return 0.1F;
-   }
-
-   public int getTalkInterval() {
-      return 200;
-   }
-
-   protected String getLivingSound() {
-      return "thaumcraft:swarm";
-   }
-
-   protected String getHurtSound() {
-      return "thaumcraft:gore";
-   }
-
-   protected String getDeathSound() {
-      return "thaumcraft:gore";
-   }
-
-   protected Item getDropItem() {
-      return ConfigItems.itemResource;
-   }
-
-   protected void dropFewItems(boolean flag, int i) {
-      if (this.level().rand.nextBoolean()) {
-         this.entityDropItem(new ItemStack(ThaumcraftItems.TAINTED_GOO,1), this.height / 2.0F);
-      } else {
-         this.entityDropItem(new ItemStack(ThaumcraftItems.TAINT_TENDRIL,1), this.height / 2.0F);
-      }
-
-   }
+//   protected Item getDropItem() {
+//      return ConfigItems.itemResource;
+//   }
+//
+//   protected void dropFewItems(boolean flag, int i) {
+//      if (this.level().rand.nextBoolean()) {
+//         this.entityDropItem(new ItemStack(ThaumcraftItems.TAINTED_GOO,1), this.height / 2.0F);
+//      } else {
+//         this.entityDropItem(new ItemStack(ThaumcraftItems.TAINT_TENDRIL,1), this.height / 2.0F);
+//      }
+//
+//   }
 }
