@@ -16,7 +16,7 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.liquid.FluxGooBlock;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.entities.monster.tainted.EntityTaintSporeSwarmer;
+import thaumcraft.common.entities.monster.tainted.TaintSporeSwarmerEntity;
 
 import java.util.List;
 //blocktaint:0
@@ -91,11 +91,11 @@ public class CrustedTaintBlock extends AbstractTaintBlock {
                     blockPos.offset(1,1,1)
             ).inflate(16.0D);
 
-            List<EntityTaintSporeSwarmer> targets =
-                    world.getEntitiesOfClass(EntityTaintSporeSwarmer.class, box);
+            List<TaintSporeSwarmerEntity> targets =
+                    world.getEntitiesOfClass(TaintSporeSwarmerEntity.class, box);
             if (targets.isEmpty()) {
                 world.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-                EntityTaintSporeSwarmer spore = new EntityTaintSporeSwarmer(world);//TODO(we didnt rewrite entity yet.
+                var spore = new TaintSporeSwarmerEntity(world);
                 spore.moveTo(blockPos,0,0);
                 world.addFreshEntity(spore);
                 world.playSound(

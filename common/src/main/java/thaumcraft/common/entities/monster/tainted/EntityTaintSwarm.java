@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.monster.tainted;
 
-@Deprecated(forRemoval = false)
+@Deprecated(forRemoval = true)
 public class EntityTaintSwarm /*extends EntityMob implements ITaintedMob*/ {
 //   private ChunkCoordinates currentFlightTarget;
 //   public int damBonus = 0;

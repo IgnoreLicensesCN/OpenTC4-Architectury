@@ -22,6 +22,7 @@
     "client.entity.TaintedSwarmEntityMixin",
     "client.entity.TaintacleEntityMixin",
     "client.entity.TaintSporeEntityMixin",
+    "client.entity.TaintSporeSwarmerEntityMixin",
     "client.render.ItemRendererMixin",
     "client.render.ModelPredicateProviderRegistryAccessor"
   ],
