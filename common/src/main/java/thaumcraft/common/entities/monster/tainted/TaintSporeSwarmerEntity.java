@@ -36,7 +36,7 @@ public class TaintSporeSwarmerEntity extends Monster {
     }
 
     public static @NotNull AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 75).add(Attributes.ATTACK_DAMAGE,1);
+        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 75).add(Attributes.ATTACK_DAMAGE,1);
     }
 
     protected void damageIfNotInTainted() {

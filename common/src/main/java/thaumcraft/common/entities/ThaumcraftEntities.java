@@ -20,7 +20,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
+import thaumcraft.common.entities.monster.BrainyZombieEntity;
+import thaumcraft.common.entities.monster.GiantBrainyZombieEntity;
 import thaumcraft.common.entities.monster.tainted.*;
+import thaumcraft.common.entities.monster.tainted.converted.*;
 import thaumcraft.common.entities.projectile.frostfocus.FrostShardEntity;
 import thaumcraft.common.entities.projectile.hellbatfocus.FireBatEntity;
 import thaumcraft.common.entities.projectile.pechfocus.PechBlastEntity;
@@ -37,6 +40,7 @@ import java.util.IdentityHashMap;
 import static com.linearity.opentc4.mixin.DefaultAttributesAccessor.opentc4$getSuppliers;
 import static com.linearity.opentc4.mixin.DefaultAttributesAccessor.opentc4$setSuppliers;
 import static thaumcraft.common.entities.ThaumcraftEntities.Registry.ENTITIES;
+import static thaumcraft.common.entities.ThaumcraftEntities.Registry.SUPPLIER_BRAINY_ZOMBIE;
 
 public class ThaumcraftEntities {
 
@@ -110,6 +114,12 @@ public class ThaumcraftEntities {
         }
         public static EntityType<TaintSporeSwarmerEntity> TAINT_SPORE_SWARMER() {
             return Registry.SUPPLIER_TAINT_SPORE_SWARMER.get();
+        }
+        public static EntityType<BrainyZombieEntity> BRAINY_ZOMBIE() {
+            return SUPPLIER_BRAINY_ZOMBIE.get();
+        }
+        public static EntityType<BrainyZombieEntity> GIANT_BRAINY_ZOMBIE() {
+            return SUPPLIER_GIANT_BRAINY_ZOMBIE.get();
         }
     }
 
@@ -273,6 +283,20 @@ public class ThaumcraftEntities {
                         .clientTrackingRange(10)
                         .build("taint_spore_swarmer")
         );
+        public static final RegistrySupplier<EntityType<BrainyZombieEntity>> SUPPLIER_BRAINY_ZOMBIE = ENTITIES.register(
+                "brainy_zombie",
+                () -> EntityType.Builder.<BrainyZombieEntity>of(BrainyZombieEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.95F)
+                        .clientTrackingRange(10)
+                        .build("brainy_zombie")
+        );
+        public static final RegistrySupplier<EntityType<GiantBrainyZombieEntity>> SUPPLIER_GIANT_BRAINY_ZOMBIE = ENTITIES.register(
+                "giant_brainy_zombie",
+                () -> EntityType.Builder.<GiantBrainyZombieEntity>of(GiantBrainyZombieEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.95F)
+                        .clientTrackingRange(10)
+                        .build("giant_brainy_zombie")
+        );
     }
 
     public static class EntityTags {
@@ -304,6 +328,8 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.SMALL_TAINTACLE(), SmallTaintacleEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINT_SPORE(), TaintSporeEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINT_SPORE_SWARMER(), TaintSporeSwarmerEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.BRAINY_ZOMBIE(), BrainyZombieEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.GIANT_BRAINY_ZOMBIE(), GiantBrainyZombieEntity.createAttributes().build());
     }
 
     private static void registerSpawnPlacements() {

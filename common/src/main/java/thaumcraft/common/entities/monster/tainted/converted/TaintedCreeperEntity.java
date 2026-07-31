@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.monster.tainted;
+package thaumcraft.common.entities.monster.tainted.converted;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.server.level.ServerLevel;

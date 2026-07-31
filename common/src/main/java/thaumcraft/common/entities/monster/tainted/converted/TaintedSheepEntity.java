@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.monster.tainted;
+package thaumcraft.common.entities.monster.tainted.converted;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;

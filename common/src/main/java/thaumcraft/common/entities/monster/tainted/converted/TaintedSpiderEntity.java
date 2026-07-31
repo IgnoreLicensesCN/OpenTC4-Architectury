@@ -1,42 +1,32 @@
-package thaumcraft.common.entities.monster.tainted;
+package thaumcraft.common.entities.monster.tainted.converted;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.Pig;
-import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
 
-import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_PIG;
+import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_SPIDER;
 import static thaumcraft.common.entities.ThaumcraftEntities.handleGoalsForTaintedMob;
 import static thaumcraft.common.entities.ThaumcraftEntities.handleTargetSelectorForTaintedMob;
 
-//oh breed light can breed this,but i decide to keep that to make chaos
-//however since goal removed they wont make love
-public class TaintedPigEntity extends Pig implements Enemy, ITaintConvertableEntity {
-    public TaintedPigEntity(Level level) {
-        this(TAINTED_PIG(), level);
+
+public class TaintedSpiderEntity extends Spider implements ITaintConvertableEntity {
+    public TaintedSpiderEntity(Level level) {
+        this(TAINTED_SPIDER(), level);
     }
-    public TaintedPigEntity(EntityType<? extends Pig> entityType, Level level) {
+    public TaintedSpiderEntity(EntityType<? extends Spider> entityType, Level level) {
         super(entityType, level);
     }
 
-    public static AttributeSupplier.@NotNull Builder createAttributes() {
-        return Mob.createMobAttributes()
-                .add(Attributes.ARMOR,2)
-                .add(Attributes.MAX_HEALTH, 20)
-                .add(Attributes.MOVEMENT_SPEED, 0.275F)
-                .add(Attributes.ATTACK_DAMAGE,4);
+    public static @NotNull AttributeSupplier.Builder createAttributes() {
+        return Spider.createAttributes().add(Attributes.MAX_HEALTH, 5).add(Attributes.ATTACK_DAMAGE,2);
     }
 
     @Override
@@ -53,11 +43,6 @@ public class TaintedPigEntity extends Pig implements Enemy, ITaintConvertableEnt
     }
 
     @Override
-    public @Nullable Pig getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return TAINTED_PIG().create(serverLevel);
-    }
-
-    @Override
     public void aiStep() {
         super.aiStep();
         if (level().isClientSide && this.tickCount < 5) {
@@ -68,8 +53,18 @@ public class TaintedPigEntity extends Pig implements Enemy, ITaintConvertableEnt
     }
 
     @Override
-    public boolean canFallInLove() {
-        return false;
+    public int getExperienceReward() {
+        return 2;
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return 0.7F;
+    }
+
+    @Override
+    public float getScale() {
+        return 0.4F;
     }
 
     @Override

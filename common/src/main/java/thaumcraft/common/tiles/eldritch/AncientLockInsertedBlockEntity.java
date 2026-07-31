@@ -16,6 +16,7 @@ import thaumcraft.common.entities.monster.boss.EntityCultistPortal;
 import thaumcraft.common.entities.monster.boss.EntityEldritchGolem;
 import thaumcraft.common.entities.monster.boss.EntityEldritchWarden;
 import thaumcraft.common.entities.monster.boss.EntityTaintacleGiant;
+import thaumcraft.common.entities.monster.tainted.TaintacleEntity;
 import thaumcraft.common.lib.network.PacketHandler;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.utils.BlockUtils;
@@ -365,23 +366,23 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
             }
         }
 
-        EntityTaintacle boss1 = this.level.difficultySetting != Difficulty.HARD ? new EntityTaintacle(this.level) : new EntityTaintacleGiant(this.level);
+        var boss1 = this.level.difficultySetting != Difficulty.HARD ? new TaintacleEntity(this.level) : new EntityTaintacleGiant(this.level);
         boss1.setLocationAndAngles((double)x + (double)0.5F, y + 3, (double)z + (double)0.5F, 0.0F, 0.0F);
         EntityUtils.makeChampion(boss1, true);
         this.level.spawnEntityInWorld(boss1);
-        EntityTaintacle boss2 = this.level.random.nextBoolean() ? new EntityTaintacle(this.level) : new EntityTaintacleGiant(this.level);
+        var boss2 = this.level.random.nextBoolean() ? new TaintacleEntity(this.level) : new EntityTaintacleGiant(this.level);
         boss2.setLocationAndAngles((double)x + (double)3.5F, y + 3, (double)z + (double)3.5F, 0.0F, 0.0F);
         EntityUtils.makeChampion(boss2, true);
         this.level.spawnEntityInWorld(boss2);
-        EntityTaintacle boss3 = boss2 instanceof EntityTaintacleGiant ? new EntityTaintacle(this.level) : new EntityTaintacleGiant(this.level);
+        var boss3 = boss2 instanceof EntityTaintacleGiant ? new TaintacleEntity(this.level) : new EntityTaintacleGiant(this.level);
         boss3.setLocationAndAngles((double)x - (double)2.5F, y + 3, (double)z + (double)3.5F, 0.0F, 0.0F);
         EntityUtils.makeChampion(boss3, true);
         this.level.spawnEntityInWorld(boss3);
-        EntityTaintacle boss4 = this.level.random.nextBoolean() ? new EntityTaintacle(this.level) : new EntityTaintacleGiant(this.level);
+        var boss4 = this.level.random.nextBoolean() ? new TaintacleEntity(this.level) : new EntityTaintacleGiant(this.level);
         boss4.setLocationAndAngles((double)x + (double)3.5F, y + 3, (double)z - (double)2.5F, 0.0F, 0.0F);
         EntityUtils.makeChampion(boss4, true);
         this.level.spawnEntityInWorld(boss4);
-        EntityTaintacle boss5 = boss4 instanceof EntityTaintacleGiant ? new EntityTaintacle(this.level) : new EntityTaintacleGiant(this.level);
+        var boss5 = boss4 instanceof EntityTaintacleGiant ? new TaintacleEntity(this.level) : new EntityTaintacleGiant(this.level);
         boss5.setLocationAndAngles((double)x - (double)2.5F, y + 3, (double)z - (double)2.5F, 0.0F, 0.0F);
         EntityUtils.makeChampion(boss5, true);
         this.level.spawnEntityInWorld(boss5);

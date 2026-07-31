@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.monster.tainted;
+package thaumcraft.common.entities.monster.tainted.converted;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -8,8 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
-import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -18,33 +17,31 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
 
-import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_CHICKEN;
+import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_COW;
 import static thaumcraft.common.entities.ThaumcraftEntities.handleGoalsForTaintedMob;
 import static thaumcraft.common.entities.ThaumcraftEntities.handleTargetSelectorForTaintedMob;
 
-public class TaintedChickenEntity extends Chicken implements Enemy, ITaintConvertableEntity {
-    public TaintedChickenEntity(Level level) {
-        this(TAINTED_CHICKEN(), level);
+//oh breed light can breed this,but i decide to keep that to make chaos
+//however since goal removed they wont make love
+public class TaintedCowEntity extends Cow implements Enemy, ITaintConvertableEntity {
+    public TaintedCowEntity(Level level) {
+        this(TAINTED_COW(), level);
     }
-    public TaintedChickenEntity(EntityType<? extends Chicken> entityType, Level level) {
+    public TaintedCowEntity(EntityType<? extends Cow> entityType, Level level) {
         super(entityType, level);
     }
 
-    public static AttributeSupplier.@NotNull Builder createAttributes() {
-        return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 8)
-                .add(Attributes.ARMOR,2)
-                .add(Attributes.MOVEMENT_SPEED, 0.4F)
-                .add(Attributes.ATTACK_DAMAGE,3);
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40).add(Attributes.MOVEMENT_SPEED, 0.27F).add(Attributes.ATTACK_DAMAGE,6);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
         handleGoalsForTaintedMob(this,goalSelector);
-        this.goalSelector.addGoal(2, new LeapAtTargetGoal(this, 0.3F));
         handleTargetSelectorForTaintedMob(this,targetSelector);
     }
+
 
     @Override
     public @NotNull InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
@@ -52,8 +49,8 @@ public class TaintedChickenEntity extends Chicken implements Enemy, ITaintConver
     }
 
     @Override
-    public @Nullable Chicken getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return TAINTED_CHICKEN().create(serverLevel);
+    public @Nullable Cow getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
+        return TAINTED_COW().create(serverLevel);
     }
 
     @Override
@@ -64,7 +61,6 @@ public class TaintedChickenEntity extends Chicken implements Enemy, ITaintConver
                 ClientFXUtils.splooshFX(this);
             }
         }
-        this.eggTime = 0x7ffff;
     }
 
     @Override

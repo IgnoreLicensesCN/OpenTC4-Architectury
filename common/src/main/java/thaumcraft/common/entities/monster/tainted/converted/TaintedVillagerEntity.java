@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.monster.tainted;
+package thaumcraft.common.entities.monster.tainted.converted;
 
 import com.google.common.collect.ImmutableList;
 import com.linearity.opentc4.mixin.BrainProviderAccessor;
