@@ -5,11 +5,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import org.apache.logging.log4j.util.TriConsumer;
 import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters;
@@ -20,8 +24,7 @@ import thaumcraft.common.items.abstracts.armorcomponents.IAttackOthersListenerAr
 import thaumcraft.common.items.abstracts.armorcomponents.IBeingAttackedListenerArmor;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
@@ -52,7 +55,7 @@ public class ThaumcraftEntityEvents {
     public static class DropEvents {
 
         public static void onDropAllDeathLoot(LivingEntity living, DamageSource damageSource) {
-            onDropCrystalEssence(living, damageSource);
+            onDropCrystalEssence(living, damageSource);//changed:will still drop default loot
             onDropVisOrb(living, damageSource);
         }
 
@@ -188,6 +191,39 @@ public class ThaumcraftEntityEvents {
                                 .withStyle(ChatFormatting.ITALIC)
                                 .withStyle(ChatFormatting.DARK_RED)
                 );
+            }
+        }
+    }
+    public static class EntitySpawnEvents {
+        public static final Map<EntityType<?>, TriConsumer<MobSpawnSettings.Builder,MobCategory, MobSpawnSettings.SpawnerData>> ADD_SPAWN_HOOK_MAP = getAddSpawnHookMap();
+        //leave as a mixin point
+        public static Map<EntityType<?>, TriConsumer<MobSpawnSettings.Builder,MobCategory, MobSpawnSettings.SpawnerData>> getAddSpawnHookMap() {
+            Map<EntityType<?>, TriConsumer<MobSpawnSettings.Builder,MobCategory, MobSpawnSettings.SpawnerData>> result = new IdentityHashMap<>();
+            result.put(EntityType.ZOMBIE,(builder,mobCategory,spawnerData)->builder.addSpawn(
+                    mobCategory,
+                    new MobSpawnSettings.SpawnerData(
+                            ThaumcraftEntities.ThaumcraftEntityTypeInstances.BRAINY_ZOMBIE(),
+                            8,
+                            1,
+                            1
+                    )
+            ));result.put(EntityType.ZOMBIFIED_PIGLIN,(builder,mobCategory,spawnerData)->builder.addSpawn(
+                    mobCategory,
+                    new MobSpawnSettings.SpawnerData(
+                            ThaumcraftEntities.ThaumcraftEntityTypeInstances.FIRE_BAT(),
+                            10,
+                            1,
+                            2
+                    )
+            ));
+            return result;
+        }
+        public static void onAddSpawn(MobSpawnSettings.Builder builder,
+                                      MobCategory mobCategory,
+                                      MobSpawnSettings.SpawnerData spawnerData){
+            var consumer = ADD_SPAWN_HOOK_MAP.get(spawnerData.type);
+            if (consumer != null){
+                consumer.accept(builder, mobCategory, spawnerData);
             }
         }
     }

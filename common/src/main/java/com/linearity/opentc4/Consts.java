@@ -358,4 +358,7 @@ public class Consts {
     public static class TaintSporeEntityTagAccessors {
         public static final IntTagAccessor SIZE = new IntTagAccessor("size");
     }
+    public static class GiantBrainyZombieEntityTagAccessors {
+        public static final FloatTagAccessor ANGER = new FloatTagAccessor("anger");
+    }
 }

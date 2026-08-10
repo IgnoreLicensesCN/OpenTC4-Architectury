@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+import static com.linearity.opentc4.Consts.GiantBrainyZombieEntityTagAccessors.ANGER;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.GIANT_BRAINY_ZOMBIE;
 
 public class GiantBrainyZombieEntity extends BrainyZombieEntity {
@@ -29,6 +31,7 @@ public class GiantBrainyZombieEntity extends BrainyZombieEntity {
         this(GIANT_BRAINY_ZOMBIE(),level);
     }
 
+    @Override
     public @NotNull EntityDimensions getDimensions(Pose pose) {
         var oldDimensions = super.getDimensions(pose);
         return oldDimensions.scale((1.2F + this.getAnger()));
@@ -91,5 +94,17 @@ public class GiantBrainyZombieEntity extends BrainyZombieEntity {
     public boolean hurt(DamageSource damageSource, float f) {
         this.setAnger(Math.min(2.0F, this.getAnger() + 0.1F));
         return super.hurt(damageSource, f);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        setAnger(ANGER.readFloatFromCompoundTag(compoundTag));
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        ANGER.writeFloatToCompoundTag(compoundTag, this.getAnger());
     }
 }

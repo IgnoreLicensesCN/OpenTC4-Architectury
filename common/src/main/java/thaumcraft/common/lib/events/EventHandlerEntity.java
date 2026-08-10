@@ -336,28 +336,28 @@ public class EventHandlerEntity {
                          new ItemStack(ConfigItems.itemLootbag, 1, lb)));
       }
 
-      if (event.entityLiving instanceof EntityZombie && !(event.entityLiving instanceof EntityBrainyZombie) && event.recentlyHit && event.entity.getRandom().nextInt(10) - event.lootingLevel < 1) {
-         event.drops.add(new EntityItem(event.entity.level(), event.entityLiving.posX, event.entityLiving.posY + (double)event.entityLiving.getEyeHeight(), event.entityLiving.posZ, new ItemStack(ConfigItems.itemZombieBrain)));
-      }
+//      if (event.entityLiving instanceof EntityZombie && !(event.entityLiving instanceof EntityBrainyZombie) && event.recentlyHit && event.entity.getRandom().nextInt(10) - event.lootingLevel < 1) {
+//         event.drops.add(new EntityItem(event.entity.level(), event.entityLiving.posX, event.entityLiving.posY + (double)event.entityLiving.getEyeHeight(), event.entityLiving.posZ, new ItemStack(ConfigItems.itemZombieBrain)));
+//      }
 
       if (event.entityLiving instanceof EntityVillager && event.entity.getRandom().nextInt(10) - event.lootingLevel < 1) {
          event.drops.add(new EntityItem(event.entity.level(), event.entityLiving.posX, event.entityLiving.posY + (double)event.entityLiving.getEyeHeight(), event.entityLiving.posZ, new ItemStack(ThaumcraftItems.GOLD_COIN)));
       }
 
-      if (event.source == ThaumcraftDamageSources.dissolve) {
-         AspectList<Aspect>aspects = ScanManager.generateEntityAspects(event.entityLiving);
-         if (aspects != null && aspects.size() > 0) {
-            for(Aspect aspect : aspects.keySet()) {
-               if (!event.entity.getRandom().nextBoolean()) {
-                  int size = 1 + event.entity.getRandom().nextInt(aspects.get(aspect));
-                  size = Math.max(1, size / 2);
-                  ItemStack stack = new ItemStack(ConfigItems.itemCrystalEssence, size, 0);
-                  ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new LinkedHashAspectList<>()).addAll(aspect, 1));
-                  event.drops.add(new EntityItem(event.entity.level(), event.entityLiving.posX, event.entityLiving.posY + (double)event.entityLiving.getEyeHeight(), event.entityLiving.posZ, stack));
-               }
-            }
-         }
-      }
+//      if (event.source == ThaumcraftDamageSources.dissolve) {
+//         AspectList<Aspect>aspects = ScanManager.generateEntityAspects(event.entityLiving);
+//         if (aspects != null && aspects.size() > 0) {
+//            for(Aspect aspect : aspects.keySet()) {
+//               if (!event.entity.getRandom().nextBoolean()) {
+//                  int size = 1 + event.entity.getRandom().nextInt(aspects.get(aspect));
+//                  size = Math.max(1, size / 2);
+//                  ItemStack stack = new ItemStack(ConfigItems.itemCrystalEssence, size, 0);
+//                  ((ItemCrystalEssence)stack.getItem()).setAspects(stack, (new LinkedHashAspectList<>()).addAll(aspect, 1));
+//                  event.drops.add(new EntityItem(event.entity.level(), event.entityLiving.posX, event.entityLiving.posY + (double)event.entityLiving.getEyeHeight(), event.entityLiving.posZ, stack));
+//               }
+//            }
+//         }
+//      }
 
    }
 

@@ -11,13 +11,13 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
+import thaumcraft.common.entities.abstracts.ITaintRecoverableMob;
 
+import static thaumcraft.common.entities.ThaumcraftEntities.*;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_SPIDER;
-import static thaumcraft.common.entities.ThaumcraftEntities.handleGoalsForTaintedMob;
-import static thaumcraft.common.entities.ThaumcraftEntities.handleTargetSelectorForTaintedMob;
 
 
-public class TaintedSpiderEntity extends Spider implements ITaintConvertableEntity {
+public class TaintedSpiderEntity extends Spider implements ITaintConvertableEntity, ITaintRecoverableMob {
     public TaintedSpiderEntity(Level level) {
         this(TAINTED_SPIDER(), level);
     }
@@ -75,5 +75,13 @@ public class TaintedSpiderEntity extends Spider implements ITaintConvertableEnti
     @Override
     public void convertToTaintedMob() {
 
+    }
+    @Override
+    public boolean canBeRecoveredFromTaintedMob() {
+        return usualCanRecoverFromTaintedMob(this);
+    }
+    @Override
+    public void recoverFromTaintedMob() {
+        usualTaintedMobRecover(this,EntityType.SPIDER);
     }
 }

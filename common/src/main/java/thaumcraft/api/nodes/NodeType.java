@@ -24,7 +24,7 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.EntityAspectOrb;
-import thaumcraft.common.entities.monster.EntityGiantBrainyZombie;
+import thaumcraft.common.entities.monster.GiantBrainyZombieEntity;
 import thaumcraft.common.lib.resourcelocations.NodeTypeResourceLocation;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
@@ -140,9 +140,9 @@ public class NodeType {
                         (double) pos.getZ() + (double) 0.5F,
                         24.0F
                 )) {
-                    EntityGiantBrainyZombie entity = new EntityGiantBrainyZombie(serverLevel);
+                    var entity = new GiantBrainyZombieEntity(serverLevel);
                     AABB box = new AABB(pos).inflate(10.0D, 6.0D, 10.0D);
-                    int j = serverLevel.getEntitiesOfClass(EntityGiantBrainyZombie.class, box).size();
+                    int j = serverLevel.getEntitiesOfClass(GiantBrainyZombieEntity.class, box).size();
 //                    int j = serverLevel.getEntitiesWithinAABB(
 //                                    entity.getClass(),
 //                                    AxisAlignedBB.getBoundingBox(

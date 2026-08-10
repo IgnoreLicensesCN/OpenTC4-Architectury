@@ -17,15 +17,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
+import thaumcraft.common.entities.abstracts.ITaintRecoverableMob;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
 import thaumcraft.common.entities.ai.goals.MakeGrassTaintedGoal;
 
+import static thaumcraft.common.entities.ThaumcraftEntities.*;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_SHEEP;
-import static thaumcraft.common.entities.ThaumcraftEntities.handleTargetSelectorForTaintedMob;
 
 //oh breed light can breed this,but i decide to keep that to make chaos
 //however since goal removed they wont make love
-public class TaintedSheepEntity extends Sheep implements Enemy, ITaintConvertableEntity {
+public class TaintedSheepEntity extends Sheep implements Enemy, ITaintConvertableEntity, ITaintRecoverableMob {
     public TaintedSheepEntity(Level level) {
         this(TAINTED_SHEEP(), level);
     }
@@ -92,5 +93,13 @@ public class TaintedSheepEntity extends Sheep implements Enemy, ITaintConvertabl
     @Override
     public void convertToTaintedMob() {
 
+    }
+    @Override
+    public boolean canBeRecoveredFromTaintedMob() {
+        return usualCanRecoverFromTaintedMob(this);
+    }
+    @Override
+    public void recoverFromTaintedMob() {
+        usualTaintedMobRecover(this,EntityType.SHEEP);
     }
 }

@@ -16,14 +16,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
+import thaumcraft.common.entities.abstracts.ITaintRecoverableMob;
 
+import static thaumcraft.common.entities.ThaumcraftEntities.*;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_PIG;
-import static thaumcraft.common.entities.ThaumcraftEntities.handleGoalsForTaintedMob;
-import static thaumcraft.common.entities.ThaumcraftEntities.handleTargetSelectorForTaintedMob;
 
 //oh breed light can breed this,but i decide to keep that to make chaos
 //however since goal removed they wont make love
-public class TaintedPigEntity extends Pig implements Enemy, ITaintConvertableEntity {
+public class TaintedPigEntity extends Pig implements Enemy, ITaintConvertableEntity, ITaintRecoverableMob {
     public TaintedPigEntity(Level level) {
         this(TAINTED_PIG(), level);
     }
@@ -80,5 +80,13 @@ public class TaintedPigEntity extends Pig implements Enemy, ITaintConvertableEnt
     @Override
     public void convertToTaintedMob() {
 
+    }
+    @Override
+    public boolean canBeRecoveredFromTaintedMob() {
+        return usualCanRecoverFromTaintedMob(this);
+    }
+    @Override
+    public void recoverFromTaintedMob() {
+        usualTaintedMobRecover(this,EntityType.PIG);
     }
 }

@@ -2,6 +2,7 @@ package com.linearity.opentc4.utils.vanilla1710;
 
 import com.linearity.opentc4.annotations.forvalue.DegreeValue;
 import com.linearity.opentc4.annotations.forvalue.RadianValue;
+import net.minecraft.util.RandomSource;
 
 import java.util.Random;
 
@@ -220,16 +221,23 @@ public class MathHelper
         return p_76139_0_ == null || p_76139_0_.length() == 0;
     }
 
+    public static int getRandomIntegerInRange(RandomSource p_76136_0_, int p_76136_1_, int p_76136_2_)
+    {
+        return p_76136_1_ >= p_76136_2_ ? p_76136_1_ : p_76136_0_.nextInt(p_76136_2_ - p_76136_1_ + 1) + p_76136_1_;
+    }
+    @Deprecated(forRemoval = true)
     public static int getRandomIntegerInRange(Random p_76136_0_, int p_76136_1_, int p_76136_2_)
     {
         return p_76136_1_ >= p_76136_2_ ? p_76136_1_ : p_76136_0_.nextInt(p_76136_2_ - p_76136_1_ + 1) + p_76136_1_;
     }
 
+    @Deprecated(forRemoval = true)
     public static float randomFloatClamp(Random p_151240_0_, float p_151240_1_, float p_151240_2_)
     {
         return p_151240_1_ >= p_151240_2_ ? p_151240_1_ : p_151240_0_.nextFloat() * (p_151240_2_ - p_151240_1_) + p_151240_1_;
     }
 
+    @Deprecated(forRemoval = true)
     public static double getRandomDoubleInRange(Random p_82716_0_, double p_82716_1_, double p_82716_3_)
     {
         return p_82716_1_ >= p_82716_3_ ? p_82716_1_ : p_82716_0_.nextDouble() * (p_82716_3_ - p_82716_1_) + p_82716_1_;

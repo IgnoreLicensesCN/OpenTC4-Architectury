@@ -121,5 +121,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "minecraft:entities/brainy_zombie"
+  "random_sequence": "minecraft:entities/giant_brainy_zombie"
 }

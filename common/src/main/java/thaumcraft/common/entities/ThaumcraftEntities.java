@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -22,6 +23,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
 import thaumcraft.common.entities.monster.BrainyZombieEntity;
 import thaumcraft.common.entities.monster.GiantBrainyZombieEntity;
+import thaumcraft.common.entities.monster.MindSpiderEntity;
 import thaumcraft.common.entities.monster.tainted.*;
 import thaumcraft.common.entities.monster.tainted.converted.*;
 import thaumcraft.common.entities.projectile.frostfocus.FrostShardEntity;
@@ -40,7 +42,6 @@ import java.util.IdentityHashMap;
 import static com.linearity.opentc4.mixin.DefaultAttributesAccessor.opentc4$getSuppliers;
 import static com.linearity.opentc4.mixin.DefaultAttributesAccessor.opentc4$setSuppliers;
 import static thaumcraft.common.entities.ThaumcraftEntities.Registry.ENTITIES;
-import static thaumcraft.common.entities.ThaumcraftEntities.Registry.SUPPLIER_BRAINY_ZOMBIE;
 
 public class ThaumcraftEntities {
 
@@ -116,10 +117,13 @@ public class ThaumcraftEntities {
             return Registry.SUPPLIER_TAINT_SPORE_SWARMER.get();
         }
         public static EntityType<BrainyZombieEntity> BRAINY_ZOMBIE() {
-            return SUPPLIER_BRAINY_ZOMBIE.get();
+            return Registry.SUPPLIER_BRAINY_ZOMBIE.get();
         }
-        public static EntityType<BrainyZombieEntity> GIANT_BRAINY_ZOMBIE() {
-            return SUPPLIER_GIANT_BRAINY_ZOMBIE.get();
+        public static EntityType<GiantBrainyZombieEntity> GIANT_BRAINY_ZOMBIE() {
+            return Registry.SUPPLIER_GIANT_BRAINY_ZOMBIE.get();
+        }
+        public static EntityType<MindSpiderEntity> MIND_SPIDER() {
+            return Registry.SUPPLIER_MIND_SPIDER.get();
         }
     }
 
@@ -297,6 +301,13 @@ public class ThaumcraftEntities {
                         .clientTrackingRange(10)
                         .build("giant_brainy_zombie")
         );
+        public static final RegistrySupplier<EntityType<MindSpiderEntity>> SUPPLIER_MIND_SPIDER = ENTITIES.register(
+                "mind_spider",
+                () -> EntityType.Builder.<MindSpiderEntity>of(MindSpiderEntity::new, MobCategory.MONSTER)
+                        .sized(0.3F, 0.3F)
+                        .clientTrackingRange(10)
+                        .build("mind_spider")
+        );
     }
 
     public static class EntityTags {
@@ -330,6 +341,7 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TAINT_SPORE_SWARMER(), TaintSporeSwarmerEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.BRAINY_ZOMBIE(), BrainyZombieEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.GIANT_BRAINY_ZOMBIE(), GiantBrainyZombieEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.MIND_SPIDER(), MindSpiderEntity.createAttributes().build());
     }
 
     private static void registerSpawnPlacements() {
@@ -338,6 +350,18 @@ public class ThaumcraftEntities {
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 TaintacleEntity::checkTaintacleSpawnRules
+        );
+        SpawnPlacementsRegistry.register(
+                Registry.SUPPLIER_BRAINY_ZOMBIE,
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules
+        );
+        SpawnPlacementsRegistry.register(
+                Registry.SUPPLIER_FIRE_BAT,
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules
         );
     }
 
@@ -377,7 +401,8 @@ public class ThaumcraftEntities {
     }
 
     public static boolean usualCanConvertToTaintedMob(LivingEntity living) {
-        return living.hasEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT()) && !living.getType().is(EntityTags.TAINTED) && !living.getType().is(EntityTags.NOT_TAINT_CONVERTABLE);
+        return living.hasEffect(ThaumcraftEffects.ThaumcraftEffectTypeInstances.FLUX_TAINT())
+                && !living.getType().is(EntityTags.TAINTED) && !living.getType().is(EntityTags.NOT_TAINT_CONVERTABLE);
     }
     public static <TaintedType extends NotTaintedType,NotTaintedType extends Entity> void
     usualTaintedMobConversion(
@@ -399,6 +424,33 @@ public class ThaumcraftEntities {
 
             level.addFreshEntity(taintedSelf);
             notTainted.discard();
+        }else {
+            OpenTC4.LOGGER.error("failed to convert entity to tainted mob,consider call #usualTaintedMobConversion in server (logical) side");
+        }
+    }
+    public static boolean usualCanRecoverFromTaintedMob(LivingEntity living) {
+        return false;//just not impl yet,keep as a mixin point
+    }
+    public static <TaintedType extends Entity,NotTaintedType extends Entity> void
+    usualTaintedMobRecover(
+            TaintedType tainted,
+            EntityType<NotTaintedType> notTaintedEntityType
+    ){
+
+        var level = tainted.level();
+        var taintedSelf = notTaintedEntityType.create(level);
+        if (taintedSelf != null){
+            var tags = new CompoundTag();
+
+            tainted.saveWithoutId(tags);//TODO:I want to keep some features but idk if it's suitable
+            tags.putUUID("UUID", taintedSelf.getUUID());
+            taintedSelf.load(tags);
+            if (taintedSelf instanceof LivingEntity living && tainted instanceof LivingEntity notTaintedLiving){
+                living.setHealth(living.getMaxHealth() *(notTaintedLiving.getHealth() / notTaintedLiving.getMaxHealth()));
+            }
+
+            level.addFreshEntity(taintedSelf);
+            tainted.discard();
         }else {
             OpenTC4.LOGGER.error("failed to convert entity to tainted mob,consider call #usualTaintedMobConversion in server (logical) side");
         }

@@ -17,12 +17,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
+import thaumcraft.common.entities.abstracts.ITaintRecoverableMob;
 
+import static thaumcraft.common.entities.ThaumcraftEntities.*;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_CHICKEN;
-import static thaumcraft.common.entities.ThaumcraftEntities.handleGoalsForTaintedMob;
-import static thaumcraft.common.entities.ThaumcraftEntities.handleTargetSelectorForTaintedMob;
 
-public class TaintedChickenEntity extends Chicken implements Enemy, ITaintConvertableEntity {
+public class TaintedChickenEntity extends Chicken implements Enemy, ITaintConvertableEntity, ITaintRecoverableMob {
     public TaintedChickenEntity(Level level) {
         this(TAINTED_CHICKEN(), level);
     }
@@ -80,5 +80,14 @@ public class TaintedChickenEntity extends Chicken implements Enemy, ITaintConver
     @Override
     public void convertToTaintedMob() {
 
+    }
+
+    @Override
+    public boolean canBeRecoveredFromTaintedMob() {
+        return usualCanRecoverFromTaintedMob(this);
+    }
+    @Override
+    public void recoverFromTaintedMob() {
+        usualTaintedMobRecover(this,EntityType.CHICKEN);
     }
 }

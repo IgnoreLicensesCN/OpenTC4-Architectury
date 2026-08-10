@@ -16,13 +16,16 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.IExplodeOverrideCreeper;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
+import thaumcraft.common.entities.abstracts.ITaintRecoverableMob;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.LIVING_TEST;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_CREEPER;
+import static thaumcraft.common.entities.ThaumcraftEntities.usualCanRecoverFromTaintedMob;
+import static thaumcraft.common.entities.ThaumcraftEntities.usualTaintedMobRecover;
 
-public class TaintedCreeperEntity extends Creeper implements IExplodeOverrideCreeper, ITaintConvertableEntity {
+public class TaintedCreeperEntity extends Creeper implements IExplodeOverrideCreeper, ITaintConvertableEntity, ITaintRecoverableMob {
     public TaintedCreeperEntity(Level level) {
         this(TAINTED_CREEPER(), level);
     }
@@ -92,5 +95,13 @@ public class TaintedCreeperEntity extends Creeper implements IExplodeOverrideCre
     @Override
     public void convertToTaintedMob() {
 
+    }
+    @Override
+    public boolean canBeRecoveredFromTaintedMob() {
+        return usualCanRecoverFromTaintedMob(this);
+    }
+    @Override
+    public void recoverFromTaintedMob() {
+        usualTaintedMobRecover(this,EntityType.CREEPER);
     }
 }

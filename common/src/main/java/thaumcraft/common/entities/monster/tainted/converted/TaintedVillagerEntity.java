@@ -29,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.abstracts.IBrainGoalsOverrideVillager;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
+import thaumcraft.common.entities.abstracts.ITaintRecoverableMob;
 import thaumcraft.common.entities.abstracts.IZombieConvertableEntity;
 
 import java.util.ArrayList;
@@ -36,9 +37,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_VILLAGER;
+import static thaumcraft.common.entities.ThaumcraftEntities.usualCanRecoverFromTaintedMob;
+import static thaumcraft.common.entities.ThaumcraftEntities.usualTaintedMobRecover;
 
 //rewritten in lazy
-public class TaintedVillagerEntity extends Villager implements IBrainGoalsOverrideVillager, Enemy, IZombieConvertableEntity, ITaintConvertableEntity {
+public class TaintedVillagerEntity extends Villager implements IBrainGoalsOverrideVillager, Enemy,
+        IZombieConvertableEntity, ITaintConvertableEntity, ITaintRecoverableMob {
     public TaintedVillagerEntity(Level level) {
         this(TAINTED_VILLAGER(),level);
     }
@@ -152,6 +156,14 @@ public class TaintedVillagerEntity extends Villager implements IBrainGoalsOverri
     @Override
     public void convertToTaintedMob() {
 
+    }
+    @Override
+    public boolean canBeRecoveredFromTaintedMob() {
+        return usualCanRecoverFromTaintedMob(this);
+    }
+    @Override
+    public void recoverFromTaintedMob() {
+        usualTaintedMobRecover(this,EntityType.VILLAGER);
     }
 
 }

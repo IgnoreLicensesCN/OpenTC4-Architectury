@@ -1,16 +1,20 @@
 package thaumcraft.api.listeners.warp.consts;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
+import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.entities.monster.EntityMindSpider;
+import thaumcraft.common.entities.monster.MindSpiderEntity;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
 import thaumcraft.api.research.ResearchAndScannedInfo;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
@@ -18,6 +22,7 @@ import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBaubleAndArmor;
 import static thaumcraft.api.listeners.warp.WarpEventManager.*;
@@ -65,21 +70,27 @@ public class WarpEvents {
    }
 
    public static void spawnGuardian(LivingEntity living) {
-      EntityEldritchGuardian eg = new EntityEldritchGuardian(living.level());
-      int i = MathHelper.floor_double(living.posX);
-      int j = MathHelper.floor_double(living.posY);
-      int k = MathHelper.floor_double(living.posZ);
+      var level = living.level();
+      var random = living.getRandom();
+      var eg = new EntityEldritchGuardian(level);
+      int i = living.getBlockX();
+      int j = living.getBlockY();
+      int k = living.getBlockZ();
+      var livingAABB = living.getBoundingBox();
 
       for(int l = 0; l < 50; ++l) {
-         int i1 = i + MathHelper.getRandomIntegerInRange(living.getRandom(), 7, 24) * MathHelper.getRandomIntegerInRange(living.getRandom(), -1, 1);
-         int j1 = j + MathHelper.getRandomIntegerInRange(living.getRandom(), 7, 24) * MathHelper.getRandomIntegerInRange(living.getRandom(), -1, 1);
-         int k1 = k + MathHelper.getRandomIntegerInRange(living.getRandom(), 7, 24) * MathHelper.getRandomIntegerInRange(living.getRandom(), -1, 1);
-         if (World.doesBlockHaveSolidTopSurface(living.level(), i1, j1 - 1, k1)) {
-            eg.setPosition(i1, j1, k1);
-            if (living.level().checkNoEntityCollision(eg.boundingBox) && living.level().getCollidingBoundingBoxes(eg, eg.boundingBox).isEmpty() && !living.level().isAnyLiquid(eg.boundingBox)) {
+         int i1 = i + MathHelper.getRandomIntegerInRange(random, 7, 24) * MathHelper.getRandomIntegerInRange(random, -1, 1);
+         int j1 = j + MathHelper.getRandomIntegerInRange(random, 7, 24) * MathHelper.getRandomIntegerInRange(random, -1, 1);
+         int k1 = k + MathHelper.getRandomIntegerInRange(random, 7, 24) * MathHelper.getRandomIntegerInRange(random, -1, 1);
+         var pos = new BlockPos(i1, j1 - 1, k1);
+         if (level.getBlockState(pos).isFaceSturdy(level,pos, Direction.UP)) {
+            eg.setPos(i1, j1, k1);
+            if (level.getEntities(ENTITY_TEST,livingAABB,e -> true).isEmpty()
+                    && level.noCollision(living,livingAABB)
+                    && !level.containsAnyLiquid(livingAABB)) {
                eg.setTarget(living);
-               eg.setAttackTarget(living);
-               living.level().spawnEntityInWorld(eg);
+//               eg.setAttackTarget(living);
+               level.addFreshEntity(eg);
                break;
             }
          }
@@ -89,24 +100,31 @@ public class WarpEvents {
 
    public static void suddenlySpiders(LivingEntity living, int warp, boolean real) {
       int spawns = Math.min(50, warp);
+      var random = living.getRandom();
+      var level = living.level();
+      int i = living.getBlockX();
+      int j = living.getBlockY();
+      int k = living.getBlockZ();
 
       for(int a = 0; a < spawns; ++a) {
-         EntityMindSpider spider = new EntityMindSpider(living.level());
-         int i = MathHelper.floor_double(living.posX);
-         int j = MathHelper.floor_double(living.posY);
-         int k = MathHelper.floor_double(living.posZ);
+         var spider = new MindSpiderEntity(living.level());
          boolean success = false;
 
          for(int l = 0; l < 50; ++l) {
-            int i1 = i + MathHelper.getRandomIntegerInRange(living.getRandom(), 7, 24)
-                    * MathHelper.getRandomIntegerInRange(living.getRandom(), -1, 1);
-            int j1 = j + MathHelper.getRandomIntegerInRange(living.getRandom(), 7, 24)
-                    * MathHelper.getRandomIntegerInRange(living.getRandom(), -1, 1);
-            int k1 = k + MathHelper.getRandomIntegerInRange(living.getRandom(), 7, 24)
-                    * MathHelper.getRandomIntegerInRange(living.getRandom(), -1, 1);
-            if (World.doesBlockHaveSolidTopSurface(living.level(), i1, j1 - 1, k1)) {
-               spider.setPosition(i1, j1, k1);
-               if (living.level().checkNoEntityCollision(spider.boundingBox) && living.level().getCollidingBoundingBoxes(spider, spider.boundingBox).isEmpty() && !living.level().isAnyLiquid(spider.boundingBox)) {
+            int i1 = i + MathHelper.getRandomIntegerInRange(random, 7, 24)
+                    * MathHelper.getRandomIntegerInRange(random, -1, 1);
+            int j1 = j + MathHelper.getRandomIntegerInRange(random, 7, 24)
+                    * MathHelper.getRandomIntegerInRange(random, -1, 1);
+            int k1 = k + MathHelper.getRandomIntegerInRange(random, 7, 24)
+                    * MathHelper.getRandomIntegerInRange(random, -1, 1);
+            var pos = new BlockPos(i1, j1 - 1, k1);
+            if (level.getBlockState(pos).isFaceSturdy(level,pos, Direction.UP)) {
+               spider.setPos(i1, j1, k1);
+               var spiderAABB = spider.getBoundingBox();
+               if (level.getEntities(ENTITY_TEST,spiderAABB,e -> true).isEmpty()
+                       && level.noCollision(spider,spiderAABB)
+                       && !level.containsAnyLiquid(spiderAABB)
+               ) {
                   success = true;
                   break;
                }
@@ -115,17 +133,19 @@ public class WarpEvents {
 
          if (success) {
             spider.setTarget(living);
-            spider.setAttackTarget(living);
+//            spider.setAttackTarget(living);
             if (!real) {
-               spider.setViewer(living.getGameProfile().getName());
+               spider.setVisibleTo(living);
                spider.setHarmless(true);
+            }else {
+               spider.setHarmless(false);
             }
 
-            living.level().spawnEntityInWorld(spider);
+            level.addFreshEntity(spider);
          }
       }
 
-      living.sendSystemMessage(Component.translatable("warp.text.7").withStyle(ChatFormatting.DARK_PURPLE).withStyle(ChatFormatting.ITALIC), true);
+      living.sendSystemMessage(Component.translatable("warp.text.7").withStyle(ChatFormatting.DARK_PURPLE).withStyle(ChatFormatting.ITALIC));
    }
 
    public static int getWarpFromGear(LivingEntity living) {
