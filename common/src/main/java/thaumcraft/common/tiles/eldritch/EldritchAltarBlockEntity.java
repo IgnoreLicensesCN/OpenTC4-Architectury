@@ -4,7 +4,6 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;

@@ -1,10 +1,5 @@
 package thaumcraft.common.entities.ai.misc;
 
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.world.level.Level;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.entities.monster.EntityCultistCleric;
-
 @Deprecated(forRemoval = true)
 public class AIAltarFocus /*extends EntityAIBase*/ {
 //   private final EntityCultistCleric entity;

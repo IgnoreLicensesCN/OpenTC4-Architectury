@@ -28,6 +28,8 @@ import thaumcraft.common.entities.monster.cultists.CultistClericEntity;
 import thaumcraft.common.entities.monster.cultists.CultistEntity;
 import thaumcraft.common.entities.monster.tainted.*;
 import thaumcraft.common.entities.monster.tainted.converted.*;
+import thaumcraft.common.entities.projectile.GolemOrbEntity;
+import thaumcraft.common.entities.projectile.RedGolemOrbEntity;
 import thaumcraft.common.entities.projectile.frostfocus.FrostShardEntity;
 import thaumcraft.common.entities.projectile.hellbatfocus.FireBatEntity;
 import thaumcraft.common.entities.projectile.pechfocus.PechBlastEntity;
@@ -132,6 +134,12 @@ public class ThaumcraftEntities {
         }
         public static EntityType<CultistClericEntity> CULTIST_CLERIC() {
             return Registry.SUPPLIER_CULTIST_CLERIC.get();
+        }
+        public static EntityType<GolemOrbEntity> GOLEM_ORB() {
+            return Registry.SUPPLIER_GOLEM_ORB.get();
+        }
+        public static EntityType<RedGolemOrbEntity> RED_GOLEM_ORB() {
+            return Registry.SUPPLIER_RED_GOLEM_ORB.get();
         }
     }
 
@@ -329,6 +337,20 @@ public class ThaumcraftEntities {
                         .sized(0.6F, 1.8F)
                         .clientTrackingRange(10)
                         .build("cultist_cleric")
+        );
+        public static final RegistrySupplier<EntityType<GolemOrbEntity>> SUPPLIER_GOLEM_ORB = ENTITIES.register(
+                "golem_orb",
+                () -> EntityType.Builder.<GolemOrbEntity>of(GolemOrbEntity::new, MobCategory.MONSTER)
+                        .sized(0.1F,0.1F)
+                        .clientTrackingRange(10)
+                        .build("golem_orb")
+        );
+        public static final RegistrySupplier<EntityType<RedGolemOrbEntity>> SUPPLIER_RED_GOLEM_ORB = ENTITIES.register(
+                "red_golem_orb",
+                () -> EntityType.Builder.<RedGolemOrbEntity>of(RedGolemOrbEntity::new, MobCategory.MONSTER)
+                        .sized(0.1F,0.1F)
+                        .clientTrackingRange(10)
+                        .build("red_golem_orb")
         );
     }
 

@@ -10,7 +10,7 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.entities.projectile.EntityGolemOrb;
+import thaumcraft.common.entities.projectile.RedGolemOrbEntity;
 
 @UtilityLikeAbstraction
 public interface CultistClericLikeRangedAttackMob extends RangedAttackMob {
@@ -34,11 +34,10 @@ public interface CultistClericLikeRangedAttackMob extends RangedAttackMob {
         var level = level();
         var thiz = getProjectileThrower();
         if (random.nextFloat() > 0.66F) {
-            var blast = new EntityGolemOrb(level, this, living, true);
-            blast.posX += blast.motionX / (double)2.0F;
-            blast.posZ += blast.motionZ / (double)2.0F;
-            blast.setPos(blast.posX, blast.posY, blast.posZ);
-            blast.setThrowableHeading(d0, d1 + (double)2.0F, d2, 0.66F, 3.0F);
+            var blast = new RedGolemOrbEntity( thiz, living,level);
+            var movement = blast.getDeltaMovement();
+            blast.shoot(d0, d1 + (double)2.0F, d2, 0.66F, 3.0F);
+            blast.setPos(blast.getX() + movement.x / (double)2.0F, blast.getY(), blast.getZ() + movement.z / (double)2.0F);
             this.playSound(ThaumcraftSounds.EGATTACK, 1.0F, 1.0F + random.nextFloat() * 0.1F);
             level.addFreshEntity(blast);
         } else {

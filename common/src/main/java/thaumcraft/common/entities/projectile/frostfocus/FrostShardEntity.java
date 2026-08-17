@@ -38,9 +38,12 @@ public class FrostShardEntity extends ThrowableProjectile {
     public FrostShardEntity(EntityType<FrostShardEntity> type, Level par1World) {
         super(type, par1World);
     }
+    public FrostShardEntity(EntityType<FrostShardEntity> type,LivingEntity living, Level par1World) {
+        super(type,living, par1World);
+    }
 
     public FrostShardEntity(LivingEntity living, Level par1World) {
-        super(ThaumcraftEntities.ThaumcraftEntityTypeInstances.FROST_SHARD(), living, par1World);
+        this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.FROST_SHARD(), living, par1World);
     }
 
     @Override
