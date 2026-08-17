@@ -24,6 +24,7 @@ import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
 import thaumcraft.common.entities.monster.BrainyZombieEntity;
 import thaumcraft.common.entities.monster.GiantBrainyZombieEntity;
 import thaumcraft.common.entities.monster.MindSpiderEntity;
+import thaumcraft.common.entities.monster.cultists.CultistEntity;
 import thaumcraft.common.entities.monster.tainted.*;
 import thaumcraft.common.entities.monster.tainted.converted.*;
 import thaumcraft.common.entities.projectile.frostfocus.FrostShardEntity;
@@ -124,6 +125,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<MindSpiderEntity> MIND_SPIDER() {
             return Registry.SUPPLIER_MIND_SPIDER.get();
+        }
+        public static EntityType<CultistEntity> CULTIST() {
+            return Registry.SUPPLIER_CULTIST.get();
         }
     }
 
@@ -308,6 +312,13 @@ public class ThaumcraftEntities {
                         .clientTrackingRange(10)
                         .build("mind_spider")
         );
+        public static final RegistrySupplier<EntityType<CultistEntity>> SUPPLIER_CULTIST = ENTITIES.register(
+                "cultist",
+                () -> EntityType.Builder.<CultistEntity>of(CultistEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.8F)
+                        .clientTrackingRange(10)
+                        .build("cultist")
+        );
     }
 
     public static class EntityTags {
@@ -342,6 +353,7 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.BRAINY_ZOMBIE(), BrainyZombieEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.GIANT_BRAINY_ZOMBIE(), GiantBrainyZombieEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.MIND_SPIDER(), MindSpiderEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST(), CultistEntity.createAttributes().build());
     }
 
     private static void registerSpawnPlacements() {

@@ -36,7 +36,7 @@ public class MindSpiderEntity extends Spider {
 
 
     public static @NotNull AttributeSupplier.Builder createAttributes() {
-        return Spider.createAttributes().add(Attributes.MAX_HEALTH, 11).add(Attributes.ATTACK_DAMAGE,1);
+        return Spider.createAttributes().add(Attributes.MAX_HEALTH, 1).add(Attributes.ATTACK_DAMAGE,1);
     }
 
     public static final int HARMLESS_FLAG = 1;

@@ -361,4 +361,8 @@ public class Consts {
     public static class GiantBrainyZombieEntityTagAccessors {
         public static final FloatTagAccessor ANGER = new FloatTagAccessor("anger");
     }
+    public static class CultistEntityTagAccessors {
+        public static final ResourceLocationTagAccessor HOME_LEVEL_ID = new ResourceLocationTagAccessor("home_level");
+        public static final BlockPosAccessor HOME_POS = new BlockPosAccessor("home_pos");
+    }
 }

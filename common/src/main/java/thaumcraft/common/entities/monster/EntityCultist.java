@@ -1,110 +1,99 @@
 package thaumcraft.common.entities.monster;
 
-import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import thaumcraft.api.entityrender.ShieldRunesFXGetter;
-import thaumcraft.common.entities.monster.boss.EntityCultistLeader;
-import thaumcraft.common.items.ThaumcraftItemInstances;
+@Deprecated(forRemoval = true)
+public class EntityCultist /*extends EntityMob implements ShieldRunesFXGetter*/ {
+//   public EntityCultist(World p_i1745_1_) {
+//      super(p_i1745_1_);
+//      this.setSize(0.6F, 1.8F);
+//      this.experienceValue = 10;
+//      this.getNavigator().setBreakDoors(true);
+//      this.getNavigator().setAvoidsWater(true);
+//   }
 
-public class EntityCultist extends EntityMob implements ShieldRunesFXGetter {
-   public EntityCultist(World p_i1745_1_) {
-      super(p_i1745_1_);
-      this.setSize(0.6F, 1.8F);
-      this.experienceValue = 10;
-      this.getNavigator().setBreakDoors(true);
-      this.getNavigator().setAvoidsWater(true);
-   }
+//   protected void applyEntityAttributes() {
+//      super.applyEntityAttributes();
+//      this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(32.0F);
+//      this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3);
+//      this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0F);
+//   }
 
-   protected void applyEntityAttributes() {
-      super.applyEntityAttributes();
-      this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(32.0F);
-      this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3);
-      this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0F);
-   }
+//   protected void entityInit() {
+//      super.entityInit();
+//   }
+//
+//   public boolean canPickUpLoot() {
+//      return false;
+//   }
 
-   protected void entityInit() {
-      super.entityInit();
-   }
+//   protected boolean isAIEnabled() {
+//      return true;
+//   }
+//
+//   protected Item getDropItem() {
+//       return super.getDropItem();
+//   }
 
-   public boolean canPickUpLoot() {
-      return false;
-   }
+//   protected void dropFewItems(boolean flag, int i) {
+//      int r = this.rand.nextInt(10);
+//      if (r == 0) {
+//         this.entityDropItem(new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT()), 1.5F);
+//      } else if (r == 1) {
+//         this.entityDropItem(new ItemStack(ThaumcraftItemInstances.VOID_SEED(), 1), 1.5F);
+//      } else if (r <= 3 + i) {
+//         this.entityDropItem(new ItemStack(ThaumcraftItemInstances.GOLD_COIN()), 1.5F);
+//      }
+//
+//      super.dropFewItems(flag, i);
+//   }
+//
+//   protected void dropRareDrop(int p_70600_1_) {
+//      this.entityDropItem(new ItemStack(ThaumcraftItemInstances.CRIMSON_RITES()), 1.0F);
+//   }
 
-   protected boolean isAIEnabled() {
-      return true;
-   }
+//   protected void addRandomArmor() {
+//   }
+//
+//   protected void enchantEquipment() {
+//   }
 
-   protected Item getDropItem() {
-       return super.getDropItem();
-   }
+//   public IEntityLivingData onSpawnWithEgg(IEntityLivingData p_110161_1_) {
+//      this.addRandomArmor();
+//      this.enchantEquipment();
+//      return super.onSpawnWithEgg(p_110161_1_);
+//   }
 
-   protected void dropFewItems(boolean flag, int i) {
-      int r = this.rand.nextInt(10);
-      if (r == 0) {
-         this.entityDropItem(new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT()), 1.5F);
-      } else if (r == 1) {
-         this.entityDropItem(new ItemStack(ThaumcraftItemInstances.VOID_SEED(), 1), 1.5F);
-      } else if (r <= 3 + i) {
-         this.entityDropItem(new ItemStack(ThaumcraftItemInstances.GOLD_COIN()), 1.5F);
-      }
+//   protected boolean canDespawn() {
+//       return super.canDespawn();
+//   }
+//
+//   public boolean attackEntityAsMob(Entity p_70652_1_) {
+//      return super.attackEntityAsMob(p_70652_1_);
+//   }
 
-      super.dropFewItems(flag, i);
-   }
+//   public void readEntityFromNBT(NBTTagCompound nbt) {
+//      super.readEntityFromNBT(nbt);
+//      if (nbt.hasKey("HomeD")) {
+//         this.setHomeArea(nbt.getInteger("HomeX"), nbt.getInteger("HomeY"), nbt.getInteger("HomeZ"), nbt.getInteger("HomeD"));
+//      }
+//
+//   }
+//
+//   public void writeEntityToNBT(NBTTagCompound nbt) {
+//      super.writeEntityToNBT(nbt);
+//      if (this.getHomePosition() != null && this.func_110174_bM() > 0.0F) {
+//         nbt.setInteger("HomeD", (int)this.func_110174_bM());
+//         nbt.setInteger("HomeX", this.getHomePosition().posX);
+//         nbt.setInteger("HomeY", this.getHomePosition().posY);
+//         nbt.setInteger("HomeZ", this.getHomePosition().posZ);
+//      }
+//
+//   }
 
-   protected void dropRareDrop(int p_70600_1_) {
-      this.entityDropItem(new ItemStack(ThaumcraftItemInstances.CRIMSON_RITES()), 1.0F);
-   }
-
-   protected void addRandomArmor() {
-   }
-
-   protected void enchantEquipment() {
-   }
-
-   public IEntityLivingData onSpawnWithEgg(IEntityLivingData p_110161_1_) {
-      this.addRandomArmor();
-      this.enchantEquipment();
-      return super.onSpawnWithEgg(p_110161_1_);
-   }
-
-   protected boolean canDespawn() {
-       return super.canDespawn();
-   }
-
-   public boolean attackEntityAsMob(Entity p_70652_1_) {
-      return super.attackEntityAsMob(p_70652_1_);
-   }
-
-   public void readEntityFromNBT(NBTTagCompound nbt) {
-      super.readEntityFromNBT(nbt);
-      if (nbt.hasKey("HomeD")) {
-         this.setHomeArea(nbt.getInteger("HomeX"), nbt.getInteger("HomeY"), nbt.getInteger("HomeZ"), nbt.getInteger("HomeD"));
-      }
-
-   }
-
-   public void writeEntityToNBT(NBTTagCompound nbt) {
-      super.writeEntityToNBT(nbt);
-      if (this.getHomePosition() != null && this.func_110174_bM() > 0.0F) {
-         nbt.setInteger("HomeD", (int)this.func_110174_bM());
-         nbt.setInteger("HomeX", this.getHomePosition().posX);
-         nbt.setInteger("HomeY", this.getHomePosition().posY);
-         nbt.setInteger("HomeZ", this.getHomePosition().posZ);
-      }
-
-   }
-
-   public boolean isOnSameTeam(EntityLivingBase el) {
-      return el instanceof EntityCultist || el instanceof EntityCultistLeader;
-   }
-
-   public boolean canAttackClass(Class clazz) {
-      return clazz != EntityCultistCleric.class && clazz != EntityCultistLeader.class && clazz != EntityCultistKnight.class && super.canAttackClass(clazz);
-   }
+//   public boolean isOnSameTeam(EntityLivingBase el) {
+//      return el instanceof EntityCultist || el instanceof EntityCultistLeader;
+//   }
+//
+//   public boolean canAttackClass(Class clazz) {
+//      return clazz != EntityCultistCleric.class && clazz != EntityCultistLeader.class && clazz != EntityCultistKnight.class && super.canAttackClass(clazz);
+//   }
 }
