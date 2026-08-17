@@ -365,4 +365,7 @@ public class Consts {
         public static final ResourceLocationTagAccessor HOME_LEVEL_ID = new ResourceLocationTagAccessor("home_level");
         public static final BlockPosAccessor HOME_POS = new BlockPosAccessor("home_pos");
     }
+    public static class CultistClericEntityTagAccessors {
+        public static final BooleanTagAccessor IS_RITUALIST = new BooleanTagAccessor("is_ritualist");
+    }
 }

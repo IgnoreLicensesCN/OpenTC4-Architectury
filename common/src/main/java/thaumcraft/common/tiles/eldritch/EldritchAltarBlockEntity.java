@@ -2,18 +2,21 @@ package thaumcraft.common.tiles.eldritch;
 
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import thaumcraft.common.entities.monster.cultists.CultistClericEntity;
+import thaumcraft.common.entities.monster.cultists.CultistEntity;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchAltarBlock;
-import thaumcraft.common.entities.monster.EntityCultist;
-import thaumcraft.common.entities.monster.EntityCultistCleric;
-import thaumcraft.common.entities.monster.EntityCultistKnight;
-import thaumcraft.common.entities.monster.EntityEldritchGuardian;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;
+
+import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
 
 public class EldritchAltarBlockEntity extends TileThaumcraft {
     public EldritchAltarBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -61,35 +64,38 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
             return;
         }
         int success = 0;
-
+        var altarPos = this.getBlockPos();
         for (int a = 0; a < 4; ++a) {
             int xx = 0;
-            int zz = 0;
-            switch (a) {
-                case 0:
+            int zz = switch (a) {
+                case 0 -> {
                     xx = -2;
-                    zz = -2;
-                    break;
-                case 1:
+                    yield -2;
+                }
+                case 1 -> {
                     xx = -2;
-                    zz = 2;
-                    break;
-                case 2:
+                    yield 2;
+                }
+                case 2 -> {
                     xx = 2;
-                    zz = -2;
-                    break;
-                case 3:
+                    yield -2;
+                }
+                case 3 -> {
                     xx = 2;
-                    zz = 2;
-            }
+                    yield 2;
+                }
+                default -> 0;
+            };
 
-            EntityCultistCleric cleric = new EntityCultistCleric(this.level);
-            if (World.doesBlockHaveSolidTopSurface(this.level, this.xCoord + xx, this.yCoord - 1, this.zCoord + zz)) {
-                cleric.setPosition((double) this.xCoord + (double) 0.5F + (double) xx, this.yCoord, (double) this.zCoord + (double) 0.5F + (double) zz);
-                if (this.level().checkNoEntityCollision(cleric.boundingBox) && this.level().getCollidingBoundingBoxes(cleric, cleric.boundingBox).isEmpty() && !this.level().isAnyLiquid(cleric.boundingBox)) {
-                    cleric.setHomeArea(this.xCoord, this.yCoord, this.zCoord, 8);
-                    cleric.onSpawnWithEgg(null);
-                    cleric.spawnExplosionParticle();
+            var cleric = new CultistClericEntity(this.level);
+            var pickPos = altarPos.offset(xx,-1,zz);
+            if (level.getBlockState(pickPos).isFaceSturdy(level,pickPos, Direction.UP)) {
+                cleric.setPos(pickPos.above().getCenter());
+                var bb = cleric.getBoundingBox();
+                if (this.level.getEntities(ENTITY_TEST,bb,_ignored -> true).isEmpty()
+                        && !this.level.containsAnyLiquid(bb)) {
+                    cleric.setHomeArea(altarPos, 8);
+//                    cleric.spawnExplosionParticle();
                     if (this.level.addFreshEntity(cleric)) {
                         ++success;
                         cleric.setIsRitualist(true);
@@ -113,16 +119,16 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
         if (!(this.level instanceof ServerLevel serverLevel)) {
             return;
         }
-        List ents = this.level.getEntitiesWithinAABB(EntityCultistCleric.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(24.0F, 16.0F, 24.0F));
+        var checkingAABB = new AABB(getBlockPos()).inflate(24.0F, 16.0F, 24.0F);
+        List<? extends CultistEntity> ents = this.level.getEntitiesOfClass(CultistClericEntity.class, checkingAABB);
         if (ents.isEmpty()) {
             BlockState state = serverLevel.getBlockState(this.getBlockPos());
             state.setValue(EldritchAltarBlock.IS_SPAWNER,false);
             serverLevel.setBlock(this.getBlockPos(),state,3);
         } else {
-            ents = this.level.getEntitiesWithinAABB(
-                    EntityCultist.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1, this.yCoord + 1, this.zCoord + 1).expand(24.0F, 16.0F, 24.0F));
+            ents = this.level.getEntitiesOfClass(CultistEntity.class,checkingAABB);
             if (ents.size() < 8) {
-                EntityCultistKnight eg = new EntityCultistKnight(this.level());
+                var eg = new EntityCultistKnight(this.level);
                 int i1 = this.xCoord + MathHelper.getRandomIntegerInRange(this.level().rand, 4, 10) * MathHelper.getRandomIntegerInRange(this.level().rand, -1, 1);
                 int j1 = this.yCoord + MathHelper.getRandomIntegerInRange(this.level().rand, 0, 3) * MathHelper.getRandomIntegerInRange(this.level().rand, -1, 1);
                 int k1 = this.zCoord + MathHelper.getRandomIntegerInRange(this.level().rand, 4, 10) * MathHelper.getRandomIntegerInRange(this.level().rand, -1, 1);

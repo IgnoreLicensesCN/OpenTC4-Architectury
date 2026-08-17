@@ -47,6 +47,8 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_SWARM_ATTACK = new ResourceLocation(Thaumcraft.MOD_ID,"swarmattack");
         public static final ResourceLocation RES_TENTACLE = new ResourceLocation(Thaumcraft.MOD_ID,"tentacle");
         public static final ResourceLocation RES_SWARM = new ResourceLocation(Thaumcraft.MOD_ID,"swarm");
+        public static final ResourceLocation RES_CHANT = new ResourceLocation(Thaumcraft.MOD_ID,"chant");
+        public static final ResourceLocation RES_EGATTACK = new ResourceLocation(Thaumcraft.MOD_ID,"egattack");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -91,4 +93,6 @@ public class ThaumcraftSounds {
     public static final SoundEvent SWARM_ATTACK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_SWARM_ATTACK);
     public static final SoundEvent TENTACLE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_TENTACLE);
     public static final SoundEvent SWARM = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_SWARM);
+    public static final SoundEvent CHANT = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_CHANT);
+    public static final SoundEvent EGATTACK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_EGATTACK);
 }

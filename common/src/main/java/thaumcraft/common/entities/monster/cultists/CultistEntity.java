@@ -17,7 +17,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.ZombifiedPiglin;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -36,7 +35,8 @@ import static net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED
 public class CultistEntity extends DoorBreakingMonster {
     protected @Nullable BlockPos homePos = null;
     protected @Nullable ResourceLocation homeLevelID = null;
-    public CultistEntity(EntityType<? extends Monster> entityType, Level level) {
+    protected int homeAreaSize = 8;
+    public CultistEntity(EntityType<? extends CultistEntity> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 10;
         this.setCanPickUpLoot(false);
@@ -67,11 +67,9 @@ public class CultistEntity extends DoorBreakingMonster {
 
     protected void addBehaviourGoals() {
         this.goalSelector.addGoal(2, new ZombieLikeAttackGoal(this, 1.0F, false));
-        this.goalSelector.addGoal(6, new MoveThroughVillageGoal(this, 1.0F, true, 4, this::canBreakDoors));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0F));
-        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers(ZombifiedPiglin.class));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this ));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoalWithExclude<>(this, Monster.class, CultistEntity.class, true));
     }
@@ -100,6 +98,30 @@ public class CultistEntity extends DoorBreakingMonster {
         }
     }
 
+    public @Nullable BlockPos getHomePos() {
+        return homePos;
+    }
+
+    public void setHomePos(@Nullable BlockPos homePos) {
+        this.homePos = homePos;
+    }
+
+    public @Nullable ResourceLocation getHomeLevelID() {
+        return homeLevelID;
+    }
+
+    public void setHomeLevelID(@Nullable ResourceLocation homeLevelID) {
+        this.homeLevelID = homeLevelID;
+    }
+
+    public int getHomeAreaSize() {
+        return homeAreaSize;
+    }
+
+    public void setHomeAreaSize(int homeAreaSize) {
+        this.homeAreaSize = homeAreaSize;
+    }
+
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
@@ -111,5 +133,11 @@ public class CultistEntity extends DoorBreakingMonster {
 
     @Override
     protected void populateDefaultEquipmentEnchantments(RandomSource randomSource, DifficultyInstance difficultyInstance) {
+    }
+
+    public void setHomeArea(BlockPos homePos,int range) {
+        setHomePos(homePos);
+        setHomeAreaSize(range);
+        setHomeLevelID(level().dimension().location());
     }
 }
