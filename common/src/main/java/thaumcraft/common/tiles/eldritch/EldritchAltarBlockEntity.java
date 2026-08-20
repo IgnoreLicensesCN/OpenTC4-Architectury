@@ -3,12 +3,14 @@ package thaumcraft.common.tiles.eldritch;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import thaumcraft.common.entities.monster.cultists.CultistClericEntity;
 import thaumcraft.common.entities.monster.cultists.CultistEntity;
+import thaumcraft.common.entities.monster.cultists.CultistKnightEntity;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchAltarBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -45,10 +47,10 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
                         if (!spawnedClerics) {
                             spawnClerics();
                         }else {
-                            spawnGuards();
+                            spawnCultistGuards();
                         }
                     }else if (spawnType == 1) {
-                        spawnGuardian();
+                        spawnEldritchGuardian();
                     }
                 }
             }
@@ -93,7 +95,7 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
                 var bb = cleric.getBoundingBox();
                 if (this.level.getEntities(ENTITY_TEST,bb,_ignored -> true).isEmpty()
                         && !this.level.containsAnyLiquid(bb)) {
-                    cleric.setHomeArea(altarPos, 8);
+                    cleric.restrictTo(altarPos, 8);
 //                    cleric.spawnExplosionParticle();
                     if (this.level.addFreshEntity(cleric)) {
                         ++success;
@@ -111,7 +113,7 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
 
     }
 
-    private void spawnGuards() {
+    private void spawnCultistGuards() {
         if (this.level == null || this.level.isClientSide) {
             return;
         }
@@ -127,25 +129,45 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
         } else {
             ents = this.level.getEntitiesOfClass(CultistEntity.class,checkingAABB);
             if (ents.size() < 8) {
-                var eg = new EntityCultistKnight(this.level);
-                int i1 = this.xCoord + MathHelper.getRandomIntegerInRange(this.level().rand, 4, 10) * MathHelper.getRandomIntegerInRange(this.level().rand, -1, 1);
-                int j1 = this.yCoord + MathHelper.getRandomIntegerInRange(this.level().rand, 0, 3) * MathHelper.getRandomIntegerInRange(this.level().rand, -1, 1);
-                int k1 = this.zCoord + MathHelper.getRandomIntegerInRange(this.level().rand, 4, 10) * MathHelper.getRandomIntegerInRange(this.level().rand, -1, 1);
-                if (World.doesBlockHaveSolidTopSurface(this.level(), i1, j1 - 1, k1)) {
-                    eg.setPosition(i1, j1, k1);
-                    if (this.level().checkNoEntityCollision(eg.boundingBox) && this.level().getCollidingBoundingBoxes(eg, eg.boundingBox).isEmpty() && !this.level().isAnyLiquid(eg.boundingBox)) {
-                        eg.onSpawnWithEgg(null);
-                        eg.spawnExplosionParticle();
-                        eg.setHomeArea(this.xCoord, this.yCoord, this.zCoord, 16);
-                        this.level.addFreshEntity(eg);
+                var selfPos = getBlockPos();
+                var rand = level.random;
+                var knight = new CultistKnightEntity(this.level);
+                var pickPos = selfPos.offset(
+                        MathHelper.getRandomIntegerInRange(rand, 4, 10) * (rand.nextBoolean()?0:1),
+                        MathHelper.getRandomIntegerInRange(rand, 0, 3) * (rand.nextBoolean()?0:1),
+                        MathHelper.getRandomIntegerInRange(rand, 4, 10) * (rand.nextBoolean()?0:1)
+                );
+                if (level.getBlockState(pickPos.below()).isFaceSturdy(level,pickPos,Direction.UP)) {
+                    var knightBb = knight.getBoundingBox();
+                    var knightWidth = knight.getBbWidth();
+                    var knightHeight = knight.getBbHeight();
+                    knight.setPos(pickPos.getX(),pickPos.getY(),pickPos.getZ());
+                    if (level.getEntities(knight, knightBb,_ignored -> true).isEmpty()
+                                    && !level.containsAnyLiquid(knightBb)
+                    ) {
+                        for (int i = 0; i < 20; ++i)
+                        {
+                            double d0 = rand.nextGaussian() * 0.02D;
+                            double d1 = rand.nextGaussian() * 0.02D;
+                            double d2 = rand.nextGaussian() * 0.02D;
+                            double d3 = 10.0D;
+                            level.addParticle(
+                                    ParticleTypes.EXPLOSION,
+                                    selfPos.getX() + (rand.nextFloat() * knightWidth * 2.0F) - knightWidth - d0 * d3,
+                                    selfPos.getY() + (rand.nextFloat() * knightHeight) - d1 * d3,
+                                    selfPos.getZ() + (rand.nextFloat() * knightWidth * 2.0F) - knightWidth - d2 * d3,
+                                    d0, d1, d2
+                            );
+                        }
+                        knight.restrictTo(selfPos, 16);
+                        this.level.addFreshEntity(knight);
                     }
                 }
             }
-
         }
     }
 
-    private void spawnGuardian() {
+    private void spawnEldritchGuardian() {
         EntityEldritchGuardian eg = new EntityEldritchGuardian(this.level());
         int i1 = this.xCoord + MathHelper.getRandomIntegerInRange(this.level().rand, 4, 10) * MathHelper.getRandomIntegerInRange(this.level().rand, -1, 1);
         int j1 = this.yCoord + MathHelper.getRandomIntegerInRange(this.level().rand, 0, 3) * MathHelper.getRandomIntegerInRange(this.level().rand, -1, 1);

@@ -21,11 +21,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
-import thaumcraft.common.entities.monster.BrainyZombieEntity;
-import thaumcraft.common.entities.monster.GiantBrainyZombieEntity;
+import thaumcraft.common.entities.monster.zombies.BrainyZombieEntity;
+import thaumcraft.common.entities.monster.zombies.GiantBrainyZombieEntity;
 import thaumcraft.common.entities.monster.MindSpiderEntity;
 import thaumcraft.common.entities.monster.cultists.CultistClericEntity;
 import thaumcraft.common.entities.monster.cultists.CultistEntity;
+import thaumcraft.common.entities.monster.cultists.CultistKnightEntity;
 import thaumcraft.common.entities.monster.tainted.*;
 import thaumcraft.common.entities.monster.tainted.converted.*;
 import thaumcraft.common.entities.projectile.GolemOrbEntity;
@@ -134,6 +135,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<CultistClericEntity> CULTIST_CLERIC() {
             return Registry.SUPPLIER_CULTIST_CLERIC.get();
+        }
+        public static EntityType<CultistKnightEntity> CULTIST_KNIGHT() {
+            return Registry.SUPPLIER_CULTIST_KNIGHT.get();
         }
         public static EntityType<GolemOrbEntity> GOLEM_ORB() {
             return Registry.SUPPLIER_GOLEM_ORB.get();
@@ -338,6 +342,13 @@ public class ThaumcraftEntities {
                         .clientTrackingRange(10)
                         .build("cultist_cleric")
         );
+        public static final RegistrySupplier<EntityType<CultistKnightEntity>> SUPPLIER_CULTIST_KNIGHT = ENTITIES.register(
+                "cultist_knight",
+                () -> EntityType.Builder.<CultistKnightEntity>of(CultistKnightEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.8F)
+                        .clientTrackingRange(10)
+                        .build("cultist_knight")
+        );
         public static final RegistrySupplier<EntityType<GolemOrbEntity>> SUPPLIER_GOLEM_ORB = ENTITIES.register(
                 "golem_orb",
                 () -> EntityType.Builder.<GolemOrbEntity>of(GolemOrbEntity::new, MobCategory.MONSTER)
@@ -388,6 +399,7 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.MIND_SPIDER(), MindSpiderEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST(), CultistEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST_CLERIC(), CultistClericEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST_KNIGHT(), CultistKnightEntity.createAttributes().build());
     }
 
     private static void registerSpawnPlacements() {

@@ -16,11 +16,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -29,9 +24,6 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.CultistClericLikeRangedAttackMob;
 import thaumcraft.common.entities.ai.goals.CultistClericFocusAltarGoal;
-import thaumcraft.common.entities.ai.goals.CultistClericHurtByTargetGoal;
-import thaumcraft.common.entities.ai.goals.NearestAttackableTargetGoalWithExclude;
-import thaumcraft.common.entities.ai.goals.ZombieLikeAttackGoal;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 
 import static com.linearity.opentc4.Consts.CultistClericEntityTagAccessors.IS_RITUALIST;
@@ -53,12 +45,7 @@ public class CultistClericEntity extends CultistEntity implements CultistClericL
     protected void addBehaviourGoals() {
         this.goalSelector.addGoal(1, new CultistClericFocusAltarGoal(this));
         this.goalSelector.addGoal(2, new RangedAttackGoal(this, 1.0F, 20, 40, 24.0F));
-        this.goalSelector.addGoal(2, new ZombieLikeAttackGoal(this, 1.0F, false));
-        this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0F));
-        this.targetSelector.addGoal(1, new CultistClericHurtByTargetGoal(this ));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoalWithExclude<>(this, Monster.class, CultistEntity.class, true));
+        super.addBehaviourGoals();
     }
 
     protected void populateDefaultEquipmentEnchantments(RandomSource randomSource, DifficultyInstance difficultyInstance) {
@@ -73,15 +60,15 @@ public class CultistClericEntity extends CultistEntity implements CultistClericL
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide && this.getIsRitualist() && homePos != null) {
-
+        if (level().isClientSide && this.getIsRitualist() && hasRestriction()) {
+            var homePos = getRestrictCenter();
             double d0 = homePos.getX() + 0.5F - this.getX();
             double d1 = homePos.getY() + 1.5F - (this.getY() + (double)this.getEyeHeight());
             double d2 = homePos.getZ() + 0.5F - this.getZ();
             double d3 = MathHelper.sqrt_double(d0 * d0 + d2 * d2);
             float f = (float)(Math.atan2(d2, d0) * (double)180.0F / Math.PI) - 90.0F;
             float f1 = (float)(-(Math.atan2(d1, d3) * (double)180.0F / Math.PI));
-            this.setXRot(this.updateRotation(this.getXRot(), f1, 10.0F));
+            this.setXRot(this.updateRotation(this.getXRot(), f, 10.0F));
             this.setYRot(this.updateRotation(this.getYRot(), f1, 40));
         }
 

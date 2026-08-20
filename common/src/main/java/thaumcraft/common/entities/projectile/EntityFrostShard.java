@@ -1,10 +1,10 @@
 package thaumcraft.common.entities.projectile;
 
-
+@Deprecated(forRemoval = true)
 public class EntityFrostShard /*extends EntityThrowable implements IEntityAdditionalSpawnData*/ {
-   public double bounce = 0.5F;
-   public int bounceLimit = 3;
-   public boolean fragile = false;
+//   public double bounce = 0.5F;
+//   public int bounceLimit = 3;
+//   public boolean fragile = false;
 
 //   public EntityFrostShard(Level par1World) {
 //      super(par1World);
@@ -31,93 +31,93 @@ public class EntityFrostShard /*extends EntityThrowable implements IEntityAdditi
 //      this.fragile = data.readBoolean();
 //   }
 
-   protected void onImpact(HitResult mop) {
-      if (mop.entityHit != null) {
-         int ox = MathHelper.floor_double(this.posX) - MathHelper.floor_double(mop.entityHit.posX);
-         int oy = MathHelper.floor_double(this.posY) - MathHelper.floor_double(mop.entityHit.posY);
-         int oz = MathHelper.floor_double(this.posZ) - MathHelper.floor_double(mop.entityHit.posZ);
-         if (oz != 0) {
-            this.motionZ *= -1.0F;
-         }
-
-         if (ox != 0) {
-            this.motionX *= -1.0F;
-         }
-
-         if (oy != 0) {
-            this.motionY *= -0.9;
-         }
-
-         this.motionX *= 0.66;
-         this.motionY *= 0.66;
-         this.motionZ *= 0.66;
-
-         for(int a = 0; (float)a < this.getDamage(); ++a) {
-            this.level().spawnParticle("blockcrack_" + Block.getIdFromBlock(ConfigBlocks.blockCustomOre) + "_15", this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
-         }
-      } else if (mop.typeOfHit == MovingObjectType.BLOCK) {
-         Direction dir = Direction.getOrientation(mop.sideHit);
-         if (dir.offsetZ != 0) {
-            this.motionZ *= -1.0F;
-         }
-
-         if (dir.offsetX != 0) {
-            this.motionX *= -1.0F;
-         }
-
-         if (dir.offsetY != 0) {
-            this.motionY *= -0.9;
-         }
-
-         Block bhit = this.level().getBlock(mop.blockX, mop.blockY, mop.blockZ);
-
-         try {
-            this.playSound(bhit.stepSound.getBreakSound(), 0.3F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
-         } catch (Exception ignored) {
-         }
-
-         for(int a = 0; (float)a < this.getDamage(); ++a) {
-            this.level().spawnParticle("blockcrack_" + Block.getIdFromBlock(bhit) + "_" + this.level().getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ), this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
-         }
-      }
-
-      this.motionX *= this.bounce;
-      this.motionY *= this.bounce;
-      this.motionZ *= this.bounce;
-      float var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-      this.posX -= this.motionX / (double)var20 * (double)0.05F;
-      this.posY -= this.motionY / (double)var20 * (double)0.05F;
-      this.posZ -= this.motionZ / (double)var20 * (double)0.05F;
-      this.setBeenAttacked();
-      if (Platform.getEnvironment() != Env.CLIENT && mop.entityHit != null) {
-         double mx = mop.entityHit.motionX;
-         double my = mop.entityHit.motionY;
-         double mz = mop.entityHit.motionZ;
-         mop.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.getDamage());
-         if (mop.entityHit instanceof EntityLivingBase && this.getFrosty() > 0) {
-            ((EntityLivingBase)mop.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 200, this.getFrosty() - 1));
-         }
-
-         if (this.fragile) {
-            mop.entityHit.hurtResistantTime = 0;
-            this.setDead();
-            this.playSound(Blocks.ice.stepSound.getBreakSound(), 0.3F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
-            mop.entityHit.motionX = mx + (mop.entityHit.motionX - mx) / (double)10.0F;
-            mop.entityHit.motionY = my + (mop.entityHit.motionY - my) / (double)10.0F;
-            mop.entityHit.motionZ = mz + (mop.entityHit.motionZ - mz) / (double)10.0F;
-         }
-      }
-
-      if (this.bounceLimit-- <= 0) {
-         this.setDead();
-         this.playSound(Blocks.ice.stepSound.getBreakSound(), 0.3F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
-
-         for(int a = 0; (float)a < 8.0F * this.getDamage(); ++a) {
-            this.level().spawnParticle("blockcrack_" + Block.getIdFromBlock(ConfigBlocks.blockCustomOre) + "_15", this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
-         }
-      }
-
-   }
+//   protected void onImpact(HitResult mop) {
+//      if (mop.entityHit != null) {
+//         int ox = MathHelper.floor_double(this.posX) - MathHelper.floor_double(mop.entityHit.posX);
+//         int oy = MathHelper.floor_double(this.posY) - MathHelper.floor_double(mop.entityHit.posY);
+//         int oz = MathHelper.floor_double(this.posZ) - MathHelper.floor_double(mop.entityHit.posZ);
+//         if (oz != 0) {
+//            this.motionZ *= -1.0F;
+//         }
+//
+//         if (ox != 0) {
+//            this.motionX *= -1.0F;
+//         }
+//
+//         if (oy != 0) {
+//            this.motionY *= -0.9;
+//         }
+//
+//         this.motionX *= 0.66;
+//         this.motionY *= 0.66;
+//         this.motionZ *= 0.66;
+//
+//         for(int a = 0; (float)a < this.getDamage(); ++a) {
+//            this.level().spawnParticle("blockcrack_" + Block.getIdFromBlock(ConfigBlocks.blockCustomOre) + "_15", this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
+//         }
+//      } else if (mop.typeOfHit == MovingObjectType.BLOCK) {
+//         Direction dir = Direction.getOrientation(mop.sideHit);
+//         if (dir.offsetZ != 0) {
+//            this.motionZ *= -1.0F;
+//         }
+//
+//         if (dir.offsetX != 0) {
+//            this.motionX *= -1.0F;
+//         }
+//
+//         if (dir.offsetY != 0) {
+//            this.motionY *= -0.9;
+//         }
+//
+//         Block bhit = this.level().getBlock(mop.blockX, mop.blockY, mop.blockZ);
+//
+//         try {
+//            this.playSound(bhit.stepSound.getBreakSound(), 0.3F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+//         } catch (Exception ignored) {
+//         }
+//
+//         for(int a = 0; (float)a < this.getDamage(); ++a) {
+//            this.level().spawnParticle("blockcrack_" + Block.getIdFromBlock(bhit) + "_" + this.level().getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ), this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
+//         }
+//      }
+//
+//      this.motionX *= this.bounce;
+//      this.motionY *= this.bounce;
+//      this.motionZ *= this.bounce;
+//      float var20 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+//      this.posX -= this.motionX / (double)var20 * (double)0.05F;
+//      this.posY -= this.motionY / (double)var20 * (double)0.05F;
+//      this.posZ -= this.motionZ / (double)var20 * (double)0.05F;
+//      this.setBeenAttacked();
+//      if (Platform.getEnvironment() != Env.CLIENT && mop.entityHit != null) {
+//         double mx = mop.entityHit.motionX;
+//         double my = mop.entityHit.motionY;
+//         double mz = mop.entityHit.motionZ;
+//         mop.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), this.getDamage());
+//         if (mop.entityHit instanceof EntityLivingBase && this.getFrosty() > 0) {
+//            ((EntityLivingBase)mop.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 200, this.getFrosty() - 1));
+//         }
+//
+//         if (this.fragile) {
+//            mop.entityHit.hurtResistantTime = 0;
+//            this.setDead();
+//            this.playSound(Blocks.ice.stepSound.getBreakSound(), 0.3F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+//            mop.entityHit.motionX = mx + (mop.entityHit.motionX - mx) / (double)10.0F;
+//            mop.entityHit.motionY = my + (mop.entityHit.motionY - my) / (double)10.0F;
+//            mop.entityHit.motionZ = mz + (mop.entityHit.motionZ - mz) / (double)10.0F;
+//         }
+//      }
+//
+//      if (this.bounceLimit-- <= 0) {
+//         this.setDead();
+//         this.playSound(Blocks.ice.stepSound.getBreakSound(), 0.3F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+//
+//         for(int a = 0; (float)a < 8.0F * this.getDamage(); ++a) {
+//            this.level().spawnParticle("blockcrack_" + Block.getIdFromBlock(ConfigBlocks.blockCustomOre) + "_15", this.posX, this.posY, this.posZ, (double)4.0F * ((double)this.rand.nextFloat() - (double)0.5F), 0.5F, ((double)this.rand.nextFloat() - (double)0.5F) * (double)4.0F);
+//         }
+//      }
+//
+//   }
 
 //   public void onUpdate() {
 //      super.onUpdate();

@@ -6,8 +6,8 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import thaumcraft.common.entities.monster.cultists.CultistClericEntity;
 
-public class CultistClericHurtByTargetGoal extends HurtByTargetGoal {
-    public CultistClericHurtByTargetGoal(PathfinderMob pathfinderMob, Class<?>... classs) {
+public class CultistHurtByTargetGoal extends HurtByTargetGoal {
+    public CultistHurtByTargetGoal(PathfinderMob pathfinderMob, Class<?>... classs) {
         super(pathfinderMob, classs);
     }
 

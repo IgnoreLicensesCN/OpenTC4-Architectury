@@ -1,9 +1,7 @@
 package thaumcraft.common.entities.monster.cultists;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.ResourceLocationTagAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
@@ -16,7 +14,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.ZombifiedPiglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -24,18 +21,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.DoorBreakingMonster;
+import thaumcraft.common.entities.ai.goals.CultistHurtByTargetGoal;
 import thaumcraft.common.entities.ai.goals.NearestAttackableTargetGoalWithExclude;
 import thaumcraft.common.entities.ai.goals.ZombieLikeAttackGoal;
 
-import static com.linearity.opentc4.Consts.CultistEntityTagAccessors.HOME_LEVEL_ID;
 import static com.linearity.opentc4.Consts.CultistEntityTagAccessors.HOME_POS;
-import static com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor.NULL_POS_TO_WRITE;
 import static net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED;
 
 public class CultistEntity extends DoorBreakingMonster {
-    protected @Nullable BlockPos homePos = null;
-    protected @Nullable ResourceLocation homeLevelID = null;
-    protected int homeAreaSize = 8;
+    protected int restrictAreaSize = 8;
     public CultistEntity(EntityType<? extends CultistEntity> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 10;
@@ -68,7 +62,11 @@ public class CultistEntity extends DoorBreakingMonster {
     protected void addBehaviourGoals() {
         this.goalSelector.addGoal(2, new ZombieLikeAttackGoal(this, 1.0F, false));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0F));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this ));
+        addTargetGoals();
+    }
+
+    protected void addTargetGoals() {
+        this.targetSelector.addGoal(1, new CultistHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoalWithExclude<>(this, Monster.class, CultistEntity.class, true));
@@ -77,49 +75,22 @@ public class CultistEntity extends DoorBreakingMonster {
     @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        this.homeLevelID = HOME_LEVEL_ID.readFromCompoundTag(compoundTag);
-        if (this.homeLevelID == ResourceLocationTagAccessor.EMPTY){
-            this.homeLevelID = null;
-        }
-        this.homePos = HOME_POS.readFromCompoundTag(compoundTag);
-        if (this.homePos.equals(NULL_POS_TO_WRITE)) {
-            this.homePos = null;
-        }
+        restrictTo(HOME_POS.readFromCompoundTag(compoundTag),restrictAreaSize);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        if (this.homeLevelID != null) {
-            HOME_LEVEL_ID.writeToCompoundTag(compoundTag, this.homeLevelID);
-        }
-        if (this.homePos != null) {
-            HOME_POS.writeToCompoundTag(compoundTag, this.homePos);
-        }
+        HOME_POS.writeToCompoundTag(compoundTag, getRestrictCenter());
     }
 
-    public @Nullable BlockPos getHomePos() {
-        return homePos;
+    public int getRestrictAreaSize() {
+        return restrictAreaSize;
     }
 
-    public void setHomePos(@Nullable BlockPos homePos) {
-        this.homePos = homePos;
-    }
-
-    public @Nullable ResourceLocation getHomeLevelID() {
-        return homeLevelID;
-    }
-
-    public void setHomeLevelID(@Nullable ResourceLocation homeLevelID) {
-        this.homeLevelID = homeLevelID;
-    }
-
-    public int getHomeAreaSize() {
-        return homeAreaSize;
-    }
-
-    public void setHomeAreaSize(int homeAreaSize) {
-        this.homeAreaSize = homeAreaSize;
+    public void setRestrictAreaSize(int restrictAreaSize) {
+        this.restrictAreaSize = restrictAreaSize;
+        restrictTo(getRestrictCenter(),restrictAreaSize);
     }
 
     @Override
@@ -135,9 +106,9 @@ public class CultistEntity extends DoorBreakingMonster {
     protected void populateDefaultEquipmentEnchantments(RandomSource randomSource, DifficultyInstance difficultyInstance) {
     }
 
-    public void setHomeArea(BlockPos homePos,int range) {
-        setHomePos(homePos);
-        setHomeAreaSize(range);
-        setHomeLevelID(level().dimension().location());
+    @Override
+    public boolean hasRestriction() {
+        return !getRestrictCenter().equals(BlockPos.ZERO);
     }
+
 }

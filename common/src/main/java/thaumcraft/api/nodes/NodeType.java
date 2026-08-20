@@ -24,7 +24,7 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.EntityAspectOrb;
-import thaumcraft.common.entities.monster.GiantBrainyZombieEntity;
+import thaumcraft.common.entities.monster.zombies.GiantBrainyZombieEntity;
 import thaumcraft.common.lib.resourcelocations.NodeTypeResourceLocation;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;

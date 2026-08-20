@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.projectile;
 
+@Deprecated(forRemoval = true)
 public class EntityGolemOrb /*extends EntityThrowable implements IEntityAdditionalSpawnData*/ {
 //   int targetID = 0;
 //   EntityLivingBase target;
