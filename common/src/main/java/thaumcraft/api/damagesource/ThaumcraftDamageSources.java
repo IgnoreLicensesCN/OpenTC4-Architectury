@@ -28,6 +28,19 @@ public class ThaumcraftDamageSources
 
     public static final ResourceKey<DamageType> DISSOLVE =
             ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID ,"dissolve"));
+    public static final ResourceKey<DamageType> AIR_ARROW_DAMAGE =
+            ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID,"air_arrow_damage"));
+    public static final ResourceKey<DamageType> FIRE_ARROW_DAMAGE =
+            ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID,"fire_arrow_damage"));
+    public static final ResourceKey<DamageType> WATER_ARROW_DAMAGE =
+            ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID,"water_arrow_damage"));
+    public static final ResourceKey<DamageType> EARTH_ARROW_DAMAGE =
+            ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID,"earth_arrow_damage"));
+    public static final ResourceKey<DamageType> ENTROPY_ARROW_DAMAGE =
+            ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID,"entropy_arrow_damage"));
+    public static final ResourceKey<DamageType> ORDER_ARROW_DAMAGE =
+            ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID,"order_arrow_damage"));
+
     public static Holder<DamageType> getHolder(Level level, ResourceKey<DamageType> key) {
         return holderCache.getHolder(level, key);
     }

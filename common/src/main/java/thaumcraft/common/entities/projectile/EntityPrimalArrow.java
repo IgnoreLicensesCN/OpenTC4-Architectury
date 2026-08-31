@@ -23,17 +23,17 @@ import thaumcraft.api.damagesource.DamageSourceIndirectThaumcraftEntity;
 import java.util.List;
 
 public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEntityAdditionalSpawnData {
-    private int xTile = -1;
-    private int yTile = -1;
-    private int zTile = -1;
-    private Block inTile;
-    private int inData;
-    private boolean inGround;
-    public int ticksInGround;
-    private int ticksInAir;
-    private double damage;
-    public int shootingEntityId;
-    private int knockbackStrength;
+//    private int xTile = -1;
+//    private int yTile = -1;
+//    private int zTile = -1;
+//    private Block inTile;
+//    private int inData;
+//    private boolean inGround;
+//    public int ticksInGround;
+//    private int ticksInAir;
+//    private double damage;
+//    public int shootingEntityId;
+//    private int knockbackStrength;
     public int type;
 
     public void writeSpawnData(ByteBuf data) {
@@ -315,44 +315,81 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
         switch (this.type) {
             case 0:
                 if (this.shootingEntity == null) {
-                    damagesource = (new DamageSourceIndirectThaumcraftEntity("airarrow", this, this)).setDamageBypassesArmor().setMagicDamage().setProjectile();
-                } else {
-                    damagesource = (new DamageSourceIndirectThaumcraftEntity("airarrow", this, this.shootingEntity)).setDamageBypassesArmor().setMagicDamage().setProjectile();
+                    damagesource = (
+                            new DamageSourceIndirectThaumcraftEntity(
+                                    "airarrow", this, this))
+                            .setDamageBypassesArmor()
+                            .setMagicDamage()
+                            .setProjectile();
+                }
+                else {
+                    damagesource = (
+                            new DamageSourceIndirectThaumcraftEntity(
+                                    "airarrow", this, this.shootingEntity))
+                            .setDamageBypassesArmor()
+                            .setMagicDamage()
+                            .setProjectile();
                 }
                 break;
             case 1:
                 fire += 5;
                 if (this.shootingEntity == null) {
-                    damagesource = (new DamageSourceIndirectThaumcraftEntity("firearrow", this, this)).setFireDamage().setProjectile();
-                } else {
-                    damagesource = (new DamageSourceIndirectThaumcraftEntity("firearrow", this, this.shootingEntity)).setFireDamage().setProjectile();
+                    damagesource =
+                            (new DamageSourceIndirectThaumcraftEntity(
+                                    "firearrow", this, this))
+                                    .setFireDamage()
+                                    .setProjectile();
+                }
+                else {
+                    damagesource = (
+                            new DamageSourceIndirectThaumcraftEntity(
+                                    "firearrow", this, this.shootingEntity))
+                            .setFireDamage()
+                            .setProjectile();
                 }
                 break;
             case 2:
                 if (HitResult.entityHit instanceof EntityLivingBase) {
-                    ((EntityLivingBase) HitResult.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 200, 4));
-                }
-            case 5:
-                if (this.type == 5 && HitResult.entityHit instanceof EntityLivingBase) {
-                    ((EntityLivingBase) HitResult.entityHit).addPotionEffect(new PotionEffect(Potion.wither.id, 100));
+                    ((EntityLivingBase) HitResult.entityHit)
+                            .addPotionEffect(new PotionEffect(
+                                    Potion.moveSlowdown.id, 200, 4)
+                            );
                 }
             case 3:
             default:
                 if (this.shootingEntity == null) {
-                    damagesource = (new EntityDamageSourceIndirect("arrow", this, this)).setProjectile();
+                    damagesource = (new EntityDamageSourceIndirect(
+                            "arrow", this, this)).setProjectile();
                 } else {
-                    damagesource = (new EntityDamageSourceIndirect("arrow", this, this.shootingEntity)).setProjectile();
+                    damagesource = (new EntityDamageSourceIndirect(
+                            "arrow", this, this.shootingEntity))
+                            .setProjectile();
                 }
                 break;
             case 4:
                 if (this.shootingEntity == null) {
-                    damagesource = (new DamageSourceIndirectThaumcraftEntity("orderarrow", this, this)).setDamageBypassesArmor().setMagicDamage().setProjectile();
+                    damagesource = (new DamageSourceIndirectThaumcraftEntity(
+                            "orderarrow", this, this))
+                            .setDamageBypassesArmor()
+                            .setMagicDamage()
+                            .setProjectile();
                 } else {
-                    damagesource = (new DamageSourceIndirectThaumcraftEntity("orderarrow", this, this.shootingEntity)).setDamageBypassesArmor().setMagicDamage().setProjectile();
+                    damagesource = (new DamageSourceIndirectThaumcraftEntity(
+                            "orderarrow", this, this.shootingEntity))
+                            .setDamageBypassesArmor()
+                            .setMagicDamage()
+                            .setProjectile();
                 }
 
                 if (HitResult.entityHit instanceof EntityLivingBase) {
                     ((EntityLivingBase) HitResult.entityHit).addPotionEffect(new PotionEffect(Potion.weakness.id, 200, 4));
+                }
+            case 5:
+                if (this.type == 5 && HitResult.entityHit instanceof EntityLivingBase) {
+                    ((EntityLivingBase) HitResult.entityHit)
+                            .addPotionEffect(new PotionEffect(
+                                    Potion.wither.id, 100)
+                            );
                 }
         }
 
@@ -363,6 +400,12 @@ public class EntityPrimalArrow extends EntityArrow implements IProjectile, IEnti
         return HitResult.entityHit.attackEntityFrom(damagesource, (float) i1);
     }
 
+    //['item.ItemPrimalArrow.0.name','air_arrow'],
+    //    ['item.ItemPrimalArrow.1.name','fire_arrow'],
+    //    ['item.ItemPrimalArrow.2.name','water_arrow'],
+    //    ['item.ItemPrimalArrow.3.name','earth_arrow'],
+    //    ['item.ItemPrimalArrow.4.name','order_arrow'],
+    //    ['item.ItemPrimalArrow.5.name','entropy_arrow'],
     public double getDamage() {
         switch (this.type) {
             case 3:

@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.projectile;
+package thaumcraft.common.entities.projectile.golemorb;
 
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.client.multiplayer.ClientLevel;

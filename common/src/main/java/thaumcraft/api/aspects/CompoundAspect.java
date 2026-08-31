@@ -1,6 +1,7 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.colorannotation.annotation.RGBColor;
+import com.linearity.opentc4.OpenTC4;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,6 +19,8 @@ import thaumcraft.api.research.ResearchAndScannedInfo;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.linearity.opentc4.OpenTC4.logDuplicate;
+import static com.linearity.opentc4.OpenTC4.throwDuplicate;
 import static thaumcraft.api.aspects.Aspects.COMPOUND_ASPECTS;
 
 public class CompoundAspect extends Aspect implements
@@ -64,7 +67,13 @@ public class CompoundAspect extends Aspect implements
             // if you have two aspects with same recipe
             // you wont be happy to handle this recipe collision.
             // (that would be weird in game.)
-            throw new RuntimeException("Duplicate compound aspect recipe:" + components + "|" + duplicatedIfNotNull + " and " + registeringAspect);
+            var exception = new RuntimeException(
+                    "Duplicate compound aspect recipe:" + components + "|" + duplicatedIfNotNull + " and " + registeringAspect);
+            if (throwDuplicate){
+                throw exception;
+            }else if (logDuplicate){
+                OpenTC4.LOGGER.error(exception);
+            }
         }
         COMPOUND_ASPECT_RECIPES.put(components,this);
     }

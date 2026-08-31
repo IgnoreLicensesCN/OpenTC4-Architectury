@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:air_arrow_damage",
+    "thaumcraft:fire_arrow_damage",
+    "thaumcraft:earth_arrow_damage",
+    "thaumcraft:water_arrow_damage",
+    "thaumcraft:order_arrow_damage",
+    "thaumcraft:entropy_arrow_damage"
+  ]
+}

@@ -25,6 +25,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.linearity.opentc4.OpenTC4.logDuplicate;
+import static com.linearity.opentc4.OpenTC4.throwDuplicate;
+
 
 //maybe i should evolve this part.
 public class FocusUpgradeType {
@@ -62,7 +65,12 @@ public class FocusUpgradeType {
         this.aspects = aspects;
         var upgradeType = types.put(id, this);
         if (upgradeType != null) {
-            throw new IllegalStateException("Duplicate id " + upgradeType + " " + this);
+            var exception = new IllegalStateException("Duplicate id " + upgradeType + " " + this);
+            if (throwDuplicate){
+                throw exception;
+            }else if (logDuplicate){
+                OpenTC4.LOGGER.error(exception);
+            }
         }
     }
 	public boolean canApplyTo(ItemStack focusStack, IWandFocusItem<? extends Aspect> focusItem) {

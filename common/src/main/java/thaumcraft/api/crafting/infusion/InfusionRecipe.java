@@ -1,5 +1,6 @@
 package thaumcraft.api.crafting.infusion;
 
+import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.annotations.JEILikeOnly;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import com.linearity.opentc4.recipeclean.itemmatch.RecipeItemMatcher;
@@ -25,6 +26,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static com.linearity.opentc4.OpenTC4.logDuplicate;
+import static com.linearity.opentc4.OpenTC4.throwDuplicate;
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
 /**
@@ -235,7 +238,12 @@ public abstract class InfusionRecipe extends AbstractResourceLocationIdentifiedR
 	protected void registerRecipe(InfusionRecipeResourceLocation recipeID) {
 		var got = INFUSION_RECIPES.get(recipeID);
 		if (got != null) {
-			throw new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);
+			var exception = new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);
+			if (throwDuplicate){
+				throw exception;
+			}else if (logDuplicate){
+				OpenTC4.LOGGER.error(exception);
+			}
 		}
 		INFUSION_RECIPES.put(recipeID, this);
 	}

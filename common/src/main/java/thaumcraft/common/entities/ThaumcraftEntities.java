@@ -29,8 +29,9 @@ import thaumcraft.common.entities.monster.cultists.CultistEntity;
 import thaumcraft.common.entities.monster.cultists.CultistKnightEntity;
 import thaumcraft.common.entities.monster.tainted.*;
 import thaumcraft.common.entities.monster.tainted.converted.*;
-import thaumcraft.common.entities.projectile.GolemOrbEntity;
-import thaumcraft.common.entities.projectile.RedGolemOrbEntity;
+import thaumcraft.common.entities.projectile.AspectArrowEntity;
+import thaumcraft.common.entities.projectile.golemorb.GolemOrbEntity;
+import thaumcraft.common.entities.projectile.golemorb.RedGolemOrbEntity;
 import thaumcraft.common.entities.projectile.frostfocus.FrostShardEntity;
 import thaumcraft.common.entities.projectile.hellbatfocus.FireBatEntity;
 import thaumcraft.common.entities.projectile.pechfocus.PechBlastEntity;
@@ -144,6 +145,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<RedGolemOrbEntity> RED_GOLEM_ORB() {
             return Registry.SUPPLIER_RED_GOLEM_ORB.get();
+        }
+        public static EntityType<AspectArrowEntity> ASPECT_ARROW() {
+            return Registry.SUPPLIER_ASPECT_ARROW.get();
         }
     }
 
@@ -362,6 +366,13 @@ public class ThaumcraftEntities {
                         .sized(0.1F,0.1F)
                         .clientTrackingRange(10)
                         .build("red_golem_orb")
+        );
+        public static final RegistrySupplier<EntityType<AspectArrowEntity>> SUPPLIER_ASPECT_ARROW = ENTITIES.register("aspect_arrow",
+                () -> EntityType.Builder.<AspectArrowEntity>of(AspectArrowEntity::new, MobCategory.MISC)
+                        .sized(0.5F, 0.5F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("aspect_arrow")
         );
     }
 

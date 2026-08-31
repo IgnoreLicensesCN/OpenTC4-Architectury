@@ -27,6 +27,7 @@
     "client.render.ModelPredicateProviderRegistryAccessor"
   ],
   "mixins": [
+    "AbstractArrowMixin",
     "AbstractFurnaceBlockEntityMixin",
     "BambooSaplingBlockMixin",
     "BiomeMixin",

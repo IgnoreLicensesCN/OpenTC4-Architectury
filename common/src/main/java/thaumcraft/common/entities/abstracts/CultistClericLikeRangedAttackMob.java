@@ -10,7 +10,7 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.entities.projectile.RedGolemOrbEntity;
+import thaumcraft.common.entities.projectile.golemorb.RedGolemOrbEntity;
 
 @UtilityLikeAbstraction
 public interface CultistClericLikeRangedAttackMob extends RangedAttackMob {

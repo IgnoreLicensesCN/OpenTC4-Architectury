@@ -367,4 +367,7 @@ public class Consts {
     public static class CultistClericEntityTagAccessors {
         public static final BooleanTagAccessor IS_RITUALIST = new BooleanTagAccessor("is_ritualist");
     }
+    public static class AspectArrowEntityEntityTagAccessors {
+        public static final AspectAccessor OWNING_ASPECT = new AspectAccessor("owning_aspect");
+    }
 }

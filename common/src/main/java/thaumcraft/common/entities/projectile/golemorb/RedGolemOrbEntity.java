@@ -1,10 +1,8 @@
-package thaumcraft.common.entities.projectile;
+package thaumcraft.common.entities.projectile.golemorb;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.ThaumcraftEntities;
 
 public class RedGolemOrbEntity extends GolemOrbEntity {

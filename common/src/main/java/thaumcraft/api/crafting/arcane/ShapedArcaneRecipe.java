@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
+import static com.linearity.opentc4.OpenTC4.logDuplicate;
+import static com.linearity.opentc4.OpenTC4.throwDuplicate;
 import static com.linearity.opentc4.recipeclean.itemmatch.EmptyMatcher.EMPTY_MATCHER;
 import static com.linearity.opentc4.utils.IndexPicker.pickByTime;
 
@@ -420,7 +422,12 @@ public class ShapedArcaneRecipe extends AbstractArcaneRecipe {
         super.registerRecipe(recipeID);
         var got = SHAPED_ARCANE_RECIPES.get(recipeID);
         if (got != null) {
-            throw new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);
+            var exception = new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);
+            if (throwDuplicate){
+                throw exception;
+            }else if (logDuplicate){
+                OpenTC4.LOGGER.error(exception);
+            }
         }
         SHAPED_ARCANE_RECIPES.put(recipeID, this);
     }

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:air_arrow_damage",
+    "thaumcraft:order_arrow_damage"
+  ]
+}

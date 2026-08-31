@@ -38,6 +38,11 @@ import thaumcraft.common.runicshield.ThaumcraftRunicShieldTypes;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public final class OpenTC4 {
+    //changed:throw duplicate -> log error(maybe override by kjs so i will need to provide a way)
+    //remember to change flag for your need and change it back if possible
+    public static boolean logDuplicate = true;
+    public static boolean throwDuplicate = true;
+
     public static boolean DEBUG_FLAG = false;
     public static boolean CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG = DEBUG_FLAG;
     public static final String MOD_ID = "opentc4";
@@ -59,14 +64,12 @@ public final class OpenTC4 {
         platformUtils.init();
     }
     public static void onInitializeClient() {
-
         Particles.init();
         OpenTC4CommonProxy.INSTANCE = new OpenTC4ClientProxy();
         RenderUtils.init();
         ThaumcraftBlockAndItemColors.init();
         ThaumcraftRenderers.init();
         ComponentRendering.init();
-
     }
 
     public static void onCommonSetup(){
@@ -74,6 +77,7 @@ public final class OpenTC4 {
         Aspects.init();//not related to any item/block/entity or anything else.it's suitable
         //oh i can see someone want it "Da---ta---Dri---ven" cause of lazy to write researchItem in java
         //but i wont provide a Json2ResearchItem parser,you have to make it yourself
+        //and i dont recommend json loads aspect since there could be typo easily
         ThaumcraftResearches.init();
         ThaumcraftWandConsumptionTypes.init();
 

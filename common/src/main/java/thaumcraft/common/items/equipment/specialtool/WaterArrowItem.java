@@ -5,6 +5,9 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.aspects.Aspects;
+import thaumcraft.common.entities.projectile.AspectArrowEntity;
 
 public class WaterArrowItem extends ArrowItem {
     public WaterArrowItem(Properties properties) {
@@ -15,8 +18,7 @@ public class WaterArrowItem extends ArrowItem {
     }
 
     @Override
-    public AbstractArrow createArrow(Level level, ItemStack itemStack, LivingEntity livingEntity) {
-        //TODO:Primal arrow entities
-        return new WaterArrowEntity();
+    public @NotNull AbstractArrow createArrow(Level level, ItemStack itemStack, LivingEntity livingEntity) {
+        return new AspectArrowEntity(level, Aspects.WATER);
     }
 }

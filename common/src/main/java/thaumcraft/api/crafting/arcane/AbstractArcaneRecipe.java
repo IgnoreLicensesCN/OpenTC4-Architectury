@@ -1,5 +1,6 @@
 package thaumcraft.api.crafting.arcane;
 
+import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.annotations.JEILikeOnly;
 import com.linearity.opentc4.recipeclean.recipewrapper.CanMatchViaOutputSample;
 import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
@@ -22,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import static com.linearity.opentc4.OpenTC4.logDuplicate;
+import static com.linearity.opentc4.OpenTC4.throwDuplicate;
 
 /**
  * dont store crafting result or anything here,it's a singleton.
@@ -89,7 +93,12 @@ public abstract class AbstractArcaneRecipe
     protected void registerRecipe(AbstractArcaneRecipeResourceLocation recipeID) {
         var got = ARCANE_RECIPES.get(recipeID);
         if (got != null) {
-            throw new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);
+            var exception = new RuntimeException("duplicate recipe ID: " + recipeID + " for " + got + " and " + this);
+            if (throwDuplicate){
+                throw exception;
+            }else if (logDuplicate){
+                OpenTC4.LOGGER.error(exception);
+            }
         }
         ARCANE_RECIPES.put(recipeID, this);
     }
