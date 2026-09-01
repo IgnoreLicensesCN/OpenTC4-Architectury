@@ -5,7 +5,9 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -16,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.damagesource.ThaumcraftDamageSources;
@@ -33,27 +36,58 @@ public class AspectArrowEntity
         extends AbstractArrow {
     private static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(
             AspectArrowEntity.class, EntityDataSerializers.INT);
-    public static final Map<Aspect, Supplier<ItemStack>> ARROW_ITEM_FOR_ASPECT = new IdentityHashMap<>();
-    static {
-        ARROW_ITEM_FOR_ASPECT.put(Aspects.EMPTY,() -> ItemStack.EMPTY);
-        ARROW_ITEM_FOR_ASPECT.put(Aspects.AIR,() -> AIR_ARROW().getDefaultInstance());
-        ARROW_ITEM_FOR_ASPECT.put(Aspects.EARTH,() -> EARTH_ARROW().getDefaultInstance());
-        ARROW_ITEM_FOR_ASPECT.put(Aspects.WATER,() -> WATER_ARROW().getDefaultInstance());
-        ARROW_ITEM_FOR_ASPECT.put(Aspects.FIRE,() -> FIRE_ARROW().getDefaultInstance());
-        ARROW_ITEM_FOR_ASPECT.put(Aspects.ORDER,() -> ORDER_ARROW().getDefaultInstance());
-        ARROW_ITEM_FOR_ASPECT.put(Aspects.ENTROPY,() -> ENTROPY_ARROW().getDefaultInstance());
-    }
-    public static final Map<Aspect, IThaumcraftAspectArrowProperties> ASPECT_ARROW_PROPERTIES = new IdentityHashMap<>();
-    static {
-        ASPECT_ARROW_PROPERTIES.put(
-                Aspects.EMPTY, IThaumcraftAspectArrowProperties.EMPTY
-        );
-        ASPECT_ARROW_PROPERTIES.put(Aspects.AIR,AirArrowProperties.INSTANCE);
-        ASPECT_ARROW_PROPERTIES.put(Aspects.FIRE,FireArrowProperties.INSTANCE);
-        ASPECT_ARROW_PROPERTIES.put(Aspects.WATER,WaterArrowProperties.INSTANCE);
-        ASPECT_ARROW_PROPERTIES.put(Aspects.EARTH,EarthArrowProperties.INSTANCE);
-        ASPECT_ARROW_PROPERTIES.put(Aspects.ORDER,OrderArrowProperties.INSTANCE);
-        ASPECT_ARROW_PROPERTIES.put(Aspects.ENTROPY,EntropyArrowProperties.INSTANCE);
+
+    public static class AspectArrowManager {
+
+        public static final Map<Aspect, Supplier<ItemStack>> ARROW_ITEM_FOR_ASPECT = new IdentityHashMap<>();
+
+        static {
+            ARROW_ITEM_FOR_ASPECT.put(Aspects.EMPTY,() -> ItemStack.EMPTY);
+            ARROW_ITEM_FOR_ASPECT.put(Aspects.AIR,() -> AIR_ARROW().getDefaultInstance());
+            ARROW_ITEM_FOR_ASPECT.put(Aspects.EARTH,() -> EARTH_ARROW().getDefaultInstance());
+            ARROW_ITEM_FOR_ASPECT.put(Aspects.WATER,() -> WATER_ARROW().getDefaultInstance());
+            ARROW_ITEM_FOR_ASPECT.put(Aspects.FIRE,() -> FIRE_ARROW().getDefaultInstance());
+            ARROW_ITEM_FOR_ASPECT.put(Aspects.ORDER,() -> ORDER_ARROW().getDefaultInstance());
+            ARROW_ITEM_FOR_ASPECT.put(Aspects.ENTROPY,() -> ENTROPY_ARROW().getDefaultInstance());
+        }
+        public static final Map<Aspect, IThaumcraftAspectArrowProperties> ASPECT_ARROW_PROPERTIES = new IdentityHashMap<>();
+
+        static {
+            ASPECT_ARROW_PROPERTIES.put(
+                    Aspects.EMPTY, IThaumcraftAspectArrowProperties.EMPTY
+            );
+            ASPECT_ARROW_PROPERTIES.put(Aspects.AIR,AirArrowProperties.INSTANCE);
+            ASPECT_ARROW_PROPERTIES.put(Aspects.FIRE,FireArrowProperties.INSTANCE);
+            ASPECT_ARROW_PROPERTIES.put(Aspects.WATER,WaterArrowProperties.INSTANCE);
+            ASPECT_ARROW_PROPERTIES.put(Aspects.EARTH,EarthArrowProperties.INSTANCE);
+            ASPECT_ARROW_PROPERTIES.put(Aspects.ORDER,OrderArrowProperties.INSTANCE);
+            ASPECT_ARROW_PROPERTIES.put(Aspects.ENTROPY,EntropyArrowProperties.INSTANCE);
+        }
+
+        //mixin point
+        public static boolean aspectArrowOnHitEntity(AspectArrowEntity aspectArrow, Entity victim, DamageSource source, float causedDamage, boolean hitSuccess){
+            if (hitSuccess) {
+                aspectArrow.getAspectArrowProperties().onArrowHitEntity(aspectArrow,victim,source,causedDamage);
+            }
+            return hitSuccess;
+        }
+        //mixin point
+        public static Entity aspectArrowOnModifyReceiver(AspectArrowEntity aspectArrow, Entity victim, DamageSource source, float causedDamage){
+            return victim;
+        }
+        //mixin point
+        public static float aspectArrowModifyDamage(AspectArrowEntity aspectArrow,DamageSource source, float damage){
+            return (float) (damage * aspectArrow.getAspectArrowProperties().getDamageMultiplier());
+        }
+        //mixin point
+        public static ResourceKey<DamageType> aspectArrowModifyDamageSource(AspectArrowEntity aspectArrow,
+                                                         Entity victim,
+                                                         CallbackInfoReturnable<DamageSource> cir){
+            var aspectArrowProperties = aspectArrow.getAspectArrowProperties();
+            return aspectArrowProperties.getModifiedDamageType(
+                    DamageTypes.ARROW
+            );
+        }
     }
 
     public static class AirArrowProperties implements IThaumcraftAspectArrowProperties {
@@ -73,7 +107,7 @@ public class AspectArrowEntity
         }
 
         @Override
-        public void onArrowHitEntity(AspectArrowEntity arrow, Entity victim) {
+        public void onArrowHitEntity(AspectArrowEntity arrow, Entity victim, DamageSource damageSource, float causedDamage) {
             int ticksOnFire = victim.getRemainingFireTicks();
             victim.setSecondsOnFire(5);
             victim.setRemainingFireTicks(ticksOnFire + victim.getRemainingFireTicks());
@@ -88,7 +122,7 @@ public class AspectArrowEntity
         }
 
         @Override
-        public void onArrowHitEntity(AspectArrowEntity arrow, Entity victim) {
+        public void onArrowHitEntity(AspectArrowEntity arrow, Entity victim, DamageSource damageSource, float causedDamage) {
             if (victim instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,200,4));
             }
@@ -116,7 +150,7 @@ public class AspectArrowEntity
         }
 
         @Override
-        public void onArrowHitEntity(AspectArrowEntity arrow, Entity victim) {
+        public void onArrowHitEntity(AspectArrowEntity arrow, Entity victim, DamageSource damageSource, float causedDamage) {
             if (victim instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,200,4));
             }
@@ -136,7 +170,7 @@ public class AspectArrowEntity
         }
 
         @Override
-        public void onArrowHitEntity(AspectArrowEntity arrow, Entity victim) {
+        public void onArrowHitEntity(AspectArrowEntity arrow, Entity victim, DamageSource damageSource, float causedDamage) {
             if (victim instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(MobEffects.WITHER,100,0));
             }
@@ -150,7 +184,7 @@ public class AspectArrowEntity
 
     //keep as mixin point
     public static ItemStack getArrowStackForAspect(Aspect aspect) {
-        return ARROW_ITEM_FOR_ASPECT.getOrDefault(aspect, () -> ItemStack.EMPTY).get();
+        return AspectArrowManager.ARROW_ITEM_FOR_ASPECT.getOrDefault(aspect, () -> ItemStack.EMPTY).get();
     }
     protected Aspect owningAspect = Aspect.EMPTY;
     public AspectArrowEntity(Level level) {
@@ -220,6 +254,6 @@ public class AspectArrowEntity
     }
 
     public IThaumcraftAspectArrowProperties getAspectArrowProperties() {
-        return ASPECT_ARROW_PROPERTIES.getOrDefault(getOwningAspect(),IThaumcraftAspectArrowProperties.EMPTY);
+        return AspectArrowManager.ASPECT_ARROW_PROPERTIES.getOrDefault(getOwningAspect(),IThaumcraftAspectArrowProperties.EMPTY);
     }
 }

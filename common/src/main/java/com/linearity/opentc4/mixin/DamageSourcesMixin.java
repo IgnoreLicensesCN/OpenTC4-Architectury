@@ -18,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import thaumcraft.common.entities.abstracts.IMobAttackDamageTypeReplaceable;
 import thaumcraft.common.entities.projectile.AspectArrowEntity;
 
+import static thaumcraft.common.entities.projectile.AspectArrowEntity.AspectArrowManager.aspectArrowModifyDamageSource;
+
 @Mixin(DamageSources.class)
 public abstract class DamageSourcesMixin {
 
@@ -45,11 +47,8 @@ public abstract class DamageSourcesMixin {
             Entity entity,
             CallbackInfoReturnable<DamageSource> cir){
         if (abstractArrow instanceof AspectArrowEntity aspectArrow){
-            var aspectArrowProperties = aspectArrow.getAspectArrowProperties();
-            var damageSource = aspectArrowProperties.getModifiedDamageType(
-                    DamageTypes.ARROW
-            );
-            cir.setReturnValue(this.source(damageSource, abstractArrow, entity));
+            var damageSource = aspectArrowModifyDamageSource(aspectArrow, entity, cir);
+            cir.setReturnValue(this.source(damageSource, aspectArrow, entity));
         }
     }
 }

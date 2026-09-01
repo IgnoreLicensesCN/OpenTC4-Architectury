@@ -8,6 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.goal.*;
@@ -21,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
+import thaumcraft.common.entities.monster.EldritchCrabEntity;
 import thaumcraft.common.entities.monster.zombies.BrainyZombieEntity;
 import thaumcraft.common.entities.monster.zombies.GiantBrainyZombieEntity;
 import thaumcraft.common.entities.monster.MindSpiderEntity;
@@ -148,6 +150,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<AspectArrowEntity> ASPECT_ARROW() {
             return Registry.SUPPLIER_ASPECT_ARROW.get();
+        }
+        public static EntityType<EldritchCrabEntity> ELDRITCH_CRAB() {
+            return Registry.SUPPLIER_ELDRITCH_CRAB.get();
         }
     }
 
@@ -355,14 +360,14 @@ public class ThaumcraftEntities {
         );
         public static final RegistrySupplier<EntityType<GolemOrbEntity>> SUPPLIER_GOLEM_ORB = ENTITIES.register(
                 "golem_orb",
-                () -> EntityType.Builder.<GolemOrbEntity>of(GolemOrbEntity::new, MobCategory.MONSTER)
+                () -> EntityType.Builder.<GolemOrbEntity>of(GolemOrbEntity::new, MobCategory.MISC)
                         .sized(0.1F,0.1F)
                         .clientTrackingRange(10)
                         .build("golem_orb")
         );
         public static final RegistrySupplier<EntityType<RedGolemOrbEntity>> SUPPLIER_RED_GOLEM_ORB = ENTITIES.register(
                 "red_golem_orb",
-                () -> EntityType.Builder.<RedGolemOrbEntity>of(RedGolemOrbEntity::new, MobCategory.MONSTER)
+                () -> EntityType.Builder.<RedGolemOrbEntity>of(RedGolemOrbEntity::new, MobCategory.MISC)
                         .sized(0.1F,0.1F)
                         .clientTrackingRange(10)
                         .build("red_golem_orb")
@@ -374,6 +379,14 @@ public class ThaumcraftEntities {
                         .updateInterval(20)
                         .build("aspect_arrow")
         );
+        public static final RegistrySupplier<EntityType<EldritchCrabEntity>> SUPPLIER_ELDRITCH_CRAB = ENTITIES.register("eldritch_crab",
+                () -> EntityType.Builder.<EldritchCrabEntity>of(EldritchCrabEntity::new, MobCategory.MONSTER)
+                        .sized(0.8F,0.6F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("eldritch_crab")
+        );
+
     }
 
     public static class EntityTags {

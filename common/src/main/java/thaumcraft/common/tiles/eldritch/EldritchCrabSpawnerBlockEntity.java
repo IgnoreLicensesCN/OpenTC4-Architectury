@@ -15,11 +15,10 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchCrabSpawnerBlock;
-import thaumcraft.common.entities.monster.EntityEldritchCrab;
+import thaumcraft.common.entities.monster.EldritchCrabEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;
-// todo
 public class EldritchCrabSpawnerBlockEntity extends BlockEntity {
     public EldritchCrabSpawnerBlockEntity(BlockEntityType<? extends EldritchCrabSpawnerBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -61,8 +60,9 @@ public class EldritchCrabSpawnerBlockEntity extends BlockEntity {
         final var posX = pos.getX();
         final var posY = pos.getY();
         final var posZ = pos.getZ();
-        List<EntityEldritchCrab> ents = this.level.getEntitiesOfClass(
-                EntityEldritchCrab.class, AABB.of(new BoundingBox(
+        if (this.level == null){return false;}
+        List<EldritchCrabEntity> ents = this.level.getEntitiesOfClass(
+                EldritchCrabEntity.class, AABB.of(new BoundingBox(
                         posX,posY,posZ,
                         posX+1,posY+1,posZ+1
                 ).inflatedBy(32)));
@@ -132,17 +132,13 @@ public class EldritchCrabSpawnerBlockEntity extends BlockEntity {
         final var posY = pos.getY();
         final var posZ = pos.getZ();
         Direction dir = this.level.getBlockState(getBlockPos()).getValue(EldritchCrabSpawnerBlock.FACING);
-//        Direction dir = Direction.getOrientation(this.facing);
-        EntityEldritchCrab crab = new EntityEldritchCrab(this.level);
+        var crab = new EldritchCrabEntity(this.level);
         double x = posX + dir.getStepX();
         double y = posY + dir.getStepY();
         double z = posZ + dir.getStepZ();
-        crab.setLocationAndAngles(x + (double)0.5F, y + (double)0.5F, z + (double)0.5F, 0.0F, 0.0F);
-        crab.onSpawnWithEgg(null);
+        crab.setPos(x + (double)0.5F, y + (double)0.5F, z + (double)0.5F);
         crab.setHelm(false);
-        crab.motionX = (float)dir.getStepX() * 0.2F;
-        crab.motionY = (float)dir.getStepY() * 0.2F;
-        crab.motionZ = (float)dir.getStepZ() * 0.2F;
+        crab.setDeltaMovement(dir.getStepX() * 0.2F, dir.getStepY() * 0.2F, dir.getStepZ() * 0.2F);
         this.level.addFreshEntity(crab);
     }
 }

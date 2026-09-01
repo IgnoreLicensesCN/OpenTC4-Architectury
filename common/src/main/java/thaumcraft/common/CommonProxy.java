@@ -320,35 +320,35 @@ public class CommonProxy implements IGuiHandler {
       FlushableCache.enableAll(true);
    }
 
-   public void init(FMLInitializationEvent e) {
-      BlockDispenser.dispenseBehaviorRegistry.putObject(ConfigItems.itemPrimalArrow, new BehaviorProjectileDispense() {
-         @Override
-         public ItemStack dispenseStack(IBlockSource dispenser, ItemStack stack) {
-            EnumFacing facing = BlockDispenser.func_149937_b(dispenser.getBlockMetadata());
-            IPosition pos = BlockDispenser.func_149939_a(dispenser);
-            ItemStack toDrop = stack.splitStack(1);
-            if (ConfigurationHandler.INSTANCE.isDispenserShootPrimalArrow()) {
-               World w = dispenser.getWorld();
-               EntityPrimalArrow e = (EntityPrimalArrow) getProjectileEntity(w, pos);
-               e.type = toDrop.getItemDamage();
-               if (e.type == 3)
-                  // inherent power of earth arrow
-                  // this is unfortunately not done on hit, but at bow draw time, so we must emulate this as well
-                  e.setKnockbackStrength(1);
-               e.setThrowableHeading(facing.getFrontOffsetX(), facing.getFrontOffsetY() + 0.1F, facing.getFrontOffsetZ(), this.func_82500_b(), this.func_82498_a());
-               w.spawnEntityInWorld(e);
-            } else {
-               doDispense(dispenser.getWorld(), toDrop, 6, facing, pos);
-            }
-            return stack;
-         }
-
-         @Override
-         protected IProjectile getProjectileEntity(World w, IPosition iposition) {
-            return new EntityPrimalArrow(w, iposition.getX(), iposition.getY(), iposition.getZ());
-         }
-      });
-   }
+//   public void init(FMLInitializationEvent e) {
+//      BlockDispenser.dispenseBehaviorRegistry.putObject(ConfigItems.itemPrimalArrow, new BehaviorProjectileDispense() {
+//         @Override
+//         public ItemStack dispenseStack(IBlockSource dispenser, ItemStack stack) {
+//            EnumFacing facing = BlockDispenser.func_149937_b(dispenser.getBlockMetadata());
+//            IPosition pos = BlockDispenser.func_149939_a(dispenser);
+//            ItemStack toDrop = stack.splitStack(1);
+//            if (ConfigurationHandler.INSTANCE.isDispenserShootPrimalArrow()) {
+//               World w = dispenser.getWorld();
+//               EntityPrimalArrow e = (EntityPrimalArrow) getProjectileEntity(w, pos);
+//               e.type = toDrop.getItemDamage();
+//               if (e.type == 3)
+//                  // inherent power of earth arrow
+//                  // this is unfortunately not done on hit, but at bow draw time, so we must emulate this as well
+//                  e.setKnockbackStrength(1);
+//               e.setThrowableHeading(facing.getFrontOffsetX(), facing.getFrontOffsetY() + 0.1F, facing.getFrontOffsetZ(), this.func_82500_b(), this.func_82498_a());
+//               w.spawnEntityInWorld(e);
+//            } else {
+//               doDispense(dispenser.getWorld(), toDrop, 6, facing, pos);
+//            }
+//            return stack;
+//         }
+//
+//         @Override
+//         protected IProjectile getProjectileEntity(World w, IPosition iposition) {
+//            return new EntityPrimalArrow(w, iposition.getX(), iposition.getY(), iposition.getZ());
+//         }
+//      });
+//   }
 
    public void postInit(FMLPostInitializationEvent e) {
       int debugadd = Integer.getInteger("glease.debug.addtc4tabs.post", 0);

@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import thaumcraft.common.entities.ThaumcraftEntityEvents;
+import thaumcraft.common.entities.abstracts.IItemStackBreakAnimationPlayable;
 import thaumcraft.common.entities.monster.mods.ChampionModifier;
 import thaumcraft.common.lib.utils.EntityUtils;
 
@@ -30,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.*;
 
 @Mixin(value=LivingEntity.class,priority = 214748)
-public abstract class LivingEntityMixin implements InMilkContextAccessor {
+public abstract class LivingEntityMixin implements InMilkContextAccessor, IItemStackBreakAnimationPlayable {
 
     @ModifyReturnValue(
             method = "maxUpStep",
@@ -171,6 +172,14 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor {
     )
     private void opentc4$onDropAll(DamageSource damageSource, CallbackInfo ci) {
         ThaumcraftEntityEvents.DropEvents.onDropAllDeathLoot((LivingEntity)(Object)this,damageSource);
+    }
+
+    @Shadow
+    protected abstract void breakItem(ItemStack stack);
+
+    @Unique
+    public void playBreakItemAnimation(ItemStack stack) {
+        breakItem(stack);
     }
 }
 

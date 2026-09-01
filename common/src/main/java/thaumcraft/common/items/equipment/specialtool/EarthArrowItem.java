@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.entities.projectile.AspectArrowEntity;
 
+//TODO:[maybe wont finished]dispense behavior
 public class EarthArrowItem extends ArrowItem {
     public EarthArrowItem(Properties properties) {
         super(properties);
