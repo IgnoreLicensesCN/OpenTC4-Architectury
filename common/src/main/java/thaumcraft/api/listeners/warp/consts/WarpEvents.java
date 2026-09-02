@@ -5,16 +5,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
-import net.minecraft.world.level.Level;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.EntityEldritchGuardian;
-import thaumcraft.common.entities.monster.EntityMindSpider;
-import thaumcraft.common.entities.monster.MindSpiderEntity;
+import thaumcraft.common.entities.monster.warp.MindSpiderEntity;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
 import thaumcraft.api.research.ResearchAndScannedInfo;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;

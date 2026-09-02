@@ -52,6 +52,9 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_CRAB_CLAW = new ResourceLocation(Thaumcraft.MOD_ID,"crablaw");
         public static final ResourceLocation RES_CRAB_TALK = new ResourceLocation(Thaumcraft.MOD_ID,"crabtalk");
         public static final ResourceLocation RES_CRAB_DEATH = new ResourceLocation(Thaumcraft.MOD_ID,"crabdeath");
+        public static final ResourceLocation RES_EG_IDLE = new ResourceLocation(Thaumcraft.MOD_ID,"egidle");
+        public static final ResourceLocation RES_EG_DEATH = new ResourceLocation(Thaumcraft.MOD_ID,"egdeath");
+        public static final ResourceLocation RES_EG_SCREECH = new ResourceLocation(Thaumcraft.MOD_ID,"egscreech");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -97,8 +100,11 @@ public class ThaumcraftSounds {
     public static final SoundEvent TENTACLE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_TENTACLE);
     public static final SoundEvent SWARM = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_SWARM);
     public static final SoundEvent CHANT = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_CHANT);
-    public static final SoundEvent EGATTACK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_EGATTACK);
+    public static final SoundEvent EG_ATTACK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_EGATTACK);
     public static final SoundEvent CRAB_CLAW = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_CRAB_CLAW);
     public static final SoundEvent CRAB_TALK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_CRAB_TALK);
     public static final SoundEvent CRAB_DEATH = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_CRAB_DEATH);
+    public static final SoundEvent EG_IDLE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_EG_IDLE);
+    public static final SoundEvent EG_DEATH = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_EG_DEATH);
+    public static final SoundEvent EG_SCREECH = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_EG_SCREECH);
 }

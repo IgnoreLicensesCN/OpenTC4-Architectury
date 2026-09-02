@@ -106,9 +106,4 @@ public class CultistEntity extends DoorBreakingMonster {
     protected void populateDefaultEquipmentEnchantments(RandomSource randomSource, DifficultyInstance difficultyInstance) {
     }
 
-    @Override
-    public boolean hasRestriction() {
-        return !getRestrictCenter().equals(BlockPos.ZERO);
-    }
-
 }

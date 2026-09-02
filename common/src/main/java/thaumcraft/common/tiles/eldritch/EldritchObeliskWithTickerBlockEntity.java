@@ -8,12 +8,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.common.tiles.TileThaumcraft;
-import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;
+
+import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.ELDRITCH;
+
 //TODO:Render
 public class EldritchObeliskWithTickerBlockEntity extends TileThaumcraft {
     public EldritchObeliskWithTickerBlockEntity(BlockEntityType<? extends EldritchObeliskWithTickerBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -33,7 +35,7 @@ public class EldritchObeliskWithTickerBlockEntity extends TileThaumcraft {
         List<LivingEntity> list = EntityUtils.getEntitiesInRange(this.level,
                 x + 0.5, y, z + 0.5, null, LivingEntity.class, 6.0F);
         for(LivingEntity living : list) {
-            if (living instanceof IEldritchMob && !living.hasEffect(MobEffects.REGENERATION)) {
+            if (living.getType().is(ELDRITCH) && !living.hasEffect(MobEffects.REGENERATION)) {
                 living.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 40,0));
                 living.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 40,0));
             }
@@ -51,7 +53,7 @@ public class EldritchObeliskWithTickerBlockEntity extends TileThaumcraft {
         List<LivingEntity> list = EntityUtils.getEntitiesInRange(this.level,
                 x + 0.5, y, z + 0.5, null, LivingEntity.class, 6.0F);
         for(LivingEntity living : list) {
-            if (living instanceof IEldritchMob) {
+            if (living.getType().is(ELDRITCH)) {
                 ClientFXUtils.wispFX4(
                         clientLevel,
                         x,y,z,

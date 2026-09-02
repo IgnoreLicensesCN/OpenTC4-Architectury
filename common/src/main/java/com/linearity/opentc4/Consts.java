@@ -370,4 +370,7 @@ public class Consts {
     public static class AspectArrowEntityEntityTagAccessors {
         public static final AspectAccessor OWNING_ASPECT = new AspectAccessor("owning_aspect");
     }
+    public static class EldritchGuardianEntityTagAccessors {
+        public static final BlockPosAccessor HOME_POS = new BlockPosAccessor("home_pos");
+    }
 }

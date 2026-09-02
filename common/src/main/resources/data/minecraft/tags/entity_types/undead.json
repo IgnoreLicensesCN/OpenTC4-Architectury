@@ -13,6 +13,7 @@
     "minecraft:wither_skeleton",
     "minecraft:skeleton_horse",
     "minecraft:phantom",
-    "minecraft:wither"
+    "minecraft:wither",
+    "thaumcraft:eldritch_guardian"
   ]
 }

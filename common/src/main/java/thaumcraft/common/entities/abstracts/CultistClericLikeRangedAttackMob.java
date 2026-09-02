@@ -38,7 +38,7 @@ public interface CultistClericLikeRangedAttackMob extends RangedAttackMob {
             var movement = blast.getDeltaMovement();
             blast.shoot(d0, d1 + (double)2.0F, d2, 0.66F, 3.0F);
             blast.setPos(blast.getX() + movement.x / (double)2.0F, blast.getY(), blast.getZ() + movement.z / (double)2.0F);
-            this.playSound(ThaumcraftSounds.EGATTACK, 1.0F, 1.0F + random.nextFloat() * 0.1F);
+            this.playSound(ThaumcraftSounds.EG_ATTACK, 1.0F, 1.0F + random.nextFloat() * 0.1F);
             level.addFreshEntity(blast);
         } else {
             float f1 = MathHelper.sqrt_float(f) * 0.5F;

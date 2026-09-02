@@ -21,10 +21,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.entities.IEldritchMob;
 import thaumcraft.client.fx.migrated.particles.FXSpark;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
+
+import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.ELDRITCH;
+
 //tile.blockAiry.11
 public class SappingFieldBlock extends SuppressedWarningBlock {
     public SappingFieldBlock(Properties properties) {
@@ -89,7 +91,7 @@ public class SappingFieldBlock extends SuppressedWarningBlock {
         if (Platform.getEnvironment() != Env.SERVER){
             return;
         }
-        if (!(entity instanceof IEldritchMob)) {
+        if (!(entity.getType().is(ELDRITCH))) {
             if (level.getRandom().nextInt(100) == 0) {
                 entity.hurt(level.damageSources().wither(),1.F);
             }

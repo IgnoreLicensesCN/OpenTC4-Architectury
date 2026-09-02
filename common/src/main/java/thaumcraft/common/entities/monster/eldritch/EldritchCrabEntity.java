@@ -43,6 +43,7 @@ public class EldritchCrabEntity extends Spider implements ISpiderWithoutSkeleton
 
     public EldritchCrabEntity(EntityType<? extends Spider> entityType, Level level) {
         super(entityType, level);
+        this.xpReward = 6;
     }
 
     @Override

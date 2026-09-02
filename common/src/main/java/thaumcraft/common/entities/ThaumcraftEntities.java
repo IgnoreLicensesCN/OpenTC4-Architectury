@@ -22,16 +22,18 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
 import thaumcraft.common.entities.monster.eldritch.EldritchCrabEntity;
+import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
 import thaumcraft.common.entities.monster.eldritch.InhabitedZombieEntity;
 import thaumcraft.common.entities.monster.zombies.BrainyZombieEntity;
 import thaumcraft.common.entities.monster.zombies.GiantBrainyZombieEntity;
-import thaumcraft.common.entities.monster.MindSpiderEntity;
+import thaumcraft.common.entities.monster.warp.MindSpiderEntity;
 import thaumcraft.common.entities.monster.cultists.CultistClericEntity;
 import thaumcraft.common.entities.monster.cultists.CultistEntity;
 import thaumcraft.common.entities.monster.cultists.CultistKnightEntity;
 import thaumcraft.common.entities.monster.tainted.*;
 import thaumcraft.common.entities.monster.tainted.converted.*;
 import thaumcraft.common.entities.projectile.AspectArrowEntity;
+import thaumcraft.common.entities.projectile.EldritchOrbEntity;
 import thaumcraft.common.entities.projectile.golemorb.GolemOrbEntity;
 import thaumcraft.common.entities.projectile.golemorb.RedGolemOrbEntity;
 import thaumcraft.common.entities.projectile.frostfocus.FrostShardEntity;
@@ -156,6 +158,12 @@ public class ThaumcraftEntities {
         }
         public static EntityType<InhabitedZombieEntity> INHABITED_ZOMBIE() {
             return Registry.SUPPLIER_INHABITED_ZOMBIE.get();
+        }
+        public static EntityType<EldritchGuardianEntity> ELDRITCH_GUARDIAN(){
+            return Registry.SUPPLIER_ELDRITCH_GUARDIAN.get();
+        }
+        public static EntityType<EldritchOrbEntity> ELDRITCH_ORB(){
+            return Registry.SUPPLIER_ELDRITCH_ORB.get();
         }
     }
 
@@ -396,6 +404,20 @@ public class ThaumcraftEntities {
                         .clientTrackingRange(10)
                         .build("inhabited_zombie")
         );
+        public static final RegistrySupplier<EntityType<EldritchGuardianEntity>> SUPPLIER_ELDRITCH_GUARDIAN = ENTITIES.register(
+                "eldritch_guardian",
+                () -> EntityType.Builder.<EldritchGuardianEntity>of(EldritchGuardianEntity::new, MobCategory.MONSTER)
+                        .sized(0.8F, 2.25F)
+                        .clientTrackingRange(10)
+                        .build("eldritch_guardian")
+        );
+        public static final RegistrySupplier<EntityType<EldritchOrbEntity>> SUPPLIER_ELDRITCH_ORB = ENTITIES.register("eldritch_orb",
+                () -> EntityType.Builder.<EldritchOrbEntity>of(EldritchOrbEntity::new, MobCategory.MISC)
+                        .sized(0.1F, 0.1F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("eldritch_orb")
+        );
 
     }
 
@@ -436,6 +458,7 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST_KNIGHT(), CultistKnightEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_CRAB(), EldritchCrabEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.INHABITED_ZOMBIE(), InhabitedZombieEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_GUARDIAN(), EldritchGuardianEntity.createAttributes().build());
     }
 
     private static void registerSpawnPlacements() {
