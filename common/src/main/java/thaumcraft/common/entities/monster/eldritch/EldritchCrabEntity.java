@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.monster;
+package thaumcraft.common.entities.monster.eldritch;
 
 import com.linearity.opentc4.annotations.StoleFrom;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -142,13 +142,7 @@ public class EldritchCrabEntity extends Spider implements ISpiderWithoutSkeleton
             if (ridingEntity instanceof LivingEntity living && living.isAlive()) {
                 return true;
             }
-            float f = this.mob.getLightLevelDependentMagicValue();
-            if (f >= 0.5F && this.mob.getRandom().nextInt(100) == 0) {
-                this.mob.setTarget(null);
-                return false;
-            } else {
-                return super.canContinueToUse();
-            }
+            return super.canContinueToUse();
         }
 
         @Override

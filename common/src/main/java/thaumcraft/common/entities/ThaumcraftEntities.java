@@ -8,7 +8,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.goal.*;
@@ -22,7 +21,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
-import thaumcraft.common.entities.monster.EldritchCrabEntity;
+import thaumcraft.common.entities.monster.eldritch.EldritchCrabEntity;
+import thaumcraft.common.entities.monster.eldritch.InhabitedZombieEntity;
 import thaumcraft.common.entities.monster.zombies.BrainyZombieEntity;
 import thaumcraft.common.entities.monster.zombies.GiantBrainyZombieEntity;
 import thaumcraft.common.entities.monster.MindSpiderEntity;
@@ -153,6 +153,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<EldritchCrabEntity> ELDRITCH_CRAB() {
             return Registry.SUPPLIER_ELDRITCH_CRAB.get();
+        }
+        public static EntityType<InhabitedZombieEntity> INHABITED_ZOMBIE() {
+            return Registry.SUPPLIER_INHABITED_ZOMBIE.get();
         }
     }
 
@@ -386,6 +389,13 @@ public class ThaumcraftEntities {
                         .updateInterval(20)
                         .build("eldritch_crab")
         );
+        public static final RegistrySupplier<EntityType<InhabitedZombieEntity>> SUPPLIER_INHABITED_ZOMBIE = ENTITIES.register(
+                "inhabited_zombie",
+                () -> EntityType.Builder.<InhabitedZombieEntity>of(InhabitedZombieEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.95F)
+                        .clientTrackingRange(10)
+                        .build("inhabited_zombie")
+        );
 
     }
 
@@ -424,6 +434,8 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST(), CultistEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST_CLERIC(), CultistClericEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST_KNIGHT(), CultistKnightEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_CRAB(), EldritchCrabEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.INHABITED_ZOMBIE(), InhabitedZombieEntity.createAttributes().build());
     }
 
     private static void registerSpawnPlacements() {

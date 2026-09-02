@@ -15,7 +15,7 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchCrabSpawnerBlock;
-import thaumcraft.common.entities.monster.EldritchCrabEntity;
+import thaumcraft.common.entities.monster.eldritch.EldritchCrabEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;
