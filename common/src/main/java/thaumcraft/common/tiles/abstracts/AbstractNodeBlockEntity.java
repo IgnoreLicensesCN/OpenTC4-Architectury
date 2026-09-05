@@ -233,7 +233,7 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
                     componentsOwner.isWandNodeHarmful(usingWand);
 
             boolean preserve =
-                    !player.isCrouching()
+                    !player.isShiftKeyDown()
                             && NODE_PRESERVE.isLivingEntityCompletedResearch(player)
                             && !isNodeHarmful;
             boolean success = false;

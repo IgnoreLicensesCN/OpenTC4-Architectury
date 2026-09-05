@@ -94,7 +94,7 @@ public class CrucibleBlock
         if (player == null) {
             return InteractionResult.PASS;
         }
-        var sneaking = player.isCrouching();
+        var sneaking = player.isShiftKeyDown();
         if (!sneaking) {
             return InteractionResult.PASS;
         }

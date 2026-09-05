@@ -56,6 +56,14 @@ public class ManaBeanItem extends BlockItem implements IBonusAspectOwnerItem<Asp
         }
         return OWNING_ASPECT.readFromCompoundTag(tag);
     }
+
+    public ItemStack ofAspect(Aspect aspect) {
+        var stack = this.getDefaultInstance();
+        var tag = stack.getOrCreateTag();
+        OWNING_ASPECT.writeToCompoundTag(tag, aspect);
+        return stack;
+    }
+
     @Override
     public @NotNull @UnmodifiableView AspectList<Aspect> getAspectsToDisplay(ItemStack stack) {
         return UnmodifiableAspectList.ofSingle(getContainingAspectFromStack(stack));

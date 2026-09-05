@@ -62,11 +62,11 @@ public class ElementalShovelItem extends ShovelItem implements IDropFollowingUse
         Direction face = context.getClickedFace();
         InteractionHand hand = context.getHand();
         ItemStack toolStack = context.getItemInHand();
-        boolean isCrouching = player.isCrouching();
+        boolean isShiftKeyDown = player.isShiftKeyDown();
 
         boolean didPlace = false;
 
-        if (!isCrouching && LevelBlockEntityAccessing.getExistingBlockEntity(world, pos) == null) {
+        if (!isShiftKeyDown && LevelBlockEntityAccessing.getExistingBlockEntity(world, pos) == null) {
             BlockState clickedState = world.getBlockState(pos);
             Block clickedBlock = clickedState.getBlock();
             var item = clickedBlock.asItem();

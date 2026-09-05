@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
 public class ThaumcraftSounds {
+
     public static class ResourceLocations {
         public static final ResourceLocation RES_RUNIC_SHIELD_CHARGE = new ResourceLocation(Thaumcraft.MOD_ID,"runic_shield_charge");
         public static final ResourceLocation RES_CRYSTAL = new ResourceLocation(Thaumcraft.MOD_ID,"crystal");
@@ -55,6 +56,11 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_EG_IDLE = new ResourceLocation(Thaumcraft.MOD_ID,"egidle");
         public static final ResourceLocation RES_EG_DEATH = new ResourceLocation(Thaumcraft.MOD_ID,"egdeath");
         public static final ResourceLocation RES_EG_SCREECH = new ResourceLocation(Thaumcraft.MOD_ID,"egscreech");
+        public static final ResourceLocation RES_PECH_CHARGE = new ResourceLocation(Thaumcraft.MOD_ID,"pech_charge");
+        public static final ResourceLocation RES_PECH_IDLE = new ResourceLocation(Thaumcraft.MOD_ID,"pech_idle");
+        public static final ResourceLocation RES_PECH_HIT = new ResourceLocation(Thaumcraft.MOD_ID,"pech_hit");
+        public static final ResourceLocation RES_PECH_DEATH = new ResourceLocation(Thaumcraft.MOD_ID,"pech_death");
+        public static final ResourceLocation RES_PECH_TRADE = new ResourceLocation(Thaumcraft.MOD_ID,"pech_trade");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -107,4 +113,9 @@ public class ThaumcraftSounds {
     public static final SoundEvent EG_IDLE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_EG_IDLE);
     public static final SoundEvent EG_DEATH = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_EG_DEATH);
     public static final SoundEvent EG_SCREECH = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_EG_SCREECH);
+    public static final SoundEvent PECH_CHARGE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_PECH_CHARGE);
+    public static final SoundEvent PECH_IDLE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_PECH_IDLE);
+    public static final SoundEvent PECH_HIT = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_PECH_HIT);
+    public static final SoundEvent PECH_DEATH = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_PECH_DEATH);
+    public static final SoundEvent PECH_TRADE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_PECH_TRADE);
 }

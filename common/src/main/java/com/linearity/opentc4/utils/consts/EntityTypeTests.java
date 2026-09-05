@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.entity.EntityTypeTest;
+import thaumcraft.common.entities.monster.pech.AbstractPechEntity;
 
 public class EntityTypeTests {
     public static final EntityTypeTest<Entity, Entity> ENTITY_TEST = EntityTypeTest.forClass(Entity.class);
@@ -15,5 +16,6 @@ public class EntityTypeTests {
     public static final EntityTypeTest<Entity, ServerPlayer> SERVER_PLAYER_TEST = EntityTypeTest.forClass(ServerPlayer.class);
     public static final EntityTypeTest<Entity, ExperienceOrb> EXPERIENCE_ORB_TEST = EntityTypeTest.forClass(ExperienceOrb.class);
     public static final EntityTypeTest<Entity, ItemEntity> ITEM_ENTITY_TEST = EntityTypeTest.forClass(ItemEntity.class);
+    public static final EntityTypeTest<Entity, AbstractPechEntity> PECH_TEST = EntityTypeTest.forClass(AbstractPechEntity.class);
 
 }

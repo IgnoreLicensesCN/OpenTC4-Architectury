@@ -14,6 +14,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.ThaumcraftEntities;
+import thaumcraft.common.entities.monster.pech.AbstractPechEntity;
 
 import java.util.List;
 
@@ -112,7 +113,7 @@ public class PechBlastEntity extends ThrowableProjectile {
         }else {
             var owner = getOwner();
             var entitiesNear = level.getEntities(LIVING_TEST,new AABB(blockPosition()).inflate(2),e ->
-                    e != owner && !(e instanceof PechEntity));
+                    e != owner && !(e.getType().is(ThaumcraftEntities.EntityTags.PECH) || e instanceof AbstractPechEntity));
             entitiesNear.forEach(living -> {
                 living.hurt(level.damageSources().thrown(PechBlastEntity.this,owner),strength+2);
                 if (nightshade){

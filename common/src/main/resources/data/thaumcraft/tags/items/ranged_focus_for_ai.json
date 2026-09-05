@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:pech_focus",
+    "thaumcraft:hell_bat_focus",
+    "thaumcraft:frost_focus",
+    "thaumcraft:shock_focus",
+    "thaumcraft:fire_focus"
+  ]
+}

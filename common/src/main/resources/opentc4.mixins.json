@@ -45,6 +45,7 @@
     "EnchantmentCategoryWeaponMixin",
     "EntityMixin",
     "EntityTypeMixin",
+    "GoalAccessor",
     "ItemEntityMixin",
     "ItemMixin",
     "ItemStackMixin",

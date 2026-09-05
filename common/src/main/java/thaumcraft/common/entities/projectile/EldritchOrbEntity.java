@@ -88,6 +88,7 @@ public class EldritchOrbEntity extends ThrowableProjectile {
                 if (victim instanceof LivingEntity living &&
                         (living.getMobType() != MobType.UNDEAD
                                 && !living.getType().is(ThaumcraftEntities.EntityTags.UNDEAD))
+                        && !living.getType().is(ThaumcraftEntities.EntityTags.ELDRITCH)
                 ) {
                     victim.hurt(
                             level().damageSources().indirectMagic(this, this.getOwner()),

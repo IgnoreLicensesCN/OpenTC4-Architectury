@@ -50,7 +50,7 @@ public class KeyHandler {
                      ItemStack holdItemStack = player.getMainHandItem();
                      Item holdItem = holdItemStack.getItem();
                      if (!radialLock && !holdItemStack.isEmpty() && holdItem instanceof WandCastingItem && !((WandCastingItem)holdItem).isSceptre(holdItemStack)) {
-                        if (player.isCrouching()) {
+                        if (player.isShiftKeyDown()) {
                            PacketHandler.INSTANCE.sendToServer(new PacketFocusChangeToServer(player, "REMOVE"));
                         } else {
                            radialActive = true;
@@ -60,7 +60,7 @@ public class KeyHandler {
                      }else {
                         holdItemStack = player.getOffhandItem();
                         if (!radialLock && !holdItemStack.isEmpty() && holdItem instanceof WandCastingItem && !((WandCastingItem)holdItem).isSceptre(holdItemStack)) {
-                           if (player.isCrouching()) {
+                           if (player.isShiftKeyDown()) {
                               PacketHandler.INSTANCE.sendToServer(new PacketFocusChangeToServer(player, "REMOVE"));
                            } else {
                               radialActive = true;

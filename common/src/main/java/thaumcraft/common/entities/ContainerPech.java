@@ -120,7 +120,8 @@ public class ContainerPech extends Container {
                if (this.pech.loot[r].stackSize <= 0) {
                   this.pech.loot[r] = null;
                }
-            } else if (am >= 4 && this.theworld.getRandom().nextBoolean()) {
+            }
+            else if (am >= 4 && this.theworld.getRandom().nextBoolean()) {
                WeightedRandomChestContent[] contents = this.chest.getItems(this.theworld.getRandom());
                WeightedRandomChestContent wc = null;
                int cc = 0;

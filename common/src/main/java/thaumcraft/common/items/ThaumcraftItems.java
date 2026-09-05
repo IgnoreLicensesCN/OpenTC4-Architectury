@@ -68,6 +68,9 @@ public class ThaumcraftItems {
         public static final TagKey<Item> NODE_HARMFUL = TagKey.create(
                 Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "node_harmful_component")
         );
+        public static final TagKey<Item> RANGED_FOCUS_FOR_AI = TagKey.create(
+                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "ranged_focus_for_ai")
+        );
     }
 
     public static class BannerPatternTags {

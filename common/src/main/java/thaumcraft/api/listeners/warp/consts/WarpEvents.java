@@ -10,7 +10,7 @@ import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.entities.monster.EntityEldritchGuardian;
+import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
 import thaumcraft.common.entities.monster.warp.MindSpiderEntity;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
 import thaumcraft.api.research.ResearchAndScannedInfo;
@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
-import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBaubleAndArmor;
 import static thaumcraft.api.listeners.warp.WarpEventManager.*;
 
@@ -69,7 +68,7 @@ public class WarpEvents {
    public static void spawnGuardian(LivingEntity living) {
       var level = living.level();
       var random = living.getRandom();
-      var eg = new EntityEldritchGuardian(level);
+      var eg = new EldritchGuardianEntity(level);
       int i = living.getBlockX();
       int j = living.getBlockY();
       int k = living.getBlockZ();

@@ -373,4 +373,8 @@ public class Consts {
     public static class EldritchGuardianEntityTagAccessors {
         public static final BlockPosAccessor HOME_POS = new BlockPosAccessor("home_pos");
     }
+    public static class AbstractPechEntityTagAccessors {
+        public static final BooleanTagAccessor TAMED = new BooleanTagAccessor("tamed");
+        public static final IntTagAccessor ANGER = new IntTagAccessor("anger");
+    }
 }

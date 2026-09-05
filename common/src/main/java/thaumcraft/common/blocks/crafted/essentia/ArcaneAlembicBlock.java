@@ -76,9 +76,9 @@ public class ArcaneAlembicBlock extends SuppressedWarningBlock
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!level.isClientSide){
-            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ArcaneAlembicBlockEntity alembic && !player.isCrouching() && player.getItemInHand(interactionHand).isEmpty()) {
+            if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof ArcaneAlembicBlockEntity alembic && !player.isShiftKeyDown() && player.getItemInHand(interactionHand).isEmpty()) {
                 var stackInHand = player.getItemInHand(interactionHand);
-                if (!player.isCrouching()) {
+                if (!player.isShiftKeyDown()) {
                     if (stackInHand.isEmpty()) {
                         var msg = Component.empty();
                         var currentAmount = alembic.getAmount();
