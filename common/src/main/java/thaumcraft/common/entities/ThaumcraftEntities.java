@@ -35,6 +35,7 @@ import thaumcraft.common.entities.monster.cultists.CultistKnightEntity;
 import thaumcraft.common.entities.monster.tainted.*;
 import thaumcraft.common.entities.monster.tainted.converted.*;
 import thaumcraft.common.entities.projectile.AspectArrowEntity;
+import thaumcraft.common.entities.projectile.DartEntity;
 import thaumcraft.common.entities.projectile.EldritchOrbEntity;
 import thaumcraft.common.entities.projectile.golemorb.GolemOrbEntity;
 import thaumcraft.common.entities.projectile.golemorb.RedGolemOrbEntity;
@@ -178,6 +179,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<WispEntity> WISP() {
             return Registry.SUPPLIER_WISP.get();
+        }
+        public static EntityType<DartEntity> DART() {
+            return Registry.SUPPLIER_DART.get();
         }
     }
 
@@ -460,6 +464,13 @@ public class ThaumcraftEntities {
                         .sized(0.9F,0.9F)
                         .clientTrackingRange(10)
                         .build("wisp")
+        );
+        public static final RegistrySupplier<EntityType<DartEntity>> SUPPLIER_DART = ENTITIES.register("dart",
+                () -> EntityType.Builder.<DartEntity>of(DartEntity::new, MobCategory.MISC)
+                        .sized(0.5F, 0.5F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("dart")
         );
     }
 
