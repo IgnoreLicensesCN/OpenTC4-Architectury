@@ -2,6 +2,12 @@
   "replace": false,
   "values": [
     "minecraft:gold_nugget",
-    "minecraft:iron_nugget"
+    "minecraft:iron_nugget",
+    "thaumcraft：thaumium_nugget",
+    "thaumcraft：void_nugget",
+    {
+      "id": "#forge:nuggets",
+      "required": false
+    }
   ]
 }

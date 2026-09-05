@@ -3,12 +3,19 @@ package thaumcraft.common.items;
 import dev.architectury.registry.fuel.FuelRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import thaumcraft.common.Thaumcraft;
+
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
+
+import static com.linearity.opentc4.OpenTC4.platformUtils;
 
 public class ThaumcraftItems {
 
@@ -22,6 +29,9 @@ public class ThaumcraftItems {
         public static final TagKey<Item> PRIME_PEARL_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("thaumcraft:prime_pearl"));
 
+        public static final TagKey<Item> NUGGET = TagKey.create(
+                Registries.ITEM, new ResourceLocation("minecraft:nuggets")
+        );
         public static final TagKey<Item> SILVER_NUGGET_FORGE_TAG = TagKey.create(
                 Registries.ITEM, new ResourceLocation("forge:nuggets/silver"));
         public static final TagKey<Item> SILVER_NUGGET_FABRIC_TAG = TagKey.create(
@@ -71,6 +81,31 @@ public class ThaumcraftItems {
         public static final TagKey<Item> RANGED_FOCUS_FOR_AI = TagKey.create(
                 Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "ranged_focus_for_ai")
         );
+        public static final TagKey<Item> SHARDS = TagKey.create(
+                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "shards")
+        );
+        public static final TagKey<Item> PRIMAL_SHARDS = TagKey.create(
+                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "primal_shards")
+        );
+        public static final TagKey<Item> CRYSTAL_CLUSTERS = TagKey.create(
+                Registries.ITEM, new ResourceLocation(Thaumcraft.MOD_ID, "primal_crystals")
+        );
+
+    }
+
+    public static class ItemDumps {
+        public static class Nuggets {
+
+            private static final Set<Item> NUGGET_SET = new IdentityHashMap<Item,Boolean>().keySet();
+            public static final Set<Item> NUGGET_SET_VIEW = Collections.unmodifiableSet(NUGGET_SET);
+            static {
+                initNuggets();
+            }
+            public static void initNuggets() {
+                NUGGET_SET.clear();
+                NUGGET_SET.addAll(platformUtils.getItemsFromTag(ItemTags.NUGGET));
+            }
+        }
     }
 
     public static class BannerPatternTags {

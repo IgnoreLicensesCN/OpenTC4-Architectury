@@ -1,12 +1,10 @@
 {
   "replace": false,
   "values": [
-    "thaumcraft:air_shard",
-    "thaumcraft:fire_shard",
-    "thaumcraft:water_shard",
-    "thaumcraft:earth_shard",
-    "thaumcraft:order_shard",
-    "thaumcraft:entropy_shard",
+    {
+      "id": "#thaumcraft:primal_shards",
+      "required": false
+    },
     "thaumcraft:balance_shard"
   ]
 }

@@ -5,6 +5,7 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -52,9 +53,11 @@ import thaumcraft.common.items.wands.wandcaps.*;
 import thaumcraft.common.items.wands.wandtypes.*;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
 import static com.linearity.opentc4.utils.RecipeManagerModifier.addRecipesServer;
+import static thaumcraft.common.items.ThaumcraftItemInstances.MANA_BEAN;
 import static thaumcraft.common.items.ThaumcraftItems.ItemTags.CINNABAR_ORES;
 
 public class ThaumcraftItemsRegistry {
@@ -1220,6 +1223,21 @@ public class ThaumcraftItemsRegistry {
             "primal_focus",
             PrimalFocusItem::new
     );
+    public static final Supplier<ItemStack> RANDOM_MANA_BEAN_SUPPLIER = new Supplier<>() {
+        private final ThreadLocal<RandomSource> randomSourceThreadLocal = new ThreadLocal<>();
+
+        @Override
+        public ItemStack get() {
+
+            return MANA_BEAN().ofAspect(
+                    Aspects.ALL_ASPECTS.values()
+                            .stream()
+                            .toList()
+                            .get(randomSourceThreadLocal.get()
+                                    .nextInt(Aspects.ALL_ASPECTS.size()))
+            );
+        }
+    };
     public static final Map<TagKey<Item>,RegistrySupplier<ClusterItem>> CLUSTER_ITEMS = new HashMap<>();
     public record ClusterRegistrationArgs(String orePrefix,Set<TagKey<Item>> tagsToRegister,TagKey<Item> burnIntoTag){
         public void registerToClusterItems(DeferredRegister<Item> items){

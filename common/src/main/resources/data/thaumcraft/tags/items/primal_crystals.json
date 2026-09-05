@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:air_crystal_cluster",
+    "thaumcraft:fire_crystal_cluster",
+    "thaumcraft:water_crystal_cluster",
+    "thaumcraft:earth_crystal_cluster",
+    "thaumcraft:order_crystal_cluster",
+    "thaumcraft:entropy_crystal_cluster"
+  ]
+}

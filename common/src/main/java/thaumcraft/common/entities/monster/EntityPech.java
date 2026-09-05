@@ -709,78 +709,93 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
 
       {
          List<SimplePair<Integer, ItemStack>> forInv = new ArrayList<>();
-         forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemManaBean)));
-         forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 16)));
-         forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 31)));
-         forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 21)));
-         if (Config.foundCopperIngot) {
-            forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 17)));
+         {
+            forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemManaBean)));
+
+            {
+               forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 16)));
+               forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 31)));
+               forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 21)));
+               if (Config.foundCopperIngot) {
+                  forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 17)));
+               }
+
+               if (Config.foundTinIngot) {
+                  forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 18)));
+               }
+
+               if (Config.foundSilverIngot) {
+                  forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 19)));
+               }
+
+               if (Config.foundLeadIngot) {
+                  forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 20)));
+               }
+            }
          }
 
-         if (Config.foundTinIngot) {
-            forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 18)));
+         {
+            forInv.add(new SimplePair<>(2, new ItemStack(Items.BLAZE_ROD)));
+            forInv.add(new SimplePair<>(2, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 0)));
+
+            potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRENGTH);
+            forInv.add(new SimplePair<>(2, potionStack));
+
+
+            potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.SWIFTNESS);
+            forInv.add(new SimplePair<>(2, potionStack));
          }
 
-         if (Config.foundSilverIngot) {
-            forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 19)));
+         {
+            forInv.add(new SimplePair<>(3, new ItemStack(Items.EXPERIENCE_BOTTLE)));
+            forInv.add(new SimplePair<>(3, new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
+            forInv.add(new SimplePair<>(3, new ItemStack(Items.GOLDEN_APPLE)));
+
+            potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_STRENGTH);
+            forInv.add(new SimplePair<>(3, potionStack));
+            potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_NIGHT_VISION);
+            forInv.add(new SimplePair<>(3, potionStack));
          }
 
-         if (Config.foundLeadIngot) {
-            forInv.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemNugget, 1, 20)));
-         }
-
-         forInv.add(new SimplePair<>(2, new ItemStack(Items.BLAZE_ROD)));
-         forInv.add(new SimplePair<>(2, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 0)));
-
-         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRENGTH);
-         forInv.add(new SimplePair<>(2, potionStack));
-
-
-         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.SWIFTNESS);
-         forInv.add(new SimplePair<>(2, potionStack));
-
-         forInv.add(new SimplePair<>(3, new ItemStack(Items.EXPERIENCE_BOTTLE)));
-         forInv.add(new SimplePair<>(3, new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
-         forInv.add(new SimplePair<>(3, new ItemStack(Items.GOLDEN_APPLE)));
-
-         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_STRENGTH);
-         forInv.add(new SimplePair<>(3, potionStack));
-         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_NIGHT_VISION);
-         forInv.add(new SimplePair<>(3, potionStack));
-
-         forInv.add(new SimplePair<>(5, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE)));
          forInv.add(new SimplePair<>(4, new ItemStack(ConfigItems.itemPickThaumium)));
+         forInv.add(new SimplePair<>(5, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE)));
          forInv.add(new SimplePair<>(5, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 1)));
          forInv.add(new SimplePair<>(5, new ItemStack(ConfigBlocks.blockCustomPlant, 1, 1)));
          tradeInventory.put(0, forInv);
       }
       {
          List<SimplePair<Integer, ItemStack>> forMag = new ArrayList<>();
-         forMag.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemManaBean)));
+         {
+            forMag.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemManaBean)));
 
-         for (int a = 0; a < 6; ++a) {
-            forMag.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemShard, 1, a)));
+            for (int a = 0; a < 6; ++a) {
+               forMag.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemShard, 1, a)));
+            }
+
+            forMag.add(new SimplePair<>(1, new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
+         }
+         {
+            forMag.add(new SimplePair<>(2, new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
+            potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.REGENERATION);
+            forMag.add(new SimplePair<>(2, potionStack));
+            potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HEALING);
+            forMag.add(new SimplePair<>(2, potionStack));
          }
 
-         forMag.add(new SimplePair<>(1, new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
-         forMag.add(new SimplePair<>(2, new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
-         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.REGENERATION);
-         forMag.add(new SimplePair<>(2, potionStack));
-         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HEALING);
-         forMag.add(new SimplePair<>(2, potionStack));
+         {
+            book = new ItemStack(Items.ENCHANTED_BOOK);
+            EnchantedBookItem.addEnchantment(
+                    book,
+                    new EnchantmentInstance(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.HASTE(), 1)
+            );
+            forMag.add(new SimplePair<>(3, book));
 
-         book = new ItemStack(Items.ENCHANTED_BOOK);
-         EnchantedBookItem.addEnchantment(
-                 book,
-                 new EnchantmentInstance(ThaumcraftEnchantments.ThaumcraftEnchantmentInstances.HASTE(), 1)
-         );
-         forMag.add(new SimplePair<>(3, book));
-
-         forMag.add(new SimplePair<>(3, new ItemStack(Items.GOLDEN_APPLE)));
-         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_REGENERATION);
-         forMag.add(new SimplePair<>(3, potionStack));
-         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING);
-         forMag.add(new SimplePair<>(3, potionStack));
+            forMag.add(new SimplePair<>(3, new ItemStack(Items.GOLDEN_APPLE)));
+            potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_REGENERATION);
+            forMag.add(new SimplePair<>(3, potionStack));
+            potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING);
+            forMag.add(new SimplePair<>(3, potionStack));
+         }
 
          for (int a = 0; a < 7; ++a) {
             forMag.add(new SimplePair<>(4, new ItemStack(ConfigBlocks.blockCrystal, 1, a)));
@@ -804,35 +819,41 @@ public class EntityPech extends EntityMob implements IRangedAttackMob {
 
       {
          List<SimplePair<Integer, ItemStack>> forArc = new ArrayList<>();
-         forArc.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemManaBean)));
+         {
+            forArc.add(new SimplePair<>(1, new ItemStack(ConfigItems.itemManaBean)));
 
-         for (int a = 0; a < 15; ++a) {
-            forArc.add(new SimplePair<>(1, new ItemStack(ConfigBlocks.blockCandle, 1, a)));
+            for (int a = 0; a < 15; ++a) {
+               forArc.add(new SimplePair<>(1, new ItemStack(ConfigBlocks.blockCandle, 1, a)));
+            }
          }
 
-         forArc.add(new SimplePair<>(2, new ItemStack(Items.GHAST_TEAR)));
-         forArc.add(new SimplePair<>(2, new ItemStack(Items.potionitem, 1, 8194)));
-         forArc.add(new SimplePair<>(2, new ItemStack(Items.potionitem, 1, 8201)));
+         {
+            forArc.add(new SimplePair<>(2, new ItemStack(Items.GHAST_TEAR)));
+            forArc.add(new SimplePair<>(2, new ItemStack(Items.potionitem, 1, 8194)));
+            forArc.add(new SimplePair<>(2, new ItemStack(Items.potionitem, 1, 8201)));
 
 
-         book = new ItemStack(Items.ENCHANTED_BOOK);
-         EnchantedBookItem.addEnchantment(
-                 book,
-                 new EnchantmentInstance(Enchantments.POWER_ARROWS, 1)
-         );
-         forArc.add(new SimplePair<>(2, book));
+            book = new ItemStack(Items.ENCHANTED_BOOK);
+            EnchantedBookItem.addEnchantment(
+                    book,
+                    new EnchantmentInstance(Enchantments.POWER_ARROWS, 1)
+            );
+            forArc.add(new SimplePair<>(2, book));
+         }
 
-         forArc.add(new SimplePair<>(3, new ItemStack(Items.EXPERIENCE_BOTTLE)));
-         forArc.add(new SimplePair<>(3, new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
-         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_INVISIBILITY);
-         forArc.add(new SimplePair<>(3, potionStack));
+         {
+            forArc.add(new SimplePair<>(3, new ItemStack(Items.EXPERIENCE_BOTTLE)));
+            forArc.add(new SimplePair<>(3, new ItemStack(ThaumcraftItemInstances.KNOWLEDGE_FRAGMENT())));
+            potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_INVISIBILITY);
+            forArc.add(new SimplePair<>(3, potionStack));
 
-         potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_REGENERATION);
-         forArc.add(new SimplePair<>(3, potionStack));
+            potionStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_REGENERATION);
+            forArc.add(new SimplePair<>(3, potionStack));
 
-         forArc.add(new SimplePair<>(3, new ItemStack(Items.GOLDEN_APPLE)));
-         forArc.add(new SimplePair<>(5, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE)));
+            forArc.add(new SimplePair<>(3, new ItemStack(Items.GOLDEN_APPLE)));
+         }
          forArc.add(new SimplePair<>(4, new ItemStack(ConfigItems.itemBootsThaumium)));
+         forArc.add(new SimplePair<>(5, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE)));
          forArc.add(new SimplePair<>(5, new ItemStack(ConfigItems.itemRingRunic, 1, 0)));
 
 

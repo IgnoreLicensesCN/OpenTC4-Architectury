@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#thaumcraft:primal_crystals",
+      "required": false
+    },
+    "thaumcraft:mixed_crystal_cluster"
+  ]
+}

@@ -24,6 +24,7 @@ import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
 import thaumcraft.common.entities.monster.eldritch.EldritchCrabEntity;
 import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
 import thaumcraft.common.entities.monster.eldritch.InhabitedZombieEntity;
+import thaumcraft.common.entities.monster.pech.*;
 import thaumcraft.common.entities.monster.zombies.BrainyZombieEntity;
 import thaumcraft.common.entities.monster.zombies.GiantBrainyZombieEntity;
 import thaumcraft.common.entities.monster.warp.MindSpiderEntity;
@@ -164,6 +165,15 @@ public class ThaumcraftEntities {
         }
         public static EntityType<EldritchOrbEntity> ELDRITCH_ORB(){
             return Registry.SUPPLIER_ELDRITCH_ORB.get();
+        }
+        public static EntityType<PechForagerEntity> PECH_FORAGER() {
+            return Registry.SUPPLIER_PECH_FORAGER.get();
+        }
+        public static EntityType<PechMageEntity> PECH_MAGE() {
+            return Registry.SUPPLIER_PECH_MAGE.get();
+        }
+        public static EntityType<PechStalkerEntity> PECH_STALKER() {
+            return Registry.SUPPLIER_PECH_STALKER.get();
         }
     }
 
@@ -417,6 +427,27 @@ public class ThaumcraftEntities {
                         .clientTrackingRange(10)
                         .updateInterval(20)
                         .build("eldritch_orb")
+        );
+        public static final RegistrySupplier<EntityType<PechForagerEntity>> SUPPLIER_PECH_FORAGER = ENTITIES.register(
+                "pech_forager",
+                () -> EntityType.Builder.<PechForagerEntity>of(PechForagerEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.8F)
+                        .clientTrackingRange(10)
+                        .build("pech_forager")
+        );
+        public static final RegistrySupplier<EntityType<PechMageEntity>> SUPPLIER_PECH_MAGE = ENTITIES.register(
+                "pech_mage",
+                () -> EntityType.Builder.<PechMageEntity>of(PechMageEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.8F)
+                        .clientTrackingRange(10)
+                        .build("pech_mage")
+        );
+        public static final RegistrySupplier<EntityType<PechStalkerEntity>> SUPPLIER_PECH_STALKER = ENTITIES.register(
+                "pech_stalker",
+                () -> EntityType.Builder.<PechStalkerEntity>of(PechStalkerEntity::new, MobCategory.MONSTER)
+                        .sized(0.6F, 1.8F)
+                        .clientTrackingRange(10)
+                        .build("pech_stalker")
         );
 
     }
