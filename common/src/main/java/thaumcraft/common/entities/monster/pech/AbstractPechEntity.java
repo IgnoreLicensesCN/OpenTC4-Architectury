@@ -39,10 +39,13 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.AABB;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,11 +63,11 @@ import thaumcraft.common.entities.ai.pech.PechTradePlayerGoal;
 import thaumcraft.common.entities.projectile.pechfocus.PechBlastEntity;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.IWandFocusEngineItem;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -981,4 +984,21 @@ public abstract class AbstractPechEntity extends DoorBreakingMonster
     protected void populatePechSpecificEquip(RandomSource randomSource, DifficultyInstance difficultyInstance){
         EQUIPMENT_POSSIBLE.getRandom(randomSource).accept(this,randomSource,difficultyInstance);
     }
+
+
+    public static boolean checkSpawnRules(EntityType<? extends Monster> arg, ServerLevelAccessor arg2, MobSpawnType arg3, BlockPos arg4, RandomSource arg5){
+
+        var biome = arg2.getBiome(arg4);
+        boolean magicBiome;
+        magicBiome = biome.is(ThaumcraftBiomeTags.MAGICAL) && !biome.is(
+                ThaumcraftBiomeTags.TAINTED);//BiomeDictionary.isBiomeOfType(biome, Type.MAGICAL) && biome.biomeID != Config.biomeTaintID;
+
+        int count = 0;
+
+        var l = arg2.getEntitiesOfClass(AbstractPechEntity.class, AABB.of(new BoundingBox(arg4)).inflate(16.0F, 16.0F, 16.0F));
+        count = l.size();
+
+        return count < 4 && magicBiome && checkMonsterSpawnRules(arg, arg2, arg3, arg4, arg5);
+    }
+
 }

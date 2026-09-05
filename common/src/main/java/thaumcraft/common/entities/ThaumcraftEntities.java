@@ -21,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
+import thaumcraft.common.entities.monster.WispEntity;
 import thaumcraft.common.entities.monster.eldritch.EldritchCrabEntity;
 import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
 import thaumcraft.common.entities.monster.eldritch.InhabitedZombieEntity;
@@ -174,6 +175,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<PechStalkerEntity> PECH_STALKER() {
             return Registry.SUPPLIER_PECH_STALKER.get();
+        }
+        public static EntityType<WispEntity> WISP() {
+            return Registry.SUPPLIER_WISP.get();
         }
     }
 
@@ -450,6 +454,13 @@ public class ThaumcraftEntities {
                         .build("pech_stalker")
         );
 
+        public static final RegistrySupplier<EntityType<WispEntity>> SUPPLIER_WISP = ENTITIES.register(
+                "wisp",
+                () -> EntityType.Builder.<WispEntity>of(WispEntity::new, MobCategory.MONSTER)
+                        .sized(0.9F,0.9F)
+                        .clientTrackingRange(10)
+                        .build("wisp")
+        );
     }
 
     public static class EntityTags {
@@ -491,6 +502,11 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_CRAB(), EldritchCrabEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.INHABITED_ZOMBIE(), InhabitedZombieEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_GUARDIAN(), EldritchGuardianEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.PECH_FORAGER(),PechForagerEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.PECH_STALKER(),PechStalkerEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.PECH_MAGE(),PechMageEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.WISP(),WispEntity.createAttributes().build());
+
     }
 
     private static void registerSpawnPlacements() {
@@ -511,6 +527,36 @@ public class ThaumcraftEntities {
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Monster::checkMonsterSpawnRules
+        );
+        SpawnPlacementsRegistry.register(
+                Registry.SUPPLIER_ELDRITCH_GUARDIAN,
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                EldritchGuardianEntity::checkSpawnRules
+        );
+        SpawnPlacementsRegistry.register(
+                Registry.SUPPLIER_PECH_FORAGER,
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                PechForagerEntity::checkSpawnRules
+        );
+        SpawnPlacementsRegistry.register(
+                Registry.SUPPLIER_PECH_MAGE,
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                PechMageEntity::checkSpawnRules
+        );
+        SpawnPlacementsRegistry.register(
+                Registry.SUPPLIER_PECH_STALKER,
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                PechStalkerEntity::checkSpawnRules
+        );
+        SpawnPlacementsRegistry.register(
+                Registry.SUPPLIER_WISP,
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                WispEntity::checkSpawnRules
         );
     }
 

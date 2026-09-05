@@ -27,6 +27,7 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -260,7 +261,7 @@ public class TaintedSwarmEntity extends Monster {
                             swarm.random.nextInt(15)-7
                     );
                     var level = swarm.level();
-                    if (level.getBiome(targetPos).is(ThaumcraftBiomeIDs.TAINT_ID)){
+                    if (level.getBiome(targetPos).is(ThaumcraftBiomeTags.TAINTED)){
                         swarmMoveControl.isWandering = true;
                         swarmMoveControl.setWantedPosition(targetPos.getX(),targetPos.getY(),targetPos.getZ(),1);
                     }

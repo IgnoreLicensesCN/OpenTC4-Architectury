@@ -11,5 +11,11 @@ public class ThaumcraftBiomeTags {
             Thaumcraft.MOD_ID,"mana_bean_survives"));
     public static final TagKey<Biome> SMALL_TAINTACLE_CAN_SPAWN = TagKey.create(Registries.BIOME, new ResourceLocation(
             Thaumcraft.MOD_ID,"small_taintacle_can_spawn"));
+    public static final TagKey<Biome> TAINTED = TagKey.create(Registries.BIOME, new ResourceLocation(
+            Thaumcraft.MOD_ID,"tainted"));
+    public static final TagKey<Biome> MAGICAL = TagKey.create(Registries.BIOME, new ResourceLocation(
+            Thaumcraft.MOD_ID,"magical"));
+    public static final TagKey<Biome> EERIE = TagKey.create(Registries.BIOME, new ResourceLocation(
+            Thaumcraft.MOD_ID,"eerie"));
     public static void init(){}
 }

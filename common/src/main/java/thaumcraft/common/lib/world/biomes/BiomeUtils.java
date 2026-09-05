@@ -22,7 +22,7 @@ public class BiomeUtils {
     public static void taintBiomeSpread(ServerLevel world, BlockPos basePos, RandomSource rand) {
        if (Config.taintSpreadRate > 0) {
           var pos = basePos.offset(rand.nextInt(3) - 1,0,rand.nextInt(3) - 1);
-          if (!world.getBiome(pos).is(ThaumcraftBiomeIDs.TAINT_ID)&& rand.nextInt(Config.taintSpreadRate * 5) == 0 && getTaintedBlocksNear(world, basePos) >= 2) {
+          if (!world.getBiome(pos).is(ThaumcraftBiomeTags.TAINTED)&& rand.nextInt(Config.taintSpreadRate * 5) == 0 && getTaintedBlocksNear(world, basePos) >= 2) {
               var biomeToSet = ThaumcraftBiomeLookups.biomeHolderForLevel(world,ThaumcraftBiomeIDs.TAINT_KEY);
              for (int yOffset = TAINT_SPREAD_DOWN_DISTANCE; yOffset < TAINT_SPREAD_UP_DISTANCE; yOffset++) {
                 var afffectPos = pos.above(yOffset);
@@ -63,7 +63,7 @@ public class BiomeUtils {
 
     public static void setPosTaintAndSetTaintSourceIfNotTaint(ServerLevel serverLevel, BlockPos pickPos) {
         var biome = serverLevel.getBiome(pickPos);
-        if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
+        if (!biome.is(ThaumcraftBiomeTags.TAINTED)) {
             setPosTaintAndSetTaintSource(serverLevel, pickPos);
         }
     }

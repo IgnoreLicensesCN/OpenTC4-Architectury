@@ -10,6 +10,7 @@ import thaumcraft.api.listeners.worldgen.node.listeners.NodeTypePicker;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 
 
 public class NodeTypePickers {
@@ -33,7 +34,7 @@ public class NodeTypePickers {
             }
 //            BiomeGenBase bg = world.getBiomeGenForCoords(x, z);
             Holder<Biome> biome = world.getBiome(pos);
-            if (type != NodeType.PURE && biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
+            if (type != NodeType.PURE && biome.is(ThaumcraftBiomeTags.TAINTED)) {
                 if (random.nextBoolean()) {
                     type = NodeType.TAINTED;
                 }

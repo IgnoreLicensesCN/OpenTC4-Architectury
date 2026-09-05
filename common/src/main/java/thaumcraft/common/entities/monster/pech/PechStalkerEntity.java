@@ -1,7 +1,6 @@
 package thaumcraft.common.entities.monster.pech;
 
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
-import com.linearity.opentc4.utils.collectionlike.SimplePair;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
@@ -20,7 +19,6 @@ import thaumcraft.common.items.ThaumcraftItemInstances;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
-import static thaumcraft.common.items.ThaumcraftItemsRegistry.CLUSTER_ITEMS;
 import static thaumcraft.common.items.ThaumcraftItemsRegistry.RANDOM_MANA_BEAN_SUPPLIER;
 
 public class PechStalkerEntity extends AbstractPechEntity{

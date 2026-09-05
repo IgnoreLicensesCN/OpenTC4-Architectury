@@ -27,6 +27,7 @@ import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 
 import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.TAINTED_MATERIAL_BLOCK;
 import static thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock.spreadFibres;
@@ -60,7 +61,7 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
             beforeSpreadingFibres(blockState, world, blockPos, random);
 
             var considerSpreadFibresPos = blockPos.offset(random.nextInt(3) - 1,random.nextInt(3) - 1,random.nextInt(3) - 1);
-            if (world.getBiome(considerSpreadFibresPos).is(ThaumcraftBiomeIDs.TAINT_ID)) {
+            if (world.getBiome(considerSpreadFibresPos).is(ThaumcraftBiomeTags.TAINTED)) {
                 spreadFibres(world, considerSpreadFibresPos);
                 afterSpreadFibres(blockState, world, blockPos, random);
 

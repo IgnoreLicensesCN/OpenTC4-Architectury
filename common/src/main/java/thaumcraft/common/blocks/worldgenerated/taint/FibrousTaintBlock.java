@@ -54,7 +54,7 @@ public class FibrousTaintBlock extends AbstractTaintFibreBlock{
 
     @Override
     protected boolean cancelRandomTickAfterSpread(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
-        if (isOnlyAdjacentToTaint(world, blockPos) || !world.getBiome(blockPos).is(ThaumcraftBiomeIDs.TAINT_KEY)) {
+        if (isOnlyAdjacentToTaint(world, blockPos) || !world.getBiome(blockPos).is(ThaumcraftBiomeTags.TAINTED)) {
             world.setBlock(blockPos, Blocks.AIR.defaultBlockState(),3);
             return true;
         }
@@ -65,7 +65,7 @@ public class FibrousTaintBlock extends AbstractTaintFibreBlock{
     public void randomTick(BlockState blockState, ServerLevel world, BlockPos blockPos, RandomSource random) {
         if (Platform.getEnvironment() != Env.CLIENT) {
             BiomeUtils.taintBiomeSpread(world, blockPos, random);
-            if (isOnlyAdjacentToTaint(world, blockPos) || !world.getBiome(blockPos).is(ThaumcraftBiomeIDs.TAINT_KEY)) {
+            if (isOnlyAdjacentToTaint(world, blockPos) || !world.getBiome(blockPos).is(ThaumcraftBiomeTags.TAINTED)) {
                 world.setBlock(blockPos, Blocks.AIR.defaultBlockState(),3);
                 return;
             }

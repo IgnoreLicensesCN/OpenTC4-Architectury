@@ -34,6 +34,7 @@ import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 
 //TODO:impl getOverlayBlockTexture
 public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
@@ -132,7 +133,7 @@ public abstract class AbstractTaintFibreBlock extends AbstractTaintBlock {
             }
 
             var pickPos = blockPos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
-            if (world.getBiome(pickPos).is(ThaumcraftBiomeIDs.TAINT_KEY)) {
+            if (world.getBiome(pickPos).is(ThaumcraftBiomeTags.TAINTED)) {
                 var pickState = world.getBlockState(pickPos);
                 if (!spreadFibres(world, pickPos)) {
                     spreadSoil(world, pickPos, pickState);

@@ -29,6 +29,7 @@ import thaumcraft.common.lib.resourcelocations.NodeTypeResourceLocation;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeLookups;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 import thaumcraft.common.tiles.crafted.vis.visnet.EnergizedAuraNodeBlockEntity;
 
 import java.util.*;
@@ -190,7 +191,7 @@ public class NodeType {
                         serverLevel.random.nextInt(15)-7
                 );
                 var biome = serverLevel.getBiome(randomPickPos);
-                if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
+                if (!biome.is(ThaumcraftBiomeTags.TAINTED)) {
                     var holderTaint = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,ThaumcraftBiomeIDs.TAINT_KEY);
                     setPosTaint(serverLevel,randomPickPos,holderTaint);
                 }
@@ -391,7 +392,7 @@ public class NodeType {
 //                        biobl != 0 && biobl != 2 && 
                         !biome.is(ThaumcraftBiomeIDs.MAGICAL_FOREST_KEY)
                 ) {
-                    if (biome.is(ThaumcraftBiomeIDs.TAINT_ID)) {
+                    if (biome.is(ThaumcraftBiomeTags.TAINTED)) {
                         var holderMagicalForest = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,ThaumcraftBiomeIDs.MAGICAL_FOREST_KEY);
                         for (int i=-PURE_NODE_Y_RANGE;i<=PURE_NODE_Y_RANGE;i+=1){
                             Utils.setBiomeAt(serverLevel, randomPickPos.above(i), holderMagicalForest);
@@ -503,7 +504,7 @@ public class NodeType {
         if (!(level instanceof ServerLevel serverLevel)) return false;
         var pos = thisNode.getBlockPos();
         var biome = serverLevel.getBiome(pos);
-        if (biome.is(ThaumcraftBiomeIDs.TAINT_ID) && serverLevel.random.nextInt(500) == 0) {
+        if (biome.is(ThaumcraftBiomeTags.TAINTED) && serverLevel.random.nextInt(500) == 0) {
             thisNode.setNodeType(NodeType.TAINTED);
             thisNode.nodeChange();
             return true;

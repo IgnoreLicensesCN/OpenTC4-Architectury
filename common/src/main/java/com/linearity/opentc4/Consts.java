@@ -377,4 +377,7 @@ public class Consts {
         public static final BooleanTagAccessor TAMED = new BooleanTagAccessor("tamed");
         public static final IntTagAccessor ANGER = new IntTagAccessor("anger");
     }
+    public static class WispEntityTagAccessors {
+        public static final AspectAccessor OWNING_ASPECT = new AspectAccessor("owning_aspect");
+    }
 }

@@ -110,7 +110,7 @@ public class TaintacleEntity extends Monster implements IMobAttackDamageTypeRepl
                 }
 
                 this.playSound(ThaumcraftSounds.TENTACLE, this.getSoundVolume(), this.getVoicePitch());
-                if (!biome.is(ThaumcraftBiomeIDs.TAINT_ID)
+                if (!biome.is(ThaumcraftBiomeTags.TAINTED)
                         && (spawnAtState.isAir())
                         && BlockUtils.isAdjacentToSolidBlock(level, spawnAtPos)
                         && level instanceof ServerLevel serverLevel
@@ -160,7 +160,7 @@ public class TaintacleEntity extends Monster implements IMobAttackDamageTypeRepl
 
     protected void damageIfNotInTainted() {
         var level = level();
-        if (tickCount % 20 == 0 && !level.getBiome(blockPosition()).is(ThaumcraftBiomeIDs.TAINT_ID)){
+        if (tickCount % 20 == 0 && !level.getBiome(blockPosition()).is(ThaumcraftBiomeTags.TAINTED)){
             this.hurt(level.damageSources().starve(), 1.0F);
         }
     }
@@ -216,7 +216,7 @@ public class TaintacleEntity extends Monster implements IMobAttackDamageTypeRepl
             return false;
         }
         boolean onTaint = level.getBlockState(blockPos).is(ThaumcraftBlocks.Tags.TAINTACLE_CAN_SPAWN)
-                && level.getBiome(blockPos).is(ThaumcraftBiomeIDs.TAINT_ID);
+                && level.getBiome(blockPos).is(ThaumcraftBiomeTags.TAINTED);
         if (!onTaint) {
             return false;
         }

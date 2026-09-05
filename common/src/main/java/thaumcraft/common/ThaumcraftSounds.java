@@ -61,6 +61,8 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_PECH_HIT = new ResourceLocation(Thaumcraft.MOD_ID,"pech_hit");
         public static final ResourceLocation RES_PECH_DEATH = new ResourceLocation(Thaumcraft.MOD_ID,"pech_death");
         public static final ResourceLocation RES_PECH_TRADE = new ResourceLocation(Thaumcraft.MOD_ID,"pech_trade");
+        public static final ResourceLocation RES_WISP_LIVE = new ResourceLocation(Thaumcraft.MOD_ID,"wisplive");
+        public static final ResourceLocation RES_WISP_DEAD = new ResourceLocation(Thaumcraft.MOD_ID,"wispdead");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -118,4 +120,6 @@ public class ThaumcraftSounds {
     public static final SoundEvent PECH_HIT = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_PECH_HIT);
     public static final SoundEvent PECH_DEATH = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_PECH_DEATH);
     public static final SoundEvent PECH_TRADE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_PECH_TRADE);
+    public static final SoundEvent WISP_LIVE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_WISP_LIVE);
+    public static final SoundEvent WISP_DEAD = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_WISP_DEAD);
 }

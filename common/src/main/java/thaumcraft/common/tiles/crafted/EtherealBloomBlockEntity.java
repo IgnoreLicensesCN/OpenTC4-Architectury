@@ -11,6 +11,7 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.config.Config;
@@ -55,10 +56,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
                 var biomeID = this.level.getBiome(currentTargetingPos);
                 var squaredDistance = pickX * pickX + pickY * pickY + pickZ * pickZ;
                 if (
-                        (biomeID == ThaumcraftBiomeIDs.TAINT_ID
-                                || biomeID == ThaumcraftBiomeIDs.EERIE_ID
-                                || biomeID == Config.biomeMagicalForestID
-                        )
+                        biomeID.is(ThaumcraftBiomeTags.MAGICAL)
                                 && squaredDistance <= (double)81.0F
                 ) {
 
@@ -73,7 +71,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
                     );
                     var taintFlag = false;
 
-                    if (biomeID == ThaumcraftBiomeIDs.TAINT_ID || biomeDuringGeneration.is(ThaumcraftBiomeIDs.TAINT_ID)) {
+                    if (biomeID.is(ThaumcraftBiomeTags.TAINTED) || biomeDuringGeneration.is(ThaumcraftBiomeTags.TAINTED)) {
                         biomeDuringGeneration = ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,Biomes.PLAINS);
                         taintFlag = true;
                     }
@@ -98,7 +96,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
         for (int i=TAINT_SPREAD_DOWN_DISTANCE;i<=TAINT_SPREAD_UP_DISTANCE;i+=1){
             var currentPos = base.offset(0,i,0);
             var biomeID = this.level.getBiome(currentPos);
-            if (biomeID.is(ThaumcraftBiomeIDs.TAINT_ID)) {
+            if (biomeID.is(ThaumcraftBiomeTags.TAINTED)) {
 
                 ChunkGenerator generator = serverLevel.getChunkSource().getGenerator();
                 BiomeSource biomeSource = generator.getBiomeSource();
@@ -109,7 +107,7 @@ public class EtherealBloomBlockEntity extends TileThaumcraft {//TODO:Render
                         QuartPos.fromBlock(base.getZ()),
                         serverLevel.getChunkSource().randomState().sampler()
                 );
-                if (biomeDuringGeneration.is(ThaumcraftBiomeIDs.TAINT_ID)) {
+                if (biomeDuringGeneration.is(ThaumcraftBiomeTags.TAINTED)) {
                     biomeDuringGeneration =  ThaumcraftBiomeLookups.biomeHolderForLevel(serverLevel,Biomes.PLAINS);
                 }
 

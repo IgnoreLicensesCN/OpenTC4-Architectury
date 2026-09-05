@@ -19,6 +19,7 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
+import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class TaintSporeSwarmerEntity extends Monster {
 
     protected void damageIfNotInTainted() {
         var level = level();
-        if (tickCount % 20 == 0 && !level.getBiome(blockPosition()).is(ThaumcraftBiomeIDs.TAINT_ID)){
+        if (tickCount % 20 == 0 && !level.getBiome(blockPosition()).is(ThaumcraftBiomeTags.TAINTED)){
             this.hurt(level.damageSources().starve(), 1.0F);
         }
     }
