@@ -2,10 +2,15 @@ package thaumcraft.common.lib.utils;
 
 import com.linearity.opentc4.annotations.forvalue.RadianValue;
 import com.linearity.opentc4.mixin.LivingEntityAccessor;
+import com.linearity.opentc4.utils.vanilla1710.BiomeType;
+import com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,11 +18,14 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -25,15 +33,25 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import tc4tweak.ConfigurationHandler;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.config.Config;
+import thaumcraft.common.config.ConfigEntities;
 import thaumcraft.common.entities.SpecialItemEntity;
+import thaumcraft.common.entities.championmod.ChampionModifier;
+import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifiedNamingRuleOwner;
+import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifierAttachRuleOwner;
+import thaumcraft.common.entities.championmod.abstracts.entity.IRandomChampionModifierPickRuleOwner;
 import thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss;
-import thaumcraft.common.entities.monster.mods.ChampionModifier;
+import thaumcraft.common.lib.world.dim.Cell;
+import thaumcraft.common.lib.world.dim.CellLoc;
+import thaumcraft.common.lib.world.dim.MazeHandler;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.*;
+import static thaumcraft.common.entities.championmod.ChampionModifierManager.CHAMPION_MODIFIERS_FOR_RANDOM;
 
 public class EntityUtils {
 
@@ -103,20 +121,9 @@ public class EntityUtils {
         return new AttributeModifier(CHAMPION_DAMAGE_MODIFIER_UUID, "Champion damage buff", 2.0F, MULTIPLY_TOTAL);
     }
 
-    public static final UUID BOLD_BUFF_MODIFIER_UUID = UUID.fromString("4b1edd33-caa9-47ae-a702-d86c05701037");
-
-    public static AttributeModifier getNewBoldBuffModifier() {
-        return new AttributeModifier(BOLD_BUFF_MODIFIER_UUID, "Bold speed boost", 0.3, MULTIPLY_BASE);
-    }
-
-    public static final UUID MIGHTY_BUFF_MODIFIER_UUID = UUID.fromString("7163897f-07f5-49b3-9ce4-b74beb83d2d3");
-
-    public static AttributeModifier getNewMightyBuffModifier() {
-        return new AttributeModifier(MIGHTY_BUFF_MODIFIER_UUID, "Mighty damage boost", 3.0F, MULTIPLY_TOTAL);
-    }
-
     public static class ChampionModifierBaseValues {
-
+        public static final UUID CHAMPION_MOD_ATTACHED_NOT_AFFECTED_UUID = UUID.fromString("da3e9393-baef-4495-be69-e71e7f8bb391");
+        public static final UUID CHAMPION_MOD_ATTACHED_AFFECTED_UUID = UUID.fromString("b4e42b35-6482-4347-b0a7-f117e12eb997");
         public static final double CHAMPION_MOD_BASE_VALUE_NOT_ATTACHED = -2.;
         public static final double CHAMPION_MOD_BASE_VALUE_ATTACHED_NOT_AFFECTED = -1.;
         public static final double CHAMPION_MOD_BASE_VALUE_ATTACHED_AFFECTED = 0.;
@@ -147,6 +154,22 @@ public class EntityUtils {
         public static Attribute JUMP_Y_VELOCITY_ADDITION_NOT_SNEAKING() {
             return Registry.SUPPLIER_JUMP_Y_VELOCITY_ADDITION_NOT_SNEAKING.get();
         }
+
+        public static final UUID[] HP_BUFF_UUIDS = new UUID[] {
+                UUID.fromString("54d621c1-dd4d-4b43-8bd2-5531c8875797"),
+                UUID.fromString("f51257dc-b7fa-4f7a-92d7-75d68e8592c4"),
+                UUID.fromString("3d6b2e42-4141-4364-b76d-0e8664bbd0bb"),
+                UUID.fromString("02c97a08-801c-4131-afa2-1427a6151934"),
+                UUID.fromString("0f354f6a-33c5-40be-93be-81b1338567f1"),
+        };
+        public static final UUID[] DMG_BUFF_UUIDS = new UUID[] {
+                UUID.fromString("534f8c57-929a-48cf-bbd6-0fd851030748"),
+                UUID.fromString("d317a76e-0e7c-4c61-acfd-9fa286053b32"),
+                UUID.fromString("ff462d63-26a2-4363-830e-143ed97e2a4f"),
+                UUID.fromString("cf1eb39e-0c67-495f-887c-0d3080828d2f"),
+                UUID.fromString("3cfab9da-2701-43d8-ac07-885f16fa4117"),
+        };
+
 //        public static final Attribute FORWARD_IMPULSE_NOT_IN_WATER = Registry.SUPPLIER_FORWARD_IMPULSE_NOT_IN_WATER.get();
 //        public static final Attribute FORWARD_IMPULSE_IN_WATER = Registry.SUPPLIER_FORWARD_IMPULSE_IN_WATER.get();
 //        public static final AttributeModifierTweaked CHAMPION_HEALTH = new AttributeModifierTweaked(
@@ -386,16 +409,16 @@ public class EntityUtils {
 //        return Utils.isLyingInCone(target, origin, lookPos, fov);
 //    }
 
-    //TODO:Migrate to entity drop item logic(whatever it will lead to,always floating or anything else)
     public static ItemEntity entityDropSpecialItem(Entity entity, ItemStack stack, float dropheight) {
         if (stack.getCount() != 0 && !stack.isEmpty()) {
             var entityitem = new SpecialItemEntity(
                     entity.level(), entity.getX(), entity.getY() + (double) dropheight, entity.getZ(), stack);
             entityitem.setPickUpDelay(10);
             entityitem.setDeltaMovement(new Vec3(0,0.1,0));
-            if (entity.captureDrops) {
-                entity.capturedDrops.add(entityitem);
-            } else {
+//            if (entity.captureDrops) {
+//                entity.capturedDrops.add(entityitem);
+//            } else
+            {
                 entity.level().addFreshEntity(entityitem);
             }
 
@@ -406,20 +429,28 @@ public class EntityUtils {
     }
 
     public static void makeChampion(LivingEntity entity, boolean persist) {
-        int type = 0;
-        if (!(entity instanceof Creeper)) {
-            type = entity.getRandom()
-                    .nextInt(ChampionModifier.mods.length);
+
+        AttributeInstance championModInstance = entity.getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD());
+        if (championModInstance != null) {
+            championModInstance.addPermanentModifier(new AttributeModifier(
+                    ChampionModifierBaseValues.CHAMPION_MOD_ATTACHED_AFFECTED_UUID,
+                    "CHAMPION_MOD_ATTACHED_AFFECTED".toLowerCase(),
+                    0.,
+                    ADDITION
+            ));
+        }
+        ChampionModifier modifier;
+        if (!(entity instanceof IRandomChampionModifierPickRuleOwner pickRuleOwner)) {
+            modifier = CHAMPION_MODIFIERS_FOR_RANDOM.get(entity.getRandom().nextInt(CHAMPION_MODIFIERS_FOR_RANDOM.size()));
+        }else {
+            modifier = pickRuleOwner.pickRandomChampionModifierToApply();
         }
 
         AttributeInstance modai = entity.getAttribute(ThaumcraftAttributeCategoryInstances.CHAMPION_MOD());
         if (modai == null) {
             return;
         }
-        modai.setBaseValue(ChampionModifierBaseValues.CHAMPION_MOD_BASE_VALUE_ATTACHED_AFFECTED);
-//      modai.removeModifier(ChampionModifier.mods[type].attributeMod);
-//      modai.applyModifier(ChampionModifier.mods[type].attributeMod);
-        if (!(entity instanceof EntityThaumcraftBoss)) {
+        if (!(entity instanceof IChampionModifierAttachRuleOwner attachRuleOwner)) {
 
             AttributeInstance iattributeinstance = entity.getAttribute(Attributes.MAX_HEALTH);
             assert iattributeinstance != null;
@@ -431,35 +462,23 @@ public class EntityUtils {
             iattributeinstance2.removeModifier(CHAMPION_DAMAGE_MODIFIER_UUID);
             iattributeinstance2.addPermanentModifier(getNewChampionDamageModifier());
             entity.heal(25.0F);
-            entity.setCustomName(Component.literal(
-                    ChampionModifier.mods[type].getModNameLocalized() + " " + entity.getName()
-                            .getString()));
+
+            modifier.attachToEntity(entity);
+
+        }else {
+            attachRuleOwner.attachModifierForLiving( entity, modifier);
+        }
+        if (!(entity instanceof IChampionModifiedNamingRuleOwner namingRuleOwner)) {
+            entity.setCustomName(modifier.getModNameLocalized().copy().append(" ").append(entity.getName()));
         } else {
-            ((EntityThaumcraftBoss) entity).generateName();
+            namingRuleOwner.setNameWhenModified(entity,modifier);
         }
 
         if (persist && entity instanceof Mob mob) {
             mob.setPersistenceRequired();
-//         entity.func_110163_bv();
         }
 
-        switch (type) {
-            case 0:
-                AttributeInstance sai = entity.getAttribute(Attributes.MOVEMENT_SPEED);
-                if (sai == null) {
-                    return;
-                }
-                sai.removeModifier(BOLD_BUFF_MODIFIER_UUID);
-                sai.addPermanentModifier(getNewBoldBuffModifier());
-                break;
-            case 3:
-                AttributeInstance mai = entity.getAttribute(Attributes.ATTACK_DAMAGE);
-                if (mai == null) {
-                    return;
-                }
-                mai.removeModifier(MIGHTY_BUFF_MODIFIER_UUID);
-                mai.addPermanentModifier(getNewMightyBuffModifier());
-                break;
+        switch (modifier) {
             case 5:
                 AttributeInstance attrInstance = entity.getAttribute(Attributes.MAX_HEALTH);
                 if (attrInstance == null) {
@@ -470,4 +489,93 @@ public class EntityUtils {
         }
 
     }
+
+    public static void makeChampionOnSpawn(Mob mob, ServerLevelAccessor serverLevelAccessor) {
+        if (mob instanceof Monster monster) {
+
+            var random = serverLevelAccessor.getRandom();
+            var difficulty = serverLevelAccessor.getDifficulty();
+            var level = serverLevelAccessor.getLevel();
+            var dim = level.dimension();
+            var pos = monster.blockPosition();
+            AttributeInstance championModInstance = monster.getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD());
+            if (championModInstance != null) {
+                if (championModInstance.getModifier(ChampionModifierBaseValues.CHAMPION_MOD_ATTACHED_NOT_AFFECTED_UUID) != null
+                && championModInstance.getModifier(ChampionModifierBaseValues.CHAMPION_MOD_ATTACHED_AFFECTED_UUID) != null
+                ) {
+                    int championChance = random.nextInt(100);
+                    if (difficulty == Difficulty.EASY || !Config.championMobs) {
+                        championChance += 2;
+                    }
+
+                    if (difficulty == Difficulty.HARD) {
+                        championChance -= Config.championMobs ? 2 : 0;
+                    }
+
+                    if (dim == Config.dimensionOuter) {
+                        championChance -= 3;
+                    }
+
+                    Holder<Biome> biomeHolder = level.getBiome(pos);
+                    AtomicReference<ResourceKey<Biome>> biomeResKeyRef = new AtomicReference<>();
+                    biomeHolder.unwrapKey().ifPresent(biomeResKeyRef::set);
+                    if (biomeResKeyRef.get() == null) {
+                        biomeResKeyRef.set(BiomeWithTypes.getBiomeResKey(biomeHolder.value()));
+                    }
+                    Collection<BiomeType> biomeTypes = BiomeWithTypes.getBiomeTypes(biomeResKeyRef.get());
+
+                    if (biomeTypes.contains(BiomeType.SPOOKY)
+                            || biomeTypes.contains(BiomeType.NETHER)
+                            || biomeTypes.contains(BiomeType.END)) {
+                        championChance -= Config.championMobs ? 2 : 1;
+                    }
+
+                    if (opentc4$isDangerousLocation(level, pos)){
+                        championChance -= Config.championMobs ? 10 : 3;
+                    }
+
+                    int cc = 0;
+                    boolean whitelisted = false;
+
+                    for (Class<?> clazz : ConfigEntities.championModWhitelist.keySet()) {
+                        if (clazz.isAssignableFrom(mob.getClass())) {
+                            whitelisted = true;
+                            if (Config.championMobs || monster instanceof EntityThaumcraftBoss) {
+                                cc = Math.max(cc, ConfigEntities.championModWhitelist.get(clazz) - 1);
+                            }
+                        }
+                    }
+
+                    championChance -= cc;
+                    AttributeInstance maxHealthAttr = monster.getAttribute(Attributes.MAX_HEALTH);
+                    if (whitelisted
+                            && championChance <= 0
+                            && maxHealthAttr != null
+                            && maxHealthAttr.getBaseValue() >= (double) 10.0F
+                    ) {
+                        EntityUtils.makeChampion(monster, false);
+                    } else {
+                        championModInstance.addPermanentModifier(new AttributeModifier(
+                                ChampionModifierBaseValues.CHAMPION_MOD_ATTACHED_NOT_AFFECTED_UUID,
+                                "CHAMPION_MOD_ATTACHED_NOT_AFFECTED".toLowerCase(),
+                                0.,
+                                ADDITION
+                        ));
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean opentc4$isDangerousLocation(Level world, BlockPos blockPos) {
+        if (world.dimension() == Config.dimensionOuter) {
+            int xx = blockPos.getX() >> 4;
+            int zz = blockPos.getZ() >> 4;
+            Cell c = MazeHandler.getFromHashMap(new CellLoc(xx, zz));
+            return c != null && (c.feature == 6 || c.feature == 8);
+        }
+
+        return false;
+    }
+
 }

@@ -125,7 +125,7 @@ public class ThaumiumFortressHelmetItem extends ThaumiumFortressArmorItem
     }
 
     @Override
-    public void onAttackOtherEntity(ItemStack helmetStack, Entity user, LivingEntity beingAttacked, DamageSource damageSource, float damageCausedNoArmorReduce) {
+    public void onAttackOtherEntity(ItemStack helmetStack, Entity user, LivingEntity beingAttacked, DamageSource damageSource, float damageCausedNoArmorReduce, float damageCausedReduced) {
         for (var stack:getArmorComponents(helmetStack)) {
             if (stack.getItem() instanceof IArmorAttackOthersListenerComponentItem componentItem){
                 componentItem.onAttackOtherEntity(stack,helmetStack,user,beingAttacked,damageSource, damageCausedNoArmorReduce);
@@ -134,7 +134,7 @@ public class ThaumiumFortressHelmetItem extends ThaumiumFortressArmorItem
     }
 
     @Override
-    public void onBeingAttackedByOtherEntity(@Unmodifiable ItemStack helmetStack, LivingEntity user, DamageSource damageSource, float damageCausedNoArmorReduce) {
+    public void onBeingAttackedByOtherEntity(@Unmodifiable ItemStack helmetStack, LivingEntity user, DamageSource damageSource, float damageCausedNoArmorReduce, float damageCausedReduced) {
         for (var stack:getArmorComponents(helmetStack)) {
             if (stack.getItem() instanceof IArmorBeingAttackedListenerComponentItem componentItem){
                 componentItem.onBeingAttackedByOtherEntity(stack,helmetStack,user,damageSource, damageCausedNoArmorReduce);

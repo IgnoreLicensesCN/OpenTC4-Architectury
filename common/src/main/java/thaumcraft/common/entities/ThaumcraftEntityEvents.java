@@ -18,6 +18,11 @@ import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
+import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifierOwnerLivingEntity;
+import thaumcraft.common.entities.championmod.abstracts.modifier.IDamageListenerChampionModifier;
+import thaumcraft.common.entities.championmod.abstracts.modifier.IDamageModifierChampionModifier;
+import thaumcraft.common.entities.championmod.abstracts.modifier.ITickableChampionModifier;
+import thaumcraft.common.entities.championmod.impl.WardedChampionModifier;
 import thaumcraft.common.entities.monster.tainted.ThaumicSlimeEntity;
 import thaumcraft.common.items.abstracts.ISpecialDamageCalculationEquipmentItem;
 import thaumcraft.common.items.abstracts.armorcomponents.IAttackOthersListenerArmor;
@@ -28,6 +33,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
+import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.ELDRITCH;
 import static thaumcraft.common.items.ThaumcraftItemInstances.CRYSTAL_ESSENCE;
 import static thaumcraft.common.items.ThaumcraftItems.ItemTags.UNNATURAL_HUNGER_NEEDED;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.*;
@@ -111,6 +117,7 @@ public class ThaumcraftEntityEvents {
             return modifiedOut.get();
         }
         public static float getDamageAfterMagicAbsorb(LivingEntity living,float originalOut,DamageSource damageSource,float originalIn) {
+
             AtomicReference<Float> modifiedOut = new AtomicReference<>(originalOut);
             living.getArmorSlots().forEach(stack -> {
                 if (stack.getItem() instanceof ISpecialDamageCalculationEquipmentItem equipment) {
@@ -122,10 +129,13 @@ public class ThaumcraftEntityEvents {
                 modifiedOut.updateAndGet(out -> equipment.modifyDamageAfterCalculatedMagicAbsorb(living,stack,out,damageSource,originalIn));
                 return false;
             }));
-            return modifiedOut.get();
+
+            return IDamageModifierChampionModifier.modifyDamageForChampionModifier(
+                    living,damageSource,modifiedOut.get()
+            );
         }
 
-        public static void onBeingDamaged(LivingEntity living,DamageSource damageSource, float damageCausedNoArmorReduce) {
+        public static void onBeingDamaged(LivingEntity living,DamageSource damageSource, float damageCausedNoArmorReduce,float damageCausedReduced) {
             var entityCausedDamage = damageSource.getEntity();
             if (entityCausedDamage != null) {
 
@@ -136,7 +146,8 @@ public class ThaumcraftEntityEvents {
                                 entityCausedDamage,
                                 living,
                                 damageSource,
-                                damageCausedNoArmorReduce
+                                damageCausedNoArmorReduce,
+                                damageCausedReduced
                         );
                     }
                 }
@@ -147,25 +158,54 @@ public class ThaumcraftEntityEvents {
                             stack,
                             living,
                             damageSource,
-                            damageCausedNoArmorReduce
+                            damageCausedNoArmorReduce,
+                            damageCausedReduced
                     );
                 }
+            }
+            if (living instanceof IChampionModifierOwnerLivingEntity owner) {
+                owner.opentc4$getChampionModifiersForChecker(
+
+                        (ignoredA,ignoredB) -> true,
+                        IDamageListenerChampionModifier.class
+                ).forEach(
+                        modifier -> modifier.championModifierOnDamage(living,damageSource,damageCausedNoArmorReduce,damageCausedReduced)
+                );
+            }
+            if (living.getType().is(ELDRITCH)){
+                WardedChampionModifier.performEldritchRunicEffect(living,damageSource);
+            }
+        }
+    }
+    public static class TickEvents {
+        public static void onLivingTickAfter(LivingEntity living) {
+            if (living instanceof IChampionModifierOwnerLivingEntity owner) {
+                owner.opentc4$getChampionModifiersForChecker(
+                        (ignoredA, ignoredB) -> true,
+                        ITickableChampionModifier.class
+                ).forEach(
+                        modifier -> modifier.onTick(living)
+                );
             }
         }
     }
 
-    public static List<Attribute> attributesToAdd = new ArrayList<>();
+    public static List<Attribute> attributesToAddForLiving = new ArrayList<>();
     static {
-        attributesToAdd.add(JUMP_Y_VELOCITY_ADDITION_NOT_SNEAKING());
-        attributesToAdd.add(STEP_HEIGHT_ADDITION_NOT_SNEAKING());
-        attributesToAdd.add(FLYING_SPEED_CONTROL_OVERRIDE());
-        attributesToAdd.add(HARNESS_FLYING_SPEED_ADD_PERCENT());
-        attributesToAdd.add(HARNESS_FUEL_DURATION_ADD_PERCENT());
+        initAttributesToAdd();
+    }
 
+    private static void initAttributesToAdd() {
+        attributesToAddForLiving.add(JUMP_Y_VELOCITY_ADDITION_NOT_SNEAKING());
+        attributesToAddForLiving.add(STEP_HEIGHT_ADDITION_NOT_SNEAKING());
+        attributesToAddForLiving.add(FLYING_SPEED_CONTROL_OVERRIDE());
+        attributesToAddForLiving.add(HARNESS_FLYING_SPEED_ADD_PERCENT());
+        attributesToAddForLiving.add(HARNESS_FUEL_DURATION_ADD_PERCENT());
+        attributesToAddForLiving.add(CHAMPION_MOD());
     }
 
     public static AttributeSupplier.Builder injectLivingAttributes(AttributeSupplier.Builder builder) {
-        attributesToAdd.forEach(builder::add);
+        attributesToAddForLiving.forEach(builder::add);
         return builder;
     }
 

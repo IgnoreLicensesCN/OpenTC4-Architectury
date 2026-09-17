@@ -214,29 +214,37 @@ public class EventHandlerRunic {
 //            PacketHandler.INSTANCE.sendTo(new PacketRunicCharge(player, (short)charge, ((Integer[])this.runicInfo.get(player.getEntityId()))[0]), (ServerPlayer)player);
 //         }
 //      } else
-         if (event.entity instanceof EntityMob && (((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue() >= (double)0.0F || event.entity instanceof IEldritchMob)) {
-         EntityMob mob = (EntityMob)event.entity;
-         int t = (int)((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue();
-         if ((t == 5 || event.entity instanceof IEldritchMob) && mob.getAbsorptionAmount() > 0.0F) {
-            int target = -1;
-            if (event.source.getEntity() != null) {
-               target = event.source.getEntity().getEntityId();
-            }
-
-            if (event.source == DamageSource.fall) {
-               target = -2;
-            }
-
-            if (event.source == DamageSource.fallingBlock) {
-               target = -3;
-            }
-
-            PacketHandler.INSTANCE.sendToAllAround(new PacketFXShieldS2C(mob.getEntityId(), target), new NetworkRegistry.TargetPoint(event.entity.level().dimension(), event.entity.posX, event.entity.posY, event.entity.posZ, 32.0F));
-            event.entity.level().playSoundEffect(event.entity.posX, event.entity.posY, event.entity.posZ, "thaumcraft:runic_shield_effect", 0.66F, 1.1F + event.entity.getRandom().nextFloat() * 0.1F);
-         } else if (t >= 0 && ChampionModifier.mods[t].type == 2 && event.source.getSourceOfDamage() != null && event.source.getSourceOfDamage() instanceof LivingEntity) {
-            LivingEntity attacker = (LivingEntity)event.source.getSourceOfDamage();
-            event.ammount = ChampionModifier.mods[t].effect.performEffect(mob, attacker, event.source, event.ammount);
-         }
+//         if (event.entity instanceof EntityMob
+//                 && (((EntityMob)event.entity).getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD())
+//                 .getAttributeValue() >= (double)0.0F || event.entity instanceof IEldritchMob)
+//         ) {
+//         EntityMob mob = (EntityMob)event.entity;
+//         int t = (int)((EntityMob)event.entity)
+//                 .getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD())
+//                 .getAttributeValue();
+//         if ((t == 5 || event.entity instanceof IEldritchMob) && mob.getAbsorptionAmount() > 0.0F) {
+//            int target = -1;
+//            if (event.source.getEntity() != null) {
+//               target = event.source.getEntity().getEntityId();
+//            }
+//
+//            if (event.source == DamageSource.fall) {
+//               target = -2;
+//            }
+//
+//            if (event.source == DamageSource.fallingBlock) {
+//               target = -3;
+//            }
+//
+//            PacketHandler.INSTANCE.sendToAllAround(new PacketFXShieldS2C(mob.getEntityId(), target), new NetworkRegistry.TargetPoint(event.entity.level().dimension(), event.entity.posX, event.entity.posY, event.entity.posZ, 32.0F));
+//            event.entity.level().playSoundEffect(event.entity.posX, event.entity.posY, event.entity.posZ, "thaumcraft:runic_shield_effect", 0.66F, 1.1F + event.entity.getRandom().nextFloat() * 0.1F);
+//         }
+//         else if (t >= 0 && ChampionModifier.mods[t].type == 2
+//                 && event.source.getSourceOfDamage() != null
+//                 && event.source.getSourceOfDamage() instanceof LivingEntity) {
+//            LivingEntity attacker = (LivingEntity)event.source.getSourceOfDamage();
+//            event.ammount = ChampionModifier.mods[t].effect.performEffect(mob, attacker, event.source, event.ammount);
+//         }
       }
 
       if (event.ammount > 0.0F

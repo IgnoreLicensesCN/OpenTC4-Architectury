@@ -5,6 +5,7 @@ import com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
+import thaumcraft.common.entities.championmod.ChampionModifierManager;
 import thaumcraft.common.items.abstracts.IRepairableItem;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.EventListeners;
@@ -102,6 +103,8 @@ public final class OpenTC4 {
         EventListeners.init();
         ThaumcraftItemAspects.init();
         EntityBasicAspectGetters.init();
+
+        ChampionModifierManager.init();
     }
 
     public static void onClientStarted() {

@@ -40,7 +40,8 @@ public abstract class DamageSourcesMixin {
 
     @Inject(
             method = "arrow",
-            at = @At("HEAD")
+            at = @At("HEAD"),
+            cancellable = true
     )
     private void opentc4$modifyArrowDamageSource(
             AbstractArrow abstractArrow,

@@ -380,4 +380,9 @@ public class Consts {
     public static class WispEntityTagAccessors {
         public static final AspectAccessor OWNING_ASPECT = new AspectAccessor("owning_aspect");
     }
+    public static class ThaumcraftBossTagAccessors {
+        public static final BlockPosAccessor HOME_POS = new BlockPosAccessor("home_pos");
+        public static final IntTagAccessor HOME_SIZE = new IntTagAccessor("home_size");
+        public static final IntTagAccessor INVULNERABLE_TICKS = new IntTagAccessor("inv_ticks");
+    }
 }

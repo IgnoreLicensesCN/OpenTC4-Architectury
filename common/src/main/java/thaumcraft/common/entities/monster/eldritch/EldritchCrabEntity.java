@@ -200,7 +200,7 @@ public class EldritchCrabEntity extends Spider implements ISpiderWithoutSkeleton
             if (this.hasHelm() && this.getHealth() / this.getMaxHealth() <= 0.5F) {
                 this.setHelm(false);
 
-                ((IItemStackBreakAnimationPlayable)this).playBreakItemAnimation(CULTIST_PLATE_CHESTPLATE().getDefaultInstance());
+                ((IItemStackBreakAnimationPlayable)this).opentc4$playBreakItemAnimation(CULTIST_PLATE_CHESTPLATE().getDefaultInstance());
             }
         }
         return result;

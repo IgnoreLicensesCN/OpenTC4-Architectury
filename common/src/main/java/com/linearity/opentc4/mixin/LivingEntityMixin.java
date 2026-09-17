@@ -1,15 +1,14 @@
 package com.linearity.opentc4.mixin;
 
 import com.linearity.opentc4.mixinaccessors.InMilkContextAccessor;
-
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Final;
@@ -21,17 +20,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import thaumcraft.common.entities.ThaumcraftEntityEvents;
-import thaumcraft.common.entities.abstracts.IItemStackBreakAnimationPlayable;
-import thaumcraft.common.entities.monster.mods.ChampionModifier;
-import thaumcraft.common.lib.utils.EntityUtils;
+import thaumcraft.common.entities.championmod.ChampionModifierManager;
+import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifierOwnerLivingEntity;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiPredicate;
 
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.*;
 
 @Mixin(value=LivingEntity.class,priority = 214748)
-public abstract class LivingEntityMixin implements InMilkContextAccessor, IItemStackBreakAnimationPlayable {
+public abstract class LivingEntityMixin implements IChampionModifierOwnerLivingEntity, InMilkContextAccessor {
+
 
     @ModifyReturnValue(
             method = "maxUpStep",
@@ -64,17 +65,10 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor, IItemS
         this.opentc4$isInMilkContext.set(inMilkContext);
     }
 
-    @Inject(method = "tick",at=@At("HEAD"))
+    @Inject(method = "tick",at=@At("RETURN"))
     public void opentc4$livingTickBefore(CallbackInfo ci) {
+        ThaumcraftEntityEvents.TickEvents.onLivingTickAfter((LivingEntity)(Object)this);
     }
-    @Inject(method = "tick",at=@At("TAIL"))
-    public void opentc4$livingTickAfter(CallbackInfo ci) {
-        var entity = (LivingEntity)(Object)this;
-        if (entity instanceof Monster monster){
-            opentc4$performChampionMobEffect(monster);
-        }
-    }
-    
     @ModifyReturnValue(
             method = "getFlyingSpeed",
             at = @At("RETURN")
@@ -87,27 +81,9 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor, IItemS
         }
         return prev;
     }
-
-    @Unique
-    public void opentc4$performChampionMobEffect(Monster monster) {
-        if (opentc4$checkedNoEffect){return;}
-        if (!monster.isDeadOrDying()) {
-            var instance = monster.getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD());
-            if (instance == null) {
-                opentc4$checkedNoEffect = true;
-                return;
-            }
-            int t = (int)instance.getBaseValue();
-            if (t >= 0 && ChampionModifier.mods[t].type == 0) {
-                ChampionModifier.mods[t].effect.performEffect(monster, null, null, 0.0F);
-            }else{
-                opentc4$checkedNoEffect = true;
-            }
-        }
-    }
-    @Unique private boolean opentc4$checkedNoEffect = false;
-
-    @Shadow @Final private Map<MobEffect, MobEffectInstance> activeEffects;
+    @Shadow
+    @Final
+    private Map<MobEffect, MobEffectInstance> activeEffects;
     @Unique private final Map<MobEffect, MobEffectInstance> opentc4$storedEffectsToPreventRemove = new ConcurrentHashMap<>();
     @Inject(
             method = "onEffectRemoved",at=@At("HEAD"),cancellable = true
@@ -145,7 +121,7 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor, IItemS
             method = "getDamageAfterArmorAbsorb",
             at = @At("RETURN")
     )
-    private float opentc4$getDamageAfterArmorAbsorb(float originalOut,DamageSource damageSource,float originalIn) {
+    private float opentc4$getDamageAfterArmorAbsorb(float originalOut, DamageSource damageSource, float originalIn) {
         return ThaumcraftEntityEvents.DamageEvents.getDamageAfterArmorAbsorb((LivingEntity)(Object)this,originalOut,damageSource,originalIn);
     }
     @ModifyReturnValue(
@@ -153,15 +129,20 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor, IItemS
             at = @At("RETURN")
     )
     private float opentc4$getDamageAfterMagicAbsorb(float originalOut,DamageSource damageSource,float originalIn) {
-        return ThaumcraftEntityEvents.DamageEvents.getDamageAfterMagicAbsorb((LivingEntity)(Object)this,originalOut,damageSource,originalIn);
+        return ThaumcraftEntityEvents.DamageEvents.getDamageAfterMagicAbsorb((LivingEntity)(Object)this, originalOut, damageSource, originalIn);
     }
 
     @Inject(
             method = "actuallyHurt",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V",shift = At.Shift.AFTER)
     )
-    private void opentc4$onBeingDamaged(DamageSource damageSource, float damageCausedNoArmorReduce, CallbackInfo ci) {
-        ThaumcraftEntityEvents.DamageEvents.onBeingDamaged((LivingEntity)(Object)this,damageSource,damageCausedNoArmorReduce);
+    private void opentc4$onBeingDamaged(
+            DamageSource damageSource,
+            float damageCausedNoArmorReduce,
+            CallbackInfo ci,
+            @Local(ordinal = 0, argsOnly = true)float damageCausedReduced
+    ) {
+        ThaumcraftEntityEvents.DamageEvents.onBeingDamaged((LivingEntity)(Object)this,damageSource,damageCausedNoArmorReduce,damageCausedReduced);
     }
     @Shadow
     public abstract RandomSource getRandom();
@@ -174,12 +155,50 @@ public abstract class LivingEntityMixin implements InMilkContextAccessor, IItemS
         ThaumcraftEntityEvents.DropEvents.onDropAllDeathLoot((LivingEntity)(Object)this,damageSource);
     }
 
-    @Shadow
-    protected abstract void breakItem(ItemStack stack);
+    @Unique
+    private final Map<Class<?>, Map<Class<? extends BiPredicate<LivingEntity, ?>>, Set<?>>>
+            opentc4$championModifiers =
+            new ConcurrentHashMap<>();
 
     @Unique
-    public void playBreakItemAnimation(ItemStack stack) {
-        breakItem(stack);
+    @Override
+    public void opentc4$refreshChampionModifierCheckedState(BiPredicate<LivingEntity, ?> checker, Class<?> modifierClass) {
+        var mapOrNull = opentc4$championModifiers.get(modifierClass);
+        if (mapOrNull != null) {
+            mapOrNull.remove(checker.getClass());
+        }
     }
-}
 
+    @Unique
+    @Override
+    public <ModifierClass> Set<ModifierClass>
+    opentc4$getChampionModifiersForChecker(
+            BiPredicate<LivingEntity, ModifierClass> checker,
+            Class<ModifierClass> championModifierClass
+    ) {
+        var thiz = (LivingEntity) (Object) this;
+        return (
+                (Map<Class<BiPredicate<LivingEntity, ModifierClass>>, Set<ModifierClass>>)
+                        (Map<?, ?>) opentc4$championModifiers.computeIfAbsent(
+                                championModifierClass, _ignored -> new ConcurrentHashMap<>()
+                        ))
+                .computeIfAbsent(
+                        (Class<BiPredicate<LivingEntity, ModifierClass>>) checker.getClass(),
+                        checkerClass -> {
+                    Set<ModifierClass> result = ConcurrentHashMap.newKeySet();
+                    ChampionModifierManager.forEachChampionModifierOnEntity(
+                            thiz
+                            , modifier -> {
+                                if (championModifierClass.isInstance(modifier)) {
+                                    var modifierCasted = (ModifierClass) modifier;
+                                    if (checker.test(thiz, modifierCasted)) {
+                                        result.add(modifierCasted);
+                                    }
+                                }
+                            }
+                    );
+                    return result;
+                });
+    }
+
+}
