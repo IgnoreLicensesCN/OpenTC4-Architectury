@@ -10,6 +10,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,8 +21,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import thaumcraft.common.entities.ThaumcraftEntityEvents;
+import thaumcraft.common.entities.abstracts.ICustomSpecialDropEntity;
 import thaumcraft.common.entities.championmod.ChampionModifierManager;
 import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifierOwnerLivingEntity;
+import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.Map;
 import java.util.Set;
@@ -201,4 +204,12 @@ public abstract class LivingEntityMixin implements IChampionModifierOwnerLivingE
                 });
     }
 
+    @Inject(
+            method = "dropAllDeathLoot",
+            at = @At("RETURN")
+    )
+    private void opentc4$dropAllDeathLoot(DamageSource damageSource, CallbackInfo ci){
+        var living = (LivingEntity) (Object) this;
+        EntityUtils.dropSpecialItemOnDeath(living);
+    }
 }

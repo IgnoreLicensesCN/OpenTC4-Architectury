@@ -46,6 +46,8 @@ import thaumcraft.common.lib.utils.EntityUtils;
 
 import static com.linearity.opentc4.Consts.EldritchGuardianEntityTagAccessors.HOME_POS;
 import static net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED;
+import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.CULTIST;
+import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.ELDRITCH;
 import static thaumcraft.common.items.ThaumcraftItemInstances.WISP_ESSENCE;
 
 public class EldritchGuardianEntity extends DoorBreakingMonster implements RangedAttackMob {
@@ -61,6 +63,7 @@ public class EldritchGuardianEntity extends DoorBreakingMonster implements Range
 
     @Override
     protected void registerGoals() {
+        super.registerGoals();
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.addBehaviourGoals();
@@ -302,5 +305,9 @@ public class EldritchGuardianEntity extends DoorBreakingMonster implements Range
             this.playSound(ThaumcraftSounds.EG_SCREECH, 3.0F, 1.0F + this.random.nextFloat() * 0.1F);
         }
 
+    }
+    @Override
+    public boolean isAlliedTo(Entity entity) {
+        return super.isAlliedTo(entity) || entity.getType().is(ELDRITCH);
     }
 }

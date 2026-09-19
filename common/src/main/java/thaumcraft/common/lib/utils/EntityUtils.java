@@ -17,12 +17,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -36,11 +36,12 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.config.ConfigEntities;
 import thaumcraft.common.entities.SpecialItemEntity;
+import thaumcraft.common.entities.abstracts.ICustomSpecialDropEntity;
 import thaumcraft.common.entities.championmod.ChampionModifier;
 import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifiedNamingRuleOwner;
 import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifierAttachRuleOwner;
 import thaumcraft.common.entities.championmod.abstracts.entity.IRandomChampionModifierPickRuleOwner;
-import thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss;
+import thaumcraft.common.entities.monster.boss.ThaumcraftBossEntity;
 import thaumcraft.common.lib.world.dim.Cell;
 import thaumcraft.common.lib.world.dim.CellLoc;
 import thaumcraft.common.lib.world.dim.MazeHandler;
@@ -409,6 +410,13 @@ public class EntityUtils {
         return dot * dot >= distSq * cosHalf * cosHalf;
     }
 
+    public static void dropSpecialItemOnDeath(LivingEntity living) {
+        if (living.level().getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) && living instanceof ICustomSpecialDropEntity customSpecialDropEntity){
+            customSpecialDropEntity.generateSpecialDrops().forEach(
+                    stack -> EntityUtils.entityDropSpecialItem(living, stack, living.getEyeHeight())
+            );
+        }
+    }
     public static ItemEntity entityDropSpecialItem(Entity entity, ItemStack stack, float dropheight) {
         if (stack.getCount() != 0 && !stack.isEmpty()) {
             var entityitem = new SpecialItemEntity(
@@ -469,9 +477,9 @@ public class EntityUtils {
             attachRuleOwner.attachModifierForLiving(entity, modifier);
         }
         if (!(entity instanceof IChampionModifiedNamingRuleOwner namingRuleOwner)) {
-            entity.setCustomName(modifier.getModNameLocalized().copy().append(" ").append(entity.getName()));
+            entity.setCustomName(modifier.getChampionModifierNameLocalized().copy().append(" ").append(entity.getName()));
         } else {
-            namingRuleOwner.setNameWhenModified(entity,modifier);
+            namingRuleOwner.setNameWhenChampionModified(entity,modifier);
         }
 
         if (persist && entity instanceof Mob mob) {
@@ -530,7 +538,7 @@ public class EntityUtils {
                     for (Class<?> clazz : ConfigEntities.championModWhitelist.keySet()) {
                         if (clazz.isAssignableFrom(mob.getClass())) {
                             whitelisted = true;
-                            if (Config.championMobs || monster instanceof EntityThaumcraftBoss) {
+                            if (Config.championMobs || monster instanceof ThaumcraftBossEntity) {
                                 cc = Math.max(cc, ConfigEntities.championModWhitelist.get(clazz) - 1);
                             }
                         }

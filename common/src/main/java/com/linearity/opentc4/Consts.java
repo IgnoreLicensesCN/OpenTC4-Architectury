@@ -385,4 +385,7 @@ public class Consts {
         public static final IntTagAccessor HOME_SIZE = new IntTagAccessor("home_size");
         public static final IntTagAccessor INVULNERABLE_TICKS = new IntTagAccessor("inv_ticks");
     }
+    public static class CultistPortalEntityTagAccessors {
+        public static final IntTagAccessor STAGE = new IntTagAccessor("stage");
+    }
 }

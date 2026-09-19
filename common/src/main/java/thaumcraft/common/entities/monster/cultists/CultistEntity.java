@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -27,6 +28,7 @@ import thaumcraft.common.entities.ai.goals.ZombieLikeAttackGoal;
 
 import static com.linearity.opentc4.Consts.CultistEntityTagAccessors.HOME_POS;
 import static net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED;
+import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.CULTIST;
 
 public class CultistEntity extends DoorBreakingMonster {
     protected int restrictAreaSize = 8;
@@ -54,7 +56,7 @@ public class CultistEntity extends DoorBreakingMonster {
         addBehaviourGoals();
     }
 
-    private void addLookingAtGoals() {
+    protected void addLookingAtGoals() {
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     }
@@ -106,4 +108,8 @@ public class CultistEntity extends DoorBreakingMonster {
     protected void populateDefaultEquipmentEnchantments(RandomSource randomSource, DifficultyInstance difficultyInstance) {
     }
 
+    @Override
+    public boolean isAlliedTo(Entity entity) {
+        return super.isAlliedTo(entity) || entity.getType().is(CULTIST);
+    }
 }

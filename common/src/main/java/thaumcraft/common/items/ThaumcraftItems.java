@@ -3,12 +3,17 @@ package thaumcraft.common.items;
 import dev.architectury.registry.fuel.FuelRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.entity.BannerPattern;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import thaumcraft.common.Thaumcraft;
 
 import java.util.Collections;
@@ -16,6 +21,7 @@ import java.util.IdentityHashMap;
 import java.util.Set;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
+import static net.minecraft.world.item.Items.RED_BANNER;
 
 public class ThaumcraftItems {
 
@@ -118,7 +124,6 @@ public class ThaumcraftItems {
                 DeferredRegister.create(Thaumcraft.MOD_ID, Registries.BANNER_PATTERN);
         public static final RegistrySupplier<BannerPattern> SUPPLIER_CULTIST_PATTERN
                 = BANNER_PATTERNS.register("cultist", () -> new BannerPattern("cultist"));
-
     }
 
 
@@ -128,5 +133,20 @@ public class ThaumcraftItems {
         FuelRegistry.register(400, ThaumcraftItemInstances.GREATWOOD_LOG(), ThaumcraftItemInstances.SILVERWOOD_LOG());//azanor's idea
         FuelRegistry.register(300, ThaumcraftItemInstances.GREATWOOD_PLANKS(), ThaumcraftItemInstances.SILVERWOOD_PLANKS());
         BannerPatternsRegistry.BANNER_PATTERNS.register();
+    }
+
+    public static ItemStack getCultistBannerStack(){
+        ItemStack stack = new ItemStack(RED_BANNER);
+
+        CompoundTag compoundTag = new CompoundTag();
+        ListTag listTag = new BannerPattern.Builder()
+                .addPattern(BannerPatternsRegistry.SUPPLIER_CULTIST_PATTERN.getKey(),DyeColor.YELLOW)
+                .toListTag();
+        compoundTag.put("Patterns", listTag);
+
+        BlockItem.setBlockEntityData(stack, BlockEntityType.BANNER, compoundTag);
+        stack.hideTooltipPart(ItemStack.TooltipPart.ADDITIONAL);
+        stack.setHoverName(Component.translatable("tile.blockWoodenDevice.8.name").withStyle(ChatFormatting.GOLD));
+        return stack;
     }
 }

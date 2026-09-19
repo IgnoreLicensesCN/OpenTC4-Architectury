@@ -3,12 +3,19 @@ package thaumcraft.common.blocks;
 import com.linearity.colorannotation.annotation.RGBColor;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.item.BannerItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BannerBlockEntity;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
@@ -49,6 +56,8 @@ import thaumcraft.common.blocks.worldgenerated.taint.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+
+import static thaumcraft.common.items.ThaumcraftItems.getCultistBannerStack;
 
 public class ThaumcraftBlocks {
     public static class ThaumcraftBlockInstances {
@@ -1612,5 +1621,32 @@ public class ThaumcraftBlocks {
         public static final TagKey<Block> SMALL_TAINTACLE_CAN_SPAWN = TagKey.create(
                 Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "small_taintacle_can_spawn")
         );
+    }
+
+    //rotation:
+    // south -> 0
+    // west -> 4
+    // north -> 8
+    // east -> 12
+    public static void setCultistBanner(Level level, BlockPos pos,Direction dir){
+        int rotation = 0;
+        if (dir == Direction.WEST){
+            rotation = 4;
+        }else if (dir == Direction.NORTH){
+            rotation = 8;
+        }else if (dir == Direction.EAST){
+            rotation = 12;
+        }
+        setCultistBanner(level,pos,rotation);
+    }
+    public static void setCultistBanner(Level level, BlockPos pos,int rotation){
+        level.setBlockAndUpdate(
+                pos,
+                Blocks.RED_BANNER.defaultBlockState().setValue(BannerBlock.ROTATION, rotation)
+        );
+        var be = level.getBlockEntity(pos);
+        if (be instanceof BannerBlockEntity banner){
+            banner.fromItem(getCultistBannerStack());
+        }
     }
 }

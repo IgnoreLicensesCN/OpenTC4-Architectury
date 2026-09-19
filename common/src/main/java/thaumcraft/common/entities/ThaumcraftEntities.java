@@ -22,6 +22,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
 import thaumcraft.common.entities.monster.WispEntity;
+import thaumcraft.common.entities.monster.boss.CultistLeaderEntity;
+import thaumcraft.common.entities.monster.boss.CultistPortalEntity;
 import thaumcraft.common.entities.monster.eldritch.EldritchCrabEntity;
 import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
 import thaumcraft.common.entities.monster.eldritch.InhabitedZombieEntity;
@@ -182,6 +184,12 @@ public class ThaumcraftEntities {
         }
         public static EntityType<DartEntity> DART() {
             return Registry.SUPPLIER_DART.get();
+        }
+        public static EntityType<CultistLeaderEntity> CULTIST_LEADER() {
+            return Registry.SUPPLIER_CULTIST_LEADER.get();
+        }
+        public static EntityType<CultistPortalEntity> CULTIST_PORTAL() {
+            return Registry.SUPPLIER_CULTIST_PORTAL.get();
         }
     }
 
@@ -472,6 +480,21 @@ public class ThaumcraftEntities {
                         .updateInterval(20)
                         .build("dart")
         );
+        public static final RegistrySupplier<EntityType<CultistLeaderEntity>> SUPPLIER_CULTIST_LEADER = ENTITIES.register("cultist_leader",
+                () -> EntityType.Builder.<CultistLeaderEntity>of(CultistLeaderEntity::new, MobCategory.MISC)
+                        .sized(0.75F, 2.25F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("cultist_leader")
+        );
+        public static final RegistrySupplier<EntityType<CultistPortalEntity>> SUPPLIER_CULTIST_PORTAL = ENTITIES.register("cultist_portal",
+                () -> EntityType.Builder.<CultistPortalEntity>of(CultistPortalEntity::new, MobCategory.MISC)
+                        .sized(1.5F, 3F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("cultist_portal")
+        );
     }
 
     public static class EntityTags {
@@ -480,6 +503,7 @@ public class ThaumcraftEntities {
         public static final TagKey<EntityType<?>> FERTILITY_LAMP_NOT_AFFECTIVE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"fertility_lamp_not_affective"));
         public static final TagKey<EntityType<?>> TAINTED = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"tainted_entity"));
         public static final TagKey<EntityType<?>> ELDRITCH = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"eldritch_entity"));
+        public static final TagKey<EntityType<?>> CULTIST = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"cultist_entity"));
         public static final TagKey<EntityType<?>> NOT_TAINT_CONVERTABLE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"not_taint_convertable"));
         public static final TagKey<EntityType<?>> CAN_SPAWN_SMALL_TAINTACLE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"can_spawn_small_taintacle"));
         public static final TagKey<EntityType<?>> PECH = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"pech"));
@@ -517,6 +541,8 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.PECH_STALKER(),PechStalkerEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.PECH_MAGE(),PechMageEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.WISP(),WispEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST_LEADER(),CultistLeaderEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST_PORTAL(),CultistPortalEntity.createAttributes().build());
 
     }
 

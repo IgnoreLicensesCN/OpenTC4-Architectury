@@ -29,6 +29,7 @@ import thaumcraft.common.entities.monster.cultists.CultistEntity;
 
 import java.util.UUID;
 
+import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.CULTIST;
 import static thaumcraft.common.items.ThaumcraftItemInstances.CULTIST_PLATE_CHESTPLATE;
 
 public class EldritchCrabEntity extends Spider implements ISpiderWithoutSkeletonRiding {
@@ -224,5 +225,11 @@ public class EldritchCrabEntity extends Spider implements ISpiderWithoutSkeleton
     @Override
     protected SoundEvent getDeathSound() {
         return ThaumcraftSounds.CRAB_DEATH;
+    }
+
+
+    @Override
+    public boolean isAlliedTo(Entity entity) {
+        return super.isAlliedTo(entity) || entity instanceof EldritchCrabEntity;
     }
 }

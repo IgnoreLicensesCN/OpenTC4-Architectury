@@ -1,6 +1,7 @@
 package thaumcraft.common.lib.network.fx;
 
 import dev.architectury.networking.NetworkManager;
+import thaumcraft.common.entities.monster.boss.CultistPortalEntity;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
@@ -64,7 +65,7 @@ public class PacketFXBlockArcS2C extends ThaumcraftBaseS2CMessage {
       float g = 0.0F;
       float b = 0.5F + level.random.nextFloat() * 0.2F;
 
-      if (source instanceof EntityCultistPortal) {
+      if (source instanceof CultistPortalEntity) {
          r = 0.5F + level.random.nextFloat() * 0.2F;
          g = 0.0F;
          b = 0.0F;

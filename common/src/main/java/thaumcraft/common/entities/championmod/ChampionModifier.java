@@ -18,7 +18,7 @@ public abstract class ChampionModifier {
         this.id = id;
         this.modifierName = Component.translatable("champion_modifier."+id.getNamespace()+"."+id.getPath());
     }
-    public Component getModNameLocalized() {
+    public Component getChampionModifierNameLocalized() {
         return modifierName;
     }
 

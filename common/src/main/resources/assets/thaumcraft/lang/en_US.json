@@ -1913,5 +1913,20 @@
   "warp.text.14": "You have a moment of clarity.",
   "warp.text.15": "Your stomach suddenly gurgles very strangely.",
   "warp.text.hunger.1": "Your hunger cannot be satisfied with normal food.",
-  "warp.text.hunger.2": "You hunger begins to fade."
+  "warp.text.hunger.2": "You hunger begins to fade.",
+  "thaumcraft.boss.name.cultist_leader.1": "Alberic",
+  "thaumcraft.boss.name.cultist_leader.2": "Anselm",
+  "thaumcraft.boss.name.cultist_leader.3": "Bastian",
+  "thaumcraft.boss.name.cultist_leader.4": "Beturian",
+  "thaumcraft.boss.name.cultist_leader.5": "Chabier",
+  "thaumcraft.boss.name.cultist_leader.6": "Chorache",
+  "thaumcraft.boss.name.cultist_leader.7": "Chuse",
+  "thaumcraft.boss.name.cultist_leader.8": "Dodorol",
+  "thaumcraft.boss.name.cultist_leader.9": "Ebardo",
+  "thaumcraft.boss.name.cultist_leader.10": "Ferrando",
+  "thaumcraft.boss.name.cultist_leader.11": "Fertus",
+  "thaumcraft.boss.name.cultist_leader.12": "Guillen",
+  "thaumcraft.boss.name.cultist_leader.13": "Larpe",
+  "thaumcraft.boss.name.cultist_leader.14": "Obano",
+  "thaumcraft.boss.name.cultist_leader.15": "Zelipe"
 }

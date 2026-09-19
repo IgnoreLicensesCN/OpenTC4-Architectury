@@ -5,5 +5,5 @@ import thaumcraft.common.entities.championmod.ChampionModifier;
 
 //todo:for boss
 public interface IChampionModifiedNamingRuleOwner {
-    void setNameWhenModified(LivingEntity living, ChampionModifier modifier);
+    void setNameWhenChampionModified(LivingEntity living, ChampionModifier modifier);
 }

@@ -29,18 +29,21 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.config.ConfigItems;
+import org.jetbrains.annotations.Unmodifiable;
+import thaumcraft.common.entities.abstracts.ICustomSpecialDropEntity;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.lib.utils.EntityUtils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static com.linearity.opentc4.Consts.ThaumcraftBossTagAccessors.*;
+import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.CULTIST;
+import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.ELDRITCH;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.DMG_BUFF_UUIDS;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.HP_BUFF_UUIDS;
 
 //TODO:Tag with eldritch mob
-public abstract class ThaumcraftBossEntity extends Monster {
+public abstract class ThaumcraftBossEntity extends Monster implements ICustomSpecialDropEntity {
     protected Int2IntMap aggro = new Int2IntOpenHashMap();
     protected int invulnerableTicksLimit = 220;
     private static final EntityDataAccessor<Integer> DATA_ID_INV = SynchedEntityData.defineId(ThaumcraftBossEntity.class, EntityDataSerializers.INT);
@@ -281,9 +284,12 @@ public abstract class ThaumcraftBossEntity extends Monster {
     @Override
     protected void dropCustomDeathLoot(DamageSource damageSource, int i, boolean bl) {
         super.dropCustomDeathLoot(damageSource, i, bl);
-
-        EntityUtils.entityDropSpecialItem(this, new ItemStack(ThaumcraftItemInstances.PRIME_PEARL()), this.getBbHeight() / 2.0F);
         this.spawnAtLocation(ThaumcraftItemInstances.RARE_LOOT_BAG().getDefaultInstance(), 1.5F);
+    }
+
+    @Override
+    public @Unmodifiable List<ItemStack> generateSpecialDrops() {
+        return List.of(new ItemStack(ThaumcraftItemInstances.PRIME_PEARL()));
     }
 
     @Override
@@ -321,5 +327,10 @@ public abstract class ThaumcraftBossEntity extends Monster {
         }
 
         return super.hurt(source, damage);
+    }
+
+    @Override
+    public boolean isAlliedTo(Entity entity) {
+        return super.isAlliedTo(entity) || entity.getType().is(ELDRITCH);
     }
 }

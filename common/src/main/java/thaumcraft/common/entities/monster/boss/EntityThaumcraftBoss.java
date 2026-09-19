@@ -23,6 +23,7 @@ import thaumcraft.common.lib.utils.EntityUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Deprecated(forRemoval = true)
 public class EntityThaumcraftBoss extends Monster implements IBossDisplayData {
    HashMap<Integer,Integer> aggro = new HashMap<>();
    int spawnTimer = 0;

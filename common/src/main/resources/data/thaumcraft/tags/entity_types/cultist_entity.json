@@ -1,7 +1,9 @@
 {
   "replace": false,
   "values": [
-    "thaumcraft:eldritch_guardian",
+    "thaumcraft:cultist",
+    "thaumcraft:cultist_cleric",
+    "thaumcraft:cultist_knight",
     "thaumcraft:cultist_leader",
     "thaumcraft:cultist_portal"
   ]
