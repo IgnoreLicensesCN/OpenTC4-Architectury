@@ -1,6 +1,6 @@
 package thaumcraft.common.lib.events;
 
-//TODO
+
 @Deprecated(forRemoval = true)
 public class EventHandlerRunic {
 //   public static Map<Player,Integer> runicCharge = new MapMaker().weakKeys().makeMap();
@@ -106,8 +106,8 @@ public class EventHandlerRunic {
 //
 //   }
 
-   @SubscribeEvent
-   public void entityHurt(LivingHurtEvent event) {
+//   @SubscribeEvent
+//   public void entityHurt(LivingHurtEvent event) {
 //      if (event.source.getSourceOfDamage() != null && event.source.getSourceOfDamage() instanceof Player) {
 //         Player leecher = (Player)event.source.getSourceOfDamage();
 //         ItemStack helm = leecher.inventory.armorInventory[3];
@@ -245,23 +245,23 @@ public class EventHandlerRunic {
 //            LivingEntity attacker = (LivingEntity)event.source.getSourceOfDamage();
 //            event.ammount = ChampionModifier.mods[t].effect.performEffect(mob, attacker, event.source, event.ammount);
 //         }
-      }
+//      }
 
-      if (event.ammount > 0.0F
-              && event.source.getSourceOfDamage() != null
-              && event.entity instanceof LivingEntity
-              && event.source.getSourceOfDamage() instanceof EntityMob
-              && ((EntityMob)event.source.getSourceOfDamage())
-              .getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD())
-              .getAttributeValue() >= (double)0.0F
-      ) {
-         EntityMob mob = (EntityMob)event.source.getSourceOfDamage();
-         int t = (int)mob.getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue();
-         if (ChampionModifier.mods[t].type == 1) {
-            event.ammount = ChampionModifier.mods[t].effect.performEffect(mob, (LivingEntity)event.entity, event.source, event.ammount);
-         }
-      }
-   }
+//      if (event.ammount > 0.0F
+//              && event.source.getSourceOfDamage() != null
+//              && event.entity instanceof LivingEntity
+//              && event.source.getSourceOfDamage() instanceof EntityMob
+//              && ((EntityMob)event.source.getSourceOfDamage())
+//              .getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD())
+//              .getAttributeValue() >= (double)0.0F
+//      ) {
+//         EntityMob mob = (EntityMob)event.source.getSourceOfDamage();
+//         int t = (int)mob.getAttribute(EntityUtils.ThaumcraftAttributeCategoryInstances.CHAMPION_MOD()).getAttributeValue();
+//         if (ChampionModifier.mods[t].type == 1) {
+//            event.ammount = ChampionModifier.mods[t].effect.performEffect(mob, (LivingEntity)event.entity, event.source, event.ammount);
+//         }
+//      }
+//   }
 
 //   @SubscribeEvent
 //   public void tooltipEvent(ItemTooltipEvent event) {

@@ -42,8 +42,6 @@ import thaumcraft.common.entities.monster.cultists.CultistEntity;
 import thaumcraft.common.entities.projectile.EldritchOrbEntity;
 import thaumcraft.common.lib.network.fx.PacketFXSonicS2C;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
-import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncWarpS2C;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketChangeWarpS2C;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 import static com.linearity.opentc4.Consts.EldritchGuardianEntityTagAccessors.HOME_POS;
@@ -298,12 +296,7 @@ public class EldritchGuardianEntity extends DoorBreakingMonster implements Range
             var warpInfo = WarpInfo.getFromLivingEntity(livingEntity);
             if (warpInfo != null) {
                 int warpCount = 1 + this.level().random.nextInt(3);
-                warpInfo.addTempWarp(warpCount);
-                if (livingEntity instanceof ServerPlayer serverPlayer) {
-
-                    new PacketSyncWarpS2C(warpInfo).sendTo(serverPlayer);
-                    new PacketChangeWarpS2C((byte)2, warpCount).sendTo(serverPlayer);
-                }
+                warpInfo.addTempWarpAndSync(livingEntity,warpCount);
             }
 
             this.playSound(ThaumcraftSounds.EG_SCREECH, 3.0F, 1.0F + this.random.nextFloat() * 0.1F);

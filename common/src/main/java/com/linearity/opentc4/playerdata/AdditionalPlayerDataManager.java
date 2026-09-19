@@ -29,7 +29,7 @@ public class AdditionalPlayerDataManager {
         var warpInfo = WarpInfo.getFromLivingEntity(beingCloned);
         if (warpInfo != null) {
             WarpInfo.setForLivingEntity(cloningInto, warpInfo);
-            warpInfo.syncSendPacket(cloningInto);
+            warpInfo.syncWarpInfo(cloningInto);
         }
 
         var researchAndClueInfo = ResearchAndScannedInfo.getFromLiving(beingCloned);
@@ -72,7 +72,7 @@ public class AdditionalPlayerDataManager {
 
         var warpInfo = WarpInfo.getFromLivingEntity(player);
         if (warpInfo != null) {
-            warpInfo.syncSendPacket(player);
+            warpInfo.syncWarpInfo(player);
         }
 
         var researchInfo = ResearchAndScannedInfo.getFromLiving(player);

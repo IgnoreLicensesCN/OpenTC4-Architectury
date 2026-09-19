@@ -93,16 +93,12 @@ public class SanitySoapItem extends Item {
                     if (level.getRandom().nextFloat() < chance
                             && warpInfo.getStickyWarp() > 0) {
                         warpInfo.addStickyWarp(-1);
-                        if (livingEntity instanceof ServerPlayer player) {
-                            warpInfo.syncSendPacket(player);
-                        }
+                        warpInfo.syncWarpInfo(livingEntity);
                     }
 
                     if (warpInfo.getTempWarp() > 0) {
                         warpInfo.setTempWarp(0);
-                        if (livingEntity instanceof ServerPlayer player) {
-                            warpInfo.syncSendPacket(player);
-                        }
+                        warpInfo.syncWarpInfo(livingEntity);
                     }
                 }
             } else {

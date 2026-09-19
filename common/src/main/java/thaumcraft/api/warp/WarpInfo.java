@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.lib.network.playerdata.syncdata.PacketSyncWarpS2C;
+import thaumcraft.common.lib.network.playerdata.updatedata.PacketChangeWarpS2C;
 
 //instance should bind to entity
 public class WarpInfo {
@@ -58,6 +59,29 @@ public class WarpInfo {
     public void addStickyWarp(int amount){
         stickyWarp += amount;
     }
+    public void addTempWarpAndSync(LivingEntity living,int amount) {
+        addTempWarp(amount);
+        if (living instanceof ServerPlayer serverPlayer) {
+            new PacketChangeWarpS2C((byte) 2, amount).sendTo(serverPlayer);
+        }
+    }
+    public void addPermWarpAndSync(LivingEntity living,int amount) {
+        addPermWarp(amount);
+        if (living instanceof ServerPlayer serverPlayer) {
+            new PacketChangeWarpS2C((byte) 0, amount).sendTo(serverPlayer);
+        }
+    }
+    public void addStickyWarpAndSync(LivingEntity living,int amount){
+        addStickyWarp(amount);
+        if (living instanceof ServerPlayer serverPlayer) {
+            new PacketChangeWarpS2C((byte) 1, amount).sendTo(serverPlayer);
+        }
+    }
+    public void syncWarpInfo(LivingEntity living) {
+        if (living instanceof ServerPlayer serverPlayer) {
+            new PacketSyncWarpS2C(this).sendTo(serverPlayer);
+        }
+    }
 
     public static @Nullable WarpInfo getFromLivingEntity(LivingEntity livingEntity){
         if (livingEntity instanceof IWarpInfoOwnerLivingEntity warpInfoOwner){
@@ -69,10 +93,5 @@ public class WarpInfo {
         if (living instanceof IWarpInfoOwnerLivingEntity warpInfoOwner){
             warpInfoOwner.setWarpInfo(info);
         }
-    }
-    public void syncSendPacket(ServerPlayer player){
-        var info = getFromLivingEntity(player);
-        if (info == null) return;
-        new PacketSyncWarpS2C(info).sendTo(player);
     }
 }

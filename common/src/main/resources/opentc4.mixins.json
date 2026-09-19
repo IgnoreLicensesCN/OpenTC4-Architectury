@@ -71,8 +71,7 @@
     "SlimeMixin$SlimeMoveControlAccessor",
     "SpiderMixin",
     "VillagerMixin",
-    "ZombieMixin",
-    "client.LivingEntityMixin"
+    "ZombieMixin"
   ],
   "injectors": {
     "defaultRequire": 1

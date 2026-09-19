@@ -327,13 +327,13 @@ public class CommandThaumcraft {
         if (warpInfo != null) {
             if (type.equalsIgnoreCase("PERM")) {
                 warpInfo.setPermWarp(i);
-                warpInfo.syncSendPacket(player);
+                warpInfo.syncWarpInfo(player);
             } else if (type.equalsIgnoreCase("TEMP")) {
                 warpInfo.setTempWarp(i);
-                warpInfo.syncSendPacket(player);
+                warpInfo.syncWarpInfo(player);
             } else {
                 warpInfo.setStickyWarp(i);
-                warpInfo.syncSendPacket(player);
+                warpInfo.syncWarpInfo(player);
             }
 
             player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " set your warp to " + i), false);
@@ -346,13 +346,13 @@ public class CommandThaumcraft {
         if (warpInfo != null) {
             if (type.equalsIgnoreCase("PERM")) {
                 warpInfo.addPermWarp(i);
-                warpInfo.syncSendPacket(player);
+                warpInfo.syncWarpInfo(player);
             } else if (type.equalsIgnoreCase("TEMP")) {
                 warpInfo.addTempWarp(i);
-                warpInfo.syncSendPacket(player);
+                warpInfo.syncWarpInfo(player);
             } else {
                 warpInfo.addStickyWarp(i);
-                warpInfo.syncSendPacket(player);
+                warpInfo.syncWarpInfo(player);
             }
 
             player.displayClientMessage(Component.literal("§5" + icommandsender.getTextName() + " added " + i + " warp to your total."), false);

@@ -20,7 +20,12 @@ import java.util.UUID;
 import static net.minecraft.tags.DamageTypeTags.DAMAGES_HELMET;
 import static net.minecraft.tags.DamageTypeTags.IS_FALL;
 
-public class WardedChampionModifier extends ChampionModifier implements IClientTickableChampionModifier, ITickableChampionModifier, IDamageListenerChampionModifier {
+public class WardedChampionModifier extends ChampionModifier
+        implements
+        IClientTickableChampionModifier,
+        ITickableChampionModifier,
+        IDamageListenerChampionModifier
+{
     public WardedChampionModifier(UUID uuid, ChampionModifierResourceLocation id) {
         super(uuid, id);
     }
@@ -70,37 +75,38 @@ public class WardedChampionModifier extends ChampionModifier implements IClientT
 
     @Override
     public void championModifierOnDamage(LivingEntity victim, DamageSource source, float amountNotReduced, float amount) {
-        performEldritchRunicEffect(victim,source);
+        performEldritchRunicEffectIfAbsorptionExists(victim,source);
     }
-    public static void performEldritchRunicEffect(LivingEntity victim,DamageSource source) {
-        {
-            if (victim.getAbsorptionAmount() > 0.0F && !victim.level().isClientSide) {
-                int target = -1;
-                if (source.getEntity() != null) {
-                    target = source.getEntity().getId();
-                }
 
-                if (source.is(IS_FALL)) {
-                    target = -2;
-                }
+    public static void performEldritchRunicEffectIfAbsorptionExists(LivingEntity victim, DamageSource source) {
+        if (victim.getAbsorptionAmount() > 0.0F && !victim.level().isClientSide) {
+            performEldritchRunicShieldEffectForDamageSource(victim, source);
+        }
+    }
 
-                if (source.is(DAMAGES_HELMET)) {
-                    target = -3;
-                }
+    public static void performEldritchRunicShieldEffectForDamageSource(LivingEntity victim, DamageSource source) {
+        int target = -1;
+        if (source.getEntity() != null) {
+            target = source.getEntity().getId();
+        }
 
-                if (victim.level() instanceof ServerLevel serverLevel){
-                    new PacketFXShieldS2C(victim.getId(), target).sendToAllAround(
-                            serverLevel,
-                            victim.position(),32*32.
-                    );
-                }else {
-                    victim.playSound(
-                            ThaumcraftSounds.RUNIC_SHIELD_EFFECT, 0.66F, 1.1F + victim.getRandom().nextFloat() * 0.1F
-                    );
-                }
-            }
+        if (source.is(IS_FALL)) {
+            target = -2;
+        }
 
+        if (source.is(DAMAGES_HELMET)) {
+            target = -3;
+        }
 
-            }
+        if (victim.level() instanceof ServerLevel serverLevel){
+            new PacketFXShieldS2C(victim.getId(), target).sendToAllAround(
+                    serverLevel,
+                    victim.position(),32*32.
+            );
+        }else {
+            victim.playSound(
+                    ThaumcraftSounds.RUNIC_SHIELD_EFFECT, 0.66F, 1.1F + victim.getRandom().nextFloat() * 0.1F
+            );
+        }
     }
 }

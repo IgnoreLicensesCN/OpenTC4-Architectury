@@ -365,7 +365,16 @@ public class EntityUtils {
     }
 
     public static boolean isVisibleTo(
-            @RadianValue("the whole cone's radian,2 times of degree value between look vec and vec from entityPosition to targetPosition") float fov, Entity ent, Entity ent2, float range) {
+            @RadianValue(
+                    "the whole cone's radian," +
+                    "2 times of radian value" +
+                    " between look vec" +
+                    " and vec from entityPosition to targetPosition")
+            float fov,
+            Entity ent,
+            Entity ent2,
+            float range
+    ) {
         return isVisibleTo(
                 fov,
                 ent,
@@ -375,7 +384,12 @@ public class EntityUtils {
     }
 
     public static boolean isVisibleTo(
-            @RadianValue("the whole cone's radian,2 times of degree value between look vec and vec from entityPosition to targetPosition") float fov,
+            @RadianValue(
+                    "the whole cone's radian," +
+                    "2 times of radian value" +
+                    " between look vec " +
+                    "and vec from entityPosition to targetPosition")
+            float fov,
             Entity ent,
             Vec3 checkingPos,
             float range
@@ -394,20 +408,6 @@ public class EntityUtils {
         double cosHalf = Math.cos(Math.toRadians(fov * 0.5));
         return dot * dot >= distSq * cosHalf * cosHalf;
     }
-
-//    // 私有统一方法
-//    private static boolean isVisibleToInternal(float fov, Entity ent, double tx, double ty, double tz, float range) {
-//
-//        Vec3 look = ent.getLookAngle();
-//        Vec3 start = new Vec3(ent.getX(), ent.getBoundingBox().minY + ent.getEyeHeight(), ent.getZ());
-//        Vec3 end = start.add(look.x * range, look.y * range, look.z * range);
-//
-//        double[] target = new double[]{tx, ty, tz};
-//        double[] origin = new double[]{start.x, start.y, start.z};
-//        double[] lookPos = new double[]{end.x, end.y, end.z};
-//
-//        return Utils.isLyingInCone(target, origin, lookPos, fov);
-//    }
 
     public static ItemEntity entityDropSpecialItem(Entity entity, ItemStack stack, float dropheight) {
         if (stack.getCount() != 0 && !stack.isEmpty()) {
@@ -466,7 +466,7 @@ public class EntityUtils {
             modifier.attachToEntity(entity);
 
         }else {
-            attachRuleOwner.attachModifierForLiving( entity, modifier);
+            attachRuleOwner.attachModifierForLiving(entity, modifier);
         }
         if (!(entity instanceof IChampionModifiedNamingRuleOwner namingRuleOwner)) {
             entity.setCustomName(modifier.getModNameLocalized().copy().append(" ").append(entity.getName()));
@@ -476,16 +476,6 @@ public class EntityUtils {
 
         if (persist && entity instanceof Mob mob) {
             mob.setPersistenceRequired();
-        }
-
-        switch (modifier) {
-            case 5:
-                AttributeInstance attrInstance = entity.getAttribute(Attributes.MAX_HEALTH);
-                if (attrInstance == null) {
-                    return;
-                }
-                int bh = (int) attrInstance.getBaseValue() / 2;
-                entity.setAbsorptionAmount(entity.getAbsorptionAmount() + (float) bh);
         }
 
     }

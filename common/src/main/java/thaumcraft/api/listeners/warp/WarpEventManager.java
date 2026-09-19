@@ -14,7 +14,6 @@ import thaumcraft.api.listeners.warp.listeners.*;
 import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
-import thaumcraft.common.lib.network.playerdata.updatedata.PacketChangeWarpS2C;
 
 
 import static thaumcraft.api.listeners.warp.consts.AfterPickEventListeners.SPAWN_GUARD_IF_NO_EVENT;
@@ -106,11 +105,9 @@ public class WarpEventManager {
                     new PacketMiscEventS2C((short) 0).sendTo(serverPlayer);
                 }
             }
-            if (living instanceof ServerPlayer serverPlayer) {
-                var warpInfo =  WarpInfo.getFromLivingEntity(living);
-                if (warpInfo != null) {
-                    warpInfo.syncSendPacket(serverPlayer);
-                }
+            var warpInfo =  WarpInfo.getFromLivingEntity(living);
+            if (warpInfo != null) {
+                warpInfo.syncWarpInfo(living);
             }
         }
     }
@@ -164,21 +161,12 @@ public class WarpEventManager {
             if (warp > 1) {
                 int w2 = warp / 2;
                 if (warp - w2 > 0) {
-                    info.addPermWarp(warp - w2);
-                    if (living instanceof ServerPlayer serverPlayer) {
-                        new PacketChangeWarpS2C((byte)0, warp - w2).sendTo(serverPlayer);
-                    }
+                    info.addPermWarpAndSync(living,warp - w2);
                 }
 
-                info.addStickyWarp(warp - w2);
-                if (living instanceof ServerPlayer serverPlayer) {
-                    new PacketChangeWarpS2C((byte) 1, w2).sendTo(serverPlayer);
-                }
+                info.addStickyWarpAndSync(living,warp - w2);
             } else {
-                info.addPermWarp(warp);
-                if (living instanceof ServerPlayer serverPlayer) {
-                    new PacketChangeWarpS2C((byte)0, warp).sendTo(serverPlayer);
-                }
+                info.addPermWarpAndSync(living,warp);
             }
         }
     }

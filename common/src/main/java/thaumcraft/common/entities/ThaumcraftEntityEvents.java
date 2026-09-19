@@ -19,6 +19,7 @@ import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
 import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifierOwnerLivingEntity;
+import thaumcraft.common.entities.championmod.abstracts.modifier.IAttackListenerChampionModifier;
 import thaumcraft.common.entities.championmod.abstracts.modifier.IDamageListenerChampionModifier;
 import thaumcraft.common.entities.championmod.abstracts.modifier.IDamageModifierChampionModifier;
 import thaumcraft.common.entities.championmod.abstracts.modifier.ITickableChampionModifier;
@@ -165,15 +166,22 @@ public class ThaumcraftEntityEvents {
             }
             if (living instanceof IChampionModifierOwnerLivingEntity owner) {
                 owner.opentc4$getChampionModifiersForChecker(
-
                         (ignoredA,ignoredB) -> true,
                         IDamageListenerChampionModifier.class
                 ).forEach(
                         modifier -> modifier.championModifierOnDamage(living,damageSource,damageCausedNoArmorReduce,damageCausedReduced)
                 );
             }
+            if (damageSource.getEntity() instanceof LivingEntity attacker && attacker instanceof IChampionModifierOwnerLivingEntity owner) {
+                owner.opentc4$getChampionModifiersForChecker(
+                        (ignoredA,ignoredB) -> true,
+                        IAttackListenerChampionModifier.class
+                ).forEach(
+                        modifier -> modifier.championModifierOnAttack(living,attacker,damageSource,damageCausedNoArmorReduce,damageCausedReduced)
+                );
+            }
             if (living.getType().is(ELDRITCH)){
-                WardedChampionModifier.performEldritchRunicEffect(living,damageSource);
+                WardedChampionModifier.performEldritchRunicEffectIfAbsorptionExists(living,damageSource);
             }
         }
     }
