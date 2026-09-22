@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:glimmer_of_light",
+    "thaumcraft:nitor",
+    "thaumcraft:aura_node",
+    "thaumcraft:energized_aura_node",
+    "thaumcraft:sapping_field",
+    "thaumcraft:static_field",
+    "thaumcraft:impassable"
+  ]
+}

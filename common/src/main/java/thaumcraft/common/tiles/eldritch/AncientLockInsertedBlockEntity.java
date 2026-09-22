@@ -1,32 +1,18 @@
 package thaumcraft.common.tiles.eldritch;
 
-import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.SlabType;
+import thaumcraft.api.listeners.worldgen.eldritch.bossgen.ThaumcraftEldritchBossProvider;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.entities.monster.boss.*;
-import thaumcraft.common.entities.monster.tainted.EntityTaintacle;
-import thaumcraft.common.entities.monster.tainted.TaintacleEntity;
-import thaumcraft.common.lib.network.PacketHandler;
+import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
-import thaumcraft.common.lib.utils.BlockUtils;
-import thaumcraft.common.lib.utils.EntityUtils;
-import thaumcraft.common.lib.utils.Utils;
-import thaumcraft.common.lib.world.ThaumcraftWorldGenerator;
 import thaumcraft.common.lib.world.dim.*;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
-
-import static net.minecraft.world.level.block.SlabBlock.TYPE;
-import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.*;
 
 public class AncientLockInsertedBlockEntity extends BlockEntity {
     protected int tickCount = System.identityHashCode(this) & 63;
@@ -80,41 +66,32 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
                 }
             }
 
-            MapBossData mbd = (MapBossData)this.level.loadItemData(MapBossData.class, "BossMapData");
-            if (mbd == null) {
-                mbd = new MapBossData("BossMapData");
-                mbd.bossCount = 0;
-                mbd.markDirty();
-                this.level.setItemData("BossMapData", mbd);
-            }
+//            MapBossData mbd = (MapBossData)this.level.loadItemData(MapBossData.class, "BossMapData");
+//            if (mbd == null) {
+//                mbd = new MapBossData("BossMapData");
+//                mbd.bossCount = 0;
+//                mbd.markDirty();
+//                this.level.setItemData("BossMapData", mbd);
+//            }
+//
+//            ++mbd.bossCount;
+//            if (this.level.random.nextFloat() < 0.25F) {
+//                ++mbd.bossCount;
+//            }
+//
+//            mbd.markDirty();
 
-            ++mbd.bossCount;
-            if (this.level.random.nextFloat() < 0.25F) {
-                ++mbd.bossCount;
-            }
-
-            mbd.markDirty();
-            //TODO:new API (maybe i have mental illness for newer api)
-            switch (mbd.bossCount % 4) {
-                case 0:
-                    this.spawnGolemBossRoom(centerx, centerz, exit);
-                    break;
-                case 1:
-                    this.spawnWardenBossRoom(centerx, centerz, exit);
-                    break;
-                case 2:
-                    this.spawnCultistBossRoom(centerx, centerz, exit);
-                    break;
-                case 3:
-                    this.spawnTaintBossRoom(centerx, centerz, exit);
-            }
+            ThaumcraftEldritchBossProvider.generateEldritchBossRoom(level,pos,centerx, centerz, exit);
 
             for(int a = -2; a <= 2; ++a) {
                 for(int b = -2; b <= 2; ++b) {
                     for(int c = -2; c <= 2; ++c) {
-                        if (this.level.getBlock(posX + a, posY + b, posZ + c) == ConfigBlocks.blockAiry) {
-                            PacketHandler.INSTANCE.sendToAllAround(new PacketFXBlockSparkleS2C(posX + a, posY + b, posZ + c, 4194368), new NetworkRegistry.TargetPoint(this.level.dimension(), posX + a, posY + b, posZ + c, 32.0F));
-                            this.level.setBlockToAir(posX + a, posY + b, posZ + c);
+                        var pickPos = pos.offset(a,b,c);
+                        if (this.level.getBlockState(pickPos).is(ThaumcraftBlocks.Tags.ANCIENT_LOCK_ERASES)) {
+                            if (level instanceof ServerLevel serverLevel) {
+                                new PacketFXBlockSparkleS2C(posX + a, posY + b, posZ + c, 4194368).sendToAllAround(serverLevel,pos,32*32);
+                            }
+                            this.level.setBlockAndUpdate(pickPos,Blocks.AIR.defaultBlockState());
                         }
                     }
                 }
@@ -125,271 +102,4 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
 
     }
 
-    private void spawnWardenBossRoom(int cx, int cz, int exit) {
-        final var pos = this.getBlockPos();
-        final var posX = pos.getX();
-        final var posY = pos.getY();
-        final var posZ = pos.getZ();
-        for(int i = 0; i < this.level.playerEntities.size(); ++i) {
-            Player ep = (Player)this.level.playerEntities.get(i);
-            if (ep.getDistanceSq(posX, posY, posZ) < (double)300.0F) {
-                ep.addChatMessage(new ChatComponentText(Component.translatable("tc.boss.warden")));
-            }
-        }
-
-        int x = cx * 16 + 16;
-        int y = 50;
-        int z = cz * 16 + 16;
-        int x2 = x;
-        int z2 = z;
-        switch (exit) {
-            case 2:
-                x2 = x + 8;
-                z2 = z + 8;
-                break;
-            case 3:
-                x2 = x - 8;
-                z2 = z + 8;
-                break;
-            case 4:
-                x2 = x + 8;
-                z2 = z - 8;
-                break;
-            case 5:
-                x2 = x - 8;
-                z2 = z - 8;
-        }
-
-        GenCommon.genObelisk(this.level, x2, y + 4, z);
-        GenCommon.genObelisk(this.level, x, y + 4, z2);
-        this.level.setBlock(x2, y + 2, z, ConfigBlocks.blockEldritch, 3, 3);
-        this.level.setBlock(x, y + 2, z2, ConfigBlocks.blockEldritch, 3, 3);
-
-        for(int a = -1; a <= 1; ++a) {
-            for(int b = -1; b <= 1; ++b) {
-                if (a != 0 && b != 0 && this.level.random.nextFloat() < 0.9F) {
-                    float rr = this.level.random.nextFloat();
-                    int md = rr < 0.1F ? 2 : (rr < 0.3F ? 1 : 0);
-                    this.level.setBlock(x2 + a, y + 2, z + b, ConfigBlocks.blockLootUrn, md, 3);
-                }
-
-                if (a != 0 && b != 0 && this.level.random.nextFloat() < 0.9F) {
-                    float rr = this.level.random.nextFloat();
-                    int md = rr < 0.1F ? 2 : (rr < 0.3F ? 1 : 0);
-                    this.level.setBlock(x + a, y + 2, z2 + b, ConfigBlocks.blockLootUrn, md, 3);
-                }
-            }
-        }
-
-        this.level.setBlock(x - 2, y + 3, z - 2, ConfigBlocks.blockEldritch, 10, 3);
-        this.level.setBlock(x - 2, y + 3, z + 2, ConfigBlocks.blockEldritch, 10, 3);
-        this.level.setBlock(x + 2, y + 3, z + 2, ConfigBlocks.blockEldritch, 10, 3);
-        this.level.setBlock(x + 2, y + 3, z - 2, ConfigBlocks.blockEldritch, 10, 3);
-        this.level.setBlock(x - 2, y + 2, z - 2, ConfigBlocks.blockCosmeticSolid, 15, 3);
-        this.level.setBlock(x - 2, y + 2, z + 2, ConfigBlocks.blockCosmeticSolid, 15, 3);
-        this.level.setBlock(x + 2, y + 2, z + 2, ConfigBlocks.blockCosmeticSolid, 15, 3);
-        this.level.setBlock(x + 2, y + 2, z - 2, ConfigBlocks.blockCosmeticSolid, 15, 3);
-
-        for(int a = 0; a < 3; ++a) {
-            for(int b = 0; b < 3; ++b) {
-                if (this.ped[a][b] < 0) {
-                    this.level.setBlock(x2 - 1 + b, y + 2, z2 - 1 + a, ConfigBlocks.blockEldritch, 4, 3);
-                } else {
-                    this.level.setBlock(x2 - 1 + b, y + 2, z2 - 1 + a, ConfigBlocks.blockStairsEldritch, this.ped[a][b], 3);
-                }
-            }
-        }
-
-        EntityEldritchWarden boss = new EntityEldritchWarden(this.level);
-        double d0 = (double)posX - ((double)x2 + (double)0.5F);
-        double d1 = (float)posY - ((float)(y + 3) + boss.getEyeHeight());
-        double d2 = (double)posZ - ((double)z2 + (double)0.5F);
-        double d3 = MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-        float f = (float)(Math.atan2(d2, d0) * (double)180.0F / Math.PI) - 90.0F;
-        float f1 = (float)(-(Math.atan2(d1, d3) * (double)180.0F / Math.PI));
-        boss.setLocationAndAngles((double)x2 + (double)0.5F, y + 3, (double)z2 + (double)0.5F, f, f1);
-        boss.onSpawnWithEgg(null);
-        boss.setHomeArea(x, y + 2, z, 32);
-        this.level.spawnEntityInWorld(boss);
-    }
-
-    private void spawnGolemBossRoom(int cx, int cz, int exit) {
-        final var pos = this.getBlockPos();
-        final var posX = pos.getX();
-        final var posY = pos.getY();
-        final var posZ = pos.getZ();
-        for(int i = 0; i < this.level.playerEntities.size(); ++i) {
-            Player ep = (Player)this.level.playerEntities.get(i);
-            if (ep.getDistanceSq(posX, posY, posZ) < (double)300.0F) {
-                ep.addChatMessage(new ChatComponentText(Component.translatable("tc.boss.golem")));
-            }
-        }
-
-        int x = cx * 16 + 16;
-        int y = 50;
-        int z = cz * 16 + 16;
-        int x2 = 0;
-        int z2 = 0;
-        switch (exit) {
-            case 2:
-                x2 = 8;
-                z2 = 8;
-                break;
-            case 3:
-                x2 = -8;
-                z2 = 8;
-                break;
-            case 4:
-                x2 = 8;
-                z2 = -8;
-                break;
-            case 5:
-                x2 = -8;
-                z2 = -8;
-        }
-
-        GenCommon.genObelisk(this.level, x + x2, y + 4, z + z2);
-        GenCommon.genObelisk(this.level, x - x2, y + 4, z + z2);
-        GenCommon.genObelisk(this.level, x + x2, y + 4, z - z2);
-        this.level.setBlock(x + x2, y + 2, z + z2, ConfigBlocks.blockEldritch, 3, 3);
-        this.level.setBlock(x - x2, y + 2, z + z2, ConfigBlocks.blockEldritch, 3, 3);
-        this.level.setBlock(x + x2, y + 2, z - z2, ConfigBlocks.blockEldritch, 3, 3);
-
-        for(int a = 0; a < 3; ++a) {
-            for(int b = 0; b < 3; ++b) {
-                if (this.ped[a][b] < 0) {
-                    this.level.setBlock(x - 1 + b, y + 2, z - 1 + a, ConfigBlocks.blockEldritch, 4, 3);
-                } else {
-                    this.level.setBlock(x - 1 + b, y + 2, z - 1 + a, ConfigBlocks.blockStairsEldritch, this.ped[a][b], 3);
-                }
-            }
-        }
-
-        for(int a = -10; a <= 10; ++a) {
-            for(int b = -10; b <= 10; ++b) {
-                if ((a < -2 && b < -2 || a > 2 && b > 2 || a < -2 && b > 2 || a > 2 && b < -2) && this.level.random.nextFloat() < 0.15F && this.level.isAirBlock(x + a, y + 2, z + b)) {
-                    float rr = this.level.random.nextFloat();
-                    int md = rr < 0.05F ? 2 : (rr < 0.2F ? 1 : 0);
-                    this.level.setBlock(x + a, y + 2, z + b, this.level.random.nextFloat() < 0.3F ? ConfigBlocks.blockLootCrate : ConfigBlocks.blockLootUrn, md, 3);
-                }
-            }
-        }
-
-        EntityEldritchGolem boss = new EntityEldritchGolem(this.level);
-        double d0 = (double)posX - ((double)x + (double)0.5F);
-        double d1 = (float)posY - ((float)(y + 3) + boss.getEyeHeight());
-        double d2 = (double)posZ - ((double)z + (double)0.5F);
-        double d3 = MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-        float f = (float)(Math.atan2(d2, d0) * (double)180.0F / Math.PI) - 90.0F;
-        float f1 = (float)(-(Math.atan2(d1, d3) * (double)180.0F / Math.PI));
-        boss.setLocationAndAngles((double)x + (double)0.5F, y + 3, (double)z + (double)0.5F, f, f1);
-        boss.onSpawnWithEgg(null);
-        this.level.spawnEntityInWorld(boss);
-    }
-
-    private void spawnCultistBossRoom(int cx, int cz, int exit) {
-        final var pos = this.getBlockPos();
-        final var posX = pos.getX();
-        final var posY = pos.getY();
-        final var posZ = pos.getZ();
-        if (level == null){
-            return;
-        }
-        var players = this.level.players();
-        for (Player ep : players) {
-            if (ep.distanceToSqr(posX, posY, posZ) < (double) 300.0F) {
-                ep.sendSystemMessage((Component.translatable("tc.boss.crimson")));
-            }
-        }
-
-        int x = cx * 16 + 16;
-        int y = 50;
-        int z = cz * 16 + 16;
-
-        for(int a = -4; a <= 4; ++a) {
-            for(int b = -4; b <= 4; ++b) {
-                if ((Math.abs(a) != 2 && Math.abs(b) != 2 || !this.level.random.nextBoolean()) && (Math.abs(a) != 3 && Math.abs(b) != 3 || !(this.level.random.nextFloat() > 0.33F)) && (Math.abs(a) != 4 && Math.abs(b) != 4 || !(this.level.random.nextFloat() > 0.25F))) {
-                    this.level.setBlockAndUpdate(new BlockPos(x + b, y + 1, z + a), ANCIENT_GATEWAY().defaultBlockState());
-                }
-            }
-        }
-
-        for(int a = 0; a < 5; ++a) {
-            for(int b = 0; b < 5; ++b) {
-                if (a == 0 || a == 4 || b == 0 || b == 4) {
-                    this.level.setBlock(new BlockPos(x - 8 + b * 4, y + 2, z - 8 + a * 4), ANCIENT_STONE().defaultBlockState(), 3);
-                    this.level.setBlock(new BlockPos(x - 8 + b * 4, y + 3, z - 8 + a * 4), GLYPHED_STONE().defaultBlockState(), 3);
-                    this.level.setBlock(new BlockPos(x - 8 + b * 4, y + 4, z - 8 + a * 4), ANCIENT_STONE_SLAB().defaultBlockState().setValue(TYPE, SlabType.BOTTOM), 1, 3);
-                    this.level.setBlock(new BlockPos(x - 8 + b * 4, y + 10, z - 8 + a * 4), ANCIENT_STONE().defaultBlockState(), 11, 3);
-                    this.level.setBlock(new BlockPos(x - 8 + b * 4, y + 9, z - 8 + a * 4), GLYPHED_STONE().defaultBlockState(), 3);
-                    this.level.setBlock(new BlockPos(x - 8 + b * 4, y + 8, z - 8 + a * 4), ANCIENT_STONE_SLAB().defaultBlockState().setValue(TYPE, SlabType.TOP), 3);
-                }
-            }
-        }
-
-        var boss = new CultistPortalEntity(this.level);
-        boss.setPos(x + 0.5F, y + 2, z + 0.5F);
-        this.level.addFreshEntity(boss);
-    }
-
-    private void spawnTaintBossRoom(int cx, int cz, int exit) {
-        final var pos = this.getBlockPos();
-        final var posX = pos.getX();
-        final var posY = pos.getY();
-        final var posZ = pos.getZ();
-        for(int i = 0; i < this.level.playerEntities.size(); ++i) {
-            Player ep = (Player)this.level.playerEntities.get(i);
-            if (ep.getDistanceSq(posX, posY, posZ) < (double)300.0F) {
-                ep.addChatMessage(new ChatComponentText(Component.translatable("tc.boss.taint")));
-            }
-        }
-
-        int x = cx * 16 + 16;
-        int y = 50;
-        int z = cz * 16 + 16;
-
-        for(int a = -12; a <= 12; ++a) {
-            for(int b = -12; b <= 12; ++b) {
-                Utils.setBiomeAt(this.level, x + b, z + a, ThaumcraftWorldGenerator.biomeTaint);
-
-                for(int c = 0; c < 9; ++c) {
-                    if (this.level.isAirBlock(x + b, y + 2 + c, z + a) && BlockUtils.isAdjacentToSolidBlock(this.level, x + b, y + 2 + c, z + a) && this.level.random.nextInt(3) != 0) {
-                        this.level.setBlock(x + b, y + 2 + c, z + a, ConfigBlocks.blockTaintFibres, this.level.random.nextInt(4) == 0 ? 1 : 0, 3);
-                    }
-                }
-
-                if ((double)this.level.random.nextFloat() < 0.15) {
-                    this.level.setBlock(x + b, y + 2, z + a, ConfigBlocks.blockTaint, 0, 3);
-                    if ((double)this.level.random.nextFloat() < 0.2) {
-                        this.level.setBlock(x + b, y + 3, z + a, ConfigBlocks.blockTaint, 0, 3);
-                    }
-                }
-
-                if ((Math.abs(a) != 4 && Math.abs(b) != 4 || !this.level.random.nextBoolean()) && (Math.abs(a) < 5 && Math.abs(b) < 5 || !(this.level.random.nextFloat() > 0.33F)) && (Math.abs(a) < 7 && Math.abs(b) < 7 || !(this.level.random.nextFloat() > 0.25F))) {
-                    this.level.setBlock(x + b, y + 1, z + a, ConfigBlocks.blockTaint, 1, 3);
-                }
-            }
-        }
-
-        var boss1 = this.level.difficultySetting != Difficulty.HARD ? new TaintacleEntity(this.level) : new EntityTaintacleGiant(this.level);
-        boss1.setLocationAndAngles((double)x + (double)0.5F, y + 3, (double)z + (double)0.5F, 0.0F, 0.0F);
-        EntityUtils.makeChampion(boss1, true);
-        this.level.spawnEntityInWorld(boss1);
-        var boss2 = this.level.random.nextBoolean() ? new TaintacleEntity(this.level) : new EntityTaintacleGiant(this.level);
-        boss2.setLocationAndAngles((double)x + (double)3.5F, y + 3, (double)z + (double)3.5F, 0.0F, 0.0F);
-        EntityUtils.makeChampion(boss2, true);
-        this.level.spawnEntityInWorld(boss2);
-        var boss3 = boss2 instanceof EntityTaintacleGiant ? new TaintacleEntity(this.level) : new EntityTaintacleGiant(this.level);
-        boss3.setLocationAndAngles((double)x - (double)2.5F, y + 3, (double)z + (double)3.5F, 0.0F, 0.0F);
-        EntityUtils.makeChampion(boss3, true);
-        this.level.spawnEntityInWorld(boss3);
-        var boss4 = this.level.random.nextBoolean() ? new TaintacleEntity(this.level) : new EntityTaintacleGiant(this.level);
-        boss4.setLocationAndAngles((double)x + (double)3.5F, y + 3, (double)z - (double)2.5F, 0.0F, 0.0F);
-        EntityUtils.makeChampion(boss4, true);
-        this.level.spawnEntityInWorld(boss4);
-        var boss5 = boss4 instanceof EntityTaintacleGiant ? new TaintacleEntity(this.level) : new EntityTaintacleGiant(this.level);
-        boss5.setLocationAndAngles((double)x - (double)2.5F, y + 3, (double)z - (double)2.5F, 0.0F, 0.0F);
-        EntityUtils.makeChampion(boss5, true);
-        this.level.spawnEntityInWorld(boss5);
-    }
 }

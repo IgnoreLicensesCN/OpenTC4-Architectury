@@ -5,6 +5,7 @@ import thaumcraft.api.listeners.aspects.item.bonus.ItemBonusAspectCalculator;
 import thaumcraft.api.listeners.researchtable.WriteAspectManager;
 import thaumcraft.api.listeners.wandconsumption.ConsumptionModifierCalculator;
 import thaumcraft.api.listeners.warp.WarpEventManager;
+import thaumcraft.api.listeners.worldgen.eldritch.bossgen.ThaumcraftEldritchBossProvider;
 import thaumcraft.api.listeners.worldgen.node.NodeGenerationManager;
 
 public class EventListeners {
@@ -15,5 +16,6 @@ public class EventListeners {
         ConsumptionModifierCalculator.init();
         WarpEventManager.init();
         WriteAspectManager.init();
+        ThaumcraftEldritchBossProvider.init();
     }
 }

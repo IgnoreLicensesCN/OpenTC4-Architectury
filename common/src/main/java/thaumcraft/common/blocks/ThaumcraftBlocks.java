@@ -13,6 +13,8 @@ import net.minecraft.world.item.BannerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BannerPattern;
@@ -1556,9 +1558,12 @@ public class ThaumcraftBlocks {
     }
 
     public static class Tags {
+        public static final TagKey<Block> ANCIENT_LOCK_ERASES = TagKey.create(
+                Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "ancient_lock_erases")
+        );
         public static final TagKey<Block> JAR_BLOCK = TagKey.create(
                 Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "jar_block")
-        );//TODO:Jars put in
+        );
         public static final TagKey<Block> CRUCIBLE_HEATER = TagKey.create(
                 Registries.BLOCK, new ResourceLocation(Thaumcraft.MOD_ID, "crucible_heater")
         );
@@ -1628,7 +1633,7 @@ public class ThaumcraftBlocks {
     // west -> 4
     // north -> 8
     // east -> 12
-    public static void setCultistBanner(Level level, BlockPos pos,Direction dir){
+    public static void setCultistBanner(LevelAccessor level, BlockPos pos, Direction dir){
         int rotation = 0;
         if (dir == Direction.WEST){
             rotation = 4;
@@ -1639,10 +1644,11 @@ public class ThaumcraftBlocks {
         }
         setCultistBanner(level,pos,rotation);
     }
-    public static void setCultistBanner(Level level, BlockPos pos,int rotation){
-        level.setBlockAndUpdate(
+    public static void setCultistBanner(LevelAccessor level, BlockPos pos, int rotation){
+        level.setBlock(
                 pos,
-                Blocks.RED_BANNER.defaultBlockState().setValue(BannerBlock.ROTATION, rotation)
+                Blocks.RED_BANNER.defaultBlockState().setValue(BannerBlock.ROTATION, rotation),
+                3
         );
         var be = level.getBlockEntity(pos);
         if (be instanceof BannerBlockEntity banner){

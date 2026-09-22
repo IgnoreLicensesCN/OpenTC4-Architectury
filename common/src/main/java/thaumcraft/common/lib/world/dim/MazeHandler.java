@@ -1,22 +1,15 @@
 package thaumcraft.common.lib.world.dim;
 
-import fromhodgepodge.util.WorldDataSaver;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.LevelResource;
 
-import java.io.File;
-import java.nio.file.Files;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.linearity.opentc4.Consts.MazeHandlerCompoundTagAccessors.*;
 
-@Deprecated(forRemoval = true,since = "store as single level not here")
 public class MazeHandler {
    public static ConcurrentHashMap<CellLoc,Short> labyrinth = new ConcurrentHashMap<>();
 
@@ -44,18 +37,18 @@ public class MazeHandler {
       labyrinth.clear();
    }
 
-   private static void readNBT(CompoundTag nbt) {
-      ListTag tagList = MAZE_HANDLER_CELLS_ACCESSOR.readFromCompoundTag(nbt);
-
-      for(int a = 0; a < tagList.size(); ++a) {
-         CompoundTag cell = tagList.getCompound(a);
-         int x = MAZE_HANDLER_CELL_LOC_X_ACCESSOR.readIntFromCompoundTag(cell);
-         int z = MAZE_HANDLER_CELL_LOC_Z_ACCESSOR.readIntFromCompoundTag(cell);
-         short v = MAZE_HANDLER_CELL_INFO_ACCESSOR.readShortFromCompoundTag(cell);
-         putToHashMapRaw(new CellLoc(x, z), v);
-      }
-
-   }
+//   private static void readNBT(CompoundTag nbt) {
+//      ListTag tagList = MAZE_HANDLER_CELLS_ACCESSOR.readFromCompoundTag(nbt);
+//
+//      for(int a = 0; a < tagList.size(); ++a) {
+//         CompoundTag cell = tagList.getCompound(a);
+//         int x = MAZE_HANDLER_CELL_LOC_X_ACCESSOR.readIntFromCompoundTag(cell);
+//         int z = MAZE_HANDLER_CELL_LOC_Z_ACCESSOR.readIntFromCompoundTag(cell);
+//         short v = MAZE_HANDLER_CELL_INFO_ACCESSOR.readShortFromCompoundTag(cell);
+//         putToHashMapRaw(new CellLoc(x, z), v);
+//      }
+//
+//   }
 
    private static CompoundTag writeAsNBT() {
       CompoundTag nbt = new CompoundTag();
@@ -97,94 +90,94 @@ public class MazeHandler {
 //      return nbt;
    }
 
-   public static void loadMaze(Level world) {
-      if (!(world instanceof ServerLevel serverLevel)) {return;}
-      clearHashMap();
-      File file1 = new File(serverLevel.getServer().getWorldPath(MAZE_RESOURCE).toFile(), "labyrinth.dat");
-      if (saveData(file1)) {
-         return;
-      }
+//   public static void loadMaze(Level world) {
+//      if (!(world instanceof ServerLevel serverLevel)) {return;}
+//      clearHashMap();
+//      File file1 = new File(serverLevel.getServer().getWorldPath(MAZE_RESOURCE).toFile(), "labyrinth.dat");
+//      if (saveData(file1)) {
+//         return;
+//      }
+//
+//      file1 = new File(serverLevel.getServer().getWorldPath(MAZE_RESOURCE).toFile(), "labyrinth.dat_old");
+//      if (saveData(file1)) {
+//         return;
+//      }
+//
+//   }
 
-      file1 = new File(serverLevel.getServer().getWorldPath(MAZE_RESOURCE).toFile(), "labyrinth.dat_old");
-      if (saveData(file1)) {
-         return;
-      }
-
-   }
-
-   private static boolean saveData(File file1) {
-      if (file1.exists()) {
-         try {
-            CompoundTag CompoundTag = NbtIo.readCompressed(Files.newInputStream(file1.toPath()));
-            CompoundTag CompoundTag1 = CompoundTag.getCompound("Data");
-            readNBT(CompoundTag1);
-            return true;
-         } catch (Exception exception1) {
-            exception1.printStackTrace();
-         }
-      }
-      return false;
-   }
-
-   public static final LevelResource MAZE_RESOURCE = new LevelResource("labyrinth.dat");
-
-   public static void saveMaze(Level world) {
-      if (!(world instanceof ServerLevel serverLevel)){return;}
-      CompoundTag tag = writeAsNBT();
-      CompoundTag parentTag = new CompoundTag();
-      parentTag.put("data", tag);
-
-//      String filename = tag.contains("version")
-//              ? "labyrinth_v" + tag.getInt("version") + ".dat"
-//              : "labyrinth.dat";
-
-      //todo:is it correct?
-      File file = new File(serverLevel.getServer().getWorldPath(MAZE_RESOURCE).toFile(), MAZE_RESOURCE.getId());
-      WorldDataSaver.INSTANCE.saveData(file, parentTag, true, true);
-//      CompoundTag tag = writeNBT();
+//   private static boolean saveData(File file1) {
+//      if (file1.exists()) {
+//         try {
+//            CompoundTag CompoundTag = NbtIo.readCompressed(Files.newInputStream(file1.toPath()));
+//            CompoundTag CompoundTag1 = CompoundTag.getCompound("Data");
+//            readNBT(CompoundTag1);
+//            return true;
+//         } catch (Exception exception1) {
+//            exception1.printStackTrace();
+//         }
+//      }
+//      return false;
+//   }
+//
+//   public static final LevelResource MAZE_RESOURCE = new LevelResource("labyrinth.dat");
+//
+//   public static void saveMaze(Level world) {
+//      if (!(world instanceof ServerLevel serverLevel)){return;}
+//      CompoundTag tag = writeAsNBT();
 //      CompoundTag parentTag = new CompoundTag();
-//      parentTag.setTag("data", tag);
-//      final String filename;
+//      parentTag.put("data", tag);
 //
-//      // Adds support for Salis Arcana updating the labyrinth file format
-//      if (tag.hasKey("version")) {
-//         filename = "labyrinth_v" + tag.getInteger("version") + ".dat";
-//      } else {
-//         filename = "labyrinth.dat";
-//      }
+////      String filename = tag.contains("version")
+////              ? "labyrinth_v" + tag.getInt("version") + ".dat"
+////              : "labyrinth.dat";
 //
-//      final File file = new File(world.getSaveHandler().getWorldDirectory(), filename);
-//
+//      //todo:is it correct?
+//      File file = new File(serverLevel.getServer().getWorldPath(MAZE_RESOURCE).toFile(), MAZE_RESOURCE.getId());
 //      WorldDataSaver.INSTANCE.saveData(file, parentTag, true, true);
-//      HodgepodgeCore.saveWorldDataBackup(file, parentTag);
-
-//      CompoundTag CompoundTag = writeNBT();
-//      CompoundTag CompoundTag1 = new CompoundTag();
-//      CompoundTag1.setTag("Data", CompoundTag);
+////      CompoundTag tag = writeNBT();
+////      CompoundTag parentTag = new CompoundTag();
+////      parentTag.setTag("data", tag);
+////      final String filename;
+////
+////      // Adds support for Salis Arcana updating the labyrinth file format
+////      if (tag.hasKey("version")) {
+////         filename = "labyrinth_v" + tag.getInteger("version") + ".dat";
+////      } else {
+////         filename = "labyrinth.dat";
+////      }
+////
+////      final File file = new File(world.getSaveHandler().getWorldDirectory(), filename);
+////
+////      WorldDataSaver.INSTANCE.saveData(file, parentTag, true, true);
+////      HodgepodgeCore.saveWorldDataBackup(file, parentTag);
 //
-//      try {
-//         File file1 = new File(world.getSaveHandler().getWorldDirectory(), "labyrinth.dat_new");
-//         File file2 = new File(world.getSaveHandler().getWorldDirectory(), "labyrinth.dat_old");
-//         File file3 = new File(world.getSaveHandler().getWorldDirectory(), "labyrinth.dat");
-//         NbtIo.writeCompressed(CompoundTag1, Files.newOutputStream(file1.toPath()));
-//         if (file2.exists()) {
-//            file2.delete();
-//         }
+////      CompoundTag CompoundTag = writeNBT();
+////      CompoundTag CompoundTag1 = new CompoundTag();
+////      CompoundTag1.setTag("Data", CompoundTag);
+////
+////      try {
+////         File file1 = new File(world.getSaveHandler().getWorldDirectory(), "labyrinth.dat_new");
+////         File file2 = new File(world.getSaveHandler().getWorldDirectory(), "labyrinth.dat_old");
+////         File file3 = new File(world.getSaveHandler().getWorldDirectory(), "labyrinth.dat");
+////         NbtIo.writeCompressed(CompoundTag1, Files.newOutputStream(file1.toPath()));
+////         if (file2.exists()) {
+////            file2.delete();
+////         }
+////
+////         file3.renameTo(file2);
+////         if (file3.exists()) {
+////            file3.delete();
+////         }
+////
+////         file1.renameTo(file3);
+////         if (file1.exists()) {
+////            file1.delete();
+////         }
+////      } catch (Exception exception) {
+////         exception.printStackTrace();
+////      }
 //
-//         file3.renameTo(file2);
-//         if (file3.exists()) {
-//            file3.delete();
-//         }
-//
-//         file1.renameTo(file3);
-//         if (file1.exists()) {
-//            file1.delete();
-//         }
-//      } catch (Exception exception) {
-//         exception.printStackTrace();
-//      }
-
-   }
+//   }
 
    public static boolean mazesInRange(int chunkX, int chunkZ, int w, int h) {
       for(int x = -w; x <= w; ++x) {

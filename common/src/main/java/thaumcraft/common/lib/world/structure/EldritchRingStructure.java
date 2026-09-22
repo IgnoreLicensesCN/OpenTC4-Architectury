@@ -27,12 +27,9 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.lib.world.dim.MazeThread;
 import thaumcraft.common.lib.world.registries.ThaumcraftStructures;
-import thaumcraft.common.tiles.junkbox.TileBanner;
-import thaumcraft.common.tiles.junkbox.TileEldritchAltar;
 
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +38,10 @@ import java.util.Set;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.listeners.worldgen.node.NodeGenerationManager.createRandomNodeAt;
+import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.*;
+import static thaumcraft.common.blocks.ThaumcraftBlocks.setCultistBanner;
+import static thaumcraft.common.blocks.worldgenerated.eldritch.EldritchAltarBlock.IS_SPAWNER;
+import static thaumcraft.common.blocks.worldgenerated.eldritch.EldritchAltarBlock.SPAWNER_TYPE;
 import static thaumcraft.common.lib.world.structure.MoundStructure.couldGenMountStructureViaCoords;
 import static thaumcraft.common.lib.world.structure.StructureUtils.randomSourceFromChunkPosAndSeed;
 
@@ -183,8 +184,8 @@ public class EldritchRingStructure extends Structure {
 
         public EldritchRingStructurePiece(StructurePieceSerializationContext structurePieceSerializationContext, CompoundTag tag) {
             super(TYPE, tag);
-            this.width = Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.readFromCompoundTag(tag);
-            this.height = Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.readFromCompoundTag(tag);
+            this.width = Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.readIntFromCompoundTag(tag);
+            this.height = Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.readIntFromCompoundTag(tag);
         }
 
         private static StructurePieceType register(String id, StructurePieceType type) {
@@ -206,14 +207,14 @@ public class EldritchRingStructure extends Structure {
 
         public EldritchRingStructurePiece(StructurePieceType type, CompoundTag nbt) {
             super(type, nbt);
-            this.width = Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.readFromCompoundTag(nbt);
-            this.height = Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.readFromCompoundTag(nbt);
+            this.width = Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.readIntFromCompoundTag(nbt);
+            this.height = Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.readIntFromCompoundTag(nbt);
         }
 
         @Override
         protected void addAdditionalSaveData(StructurePieceSerializationContext structurePieceSerializationContext, CompoundTag compoundTag) {
-            Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.writeToCompoundTag(compoundTag,this.width);
-            Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.writeToCompoundTag(compoundTag,this.height);
+            Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.writeIntToCompoundTag(compoundTag,this.width);
+            Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.writeIntToCompoundTag(compoundTag,this.height);
         }
 
         //TODO:impl blockEldritch and blockCosmeticSolid then back here
@@ -247,43 +248,40 @@ public class EldritchRingStructure extends Structure {
 
                         //center pillar
                         if (xOffset==0 && zOffset==0) {
-                            world.setBlock(x, j + 1, z, ConfigBlocks.blockEldritch, 0, 3);//TODO:Meta->Block
+                            level.setBlock(blockPos.above(1), ELDRITCH_ALTAR().defaultBlockState(), 3);//TODO:Meta->Block
                             level.setBlock(blockPos.offset(xOffset,0,zOffset), ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TILE().defaultBlockState(), 3);
                             int r = random.nextInt(10);
                             BlockEntity te = getExistingBlockEntity(level, blockPos.offset(xOffset, 1, zOffset));
-                            if (te instanceof TileEldritchAltar) {
-                                TileEldritchAltar altar = (TileEldritchAltar) te;
-                                switch (r) {
-                                    case 1:
-                                    case 2:
-                                    case 3:
-                                    case 4:
-                                        altar.setSpawner(true);
-                                        altar.setSpawnType((byte)0);
 
-                                        for(int a = 2; a < 6; ++a) {
-                                            Direction dir = Direction.getOrientation(a);
-                                            world.setBlock(x - dir.offsetX * 3, j + 1, z + dir.offsetZ * 3, ConfigBlocks.blockWoodenDevice, 8, 3);
-                                            BlockEntity probablyBanner = world.getBlockEntity(x - dir.offsetX * 3, j + 1, z + dir.offsetZ * 3);
-                                            if (probablyBanner instanceof TileBanner banner) {
-                                                banner.setFacing(bannerFaceFromDirection(a));
-                                            }
-                                        }
-                                    case 5:
-                                    case 6:
-                                    case 7:
-                                        altar.setSpawner(true);
-                                        altar.setSpawnType((byte)1);
-                                    default:
-                                        break;
-                                }
+                            switch (r) {
+                                case 1:
+                                case 2:
+                                case 3:
+                                case 4:
+                                    level.setBlock(blockPos.above(1),
+                                            ELDRITCH_ALTAR().defaultBlockState()
+                                                    .setValue(IS_SPAWNER,true)
+                                                    .setValue(SPAWNER_TYPE,0)
+                                            , 3);
+                                    for (var dir:Direction.Plane.HORIZONTAL) {
+                                        var pickPos = blockPos.offset(-dir.getStepX() *3, 1, dir.getStepZ() *3);
+                                        setCultistBanner(level,pickPos,dir);
+                                    }
+                                case 5:
+                                case 6:
+                                case 7:
+                                    level.setBlock(blockPos.above(1),
+                                            ELDRITCH_ALTAR().defaultBlockState()
+                                                    .setValue(IS_SPAWNER,true)
+                                                    .setValue(SPAWNER_TYPE,1)
+                                            , 3);
+                                default:
+                                    break;
                             }
-
-                            world.setBlock(x, j + 3, z, ConfigBlocks.blockEldritch, 1, 3);
-                            world.setBlock(x, j + 4, z, ConfigBlocks.blockEldritch, 2, 3);
-                            world.setBlock(x, j + 5, z, ConfigBlocks.blockEldritch, 2, 3);
-                            world.setBlock(x, j + 6, z, ConfigBlocks.blockEldritch, 2, 3);
-                            world.setBlock(x, j + 7, z, ConfigBlocks.blockEldritch, 2, 3);
+                            level.setBlock(blockPos.above(3),ELDRITCH_OBELISK_WITH_TICKER().defaultBlockState(), 3);
+                            for (int i=0;i<4;i++){
+                                level.setBlock(blockPos.above(4+i),ELDRITCH_OBELISK().defaultBlockState(), 3);
+                            }
                         }
                         else {
                             boolean xOnEdge = (xOffset == -3 || xOffset == 3);
@@ -307,7 +305,7 @@ public class EldritchRingStructure extends Structure {
                                         blockPos.offset(xOffset, 0, zOffset),
                                         ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TILE().defaultBlockState(), 3
                                 );
-                                world.setBlock(x, j + 1, z, ConfigBlocks.blockEldritch, 3, 3);
+                                level.setBlock(blockPos.above(), ELDRITCH_CAPSTONE().defaultBlockState(), 3);
                             }
                         }
                     }

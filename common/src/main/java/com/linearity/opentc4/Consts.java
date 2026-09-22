@@ -388,4 +388,7 @@ public class Consts {
     public static class CultistPortalEntityTagAccessors {
         public static final IntTagAccessor STAGE = new IntTagAccessor("stage");
     }
+    public static class EldritchGolemEntityTagAccessors {
+        public static final BooleanTagAccessor HEADLESS = new BooleanTagAccessor("headless");
+    }
 }

@@ -59,11 +59,13 @@ public interface AspectList<Asp extends Aspect>{
 	 * @return an array(a list now because Asp[] is not so fine) of all the aspects in this collection sorted by name
 	 * --from Hodgepodge
 	 */
+	@Unmodifiable
 	List<Asp> getAspectsSorted();
 
 	/**
 	 * @return an array(a list now because Asp[] is not so fine) of all the aspects in this collection sorted by amount
 	 */
+	@Unmodifiable
 	List<Asp> getAspectsSortedAmount();
 
 	/**

@@ -82,7 +82,7 @@ public class CultistLeaderEntity extends ThaumcraftBossEntity implements IChampi
     }
 
     public static @NotNull AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 125).add(Attributes.ATTACK_DAMAGE,5).add(Attributes.MOVEMENT_SPEED,0.32);
+        return ThaumcraftBossEntity.createAttributes().add(Attributes.MAX_HEALTH, 125).add(Attributes.ATTACK_DAMAGE,5).add(Attributes.MOVEMENT_SPEED,0.32);
     }
 
 

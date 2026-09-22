@@ -32,12 +32,10 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.common.entities.abstracts.ICustomSpecialDropEntity;
 import thaumcraft.common.items.ThaumcraftItemInstances;
-import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.List;
 
 import static com.linearity.opentc4.Consts.ThaumcraftBossTagAccessors.*;
-import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.CULTIST;
 import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.ELDRITCH;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.DMG_BUFF_UUIDS;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.HP_BUFF_UUIDS;

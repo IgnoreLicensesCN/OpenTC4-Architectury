@@ -10,7 +10,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.entities.monster.boss.EntityCultistPortal;
 
 public class PacketFXBlockArcS2C extends ThaumcraftBaseS2CMessage {
 

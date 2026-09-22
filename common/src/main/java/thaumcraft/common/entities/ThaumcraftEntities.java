@@ -24,6 +24,7 @@ import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
 import thaumcraft.common.entities.monster.WispEntity;
 import thaumcraft.common.entities.monster.boss.CultistLeaderEntity;
 import thaumcraft.common.entities.monster.boss.CultistPortalEntity;
+import thaumcraft.common.entities.monster.boss.EldritchGolemEntity;
 import thaumcraft.common.entities.monster.eldritch.EldritchCrabEntity;
 import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
 import thaumcraft.common.entities.monster.eldritch.InhabitedZombieEntity;
@@ -190,6 +191,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<CultistPortalEntity> CULTIST_PORTAL() {
             return Registry.SUPPLIER_CULTIST_PORTAL.get();
+        }
+        public static EntityType<EldritchGolemEntity> ELDRITCH_GOLEM() {
+            return Registry.SUPPLIER_ELDRITCH_GOLEM.get();
         }
     }
 
@@ -495,6 +499,14 @@ public class ThaumcraftEntities {
                         .fireImmune()
                         .build("cultist_portal")
         );
+        public static final RegistrySupplier<EntityType<EldritchGolemEntity>> SUPPLIER_ELDRITCH_GOLEM = ENTITIES.register("eldritch_golem",
+                () -> EntityType.Builder.<EldritchGolemEntity>of(EldritchGolemEntity::new, MobCategory.MISC)
+                        .sized(1.75F, 3.5F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("eldritch_golem")
+        );
     }
 
     public static class EntityTags {
@@ -543,6 +555,7 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.WISP(),WispEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST_LEADER(),CultistLeaderEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST_PORTAL(),CultistPortalEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_GOLEM(),EldritchGolemEntity.createAttributes().build());
 
     }
 

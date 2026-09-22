@@ -5,12 +5,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.monster.cultists.CultistClericEntity;
 import thaumcraft.common.entities.monster.cultists.CultistEntity;
 import thaumcraft.common.entities.monster.cultists.CultistKnightEntity;
+import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.worldgenerated.eldritch.EldritchAltarBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -167,20 +171,28 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
         }
     }
 
-    private void spawnEldritchGuardian() {
-        EntityEldritchGuardian eg = new EntityEldritchGuardian(this.level());
-        int i1 = this.xCoord + MathHelper.getRandomIntegerInRange(this.level().rand, 4, 10) * MathHelper.getRandomIntegerInRange(this.level().rand, -1, 1);
-        int j1 = this.yCoord + MathHelper.getRandomIntegerInRange(this.level().rand, 0, 3) * MathHelper.getRandomIntegerInRange(this.level().rand, -1, 1);
-        int k1 = this.zCoord + MathHelper.getRandomIntegerInRange(this.level().rand, 4, 10) * MathHelper.getRandomIntegerInRange(this.level().rand, -1, 1);
-        if (World.doesBlockHaveSolidTopSurface(this.level(), i1, j1 - 1, k1)) {
-            eg.setPosition(i1, j1, k1);
-            if (eg.getCanSpawnHere()) {
-                eg.onSpawnWithEgg(null);
-                eg.spawnExplosionParticle();
-                eg.setHomeArea(this.xCoord, this.yCoord, this.zCoord, 16);
-                this.level.addFreshEntity(eg);
+    protected void spawnEldritchGuardian() {
+        if (level == null){return;}
+        var eg = new EldritchGuardianEntity(this.level);
+        int i1 = MathHelper.getRandomIntegerInRange(this.level.random, 4, 10) * MathHelper.getRandomIntegerInRange(this.level.random, -1, 1);
+        int j1 = MathHelper.getRandomIntegerInRange(this.level.random, 0, 3) * MathHelper.getRandomIntegerInRange(this.level.random, -1, 1);
+        int k1 = MathHelper.getRandomIntegerInRange(this.level.random, 4, 10) * MathHelper.getRandomIntegerInRange(this.level.random, -1, 1);
+        var selfPos = getBlockPos();
+        var pickPos = selfPos.offset(i1, j1 - 1, k1);
+        if (level.getBlockState(pickPos).isFaceSturdy(level,pickPos,Direction.UP)) {
+            eg.setPos(pickPos.getCenter());
+            if (level instanceof ServerLevelAccessor serverLevelAccessor){
+                if (EldritchGuardianEntity.checkSpawnRules(
+                        ThaumcraftEntities.ThaumcraftEntityTypeInstances.ELDRITCH_GUARDIAN(),
+                        serverLevelAccessor,
+                        MobSpawnType.SPAWNER,
+                        pickPos,
+                        level.random
+                )){
+                    eg.restrictTo(getBlockPos(),16);
+                    this.level.addFreshEntity(eg);
+                }
             }
         }
-
     }
 }

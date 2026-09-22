@@ -50,7 +50,7 @@ public class CultistPortalEntity extends ThaumcraftBossEntity {
     }
 
     public static @NotNull AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ATTACK_DAMAGE, 0).add(Attributes.KNOCKBACK_RESISTANCE, 1);
+        return ThaumcraftBossEntity.createAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ATTACK_DAMAGE, 0).add(Attributes.KNOCKBACK_RESISTANCE, 1);
     }
 
     @Override
