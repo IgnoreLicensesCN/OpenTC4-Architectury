@@ -3,28 +3,29 @@ package thaumcraft.common.entities;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class EntityPermanentItem extends EntitySpecialItem {
-   public EntityPermanentItem(Level par1World) {
-      super(par1World);
-   }
-
-   public EntityPermanentItem(Level par1World, double par2, double par4, double par6, ItemStack par8ItemStack) {
-      super(par1World);
-      this.setSize(0.25F, 0.25F);
-      this.yOffset = this.height / 2.0F;
-      this.setPosition(par2, par4, par6);
-      this.setEntityItemStack(par8ItemStack);
-      this.rotationYaw = (float)(Math.random() * (double)360.0F);
-      this.motionX = (float)(Math.random() * (double)0.2F - (double)0.1F);
-      this.motionY = 0.2F;
-      this.motionZ = (float)(Math.random() * (double)0.2F - (double)0.1F);
-   }
-
-   public void onUpdate() {
-      super.onUpdate();
-      if (this.age + 5 >= this.lifespan) {
-         this.age = 0;
-      }
-
-   }
+@Deprecated(forRemoval = true,since = "i mean we already have a way in modern MC")
+public class EntityPermanentItem /*extends EntitySpecialItem*/ {
+//   public EntityPermanentItem(Level par1World) {
+//      super(par1World);
+//   }
+//
+//   public EntityPermanentItem(Level par1World, double par2, double par4, double par6, ItemStack par8ItemStack) {
+//      super(par1World);
+//      this.setSize(0.25F, 0.25F);
+//      this.yOffset = this.height / 2.0F;
+//      this.setPosition(par2, par4, par6);
+//      this.setEntityItemStack(par8ItemStack);
+//      this.rotationYaw = (float)(Math.random() * (double)360.0F);
+//      this.motionX = (float)(Math.random() * (double)0.2F - (double)0.1F);
+//      this.motionY = 0.2F;
+//      this.motionZ = (float)(Math.random() * (double)0.2F - (double)0.1F);
+//   }
+//
+//   public void onUpdate() {
+//      super.onUpdate();
+//      if (this.age + 5 >= this.lifespan) {
+//         this.age = 0;
+//      }
+//
+//   }
 }

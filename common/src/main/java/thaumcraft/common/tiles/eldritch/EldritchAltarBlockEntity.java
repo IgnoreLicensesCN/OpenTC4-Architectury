@@ -93,7 +93,11 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
             };
 
             var cleric = new CultistClericEntity(this.level);
+
             var pickPos = altarPos.offset(xx,-1,zz);
+            if (this.level instanceof ServerLevelAccessor serverLevelAccessor){
+                cleric.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(pickPos.above()), MobSpawnType.SPAWNER,null,null);
+            }
             if (level.getBlockState(pickPos).isFaceSturdy(level,pickPos, Direction.UP)) {
                 cleric.setPos(pickPos.above().getCenter());
                 var bb = cleric.getBoundingBox();
@@ -164,6 +168,10 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
                             );
                         }
                         knight.restrictTo(selfPos, 16);
+
+                        if (this.level instanceof ServerLevelAccessor serverLevelAccessor){
+                            knight.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(pickPos), MobSpawnType.SPAWNER,null,null);
+                        }
                         this.level.addFreshEntity(knight);
                     }
                 }

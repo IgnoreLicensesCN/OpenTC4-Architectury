@@ -6,18 +6,17 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import thaumcraft.api.internal.WeightedRandomCollection;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.entities.monster.boss.CultistPortalEntity;
-import thaumcraft.common.entities.monster.boss.EldritchGolemEntity;
-import thaumcraft.common.entities.monster.boss.EntityEldritchWarden;
-import thaumcraft.common.entities.monster.boss.EntityTaintacleGiant;
+import thaumcraft.common.entities.monster.boss.*;
 import thaumcraft.common.entities.monster.tainted.TaintacleEntity;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.EntityUtils;
@@ -158,6 +157,10 @@ public class ThaumcraftEldritchBossProvider {
             boss.setPos(x + 0.5F, y + 3, z + 0.5F);
             boss.setXRot(f);
             boss.setYRot(f1);
+
+            if (level instanceof ServerLevelAccessor serverLevelAccessor){
+                boss.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(boss.blockPosition()), MobSpawnType.SPAWNER,null,null);
+            }
             level.addFreshEntity(boss);
         }
 
@@ -194,6 +197,9 @@ public class ThaumcraftEldritchBossProvider {
 
             var boss = new CultistPortalEntity(level);
             boss.setPos(x + 0.5F, y + 2, z + 0.5F);
+            if (level instanceof ServerLevelAccessor serverLevelAccessor){
+                boss.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(boss.blockPosition()), MobSpawnType.SPAWNER,null,null);
+            }
             level.addFreshEntity(boss);
         }
 
@@ -263,7 +269,7 @@ public class ThaumcraftEldritchBossProvider {
 
             genStairPedestal(level,x2, y, z2);
 
-            var boss = new EntityEldritchWarden(level);
+            var boss = new EldritchWardenEntity(level);
             double d0 = (double)posX - ((double)x2 + (double)0.5F);
             double d1 = (float)posY - ((float)(y + 3) + boss.getEyeHeight());
             double d2 = (double)posZ - ((double)z2 + (double)0.5F);

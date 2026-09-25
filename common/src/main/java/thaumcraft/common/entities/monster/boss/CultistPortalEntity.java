@@ -9,11 +9,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ThaumcraftSounds;
@@ -50,7 +52,7 @@ public class CultistPortalEntity extends ThaumcraftBossEntity {
     }
 
     public static @NotNull AttributeSupplier.Builder createAttributes() {
-        return ThaumcraftBossEntity.createAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ATTACK_DAMAGE, 0).add(Attributes.KNOCKBACK_RESISTANCE, 1);
+        return ThaumcraftBossEntity.createThaumcraftBossAttributes().add(Attributes.MAX_HEALTH, 500).add(Attributes.ATTACK_DAMAGE, 0).add(Attributes.KNOCKBACK_RESISTANCE, 1);
     }
 
     @Override
@@ -162,6 +164,9 @@ public class CultistPortalEntity extends ThaumcraftBossEntity {
             );
         }
         cultist.restrictTo(blockPosition(), 32);
+        if (this.level() instanceof ServerLevelAccessor serverLevelAccessor){
+            cultist.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(blockPosition()), MobSpawnType.SPAWNER,null,null);
+        }
         this.level().addFreshEntity(cultist);
         cultist.playSound(ThaumcraftSounds.WAND_FAIL, 1.0F, 1.0F);
         if (this.stage > 12) {

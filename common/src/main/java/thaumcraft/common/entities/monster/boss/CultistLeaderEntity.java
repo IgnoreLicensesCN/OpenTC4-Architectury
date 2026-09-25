@@ -1,6 +1,5 @@
 package thaumcraft.common.entities.monster.boss;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -24,10 +23,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.ThaumcraftEntities;
@@ -82,7 +79,7 @@ public class CultistLeaderEntity extends ThaumcraftBossEntity implements IChampi
     }
 
     public static @NotNull AttributeSupplier.Builder createAttributes() {
-        return ThaumcraftBossEntity.createAttributes().add(Attributes.MAX_HEALTH, 125).add(Attributes.ATTACK_DAMAGE,5).add(Attributes.MOVEMENT_SPEED,0.32);
+        return ThaumcraftBossEntity.createThaumcraftBossAttributes().add(Attributes.MAX_HEALTH, 125).add(Attributes.ATTACK_DAMAGE,5).add(Attributes.MOVEMENT_SPEED,0.32);
     }
 
 
@@ -93,17 +90,8 @@ public class CultistLeaderEntity extends ThaumcraftBossEntity implements IChampi
                         "entity.Thaumcraft.CultistLeader.name",
                         Component.translatable("thaumcraft.boss.name.cultist_leader." + random.nextInt(NAME_COUNT)),
                         modifier.getChampionModifierNameLocalized()
-                ));
-    }
-
-    @Override
-    public void setCustomName(@Nullable Component arg) {
-        super.setCustomName(arg);
-    }
-
-    @Override
-    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
-        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+                )
+        );
     }
 
     @Override

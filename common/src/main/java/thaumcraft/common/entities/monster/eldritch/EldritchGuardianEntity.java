@@ -38,6 +38,7 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.DoorBreakingMonster;
 import thaumcraft.common.entities.ai.goals.RangedAndMeleeAttackGoal;
+import thaumcraft.common.entities.monster.boss.EldritchWardenEntity;
 import thaumcraft.common.entities.monster.cultists.CultistEntity;
 import thaumcraft.common.entities.projectile.EldritchOrbEntity;
 import thaumcraft.common.lib.network.fx.PacketFXSonicS2C;
@@ -182,8 +183,7 @@ public class EldritchGuardianEntity extends DoorBreakingMonster implements Range
         public float armLiftL = 0.0F;
         public float armLiftR = 0.0F;
 
-        public static void clientTick(EldritchGuardianEntity guardian){
-            var ctx = ((EldritchGuardianEntityClientAccessor)guardian).opentc4$getClientTickContext();
+        public static void clientTick(ClientTickContext ctx,LivingEntity guardian) {
             if (ctx.armLiftL > 0.0F) {
                 ctx.armLiftL -= 0.05F;
             }
@@ -200,16 +200,46 @@ public class EldritchGuardianEntity extends DoorBreakingMonster implements Range
                         x, (float)(guardian.getY() + 0.22 * guardian.getBbHeight()),
                         z,
                         guardian);
+                if (guardian instanceof EldritchWardenEntity warden){
+                    float he = Math.max(1.0F, warden.getBbHeight() * ((float)(150 - warden.invulnerableDuration) / 150.0F));
+
+                    for(int a = 0; a < 33; ++a) {
+                        ClientFXUtils.smokeSpiral(clientLevel, warden.getX(), warden.getEyeY(), warden.getZ(), he, warden.getRandom().nextInt(360), MathHelper.floor_double(warden.getBoundingBox().minY) - 1, 2232623);
+                    }
+                }
             }
         }
 
+        public static void clientTick(EldritchGuardianEntity guardian){
+            var ctx = ((EldritchGuardianEntityClientAccessor)guardian).opentc4$getClientTickContext();
+            clientTick(ctx,guardian);
+        }
+        public static void clientTick(EldritchWardenEntity warden){
+            var ctx = ((EldritchGuardianEntityClientAccessor)warden).opentc4$getClientTickContext();
+            clientTick(ctx,warden);
+        }
+
+        public static void setArmLiftL(ClientTickContext ctx,float armLiftL){
+            ctx.armLiftL = armLiftL;
+        }
+        public static void setArmLiftR(ClientTickContext ctx, float armLiftR){
+            ctx.armLiftR = armLiftR;
+        }
         public static void setArmLiftL(EldritchGuardianEntity guardian,float armLiftL){
             var ctx = ((EldritchGuardianEntityClientAccessor)guardian).opentc4$getClientTickContext();
-            ctx.armLiftL = armLiftL;
+            setArmLiftL(ctx,armLiftL);
         }
         public static void setArmLiftR(EldritchGuardianEntity guardian, float armLiftR){
             var ctx = ((EldritchGuardianEntityClientAccessor)guardian).opentc4$getClientTickContext();
-            ctx.armLiftR = armLiftR;
+            setArmLiftR(ctx,armLiftR);
+        }
+        public static void setArmLiftL(EldritchWardenEntity guardian,float armLiftL){
+            var ctx = ((EldritchGuardianEntityClientAccessor)guardian).opentc4$getClientTickContext();
+            setArmLiftL(ctx,armLiftL);
+        }
+        public static void setArmLiftR(EldritchWardenEntity guardian, float armLiftR){
+            var ctx = ((EldritchGuardianEntityClientAccessor)guardian).opentc4$getClientTickContext();
+            setArmLiftR(ctx,armLiftR);
         }
     }
 

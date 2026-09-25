@@ -8,6 +8,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.server.level.ServerPlayer;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.ServerLevelAccessor;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
@@ -86,6 +88,10 @@ public class WarpEvents {
                     && !level.containsAnyLiquid(livingAABB)) {
                eg.setTarget(living);
 //               eg.setAttackTarget(living);
+
+               if (level instanceof ServerLevelAccessor serverLevelAccessor){
+                  eg.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(eg.blockPosition()), MobSpawnType.EVENT,null,null);
+               }
                level.addFreshEntity(eg);
                break;
             }

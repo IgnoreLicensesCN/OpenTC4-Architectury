@@ -56,10 +56,12 @@ public class EldritchGolemEntity extends ThaumcraftBossEntity implements IChampi
     }
     public EldritchGolemEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
+        this.invulnerableTicksLimit = 100;
+        this.setInvulnerableTicks(this.invulnerableTicksLimit);
     }
 
     public static @NotNull AttributeSupplier.Builder createAttributes() {
-        return ThaumcraftBossEntity.createAttributes()
+        return ThaumcraftBossEntity.createThaumcraftBossAttributes()
                 .add(Attributes.MAX_HEALTH, 250)
                 .add(Attributes.ATTACK_DAMAGE,10)
                 .add(Attributes.MOVEMENT_SPEED,0.3)
@@ -161,14 +163,6 @@ public class EldritchGolemEntity extends ThaumcraftBossEntity implements IChampi
     }
 
     @Override
-    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
-        this.invulnerableTicksLimit = 100;
-        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
-    }
-
-
-
-    @Override
     public boolean canSpawnSprintParticle() {
         return this.getDeltaMovement().horizontalDistanceSqr() > 2.5000003E-7F && this.random.nextInt(5) == 0;
     }
@@ -211,7 +205,7 @@ public class EldritchGolemEntity extends ThaumcraftBossEntity implements IChampi
     public boolean hurt(DamageSource source, float damage) {
         if (!level().isClientSide && damage > this.getHealth() && !this.isHeadless()) {
             this.setHeadless(true);
-            this.invulnerableTicksLimit = 100;
+            setInvulnerableTicks(100);
             var posX = this.getX();
             var posY = this.getY();
             var posZ = this.getZ();
@@ -249,7 +243,7 @@ public class EldritchGolemEntity extends ThaumcraftBossEntity implements IChampi
             this.attackTimer = 10;
             this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
         } else if (p_70103_1_ == 18) {
-            this.invulnerableTicksLimit = 150;
+            this.setInvulnerableTicks(150);
         } else if (p_70103_1_ == 19) {
             if (this.arcing == 0) {
                 float radius = 2.0F + this.random.nextFloat() * 2.0F;
@@ -281,11 +275,11 @@ public class EldritchGolemEntity extends ThaumcraftBossEntity implements IChampi
     public void tick() {
         super.tick();
 
-        if (this.invulnerableTicksLimit == 150){
+        if (this.getInvulnerableTicks() == invulnerableTicksLimit){
             this.level().broadcastEntityEvent(this, (byte)18);
         }
 
-        if (this.invulnerableTicksLimit > 0) {
+        if (this.getInvulnerableTicks() > 0) {
             this.heal(2);
         }
         super.tick();

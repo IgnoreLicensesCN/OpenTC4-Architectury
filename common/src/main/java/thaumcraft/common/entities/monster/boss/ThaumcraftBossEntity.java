@@ -46,20 +46,21 @@ public abstract class ThaumcraftBossEntity extends Monster implements ICustomSpe
     protected int invulnerableTicksLimit = 220;
     private static final EntityDataAccessor<Integer> DATA_ID_INV = SynchedEntityData.defineId(ThaumcraftBossEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_ID_ANGER = SynchedEntityData.defineId(ThaumcraftBossEntity.class, EntityDataSerializers.INT);
-    private final ServerBossEvent bossEvent = (ServerBossEvent) new ServerBossEvent(
-            this.getDisplayName(), BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS
-    )
-            .setDarkenScreen(true);
 
-    public static AttributeSupplier.Builder createAttributes() {
+    public static AttributeSupplier.Builder createThaumcraftBossAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.95)
                 .add(Attributes.FOLLOW_RANGE, 40.0);
     }
 
+    protected int getDefaultRestrictionSize(){
+        return 24;
+    }
+
     public ThaumcraftBossEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 50;
+        this.setInvulnerableTicks(this.invulnerableTicksLimit);
     }
 
     @Override
@@ -85,6 +86,9 @@ public abstract class ThaumcraftBossEntity extends Monster implements ICustomSpe
         this.entityData.set(DATA_ID_INV, i);
     }
 
+    private final ServerBossEvent bossEvent = (ServerBossEvent) new ServerBossEvent(
+            this.getDisplayName(), BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS
+    ).setDarkenScreen(true);
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
@@ -107,9 +111,9 @@ public abstract class ThaumcraftBossEntity extends Monster implements ICustomSpe
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         if (compoundTag != null) {
             HOME_POS.writeToCompoundTag(compoundTag, blockPosition());
-            HOME_SIZE.writeIntToCompoundTag(compoundTag, 24);
+            HOME_SIZE.writeIntToCompoundTag(compoundTag, getDefaultRestrictionSize());
         } else {
-            restrictTo(blockPosition(), 24);
+            restrictTo(blockPosition(), getDefaultRestrictionSize());
         }
         return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
@@ -331,4 +335,6 @@ public abstract class ThaumcraftBossEntity extends Monster implements ICustomSpe
     public boolean isAlliedTo(Entity entity) {
         return super.isAlliedTo(entity) || entity.getType().is(ELDRITCH);
     }
+
+
 }

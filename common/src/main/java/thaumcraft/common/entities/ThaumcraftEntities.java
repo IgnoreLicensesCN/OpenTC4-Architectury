@@ -25,6 +25,7 @@ import thaumcraft.common.entities.monster.WispEntity;
 import thaumcraft.common.entities.monster.boss.CultistLeaderEntity;
 import thaumcraft.common.entities.monster.boss.CultistPortalEntity;
 import thaumcraft.common.entities.monster.boss.EldritchGolemEntity;
+import thaumcraft.common.entities.monster.boss.EldritchWardenEntity;
 import thaumcraft.common.entities.monster.eldritch.EldritchCrabEntity;
 import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
 import thaumcraft.common.entities.monster.eldritch.InhabitedZombieEntity;
@@ -194,6 +195,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<EldritchGolemEntity> ELDRITCH_GOLEM() {
             return Registry.SUPPLIER_ELDRITCH_GOLEM.get();
+        }
+        public static EntityType<EldritchWardenEntity> ELDRITCH_WARDEN() {
+            return Registry.SUPPLIER_ELDRITCH_WARDEN.get();
         }
     }
 
@@ -507,6 +511,14 @@ public class ThaumcraftEntities {
                         .fireImmune()
                         .build("eldritch_golem")
         );
+        public static final RegistrySupplier<EntityType<EldritchWardenEntity>> SUPPLIER_ELDRITCH_WARDEN = ENTITIES.register("eldritch_warden",
+                () -> EntityType.Builder.<EldritchWardenEntity>of(EldritchWardenEntity::new, MobCategory.MISC)
+                        .sized(1.5F, 3.5F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("eldritch_warden")
+        );
     }
 
     public static class EntityTags {
@@ -556,6 +568,7 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST_LEADER(),CultistLeaderEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST_PORTAL(),CultistPortalEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_GOLEM(),EldritchGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_WARDEN(),EldritchWardenEntity.createAttributes().build());
 
     }
 

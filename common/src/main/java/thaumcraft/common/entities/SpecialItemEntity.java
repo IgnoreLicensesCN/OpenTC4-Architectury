@@ -15,7 +15,7 @@ import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityType
 //TODO:Render
 public class SpecialItemEntity extends ItemEntity {
     @Override
-    public EntityType<?> getType() {
+    public @NotNull EntityType<?> getType() {
         return super.getType();
     }
 

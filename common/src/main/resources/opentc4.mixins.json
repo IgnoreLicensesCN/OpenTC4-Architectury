@@ -20,6 +20,7 @@
     "client.clientbe.InfusionMatrixBlockEntityClientMixin",
     "client.clientbe.VisNetRelayBlockEntityClientMixin",
     "client.entity.EldritchGuardianEntityMixin",
+    "client.entity.EldritchWardenEntityMixin",
     "client.entity.TaintacleEntityMixin",
     "client.entity.TaintedSwarmEntityMixin",
     "client.entity.TaintSporeEntityMixin",

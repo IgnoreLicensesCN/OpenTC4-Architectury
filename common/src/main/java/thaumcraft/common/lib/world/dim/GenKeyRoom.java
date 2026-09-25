@@ -1,17 +1,20 @@
 package thaumcraft.common.lib.world.dim;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.item.ItemStack;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.entities.EntityPermanentItem;
-import thaumcraft.common.entities.monster.EntityEldritchGuardian;
+import net.minecraft.world.phys.Vec3;
+import thaumcraft.common.entities.SpecialItemEntity;
+import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 import java.util.Random;
+
+import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_CAPSTONE;
 
 public class GenKeyRoom extends GenCommon {
    static void generateRoom(Level world, Random random, int cx, int cz, int y, Cell cell) {
@@ -88,27 +91,26 @@ public class GenKeyRoom extends GenCommon {
       }
 
       GenCommon.generateConnections(world, random, cx, cz, y, cell, 3, true);
-      world.setBlock(x + 8, y + 2, z + 8, ConfigBlocks.blockEldritch, 3, 3);
-      EntityPermanentItem entityitem = new EntityPermanentItem(world, (double)x + (double)8.5F, (double)y + (double)3.5F, (double)z + (double)8.5F, new ItemStack(ThaumcraftItemInstances.RUNED_TABLET()));
-      entityitem.motionY = 0.0F;
-      entityitem.motionX = 0.0F;
-      entityitem.motionZ = 0.0F;
-      world.spawnEntityInWorld(entityitem);
+      world.setBlockAndUpdate(new BlockPos(x + 8, y + 2, z + 8), ELDRITCH_CAPSTONE().defaultBlockState());
+      var entityitem = new SpecialItemEntity(world, (double)x + (double)8.5F, (double)y + (double)3.5F, (double)z + (double)8.5F, new ItemStack(ThaumcraftItemInstances.RUNED_TABLET()));
+      entityitem.setUnlimitedLifetime();
+      entityitem.setDeltaMovement(Vec3.ZERO);
+      world.addFreshEntity(entityitem);
       int zz = 2 + (world.getDifficulty() == Difficulty.HARD ? 2 : (world.getDifficulty() == Difficulty.NORMAL ? 1 : 0));
 
       for(int qq = 0; qq < zz; ++qq) {
-         EntityEldritchGuardian eg = new EntityEldritchGuardian(world);
+         var eg = new EldritchGuardianEntity(world);
          double i1 = (double)x + (double)8.5F + (double)(MathHelper.getRandomIntegerInRange(world.getRandom(), 1, 3) * MathHelper.getRandomIntegerInRange(world.getRandom(), -1, 1));
          double j1 = y + 2;
          double k1 = (double)z + (double)8.5F + (double)(MathHelper.getRandomIntegerInRange(world.getRandom(), 1, 3) * MathHelper.getRandomIntegerInRange(world.getRandom(), -1, 1));
-         eg.setPosition(i1, j1, k1);
-         eg.onSpawnWithEgg(null);
-         eg.setHomeArea(x + 8, y + 2, z + 8, 16);
+         eg.setPos(i1, j1, k1);
+//         eg.onSpawnWithEgg(null);
+         eg.restrictTo(new BlockPos(x + 8, y + 2, z + 8), 16);
          if (qq == 0 && zz >= 4) {
             EntityUtils.makeChampion(eg, true);
          }
 
-         world.spawnEntityInWorld(eg);
+         world.addFreshEntity(eg);
       }
 
    }
