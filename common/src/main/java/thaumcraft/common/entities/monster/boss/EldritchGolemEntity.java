@@ -10,7 +10,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -26,11 +25,9 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.ThaumcraftEntities;
@@ -57,7 +54,7 @@ public class EldritchGolemEntity extends ThaumcraftBossEntity implements IChampi
     public EldritchGolemEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         this.invulnerableTicksLimit = 100;
-        this.setInvulnerableTicks(this.invulnerableTicksLimit);
+        this.thaumcraftBoss$setInvulnerableTicks(this.invulnerableTicksLimit);
     }
 
     public static @NotNull AttributeSupplier.Builder createAttributes() {
@@ -205,7 +202,7 @@ public class EldritchGolemEntity extends ThaumcraftBossEntity implements IChampi
     public boolean hurt(DamageSource source, float damage) {
         if (!level().isClientSide && damage > this.getHealth() && !this.isHeadless()) {
             this.setHeadless(true);
-            setInvulnerableTicks(100);
+            thaumcraftBoss$setInvulnerableTicks(100);
             var posX = this.getX();
             var posY = this.getY();
             var posZ = this.getZ();
@@ -243,7 +240,7 @@ public class EldritchGolemEntity extends ThaumcraftBossEntity implements IChampi
             this.attackTimer = 10;
             this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
         } else if (p_70103_1_ == 18) {
-            this.setInvulnerableTicks(150);
+            this.thaumcraftBoss$setInvulnerableTicks(150);
         } else if (p_70103_1_ == 19) {
             if (this.arcing == 0) {
                 float radius = 2.0F + this.random.nextFloat() * 2.0F;
@@ -275,11 +272,11 @@ public class EldritchGolemEntity extends ThaumcraftBossEntity implements IChampi
     public void tick() {
         super.tick();
 
-        if (this.getInvulnerableTicks() == invulnerableTicksLimit){
+        if (this.thaumcraftBoss$getInvulnerableTicks() == invulnerableTicksLimit){
             this.level().broadcastEntityEvent(this, (byte)18);
         }
 
-        if (this.getInvulnerableTicks() > 0) {
+        if (this.thaumcraftBoss$getInvulnerableTicks() > 0) {
             this.heal(2);
         }
         super.tick();

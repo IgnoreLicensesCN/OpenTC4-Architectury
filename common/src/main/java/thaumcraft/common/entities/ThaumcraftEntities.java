@@ -22,10 +22,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
 import thaumcraft.common.entities.monster.WispEntity;
-import thaumcraft.common.entities.monster.boss.CultistLeaderEntity;
-import thaumcraft.common.entities.monster.boss.CultistPortalEntity;
-import thaumcraft.common.entities.monster.boss.EldritchGolemEntity;
-import thaumcraft.common.entities.monster.boss.EldritchWardenEntity;
+import thaumcraft.common.entities.monster.boss.*;
 import thaumcraft.common.entities.monster.eldritch.EldritchCrabEntity;
 import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
 import thaumcraft.common.entities.monster.eldritch.InhabitedZombieEntity;
@@ -198,6 +195,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<EldritchWardenEntity> ELDRITCH_WARDEN() {
             return Registry.SUPPLIER_ELDRITCH_WARDEN.get();
+        }
+        public static EntityType<GiantTaintacleEntity> GIANT_TAINTACLE() {
+            return Registry.SUPPLIER_GIANT_TAINTACLE.get();
         }
     }
 
@@ -519,6 +519,14 @@ public class ThaumcraftEntities {
                         .fireImmune()
                         .build("eldritch_warden")
         );
+        public static final RegistrySupplier<EntityType<GiantTaintacleEntity>> SUPPLIER_GIANT_TAINTACLE = ENTITIES.register("giant_taintacle",
+                () -> EntityType.Builder.<GiantTaintacleEntity>of(GiantTaintacleEntity::new, MobCategory.MISC)
+                        .sized(1.1F, 6)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("giant_taintacle")
+        );
     }
 
     public static class EntityTags {
@@ -569,6 +577,7 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.CULTIST_PORTAL(),CultistPortalEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_GOLEM(),EldritchGolemEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_WARDEN(),EldritchWardenEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.GIANT_TAINTACLE(),GiantTaintacleEntity.createAttributes().build());
 
     }
 

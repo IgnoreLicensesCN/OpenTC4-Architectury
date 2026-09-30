@@ -87,10 +87,9 @@ public class ThaumcraftEldritchBossProvider {
                 if (level == null) {
                     return;
                 }
-                var pos = center;
                 for(int i = 0; i < level.players().size(); ++i) {
                     Player ep = level.players().get(i);
-                    if (ep.distanceToSqr(pos.getX(),pos.getY(),pos.getZ()) < (double)300.0F) {
+                    if (ep.distanceToSqr(center.getX(), center.getY(), center.getZ()) < (double)300.0F) {
                         ep.sendSystemMessage(toNotify);
                     }
                 }
@@ -218,23 +217,25 @@ public class ThaumcraftEldritchBossProvider {
             int z = cz * 16 + 16;
             int x2 = x;
             int z2 = z;
-            switch (exit) {
-                case 2:
+            z2 = switch (exit) {
+                case 2 -> {
                     x2 = x + 8;
-                    z2 = z + 8;
-                    break;
-                case 3:
+                    yield z + 8;
+                }
+                case 3 -> {
                     x2 = x - 8;
-                    z2 = z + 8;
-                    break;
-                case 4:
+                    yield z + 8;
+                }
+                case 4 -> {
                     x2 = x + 8;
-                    z2 = z - 8;
-                    break;
-                case 5:
+                    yield z - 8;
+                }
+                case 5 -> {
                     x2 = x - 8;
-                    z2 = z - 8;
-            }
+                    yield z - 8;
+                }
+                default -> z2;
+            };
 
             GenCommon.genObelisk(level, x2, y + 4, z);
             GenCommon.genObelisk(level, x, y + 4, z2);
@@ -331,26 +332,31 @@ public class ThaumcraftEldritchBossProvider {
                 }
             }
 
-            var boss1 = level.getDifficulty() != Difficulty.HARD ? new TaintacleEntity(level) : new EntityTaintacleGiant(level);
+            var boss1 = level.getDifficulty() != Difficulty.HARD ? new TaintacleEntity(level) : new GiantTaintacleEntity(level);
             boss1.setPos(x + 0.5F, y + 3, z + 0.5F);
             EntityUtils.makeChampion(boss1, true);
             level.addFreshEntity(boss1);
-            var boss2 = level.random.nextBoolean() ? new TaintacleEntity(level) : new EntityTaintacleGiant(level);
+
+            var boss2 = level.random.nextBoolean() ? new TaintacleEntity(level) : new GiantTaintacleEntity(level);
             boss2.setPos(x + 3.5F, y + 3, z + 3.5F);
             EntityUtils.makeChampion(boss2, true);
             level.addFreshEntity(boss2);
-            var boss3 = boss2 instanceof EntityTaintacleGiant ? new TaintacleEntity(level) : new EntityTaintacleGiant(level);
+
+            var boss3 = boss2 instanceof GiantTaintacleEntity ? new TaintacleEntity(level) : new GiantTaintacleEntity(level);
             boss3.setPos(x - 2.5F, y + 3, z + 3.5F);
             EntityUtils.makeChampion(boss3, true);
             level.addFreshEntity(boss3);
-            var boss4 = level.random.nextBoolean() ? new TaintacleEntity(level) : new EntityTaintacleGiant(level);
+
+            var boss4 = level.random.nextBoolean() ? new TaintacleEntity(level) : new GiantTaintacleEntity(level);
             boss4.setPos(x + 3.5F, y + 3, z - 2.5F);
             EntityUtils.makeChampion(boss4, true);
             level.addFreshEntity(boss4);
-            var boss5 = boss4 instanceof EntityTaintacleGiant ? new TaintacleEntity(level) : new EntityTaintacleGiant(level);
+
+            var boss5 = boss4 instanceof GiantTaintacleEntity ? new TaintacleEntity(level) : new GiantTaintacleEntity(level);
             boss5.setPos(x - 2.5F, y + 3, z - 2.5F);
             EntityUtils.makeChampion(boss5, true);
             level.addFreshEntity(boss5);
+
         }
     }
 }

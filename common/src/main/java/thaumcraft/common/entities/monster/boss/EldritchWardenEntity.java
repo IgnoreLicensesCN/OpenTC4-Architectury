@@ -59,7 +59,7 @@ public class EldritchWardenEntity extends ThaumcraftBossEntity implements IChamp
     public EldritchWardenEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         this.invulnerableTicksLimit = 150;
-        this.setInvulnerableTicks(this.invulnerableTicksLimit);
+        this.thaumcraftBoss$setInvulnerableTicks(this.invulnerableTicksLimit);
     }
 
     @Override
@@ -251,7 +251,7 @@ public class EldritchWardenEntity extends ThaumcraftBossEntity implements IChamp
     @Override
     public void tick() {
         super.tick();
-        if (this.getInvulnerableTicks() == invulnerableTicksLimit){
+        if (this.thaumcraftBoss$getInvulnerableTicks() == invulnerableTicksLimit){
             this.level().broadcastEntityEvent(this, (byte) 18);
         }
         var level = this.level();

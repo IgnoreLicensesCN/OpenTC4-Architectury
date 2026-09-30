@@ -16,28 +16,57 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.entities.abstracts.ICustomSpecialDropEntity;
+import org.jetbrains.annotations.Unmodifiable;
+import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.boss.IThaumcraftBossEntity;
+import thaumcraft.common.entities.monster.tainted.TaintacleEntity;
+import thaumcraft.common.lib.utils.EntityUtils;
 
-//TODO:Tag with eldritch mob
-public abstract class ThaumcraftBossEntity extends Monster implements ICustomSpecialDropEntity, IThaumcraftBossEntity {
+import java.util.List;
 
+public class GiantTaintacleEntity extends TaintacleEntity implements IThaumcraftBossEntity {
 
-    public static AttributeSupplier.Builder createThaumcraftBossAttributes() {
-        return Monster.createMonsterAttributes()
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.95)
-                .add(Attributes.FOLLOW_RANGE, 40.0);
+    public GiantTaintacleEntity(Level worldIn) {
+        this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.GIANT_TAINTACLE(),worldIn);
     }
-    //search "#thaumcraft boss part" if modify below
+
+    public GiantTaintacleEntity(EntityType<? extends TaintacleEntity> entityType, Level level) {
+        super(entityType, level);
+        this.xpReward = 50;
+        this.thaumcraftBoss$setInvulnerableTicks(this.invulnerableTicksLimit);
+    }
+
+    public static @NotNull AttributeSupplier.Builder createAttributes() {
+        return TaintacleEntity.createAttributes()
+                .add(Attributes.MAX_HEALTH, 125)
+                .add(Attributes.ATTACK_DAMAGE,9);
+    }
+
+    @Override
+    public void thaumcraftBoss$beforeFinalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
+        IThaumcraftBossEntity.super.thaumcraftBoss$beforeFinalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
+        EntityUtils.makeChampion(this,true);
+    }
+
+    @Override
+    public @Unmodifiable List<ItemStack> generateSpecialDrops() {
+        var pos = position();
+        if (!EntityUtils.getEntitiesInRange(this.level(), pos.x, pos.y,pos.z, this, GiantTaintacleEntity.class, 48.0F).isEmpty()){
+            return List.of();
+        }
+        return IThaumcraftBossEntity.super.generateSpecialDrops();
+    }
+
     //#thaumcraft boss part
     protected Int2FloatMap aggro = new Int2FloatOpenHashMap();
     protected int invulnerableTicksLimit = 220;
-    private static final EntityDataAccessor<Integer> DATA_ID_INV = SynchedEntityData.defineId(ThaumcraftBossEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DATA_ID_ANGER = SynchedEntityData.defineId(ThaumcraftBossEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_ID_INV = SynchedEntityData.defineId(GiantTaintacleEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_ID_ANGER = SynchedEntityData.defineId(GiantTaintacleEntity.class, EntityDataSerializers.INT);
 
     public EntityDataAccessor<Integer> thaumcraftBoss$getAngerDataID() {
         return DATA_ID_ANGER;
@@ -51,19 +80,11 @@ public abstract class ThaumcraftBossEntity extends Monster implements ICustomSpe
     public Int2FloatMap thaumcraftBoss$getAggroRecords() {
         return aggro;
     }
-
-    public ThaumcraftBossEntity(EntityType<? extends Monster> entityType, Level level) {
-        super(entityType, level);
-        this.xpReward = 50;
-        this.thaumcraftBoss$setInvulnerableTicks(this.invulnerableTicksLimit);
-    }
-
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         IThaumcraftBossEntity.super.thaumcraftBoss$defineSynchedData();
     }
-
 
     protected final ServerBossEvent bossEvent = (ServerBossEvent) new ServerBossEvent(
             this.getDisplayName(), BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS
@@ -120,11 +141,6 @@ public abstract class ThaumcraftBossEntity extends Monster implements ICustomSpe
         return invulnerableTicksLimit;
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        IThaumcraftBossEntity.super.thaumcraftBoss$tick();
-    }
 
     @Override
     public void aiStep() {
@@ -174,6 +190,4 @@ public abstract class ThaumcraftBossEntity extends Monster implements ICustomSpe
     public boolean isAlliedTo(Entity entity) {
         return super.isAlliedTo(entity) || IThaumcraftBossEntity.super.thaumcraftBoss$isAlliedTo(entity);
     }
-    //end #thaumcraft boss part
-
 }

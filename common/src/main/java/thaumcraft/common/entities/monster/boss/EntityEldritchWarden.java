@@ -32,7 +32,7 @@ package thaumcraft.common.entities.monster.boss;
 //import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 //import thaumcraft.common.lib.network.fx.PacketFXSonic;
 //import thaumcraft.common.lib.utils.EntityUtils;
-
+@Deprecated(forRemoval = true)
 public class EntityEldritchWarden /*extends EntityThaumcraftBoss implements IRangedAttackMob, IEldritchMob*/ {
 //   String[] titles = new String[]{"Aphoom-Zhah", "Basatan", "Chaugnar Faugn", "Mnomquah", "Nyogtha", "Oorn", "Shaikorth", "Rhan-Tegoth", "Rhogog", "Shudde M'ell", "Vulthoom", "Yag-Kosha", "Yibb-Tstll", "Zathog", "Zushakon"};
 //   boolean fieldFrenzy = false;

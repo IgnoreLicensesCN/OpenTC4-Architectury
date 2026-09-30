@@ -12,7 +12,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.*;
@@ -47,7 +46,6 @@ import thaumcraft.common.lib.world.dim.CellLoc;
 import thaumcraft.common.lib.world.dim.MazeHandler;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
@@ -68,8 +66,6 @@ public class EntityUtils {
             return ConfigurationHandler.INSTANCE.getChampionModValue(getId(), super.getAmount());
         }
     }
-
-    public static final Set<EntityType<? extends LivingEntity>> livingEntityTypes = ConcurrentHashMap.newKeySet();
 
     public static void init() {
         Registry.ATTRIBUTES.register();
