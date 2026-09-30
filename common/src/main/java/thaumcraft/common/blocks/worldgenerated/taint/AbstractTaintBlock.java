@@ -12,8 +12,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Fallable;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,18 +23,18 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
 import thaumcraft.common.blocks.liquid.FiniteLiquidBlock;
-import thaumcraft.common.entities.EntityFallingTaint;
+import thaumcraft.common.entities.TaintFallingBlockEntity;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.BiomeUtils;
-import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 
 import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.TAINTED_MATERIAL_BLOCK;
+import static thaumcraft.common.blocks.ThaumcraftBlocks.Tags.TAINT_FALLABLE;
 import static thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock.spreadFibres;
 
-public abstract class AbstractTaintBlock extends SuppressedWarningBlock implements ITaintMaterial{
+public abstract class AbstractTaintBlock extends SuppressedWarningBlock implements ITaintMaterial, Fallable {
     public static final SoundType TAINT_BLOCK_SOUND = new SoundType(
             1.0F, 1.0F,
             ThaumcraftSounds.GORE,//SoundEvents.GRAVEL_BREAK,
@@ -128,17 +130,13 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
             byte b0 = 32;
             if (level.hasChunksAt(fallingPos.offset(-b0,-b0,-b0),fallingPos.offset(b0,b0,b0))) {
                 if (!(Platform.getEnvironment() == Env.CLIENT)) {
-                    EntityFallingTaint entityfalling = new EntityFallingTaint(
+                    var entityfalling = new TaintFallingBlockEntity(
                             level,
                             (float)fallingPos.getX() + 0.5F,
                             (float)fallingPos.getY() + 0.5F,
                             (float)fallingPos.getZ() + 0.5F,
-                            this,
-                            md,
-                            blockToCopyFrom.getX(),
-                            blockToCopyFrom.getY(),
-                            blockToCopyFrom.getZ()
-                    );//TODO:entity
+                            savedState
+                    );
                     this.onStartFalling(entityfalling);
                     level.addFreshEntity(entityfalling);
                     return true;
@@ -158,7 +156,9 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
 
         return false;
     }
-    protected void onStartFalling(EntityFallingTaint entityfalling) {
+    protected void onStartFalling(FallingBlockEntity entityfalling) {
+    }
+    protected void onFinishFalling( /*discarded*/ FallingBlockEntity entityfalling) {
     }
     @Override
     public void stepOn(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
@@ -190,5 +190,26 @@ public abstract class AbstractTaintBlock extends SuppressedWarningBlock implemen
             level.playSound(null,blockPos, ThaumcraftSounds.ROOTS, SoundSource.BLOCKS, 0.1F, 0.9F + level.getRandom().nextFloat() * 0.2F);
         }
         return true;
+    }
+
+    @Override
+    public void onBrokenAfterFall(Level level, BlockPos blockPos, FallingBlockEntity fallingBlockEntity) {
+        var random = level.random;
+        fallingBlockEntity.playSound(ThaumcraftSounds.GORE, 0.5F, ((random.nextFloat()*2-1) * 0.2F + 1.0F) * 0.8F);
+        if (this.fallingEntityCanPlace(fallingBlockEntity,blockPos)
+                && !AbstractTaintBlock.canFallBelow(level, blockPos.below())
+                && level.setBlockAndUpdate(blockPos, fallingBlockEntity.getBlockState())
+        ) {
+            this.onFinishFalling(fallingBlockEntity);
+        }
+    }
+    protected boolean fallingEntityCanPlace(FallingBlockEntity fallingBlockEntity,BlockPos pos) {
+        var level = fallingBlockEntity.level();
+        var stateToFall = level.getBlockState(pos);
+        return stateToFall.is(TAINT_FALLABLE)
+                || (
+                stateToFall.canBeReplaced()
+                && fallingBlockEntity.getBlockState().canSurvive(level,pos)
+        );
     }
 }

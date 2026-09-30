@@ -1626,6 +1626,9 @@ public class ThaumcraftBlocks {
         public static final TagKey<Block> SMALL_TAINTACLE_CAN_SPAWN = TagKey.create(
                 Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "small_taintacle_can_spawn")
         );
+        public static final TagKey<Block> TAINT_FALLABLE = TagKey.create(
+                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "taint_fallable")
+        );
     }
 
     //rotation:

@@ -199,6 +199,12 @@ public class ThaumcraftEntities {
         public static EntityType<GiantTaintacleEntity> GIANT_TAINTACLE() {
             return Registry.SUPPLIER_GIANT_TAINTACLE.get();
         }
+        public static EntityType<TaintFallingBlockEntity> TAINT_FALLING_BLOCK() {
+            return Registry.SUPPLIER_TAINT_FALLING_BLOCK.get();
+        }
+        public static EntityType<FollowingItemEntity> FOLLOWING_ITEM() {
+            return Registry.SUPPLIER_FOLLOWING_ITEM.get();
+        }
     }
 
     public static class Registry {
@@ -489,14 +495,14 @@ public class ThaumcraftEntities {
                         .build("dart")
         );
         public static final RegistrySupplier<EntityType<CultistLeaderEntity>> SUPPLIER_CULTIST_LEADER = ENTITIES.register("cultist_leader",
-                () -> EntityType.Builder.<CultistLeaderEntity>of(CultistLeaderEntity::new, MobCategory.MISC)
+                () -> EntityType.Builder.<CultistLeaderEntity>of(CultistLeaderEntity::new, MobCategory.MONSTER)
                         .sized(0.75F, 2.25F)
                         .clientTrackingRange(10)
                         .updateInterval(20)
                         .build("cultist_leader")
         );
         public static final RegistrySupplier<EntityType<CultistPortalEntity>> SUPPLIER_CULTIST_PORTAL = ENTITIES.register("cultist_portal",
-                () -> EntityType.Builder.<CultistPortalEntity>of(CultistPortalEntity::new, MobCategory.MISC)
+                () -> EntityType.Builder.<CultistPortalEntity>of(CultistPortalEntity::new, MobCategory.MONSTER)
                         .sized(1.5F, 3F)
                         .clientTrackingRange(10)
                         .updateInterval(20)
@@ -504,7 +510,7 @@ public class ThaumcraftEntities {
                         .build("cultist_portal")
         );
         public static final RegistrySupplier<EntityType<EldritchGolemEntity>> SUPPLIER_ELDRITCH_GOLEM = ENTITIES.register("eldritch_golem",
-                () -> EntityType.Builder.<EldritchGolemEntity>of(EldritchGolemEntity::new, MobCategory.MISC)
+                () -> EntityType.Builder.<EldritchGolemEntity>of(EldritchGolemEntity::new, MobCategory.MONSTER)
                         .sized(1.75F, 3.5F)
                         .clientTrackingRange(10)
                         .updateInterval(20)
@@ -512,7 +518,7 @@ public class ThaumcraftEntities {
                         .build("eldritch_golem")
         );
         public static final RegistrySupplier<EntityType<EldritchWardenEntity>> SUPPLIER_ELDRITCH_WARDEN = ENTITIES.register("eldritch_warden",
-                () -> EntityType.Builder.<EldritchWardenEntity>of(EldritchWardenEntity::new, MobCategory.MISC)
+                () -> EntityType.Builder.<EldritchWardenEntity>of(EldritchWardenEntity::new, MobCategory.MONSTER)
                         .sized(1.5F, 3.5F)
                         .clientTrackingRange(10)
                         .updateInterval(20)
@@ -520,12 +526,28 @@ public class ThaumcraftEntities {
                         .build("eldritch_warden")
         );
         public static final RegistrySupplier<EntityType<GiantTaintacleEntity>> SUPPLIER_GIANT_TAINTACLE = ENTITIES.register("giant_taintacle",
-                () -> EntityType.Builder.<GiantTaintacleEntity>of(GiantTaintacleEntity::new, MobCategory.MISC)
+                () -> EntityType.Builder.<GiantTaintacleEntity>of(GiantTaintacleEntity::new, MobCategory.MONSTER)
                         .sized(1.1F, 6)
                         .clientTrackingRange(10)
                         .updateInterval(20)
                         .fireImmune()
                         .build("giant_taintacle")
+        );
+        public static final RegistrySupplier<EntityType<TaintFallingBlockEntity>> SUPPLIER_TAINT_FALLING_BLOCK = ENTITIES.register("taint_falling_block",
+                () -> EntityType.Builder.<TaintFallingBlockEntity>of(TaintFallingBlockEntity::new, MobCategory.MISC)
+                        .sized(0.98F, 0.98F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("taint_falling_block")
+        );
+        public static final RegistrySupplier<EntityType<FollowingItemEntity>> SUPPLIER_FOLLOWING_ITEM = ENTITIES.register("following_item",
+                () -> EntityType.Builder.<FollowingItemEntity>of(FollowingItemEntity::new, MobCategory.MISC)
+                        .sized(0.25F, 0.25F)
+                        .clientTrackingRange(6)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("following_item")
         );
     }
 
