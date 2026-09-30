@@ -110,7 +110,7 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
             );
             FabricDefaultAttributeRegistry.register(entityType,builder);
         }
-//        FabricDefaultAttributeRegistry.register(entityType, AttributeSupplier.builder().add(attribute));
+//        FabricDefaultAttributeRegistry.registerNodeType(entityType, AttributeSupplier.builder().add(attribute));
 
     }
 

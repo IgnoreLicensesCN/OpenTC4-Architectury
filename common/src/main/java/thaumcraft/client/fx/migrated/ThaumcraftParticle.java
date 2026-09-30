@@ -21,7 +21,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.api.nodes.IRevealer;
+import thaumcraft.common.items.abstracts.IGoggles;
 
 import java.util.function.Predicate;
 
@@ -54,15 +54,15 @@ public abstract class ThaumcraftParticle extends TextureSheetParticle {
             var equippeds = v.getArmorSlots();
 
             for (var equipped:equippeds) {
-                if (equipped.getItem() instanceof IRevealer){
+                if (equipped.getItem() instanceof IGoggles){
                     return 1.0F;
                 }
             }
 
-            if (v.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof IRevealer){
+            if (v.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof IGoggles){
                 return 1.0F;
             }
-            if (v.getItemBySlot(EquipmentSlot.OFFHAND).getItem() instanceof IRevealer){
+            if (v.getItemBySlot(EquipmentSlot.OFFHAND).getItem() instanceof IGoggles){
                 return 1.0F;
             }
         }
@@ -207,6 +207,36 @@ public abstract class ThaumcraftParticle extends TextureSheetParticle {
 
         return true;
     }
+//    protected void moveTowardsClosestSpace(double d, double e, double f) {
+//        BlockPos blockPos = BlockPos.containing(d, e, f);
+//        Vec3 vec3 = new Vec3(d - blockPos.getX(), e - blockPos.getY(), f - blockPos.getZ());
+//        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+//        Direction direction = Direction.UP;
+//        double g = Double.MAX_VALUE;
+//
+//        for (Direction direction2 : new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST, Direction.UP}) {
+//            mutableBlockPos.setWithOffset(blockPos, direction2);
+//            if (!this.level().getBlockState(mutableBlockPos).isCollisionShapeFullBlock(this.level(), mutableBlockPos)) {
+//                double h = vec3.get(direction2.getAxis());
+//                double i = direction2.getAxisDirection() == Direction.AxisDirection.POSITIVE ? 1.0 - h : h;
+//                if (i < g) {
+//                    g = i;
+//                    direction = direction2;
+//                }
+//            }
+//        }
+//
+//        float j = this.random.nextFloat() * 0.2F + 0.1F;
+//        float k = direction.getAxisDirection().getStep();
+//        Vec3 vec32 = this.getDeltaMovement().scale(0.75);
+//        if (direction.getAxis() == Direction.Axis.X) {
+//            this.setDeltaMovement(k * j, vec32.y, vec32.z);
+//        } else if (direction.getAxis() == Direction.Axis.Y) {
+//            this.setDeltaMovement(vec32.x, k * j, vec32.z);
+//        } else if (direction.getAxis() == Direction.Axis.Z) {
+//            this.setDeltaMovement(vec32.x, vec32.y, k * j);
+//        }
+//    }
 
     @Override
     public @NotNull ParticleRenderType getRenderType() {

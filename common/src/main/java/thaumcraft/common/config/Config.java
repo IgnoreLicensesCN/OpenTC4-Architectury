@@ -179,7 +179,7 @@ public class Config {
         try {
             ThaumcraftWorldGenerator.biomeTaint = new BiomeGenTaint(biomeTaintID);
         } catch (Exception var14) {
-            Thaumcraft.log.fatal("Could not register Taint Biome");
+            Thaumcraft.log.fatal("Could not registerNodeType Taint Biome");
         }
 
         Property mfcp = config.get(CATEGORY_BIOMES, "magical_forest_biome_weight", 5);
@@ -196,7 +196,7 @@ public class Config {
         try {
             ThaumcraftWorldGenerator.biomeMagicalForest = new BiomeGenMagicalForest(biomeMagicalForestID);
         } catch (Exception var13) {
-            Thaumcraft.log.fatal("Could not register Magical Forest Biome");
+            Thaumcraft.log.fatal("Could not registerNodeType Magical Forest Biome");
         }
 
 //        Property biomeEerieProp = config.get(CATEGORY_BIOMES, "biome_eerie", biomeEerieID);
@@ -210,7 +210,7 @@ public class Config {
 //        try {
 //            ThaumcraftWorldGenerator.biomeEerie = new BiomeGenEerie(biomeEerieID);
 //        } catch (Exception var12) {
-//            Thaumcraft.log.fatal("Could not register Eerie Biome");
+//            Thaumcraft.log.fatal("Could not registerNodeType Eerie Biome");
 //        }
 
         Property biomeEldritchProp = config.get(CATEGORY_BIOMES, "biome_eldritch", biomeEldritchID);
@@ -224,7 +224,7 @@ public class Config {
         try {
             ThaumcraftWorldGenerator.biomeEldritchLands = new BiomeGenEldritch(biomeEldritchID);
         } catch (Exception var11) {
-            Thaumcraft.log.fatal("Could not register Eldritch Lands Biome");
+            Thaumcraft.log.fatal("Could not registerNodeType Eldritch Lands Biome");
         }
 
         Property dimEldritch = config.get(CATEGORY_BIOMES, "outer_lands_dim", dimensionOuterId);

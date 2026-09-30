@@ -37,7 +37,7 @@ public class WandTriggerRegistry {
 	 * A manager class needs to be created that implements IWandTriggerManager.
 	 * @param manager
 	 * @param blockMatcher matches interacted block
-	 * @param modid a unique identifier. It is best to register your own triggers using your mod id to avoid conflicts with mods that register triggers for the same block
+	 * @param modid a unique identifier. It is best to registerNodeType your own triggers using your mod id to avoid conflicts with mods that registerNodeType triggers for the same block
 	 */
 	public static void registerWandBlockTrigger(IWandTriggerManager manager, IBlockMatcher blockMatcher, String modid) {
 		Multimap<IBlockMatcher,IWandTriggerManager> temp = triggers.computeIfAbsent(modid, k -> HashMultimap.create());

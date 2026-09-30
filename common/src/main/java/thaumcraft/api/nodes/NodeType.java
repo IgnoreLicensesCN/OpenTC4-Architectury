@@ -20,10 +20,11 @@ import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
+import thaumcraft.common.AspectOrbEntity;
 import thaumcraft.common.ClientFXUtils;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.monster.zombies.GiantBrainyZombieEntity;
 import thaumcraft.common.lib.resourcelocations.NodeTypeResourceLocation;
 import thaumcraft.common.lib.utils.Utils;
@@ -42,7 +43,7 @@ public class NodeType {
     private static final Map<NodeTypeResourceLocation, NodeType> BY_NAME = new LinkedHashMap<>();
     private static final List<NodeType> VALUES = new ArrayList<>();
 
-    public static final NodeType NORMAL = new NodeType(NodeTypeResourceLocation.of("thaumcraft:normal"),1.f){
+    public static final NodeType NORMAL = new NodeType(NodeTypeResourceLocation.of(Thaumcraft.MOD_ID,"normal"),1.f){
 
         @Override
         public boolean nodeTypeTick(INodeBlockEntity thisNode) {
@@ -50,7 +51,7 @@ public class NodeType {
         }
 
     };
-    public static final NodeType UNSTABLE = new NodeType(NodeTypeResourceLocation.of("thaumcraft:unstable"),1.f){
+    public static final NodeType UNSTABLE = new NodeType(NodeTypeResourceLocation.of(Thaumcraft.MOD_ID,"unstable"),1.f){
         @Override
         public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
@@ -65,7 +66,7 @@ public class NodeType {
                 if (nodeLock == null) {
                     Aspect aspect = null;
                     if ((aspect = thisNode.takeRandomPrimalFromSource()) != null) {
-                        EntityAspectOrb orb = new EntityAspectOrb(
+                        var orb = new AspectOrbEntity(
                                 level, (double) pos.getX() + (double) 0.5F,
                                 (double) pos.getY() + (double) 0.5F,
                                 (double) pos.getZ() + (double) 0.5F, aspect, 1
@@ -104,7 +105,7 @@ public class NodeType {
             return UnmodifiableAspectList.of(Aspects.ENTROPY, 4);
         }
     };
-    public static final NodeType DARK = new NodeType(NodeTypeResourceLocation.of("thaumcraft","dark"),1.f){
+    public static final NodeType DARK = new NodeType(NodeTypeResourceLocation.of(Thaumcraft.MOD_ID,"dark"),1.f){
         @Override
         public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var result = super.nodeTypeTick(thisNode);
@@ -177,7 +178,7 @@ public class NodeType {
             return UnmodifiableAspectList.of(Aspects.DEATH, 2,Aspects.DARKNESS,2);
         }
     };
-    public static final NodeType TAINTED = new NodeType(NodeTypeResourceLocation.of("thaumcraft:tainted"),1.f){
+    public static final NodeType TAINTED = new NodeType(NodeTypeResourceLocation.of(Thaumcraft.MOD_ID,"tainted"),1.f){
         @Override
         public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             var level = thisNode.getLevel();
@@ -216,7 +217,7 @@ public class NodeType {
             return UnmodifiableAspectList.of(Aspects.TAINT, 4);
         }
     };
-    public static final NodeType HUNGRY = new NodeType(NodeTypeResourceLocation.of("thaumcraft:hungry"),1.5f){
+    public static final NodeType HUNGRY = new NodeType(NodeTypeResourceLocation.of(Thaumcraft.MOD_ID,"hungry"),1.5f){
         @Override
         public int getAttackAnotherNodePeriod(INodeBlockEntity thisNode) {
             return 1;
@@ -374,7 +375,7 @@ public class NodeType {
             return UnmodifiableAspectList.of(Aspects.HUNGER, 4);
         }
     };
-    public static final NodeType PURE = new NodeType(NodeTypeResourceLocation.of("thaumcraft:pure"),1.f){
+    public static final NodeType PURE = new NodeType(NodeTypeResourceLocation.of(Thaumcraft.MOD_ID,"pure"),1.f){
         @Override
         public boolean nodeTypeTick(INodeBlockEntity thisNode) {
 
@@ -412,7 +413,7 @@ public class NodeType {
             return UnmodifiableAspectList.of(Aspects.HEAL,2,Aspects.ORDER,2);
         }
     };
-    public static final NodeType EMPTY = new NodeType(NodeTypeResourceLocation.of("thaumcraft:empty"),1.f){
+    public static final NodeType EMPTY = new NodeType(NodeTypeResourceLocation.of(Thaumcraft.MOD_ID,"empty"),1.f){
         @Override
         public boolean nodeTypeTick(INodeBlockEntity thisNode) {
             return super.nodeTypeTick(thisNode);
@@ -430,19 +431,10 @@ public class NodeType {
     public NodeType(NodeTypeResourceLocation name, float attackBiggerNodeChangeModifier) {
         this.name = name;
         this.attackBiggerNodeChangeModifier = attackBiggerNodeChangeModifier;
-        register(this);
+        registerNodeType(this);
     }
 
-//    /** 注册新的 NodeType，可用于动态扩展 */
-//    public static NodeType register(String name,float attackBiggerNodeChangeModifier) {
-//        if (BY_NAME.containsKey(name)) {
-//            throw new IllegalArgumentException("NodeType already exists: " + name);
-//        }
-//        return new NodeType(name,attackBiggerNodeChangeModifier);
-//    }
-
-    /** 内部注册方法 */
-    private static void register(NodeType type) {
+    public static void registerNodeType(NodeType type) {
         if (BY_NAME.containsKey(type.name)) {
             throw new RuntimeException("Node type " + type.name + " is already registered");
         }
@@ -450,12 +442,10 @@ public class NodeType {
         VALUES.add(type);
     }
 
-    /** 返回所有 NodeType（顺序和定义顺序一致） */
     public static List<NodeType> values() {
         return Collections.unmodifiableList(VALUES);
     }
 
-    /** 类似 enum 的 valueOf 方法 */
     public static NodeType valueOf(NodeTypeResourceLocation name) {
         NodeType type = BY_NAME.get(name);
         if (type == null) {

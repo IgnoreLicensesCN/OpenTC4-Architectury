@@ -24,7 +24,7 @@ import static thaumcraft.client.gui.GuiResearchBrowser.completedResearch;
 
 public class DrawResearchCompletionCounter {
     public static void init() {
-//        MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
+//        MinecraftForge.EVENT_BUS.registerNodeType(EventHandler.INSTANCE);
     }
 
     private static boolean canUnlockResearch(ResearchItem res) {

@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
 import java.util.ArrayList;
@@ -247,16 +248,26 @@ public class InventoryUtils {
    }
 
    public static int isWandInHotbarWithRoom(Aspect aspect, int amount, Player player) {
-      for (int i = 0; i < 9; i++) { // 热键槽前 9 个
+      for (int i = 0; i < 9; i++) {
          ItemStack stack = player.getInventory().items.get(i);
          if (!stack.isEmpty() && stack.getItem() instanceof WandCastingItem wand) {
-            // 调用原有魔杖逻辑判断容量
             if (wand.addCentiVis(stack, aspect, amount, false) < amount) {
                return i;
             }
          }
       }
       return -1;
+   }
+
+   public static @Nullable ItemStack isOwningCentiVisContainerWithRoom(Aspect aspect, int amount, Player player) {
+      for (var slotStack:player.getInventory().items) {
+         if (!slotStack.isEmpty() && slotStack.getItem() instanceof ICentiVisContainerItem wand) {
+            if (wand.addCentiVis(slotStack, aspect, amount, false) < amount) {
+               return slotStack;
+            }
+         }
+      }
+      return null;
    }
 
    public static int isPlayerCarrying(Player player, ItemStack stack) {

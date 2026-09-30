@@ -391,4 +391,9 @@ public class Consts {
     public static class EldritchGolemEntityTagAccessors {
         public static final BooleanTagAccessor HEADLESS = new BooleanTagAccessor("headless");
     }
+    public static class AspectOrbEntityTagAccessors {
+        public static final ModifiableAspectListAccessor OWNING_ASPECTS = new ModifiableAspectListAccessor("owning_aspects");
+        public static final IntTagAccessor HEALTH = new IntTagAccessor("health");
+        public static final IntTagAccessor AGE = new IntTagAccessor("age");
+    }
 }

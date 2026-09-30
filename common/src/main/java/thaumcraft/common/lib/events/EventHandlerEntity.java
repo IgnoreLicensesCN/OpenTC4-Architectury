@@ -28,7 +28,6 @@ import thaumcraft.api.damagesource.ThaumcraftDamageSources;
 import thaumcraft.api.entities.ITaintedMob;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.IEnchantmentRepairVisProviderItem;
 import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.entities.EntityAspectOrb;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 import thaumcraft.common.entities.monster.*;
 import thaumcraft.common.entities.monster.boss.EntityThaumcraftBoss;
@@ -88,7 +87,7 @@ public class EventHandlerEntity {
             UnnaturalHungerShaderHandler.INSTANCE.tick(player);
          });
 
-//         EntityEvent.ADD.register((entity, world) -> {
+//         EntityEvent.ADD.registerNodeType((entity, world) -> {
 //            if (entity instanceof LivingEntity livingEntity
 //                    && !livingEntity.isDeadOrDying()
 //            ) {

@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.common.entities.EntityAspectOrb;
+import thaumcraft.common.AspectOrbEntity;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketClueCompleteS2C;
 
 import java.util.List;
@@ -58,7 +58,7 @@ public class PrimalCharmItem extends Item {
                 };//but dont add other primal aspect(if there is)here
 
                 if (aspect != null) {
-                    EntityAspectOrb orb = new EntityAspectOrb(world, entity.getX(), entity.getY(), entity.getZ(), aspect, 1);
+                    var orb = new AspectOrbEntity(world, entity.getX(), entity.getY(), entity.getZ(), aspect, 1);
                     world.addFreshEntity(orb);
                 }
             } else if (r == 42

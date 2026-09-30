@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-@UtilityLikeAbstraction(reason = "register something to my weak lookup")
+@UtilityLikeAbstraction(reason = "registerNodeType something to my weak lookup")
 public interface ICubeChunkBasedWeakLookupOwner<StoredItemClass extends ICubeChunkBasedWeakLookupOwner<StoredItemClass>> {
     //call before BlockEntity(.super.)#setLevel
     default void registerToCubeLookup(@Nullable Level level, @Nullable Level levelBefore){

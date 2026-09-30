@@ -19,7 +19,7 @@ public abstract class Aspect {
 	private final int hash;
 
 	/**
-	 * Use this constructor to register your own aspects.
+	 * Use this constructor to registerNodeType your own aspects.
 	 * @param aspectKey the key that will be used to reference this aspect, as well as its latin display name
 	 * @param color color to display the tag in
 	 * @param blend GL11 blendmode (1 or 771). Used for rendering nodes. Default is 1

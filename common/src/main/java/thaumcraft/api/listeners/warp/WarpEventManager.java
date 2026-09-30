@@ -26,7 +26,7 @@ import static thaumcraft.api.listeners.warp.consts.WarpEvents.*;
 
 public class WarpEventManager {
     /**
-     * I may update those register methods,so please don't access these lists directly.
+     * I may update those registerNodeType methods,so please don't access these lists directly.
      */
     public static final ListenerManager<WarpEvent> warpEventManager = new ListenerManager<>();
     public static final ListenerManager<WarpEventListenerBefore> warpEventListenerBeforeManager = new ListenerManager<>();

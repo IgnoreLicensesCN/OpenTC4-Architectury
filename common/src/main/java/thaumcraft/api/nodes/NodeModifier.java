@@ -120,7 +120,7 @@ public class NodeModifier {
     }
 
 //    /** 注册新的 NodeModifier，可用于动态扩展 */
-//    public static NodeModifier register(String name,int regenValue,float attackBiggerNodeChangeModifier) {
+//    public static NodeModifier registerNodeType(String name,int regenValue,float attackBiggerNodeChangeModifier) {
 //        if (BY_NAME.containsKey(name)) {
 //            throw new IllegalArgumentException("NodeModifier already exists: " + name);
 //        }

@@ -18,12 +18,12 @@ public final class OpenTC4Forge {
 
     @SuppressWarnings("for removal")//fk u forge
     public OpenTC4Forge() {
-        // Submit our event bus to let Architectury API register our content on the right time.
+        // Submit our event bus to let Architectury API registerNodeType our content on the right time.
         EventBuses.registerModEventBus(
                 OpenTC4.MOD_ID,
                 FMLJavaModLoadingContext.get().getModEventBus()
         );
-//        MinecraftForge.EVENT_BUS.register(ForgeCapabilityEvents.class);
+//        MinecraftForge.EVENT_BUS.registerNodeType(ForgeCapabilityEvents.class);
 
         // Run our common setup.
         OpenTC4.init(platformUniqueUtilsForge);

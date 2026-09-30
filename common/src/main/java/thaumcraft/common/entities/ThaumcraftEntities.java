@@ -19,6 +19,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
+import thaumcraft.common.AspectOrbEntity;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
 import thaumcraft.common.entities.monster.WispEntity;
@@ -204,6 +205,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<FollowingItemEntity> FOLLOWING_ITEM() {
             return Registry.SUPPLIER_FOLLOWING_ITEM.get();
+        }
+        public static EntityType<AspectOrbEntity> ASPECT_ORB() {
+            return Registry.SUPPLIER_ASPECT_ORB.get();
         }
     }
 
@@ -548,6 +552,14 @@ public class ThaumcraftEntities {
                         .updateInterval(20)
                         .fireImmune()
                         .build("following_item")
+        );
+        public static final RegistrySupplier<EntityType<AspectOrbEntity>> SUPPLIER_ASPECT_ORB = ENTITIES.register("aspect_orb",
+                () -> EntityType.Builder.<AspectOrbEntity>of(AspectOrbEntity::new, MobCategory.MISC)
+                        .sized(0.125F, 0.125F)
+                        .clientTrackingRange(6)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("aspect_orb")
         );
     }
 

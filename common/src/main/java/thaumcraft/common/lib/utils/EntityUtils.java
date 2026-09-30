@@ -201,7 +201,7 @@ public class EntityUtils {
 //                        UUID.fromString("3cfab9da-2701-43d8-ac07-885f16fa4117"), "DAMAGE BUFF 5", 0.5F, ADDITION)};
     }
 
-    //TODO:If this way failed to register for LivingEntity because of lifecycle,use static field init instead
+    //TODO:If this way failed to registerNodeType for LivingEntity because of lifecycle,use static field init instead
     // (since it should ask me for instance,i can pass anything if there's no recursive dependency needed.)
     //TODO:If this way failed again,we start modify/replace that map.
     public static class Registry {
@@ -230,11 +230,11 @@ public class EntityUtils {
                 "attributes." + Thaumcraft.MOD_ID + ".jump_y_velocity_addition_not_sneaking",
                 () -> new RangedAttribute("attributes." + Thaumcraft.MOD_ID + ".jump_y_velocity_addition_not_sneaking", 0, 0, 100.0F).setSyncable(true)
         );
-//        public static final RegistrySupplier<Attribute> SUPPLIER_FORWARD_IMPULSE_NOT_IN_WATER = ATTRIBUTES.register(
+//        public static final RegistrySupplier<Attribute> SUPPLIER_FORWARD_IMPULSE_NOT_IN_WATER = ATTRIBUTES.registerNodeType(
 //                "attributes." + Thaumcraft.MOD_ID + "." + "forward_impulse_not_in_water",
 //                () -> new RangedAttribute("attributes." + Thaumcraft.MOD_ID + "." + "forward_impulse_not_in_water",0,0,100).setSyncable(true)
 //        );
-//        public static final RegistrySupplier<Attribute> SUPPLIER_FORWARD_IMPULSE_IN_WATER = ATTRIBUTES.register(
+//        public static final RegistrySupplier<Attribute> SUPPLIER_FORWARD_IMPULSE_IN_WATER = ATTRIBUTES.registerNodeType(
 //                "attributes." + Thaumcraft.MOD_ID + "." + "forward_impulse_in_water",
 //                () -> new RangedAttribute("attributes." + Thaumcraft.MOD_ID + "." + "forward_impulse_in_water",0,0,100).setSyncable(true)
 //        );

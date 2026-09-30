@@ -102,7 +102,7 @@ public abstract class CrucibleRecipe
 	@Unmodifiable
 	public static final Map<CrucibleRecipeResourceLocation,CrucibleRecipe> CRUCIBLE_RECIPES_VIEW = Collections.unmodifiableMap(CRUCIBLE_RECIPES);
 
-	//if you want a fake recipe plz override this and do not register.
+	//if you want a fake recipe plz override this and do not registerNodeType.
 	 @Override
 	protected void registerRecipe(CrucibleRecipeResourceLocation recipeID) {
 		var got = CRUCIBLE_RECIPES.get(recipeID);
