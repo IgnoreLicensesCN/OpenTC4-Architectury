@@ -1,9 +1,6 @@
 package com.linearity.opentc4.mixin;
 
-import com.linearity.opentc4.mixinaccessors.PlayerResearchAndScannedInfoAccessor;
-import com.linearity.opentc4.mixinaccessors.PlayerRunicShieldInfoMixinAccessor;
-import com.linearity.opentc4.mixinaccessors.PlayerWandCooldownManagerMixinAccessor;
-import com.linearity.opentc4.mixinaccessors.PlayerWarpInfoMixinAccessor;
+import com.linearity.opentc4.mixinaccessors.*;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.server.level.ServerPlayer;

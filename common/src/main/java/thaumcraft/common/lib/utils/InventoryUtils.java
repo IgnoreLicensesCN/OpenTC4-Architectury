@@ -3,6 +3,7 @@ package thaumcraft.common.lib.utils;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -48,7 +49,19 @@ public class InventoryUtils {
          return ItemStack.EMPTY;
       }
    }
+   public static @NotNull("null -> empty") ItemStack placeItemStackIntoInventory(ItemStack stack, NonNullList<ItemStack> inventory, boolean doit) {
+      ItemStack itemstack = stack.copy();
+      ItemStack itemstack1 = insertStack(inventory, itemstack, doit);
+      if (itemstack1 != null && itemstack1.getCount() != 0) {
+         return itemstack1.copy();
+      } else {
+//         if (doit) {
+//            inventory.setChanged();
+//         }
 
+         return ItemStack.EMPTY;
+      }
+   }
    //TODO:Verify
    public static ItemStack insertStack(Container container, ItemStack stack, @Nullable Direction side, boolean simulate) {
       if (stack.isEmpty()) return ItemStack.EMPTY;
@@ -84,7 +97,25 @@ public class InventoryUtils {
       }
 
       return stack;
+   }
+   public static ItemStack insertStack(NonNullList<ItemStack> container, ItemStack stack, boolean simulate) {
+      if (stack.isEmpty()) return ItemStack.EMPTY;
 
+      int size = container.size();
+      {
+         for (int slot = 0; slot < size; slot++) {
+            if (canMerge(container.get(slot), stack)) {
+               stack = tryInsert(container, stack, slot, simulate);
+               if (stack.isEmpty()) return ItemStack.EMPTY;
+            }
+         }
+         for (int slot = 0; slot < size; slot++) {
+            stack = tryInsert(container, stack, slot, simulate);
+            if (stack.isEmpty()) return ItemStack.EMPTY;
+         }
+      }
+
+      return stack;
    }
    @Deprecated(forRemoval = true)
    public static boolean inventoryContains(Container inventory, ItemStack stack, Direction side, boolean useOre, boolean ignoreDamage, boolean ignoreNBT) {
@@ -367,6 +398,37 @@ public class InventoryUtils {
               && existing.getCount() < existing.getMaxStackSize();
    }
 
+   public static ItemStack tryInsert(NonNullList<ItemStack> container, ItemStack stack, int slot, boolean simulate) {
+
+      if (stack.isEmpty()) return ItemStack.EMPTY;
+
+      ItemStack existing = container.get(slot);
+
+      // 1) 空槽
+      if (existing.isEmpty()) {
+         int move = Math.min(stack.getCount(), stack.getMaxStackSize());
+         if (!simulate) {
+            ItemStack newStack = stack.copyWithCount(move);
+            container.set(slot, newStack);
+         }
+         return stack.copyWithCount(stack.getCount() - move);
+      }
+
+      // 2) 同类型叠加
+      if (ItemStack.isSameItemSameTags(existing, stack)) {
+         int canAdd = existing.getMaxStackSize() - existing.getCount();
+         int move = Math.min(canAdd, stack.getCount());
+         if (move <= 0) return stack;
+
+         if (!simulate) {
+            existing.grow(move);
+            container.set(slot, existing);
+         }
+         return stack.copyWithCount(stack.getCount() - move);
+      }
+
+      return stack;
+   }
    public static ItemStack tryInsert(Container container, ItemStack stack, int slot,
                                       @Nullable Direction side, boolean simulate) {
 
@@ -374,7 +436,6 @@ public class InventoryUtils {
 
       ItemStack existing = container.getItem(slot);
 
-      // WorldlyContainer 面向检查
       if (container instanceof WorldlyContainer worldly) {
          if (side != null && !worldly.canPlaceItemThroughFace(slot, stack, side)) {
             return stack;

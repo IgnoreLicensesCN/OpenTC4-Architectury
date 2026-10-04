@@ -234,6 +234,13 @@ block_with_item_names = [
     ['item.FocusPech.name','pech_focus'],
     ['item.FocusPortableHole.name','portable_hole_focus'],
     ['item.FocusPrimal.name','primal_focus'],
+    ['item.FocusPrimal.name','primal_focus'],
+    ['item.ItemGolemUpgrade.0.name','golem_upgrade_air'],
+    ['item.ItemGolemUpgrade.1.name','golem_upgrade_earth'],
+    ['item.ItemGolemUpgrade.2.name','golem_upgrade_fire'],
+    ['item.ItemGolemUpgrade.3.name','golem_upgrade_water'],
+    ['item.ItemGolemUpgrade.4.name','golem_upgrade_order'],
+    ['item.ItemGolemUpgrade.5.name','golem_upgrade_entropy'],
 
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
@@ -241,6 +248,14 @@ block_with_item_names = [
     # ['tc.research_name.RUNICHEALING',['tc.research_name.RUNICHEALING','runic_shield.thaumcraft.runic_healing']],
     # ['tc.research_name.RUNICKINETIC',['tc.research_name.RUNICKINETIC','runic_shield.thaumcraft.runic_kinetic']],
 ]
+replace_key_names = {
+    "item.ItemGolemUpgrade.0.desc":"golem_upgrade.air.desc",
+    "item.ItemGolemUpgrade.1.desc":"golem_upgrade.earth.desc",
+    "item.ItemGolemUpgrade.2.desc":"golem_upgrade.fire.desc",
+    "item.ItemGolemUpgrade.3.desc":"golem_upgrade.water.desc",
+    "item.ItemGolemUpgrade.4.desc":"golem_upgrade.order.desc",
+    "item.ItemGolemUpgrade.5.desc":"golem_upgrade.entropy.desc",
+}
 
 force_add_keys = {
     "thaumcraft.use_block.arcane_pressure_plate_setting.0": "It will now trigger on everything.",
@@ -325,6 +340,10 @@ for fileName in os.listdir(language_file_folder):
                         language_dict[f'item.thaumcraft.{remappedKeyItem}'] = value
             else:
                 raise Exception(str(block_with_item_name_pair))
+        for fromKey in replace_key_names.keys():
+            if fromKey in language_dict.keys():
+                language_dict[replace_key_names[fromKey]] = language_dict[fromKey]
+                language_dict.pop(fromKey)
         sorted_keys = (sorted(list(language_dict.keys()), key=key_sorter))
         language_dict_final = {k: language_dict[k] for k in sorted_keys}
         with open(language_file_path, mode='w', encoding='utf-8') as f2write:

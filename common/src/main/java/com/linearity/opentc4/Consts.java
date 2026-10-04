@@ -396,4 +396,9 @@ public class Consts {
         public static final IntTagAccessor HEALTH = new IntTagAccessor("health");
         public static final IntTagAccessor AGE = new IntTagAccessor("age");
     }
+    public static class TravelingTrunkEntityTagAccessors {
+        public static final BooleanTagAccessor STAY = new BooleanTagAccessor("stay");
+        public static final UUIDTagAccessor OWNER =  new UUIDTagAccessor("owner");
+        public static final ItemStackTagAccessor UPGRADE = new ItemStackTagAccessor("upgrade");
+    }
 }

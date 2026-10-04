@@ -42,6 +42,7 @@ import thaumcraft.common.items.equipment.masks.GrinningDevilMaskItem;
 import thaumcraft.common.items.equipment.masks.SippingFiendMaskItem;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
+import thaumcraft.common.items.golemupgrade.*;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
 import thaumcraft.common.items.jars.NodeJarBlockItem;
 import thaumcraft.common.items.jars.VoidJarBlockItem;
@@ -982,5 +983,23 @@ public class ThaumcraftItemInstances {
     }
     public static PrimalFocusItem PRIMAL_FOCUS() {
         return ThaumcraftItemsRegistry.SUPPLIER_PRIMAL_FOCUS.get();
+    }
+    public static AirGolemUpgradeItem AIR_GOLEM_UPGRADE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_AIR_GOLEM_UPGRADE.get();
+    }
+    public static EarthGolemUpgradeItem EARTH_GOLEM_UPGRADE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_EARTH_GOLEM_UPGRADE.get();
+    }
+    public static EntropyGolemUpgradeItem ENTROPY_GOLEM_UPGRADE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ENTROPY_GOLEM_UPGRADE.get();
+    }
+    public static OrderGolemUpgradeItem ORDER_GOLEM_UPGRADE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ORDER_GOLEM_UPGRADE.get();
+    }
+    public static FireGolemUpgradeItem FIRE_GOLEM_UPGRADE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_FIRE_GOLEM_UPGRADE.get();
+    }
+    public static WaterGolemUpgradeItem WATER_GOLEM_UPGRADE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_WATER_GOLEM_UPGRADE.get();
     }
 }

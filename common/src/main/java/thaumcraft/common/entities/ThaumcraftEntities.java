@@ -19,9 +19,9 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
-import thaumcraft.common.AspectOrbEntity;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
+import thaumcraft.common.entities.golems.TravelingTrunkEntity;
 import thaumcraft.common.entities.monster.WispEntity;
 import thaumcraft.common.entities.monster.boss.*;
 import thaumcraft.common.entities.monster.eldritch.EldritchCrabEntity;
@@ -208,6 +208,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<AspectOrbEntity> ASPECT_ORB() {
             return Registry.SUPPLIER_ASPECT_ORB.get();
+        }
+        public static EntityType<TravelingTrunkEntity> TRAVELING_TRUNK() {
+            return Registry.SUPPLIER_TRAVELING_TRUNK.get();
         }
     }
 
@@ -510,7 +513,6 @@ public class ThaumcraftEntities {
                         .sized(1.5F, 3F)
                         .clientTrackingRange(10)
                         .updateInterval(20)
-                        .fireImmune()
                         .build("cultist_portal")
         );
         public static final RegistrySupplier<EntityType<EldritchGolemEntity>> SUPPLIER_ELDRITCH_GOLEM = ENTITIES.register("eldritch_golem",
@@ -518,7 +520,6 @@ public class ThaumcraftEntities {
                         .sized(1.75F, 3.5F)
                         .clientTrackingRange(10)
                         .updateInterval(20)
-                        .fireImmune()
                         .build("eldritch_golem")
         );
         public static final RegistrySupplier<EntityType<EldritchWardenEntity>> SUPPLIER_ELDRITCH_WARDEN = ENTITIES.register("eldritch_warden",
@@ -526,7 +527,6 @@ public class ThaumcraftEntities {
                         .sized(1.5F, 3.5F)
                         .clientTrackingRange(10)
                         .updateInterval(20)
-                        .fireImmune()
                         .build("eldritch_warden")
         );
         public static final RegistrySupplier<EntityType<GiantTaintacleEntity>> SUPPLIER_GIANT_TAINTACLE = ENTITIES.register("giant_taintacle",
@@ -534,7 +534,6 @@ public class ThaumcraftEntities {
                         .sized(1.1F, 6)
                         .clientTrackingRange(10)
                         .updateInterval(20)
-                        .fireImmune()
                         .build("giant_taintacle")
         );
         public static final RegistrySupplier<EntityType<TaintFallingBlockEntity>> SUPPLIER_TAINT_FALLING_BLOCK = ENTITIES.register("taint_falling_block",
@@ -542,7 +541,6 @@ public class ThaumcraftEntities {
                         .sized(0.98F, 0.98F)
                         .clientTrackingRange(10)
                         .updateInterval(20)
-                        .fireImmune()
                         .build("taint_falling_block")
         );
         public static final RegistrySupplier<EntityType<FollowingItemEntity>> SUPPLIER_FOLLOWING_ITEM = ENTITIES.register("following_item",
@@ -550,7 +548,6 @@ public class ThaumcraftEntities {
                         .sized(0.25F, 0.25F)
                         .clientTrackingRange(6)
                         .updateInterval(20)
-                        .fireImmune()
                         .build("following_item")
         );
         public static final RegistrySupplier<EntityType<AspectOrbEntity>> SUPPLIER_ASPECT_ORB = ENTITIES.register("aspect_orb",
@@ -558,8 +555,15 @@ public class ThaumcraftEntities {
                         .sized(0.125F, 0.125F)
                         .clientTrackingRange(6)
                         .updateInterval(20)
-                        .fireImmune()
                         .build("aspect_orb")
+        );
+        public static final RegistrySupplier<EntityType<TravelingTrunkEntity>> SUPPLIER_TRAVELING_TRUNK = ENTITIES.register("traveling_trunk",
+                () -> EntityType.Builder.<TravelingTrunkEntity>of(TravelingTrunkEntity::new, MobCategory.MISC)
+                        .sized(0.8F, 0.8F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("traveling_trunk")
         );
     }
 
@@ -612,6 +616,7 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_GOLEM(),EldritchGolemEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_WARDEN(),EldritchWardenEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.GIANT_TAINTACLE(),GiantTaintacleEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.TRAVELING_TRUNK(),TravelingTrunkEntity.createAttributes().build());
 
     }
 

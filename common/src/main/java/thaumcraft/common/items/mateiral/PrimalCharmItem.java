@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.common.AspectOrbEntity;
+import thaumcraft.common.entities.AspectOrbEntity;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketClueCompleteS2C;
 
 import java.util.List;

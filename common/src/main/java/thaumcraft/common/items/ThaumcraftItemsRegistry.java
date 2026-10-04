@@ -40,6 +40,7 @@ import thaumcraft.common.items.equipment.elemental.*;
 import thaumcraft.common.items.equipment.masks.*;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
+import thaumcraft.common.items.golemupgrade.*;
 import thaumcraft.common.items.jars.*;
 import thaumcraft.common.items.mateiral.*;
 import thaumcraft.common.items.misc.*;
@@ -1222,6 +1223,30 @@ public class ThaumcraftItemsRegistry {
     public static final RegistrySupplier<PrimalFocusItem> SUPPLIER_PRIMAL_FOCUS = ITEMS.register(
             "primal_focus",
             PrimalFocusItem::new
+    );
+    public static final RegistrySupplier<AirGolemUpgradeItem> SUPPLIER_AIR_GOLEM_UPGRADE = ITEMS.register(
+            "golem_upgrade_air",
+            AirGolemUpgradeItem::new
+    );
+    public static final RegistrySupplier<EarthGolemUpgradeItem> SUPPLIER_EARTH_GOLEM_UPGRADE = ITEMS.register(
+            "golem_upgrade_earth",
+            EarthGolemUpgradeItem::new
+    );
+    public static final RegistrySupplier<WaterGolemUpgradeItem> SUPPLIER_WATER_GOLEM_UPGRADE = ITEMS.register(
+            "golem_upgrade_water",
+            WaterGolemUpgradeItem::new
+    );
+    public static final RegistrySupplier<FireGolemUpgradeItem> SUPPLIER_FIRE_GOLEM_UPGRADE = ITEMS.register(
+            "golem_upgrade_fire",
+            FireGolemUpgradeItem::new
+    );
+    public static final RegistrySupplier<OrderGolemUpgradeItem> SUPPLIER_ORDER_GOLEM_UPGRADE = ITEMS.register(
+            "golem_upgrade_order",
+            OrderGolemUpgradeItem::new
+    );
+    public static final RegistrySupplier<EntropyGolemUpgradeItem> SUPPLIER_ENTROPY_GOLEM_UPGRADE = ITEMS.register(
+            "golem_upgrade_entropy",
+            EntropyGolemUpgradeItem::new
     );
     public static final Supplier<ItemStack> RANDOM_MANA_BEAN_SUPPLIER = new Supplier<>() {
         private final ThreadLocal<RandomSource> randomSourceThreadLocal = new ThreadLocal<>();

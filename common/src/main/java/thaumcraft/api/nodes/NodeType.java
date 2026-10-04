@@ -20,7 +20,7 @@ import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
-import thaumcraft.common.AspectOrbEntity;
+import thaumcraft.common.entities.AspectOrbEntity;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.worldgenerated.taint.AbstractTaintFibreBlock;

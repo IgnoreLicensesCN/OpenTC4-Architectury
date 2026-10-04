@@ -72,6 +72,7 @@
     "SlimeMixin$SlimeAttackGoalAccessor",
     "SlimeMixin$SlimeMoveControlAccessor",
     "SpiderMixin",
+    "TamableAnimalMixin",
     "VillagerMixin",
     "ZombieMixin"
   ],

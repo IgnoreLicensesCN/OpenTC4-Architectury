@@ -1,4 +1,4 @@
-package thaumcraft.common;
+package thaumcraft.common.entities;
 
 import com.linearity.opentc4.Color;
 import net.minecraft.nbt.CompoundTag;
@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.HashAspectList;
-import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 import thaumcraft.common.lib.utils.InventoryUtils;
 

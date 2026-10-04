@@ -18,20 +18,23 @@ public class Marker {
    }
 
    public boolean equals(Object obj) {
-      if (obj instanceof Marker) {
-         Marker marker = (Marker)obj;
-         return this.x == marker.x && this.y == marker.y && this.z == marker.z && this.dim == marker.dim && this.side == marker.side && this.color == marker.color;
+      if (obj instanceof Marker marker) {
+          return this.x == marker.x && this.y == marker.y && this.z == marker.z && this.dim == marker.dim && this.side == marker.side && this.color == marker.color;
       } else {
          return false;
       }
    }
 
    public boolean equalsFuzzy(Object obj) {
-      if (!(obj instanceof Marker)) {
+      if (!(obj instanceof Marker marker)) {
          return false;
       } else {
-         Marker marker = (Marker)obj;
-         return this.x == marker.x && this.y == marker.y && this.z == marker.z && this.dim == marker.dim && this.side == marker.side && (this.color == marker.color || this.color == -1);
+          return this.x == marker.x
+                  && this.y == marker.y
+                  && this.z == marker.z
+                  && this.dim == marker.dim
+                  && this.side == marker.side
+                  && (this.color == marker.color || this.color == -1 || marker.color == -1);
       }
    }
 }

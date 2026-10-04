@@ -64,6 +64,7 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_WISP_LIVE = new ResourceLocation(Thaumcraft.MOD_ID,"wisplive");
         public static final ResourceLocation RES_WISP_DEAD = new ResourceLocation(Thaumcraft.MOD_ID,"wispdead");
         public static final ResourceLocation RES_MONOLITH = new ResourceLocation(Thaumcraft.MOD_ID,"monolith");
+        public static final ResourceLocation RES_UPGRADE = new ResourceLocation(Thaumcraft.MOD_ID,"upgrade");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -124,4 +125,5 @@ public class ThaumcraftSounds {
     public static final SoundEvent WISP_LIVE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_WISP_LIVE);
     public static final SoundEvent WISP_DEAD = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_WISP_DEAD);
     public static final SoundEvent MONOLITH = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_MONOLITH);
+    public static final SoundEvent UPGRADE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_UPGRADE);
 }
