@@ -2,7 +2,6 @@ package thaumcraft.common.entities.golems;
 
 import com.linearity.opentc4.annotations.StoleFrom;
 import com.linearity.opentc4.mixinaccessors.InteractionOverridenMob;
-import com.linearity.opentc4.utils.collectionlike.SimplePair;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -41,14 +40,14 @@ import thaumcraft.common.entities.abstracts.StayableOwnableEntity;
 import thaumcraft.common.entities.ai.goals.CrossDimensionFollowingOwnerGoal;
 
 import java.util.EnumSet;
-import java.util.Optional;
-import java.util.UUID;
 
 import static com.linearity.opentc4.Consts.TravelingTrunkEntityTagAccessors.*;
 import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
-import static thaumcraft.common.entities.golems.TravelingTrunkEntity.ITravelingTrunkUpgradeItem.DEFAULT_PAIR;
 
-public class TravelingTrunkEntity extends Mob implements StayableOwnableEntity, InteractionOverridenMob {
+public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<TravelingTrunkEntity.ITravelingTrunkUpgradeItem,TravelingTrunkEntity>
+        implements
+        StayableOwnableEntity,
+        InteractionOverridenMob {
 
     public TravelingTrunkEntity(Level worldIn) {
         this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.TRAVELING_TRUNK(), worldIn);
@@ -79,8 +78,6 @@ public class TravelingTrunkEntity extends Mob implements StayableOwnableEntity, 
     }
     private static final EntityDataAccessor<Boolean> DATA_ID_OPENED = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_ID_STAY = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Optional<UUID>> DATA_ID_OWNER = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<ItemStack> DATA_ID_UPGRADE = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<Integer> DATA_ID_SLOT_COUNT = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_ID_ANGER = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.INT);
 
@@ -90,8 +87,6 @@ public class TravelingTrunkEntity extends Mob implements StayableOwnableEntity, 
         super.defineSynchedData();
         this.entityData.define(DATA_ID_OPENED, false);
         this.entityData.define(DATA_ID_STAY, false);
-        this.entityData.define(DATA_ID_OWNER, Optional.empty());
-        this.entityData.define(DATA_ID_UPGRADE, ItemStack.EMPTY);
         this.entityData.define(DATA_ID_SLOT_COUNT, BASIC_SLOT_COUNT);
         this.entityData.define(DATA_ID_ANGER, 0);
     }
@@ -100,20 +95,19 @@ public class TravelingTrunkEntity extends Mob implements StayableOwnableEntity, 
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         thaumcraft$setStay(STAY.readBooleanFromCompoundTag(compoundTag));
-        setOwnerUUID(OWNER.readFromCompoundTag(compoundTag));
-        setUpgradeStack(UPGRADE.readFromCompoundTag(compoundTag));
-        var upgrade = getTravelingTrunkUpgrade();
-        setSlotCount(upgrade.a().travelingTrunkUpgrade$inventorySize(this,upgrade.b()));
+
+        int additionalSlotCount = 0;
+        for (var upgradePair:upgradesCacheView){
+            additionalSlotCount += upgradePair.a().travelingTrunkUpgrade$inventorySizeAddition(this,upgradePair.b());
+        }
+        setSlotCount(BASIC_SLOT_COUNT + additionalSlotCount);
         ContainerHelper.loadAllItems(compoundTag, this.inventory);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        var ownerUUID = getOwnerUUID();
         STAY.writeBooleanToCompoundTag(compoundTag,thaumcraft$getStay());
-        OWNER.writeToCompoundTag(compoundTag,ownerUUID == null ? this.uuid : ownerUUID);
-        UPGRADE.writeToCompoundTag(compoundTag,getUpgradeStack());
         ContainerHelper.saveAllItems(compoundTag, this.inventory);
     }
 
@@ -130,19 +124,6 @@ public class TravelingTrunkEntity extends Mob implements StayableOwnableEntity, 
     @Override
     public void thaumcraft$setStay(boolean stay) {
         this.entityData.set(DATA_ID_STAY, stay);
-    }
-    @Override
-    public @Nullable UUID getOwnerUUID(){
-        return this.entityData.get(DATA_ID_OWNER).orElse(null);
-    }
-    public void setOwnerUUID(@Nullable UUID uuid) {
-        this.entityData.set(DATA_ID_OWNER, Optional.ofNullable(uuid));
-    }
-    public ItemStack getUpgradeStack(){
-        return this.entityData.get(DATA_ID_UPGRADE);
-    }
-    public void setUpgradeStack(ItemStack stack) {
-        this.entityData.set(DATA_ID_UPGRADE, stack);
     }
     public int getSlotCount() {
         return entityData.get(DATA_ID_SLOT_COUNT);
@@ -168,34 +149,31 @@ public class TravelingTrunkEntity extends Mob implements StayableOwnableEntity, 
     }
 
     @Override
-    public boolean hurt(DamageSource damageSource, float f) {
-        var upgradePair = getTravelingTrunkUpgrade();
-        var modifiedDamage = upgradePair.a().travelingTrunkUpgrade$modifyHurtDamage(this,upgradePair.b(),damageSource,f);
+    public boolean hurt(DamageSource source, float f) {
+        var modifiedDamage = f;
+        if (source.is(DamageTypes.CACTUS)) {
+            modifiedDamage = Float.NaN;
+        }
+        for (var upgradePair:upgradesCacheView){
+            modifiedDamage = upgradePair.a().travelingTrunkUpgrade$modifyHurtDamage(this,upgradePair.b(),source,modifiedDamage);
+        }
         if (!Float.isNaN(f) && Float.isNaN(modifiedDamage)){
             return false;
         }
-        return super.hurt(damageSource, modifiedDamage);
+        return super.hurt(source, modifiedDamage);
     }
-
-    protected @NotNull SimplePair<ITravelingTrunkUpgradeItem,ItemStack> getTravelingTrunkUpgrade() {
-        var upgrade = DEFAULT_PAIR;
-        var upgradeStack = getUpgradeStack();
-        if (upgradeStack.getItem() instanceof ITravelingTrunkUpgradeItem installedUpgrade){
-            upgrade = new SimplePair<>(installedUpgrade,upgradeStack);
-        }
-        return upgrade;
-    }
-
     public static final Vec3 VELOCITY_ADDITION_IN_WATER = new Vec3(0.0D, 0.033, 0.0D);
 
     @Override
     public void tick() {
         super.tick();
-        var upgrade = getTravelingTrunkUpgrade();
         if (this.moveControl instanceof TravelingTrunkMoveControl travelingTrunkMoveControl) {
-            travelingTrunkMoveControl.setWantedMovement(upgrade.a().travelingTrunkUpgrade$wantedMovement(this,upgrade.b()));
+            double movement = 1;
+            for (var upgradePair:upgradesCacheView){
+                movement *= upgradePair.a().travelingTrunkUpgrade$wantedMovementMultiplier(this,upgradePair.b());
+            }
+            travelingTrunkMoveControl.setWantedMovement(movement);
         }
-        upgrade.a().travelingTrunkUpgrade$tick(this,upgrade.b());
         if (this.isInWater()) {
             this.addDeltaMovement(VELOCITY_ADDITION_IN_WATER);
         }
@@ -231,6 +209,8 @@ public class TravelingTrunkEntity extends Mob implements StayableOwnableEntity, 
         if (this.eatDelay > 0) {
             --this.eatDelay;
         }
+        upgradesCacheView.forEach(upgradePair->upgradePair.a().travelingTrunkUpgrade$tick(this,upgradePair.b()));
+
     }
 
     @Override
@@ -242,8 +222,17 @@ public class TravelingTrunkEntity extends Mob implements StayableOwnableEntity, 
     public void refreshGoals() {
         this.goalSelector.removeAllGoals(_ignored -> true);
         this.targetSelector.removeAllGoals(_ignored -> true);
-        var upgrade = this.getTravelingTrunkUpgrade();
-        upgrade.a().travelingTrunkUpgrade$registerGoals(this,upgrade.b(),this.goalSelector,this.targetSelector);
+        goalSelector.addGoal(5, new TravelingTrunkAttackGoal(this));
+        goalSelector.addGoal(6, new CrossDimensionFollowingOwnerGoal(this, this,1.0, 10.0F, 2.0F, false));
+        upgradesCacheView.forEach(
+                upgradePair ->
+                        upgradePair.a().travelingTrunkUpgrade$registerGoals(
+                                this,
+                                upgradePair.b(),
+                                this.goalSelector,
+                                this.targetSelector
+                        )
+        );
     }
 
     @Override
@@ -259,33 +248,64 @@ public class TravelingTrunkEntity extends Mob implements StayableOwnableEntity, 
 
     @Override
     public InteractionResult thaumcraft$interact(Player player, InteractionHand interactionHand) {
-        var upgrade = getTravelingTrunkUpgrade();
-        var interactionResult = upgrade.a().travelingTrunkUpgrade$modifyInteraction(this,upgrade.b(),player,interactionHand);
-        if (interactionResult == InteractionResult.SUCCESS) {
-            var usingStack = player.getItemInHand(interactionHand);
-            if (usingStack.getItem() instanceof ITravelingTrunkUpgradeItem installedUpgrade && upgrade.b().isEmpty()){
-                installUpgrade(installedUpgrade, usingStack);
-                this.playSound(ThaumcraftSounds.UPGRADE,0.5F, 1.0F);
-                player.swing(interactionHand);
-                return InteractionResult.SUCCESS;
-            }
-
-            var foodProperties = usingStack.getItem().getFoodProperties();
-            if (foodProperties != null){
-                upgrade.a().travelingTrunkUpgrade$onFeed(this,upgrade.b(),usingStack,player,interactionHand);
-            }
-
-            if (player instanceof ServerPlayer serverPlayer) {
-                openInventoryForPlayer(serverPlayer);
+        for (var upgradePair : upgradesCacheView) {
+            var interactionResult = upgradePair.a().travelingTrunkUpgrade$modifyInteraction(this,upgradePair.b(),player,interactionHand);
+            if (interactionResult != InteractionResult.SUCCESS) {
+                return interactionResult;
             }
         }
-        return interactionResult;
+
+        var usingStack = player.getItemInHand(interactionHand);
+        if (tryInstallUpgradeFromStack(usingStack)) {
+            this.playSound(ThaumcraftSounds.UPGRADE,0.5F, 1.0F);
+            player.swing(interactionHand);
+            return InteractionResult.SUCCESS;
+        }
+
+        if (tryFeedStack(player, interactionHand, usingStack)){
+            return InteractionResult.SUCCESS;
+        }
+
+        if (player instanceof ServerPlayer serverPlayer) {
+            openInventoryForPlayer(serverPlayer);
+        }
+
+        return InteractionResult.SUCCESS;
     }
 
-    protected void installUpgrade(ITravelingTrunkUpgradeItem installedUpgrade, ItemStack usingStack) {
-        var usingUpgradeStack = usingStack.split(1);
-        setUpgradeStack(usingUpgradeStack);
-        installedUpgrade.travelingTrunkUpgrade$onInstalled(this,usingUpgradeStack);
+    protected boolean tryFeedStack(
+            Player player,
+            InteractionHand interactionHand,
+            ItemStack usingStack) {
+        var foodProperties = usingStack.getItem().getFoodProperties();
+        if (foodProperties != null){
+            //may works fine for eternal beef(or some bad food?whatever)
+            //Trunk-And-Eternal-beef army?You and what army?
+            upgradesCacheView.forEach(upgradePair ->
+                    upgradePair.a().travelingTrunkUpgrade$onFeed(this,upgradePair.b(), usingStack, player, interactionHand)
+            );
+            usingStack.getItem().finishUsingItem(usingStack,this.level(),this);
+
+            //TODO:[maybe wont finished]vote in democracy(crazy)
+            // to decide if add cooldown
+            // for "player using stack"
+            // or "all living entity"
+            // or "this living entity",
+            // and add item cooldown
+            // (in most cases we may have to add this cooldown manually!unless we make this entity a player(which may leads to lots of bugs).
+            // I can also make a api for item cooldowns but we have to make it applicable for other mods ONE BY ONE
+            // or even 2IntFunction to add cooldown
+
+//                player.getCooldowns().addCooldown(usingStack.getItem(),);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void onAddedUpgradeStack(ITravelingTrunkUpgradeItem installedUpgrade, ItemStack usingUpgradeStack) {
+        super.onAddedUpgradeStack(installedUpgrade, usingUpgradeStack);
+        installedUpgrade.travelingTrunkUpgrade$onInstalled(this, usingUpgradeStack);
     }
 
     protected void openInventoryForPlayer(ServerPlayer player){
@@ -312,69 +332,6 @@ public class TravelingTrunkEntity extends Mob implements StayableOwnableEntity, 
             }
         }
         return result;
-    }
-
-    public interface ITravelingTrunkUpgradeItem {
-        ITravelingTrunkUpgradeItem DEFAULT = new ITravelingTrunkUpgradeItem() {};
-        SimplePair<ITravelingTrunkUpgradeItem,ItemStack> DEFAULT_PAIR = new SimplePair<>(DEFAULT, ItemStack.EMPTY);
-
-        //NaN if cancel
-        default float travelingTrunkUpgrade$modifyHurtDamage(TravelingTrunkEntity trunk,ItemStack upgradeStack,DamageSource source, float amount) {
-            if (source.is(DamageTypes.CACTUS)) {
-                return Float.NaN;
-            }
-            return amount;
-        }
-
-        default void travelingTrunkUpgrade$tick(TravelingTrunkEntity trunk,ItemStack upgradeStack){
-
-        }
-
-        //maybe something like "aqua&ordo" upgrade for a team's access?
-        default InteractionResult travelingTrunkUpgrade$modifyInteraction(TravelingTrunkEntity trunk,ItemStack upgradeStack,Player player, InteractionHand interactionHand) {
-            return InteractionResult.SUCCESS;
-        }
-
-        default void travelingTrunkUpgrade$onInstalled(TravelingTrunkEntity trunk,ItemStack upgradeStack){
-
-        }
-
-        default void travelingTrunkUpgrade$onFeed(TravelingTrunkEntity trunk,ItemStack upgradeStack,ItemStack usingStack,Player player,InteractionHand interactionHand) {
-            var foodProperties = usingStack.getItem().getFoodProperties();
-            if (foodProperties != null){
-                //may works fine for eternal beef(or some bad food?whatever)
-                //Trunk-And-Eternal-beef army?You and what army?
-                usingStack.getItem().finishUsingItem(usingStack,trunk.level(),trunk);
-
-                //TODO:[maybe wont finished]vote in democracy(crazy)
-                // to decide if add cooldown
-                // for "player using stack"
-                // or "all living entity"
-                // or "this living entity",
-                // and add item cooldown
-                // (in most cases we may have to add this cooldown manually!unless we make this entity a player(which may leads to lots of bugs).
-                // I can also make a api for item cooldowns but we have to make it applicable for other mods ONE BY ONE
-//                player.getCooldowns().addCooldown(usingStack.getItem(),);
-            }
-        }
-
-        default double travelingTrunkUpgrade$wantedMovement(TravelingTrunkEntity trunk,ItemStack upgradeStack){
-            return 1;
-        }
-
-        default void travelingTrunkUpgrade$registerGoals(TravelingTrunkEntity trunk, ItemStack upgradeStack, GoalSelector goalSelector,GoalSelector targetSelector) {
-            goalSelector.addGoal(5, new TravelingTrunkAttackGoal(trunk));
-            goalSelector.addGoal(6, new CrossDimensionFollowingOwnerGoal(trunk, trunk,1.0, 10.0F, 2.0F, false));
-            travelingTrunkUpgrade$registerTargetGoals(trunk,upgradeStack,targetSelector);
-        }
-        default void travelingTrunkUpgrade$registerTargetGoals(TravelingTrunkEntity trunk, ItemStack upgradeStack,GoalSelector targetSelector){
-        }
-        default int travelingTrunkUpgrade$inventorySize(TravelingTrunkEntity trunk,ItemStack upgradeStack){
-            return BASIC_SLOT_COUNT;
-        }
-        default ItemStack travelingTrunkUpgrade$getTravelingTrunkStack(TravelingTrunkEntity trunk,ItemStack upgradeStack){
-            //TODO:Order upgrade keeps inv
-        }
     }
 
     @StoleFrom("net.minecraft.world.entity.monster.Slime")
@@ -581,11 +538,58 @@ public class TravelingTrunkEntity extends Mob implements StayableOwnableEntity, 
         }
     }
 
-    public boolean isOwner(@Nullable UUID uuidToCheck) {
-        var ownerUUID = getOwnerUUID();
-        if (getOwnerUUID() == this.uuid || getOwnerUUID() == null){
-            return true;
-        }
-        return uuidToCheck == ownerUUID;
+    @Override
+    public Class<ITravelingTrunkUpgradeItem> getUpgradeClass() {
+        return ITravelingTrunkUpgradeItem.class;
     }
+
+    public interface ITravelingTrunkUpgradeItem extends IAbstractGolemUpgradeItem<ITravelingTrunkUpgradeItem,TravelingTrunkEntity> {
+
+        default boolean golemUpgrade$isApplicableTo(ItemStack stack, AbstractGolemUpgradeApplicableEntity<?,?> couldBeTravelingTrunk) {
+            return couldBeTravelingTrunk instanceof TravelingTrunkEntity;
+        }
+
+        //NaN if cancel
+        default float travelingTrunkUpgrade$modifyHurtDamage(TravelingTrunkEntity trunk,ItemStack upgradeStack,DamageSource source, float amount) {
+            if (source.is(DamageTypes.CACTUS)) {
+                return Float.NaN;
+            }
+            return amount;
+        }
+
+        default void travelingTrunkUpgrade$tick(TravelingTrunkEntity trunk,ItemStack upgradeStack){
+
+        }
+
+        //maybe something like "aqua&ordo" upgrade for a team's access?
+        default InteractionResult travelingTrunkUpgrade$modifyInteraction(TravelingTrunkEntity trunk,ItemStack upgradeStack,Player player, InteractionHand interactionHand) {
+            return InteractionResult.SUCCESS;
+        }
+
+        default void travelingTrunkUpgrade$onInstalled(TravelingTrunkEntity trunk,ItemStack upgradeStack){
+
+        }
+
+        default void travelingTrunkUpgrade$onFeed(TravelingTrunkEntity trunk,ItemStack upgradeStack,ItemStack usingStack,Player player,InteractionHand interactionHand) {
+
+        }
+
+        default double travelingTrunkUpgrade$wantedMovementMultiplier(TravelingTrunkEntity trunk, ItemStack upgradeStack){
+            return 1;
+        }
+
+        default void travelingTrunkUpgrade$registerGoals(TravelingTrunkEntity trunk, ItemStack upgradeStack, GoalSelector goalSelector,GoalSelector targetSelector) {
+
+            travelingTrunkUpgrade$registerTargetGoals(trunk,upgradeStack,targetSelector);
+        }
+        default void travelingTrunkUpgrade$registerTargetGoals(TravelingTrunkEntity trunk, ItemStack upgradeStack,GoalSelector targetSelector){
+        }
+        default int travelingTrunkUpgrade$inventorySizeAddition(TravelingTrunkEntity trunk, ItemStack upgradeStack){
+            return 0;
+        }
+        default ItemStack travelingTrunkUpgrade$getTravelingTrunkStack(TravelingTrunkEntity trunk,ItemStack upgradeStack,ItemStack travelingTrunkStack){
+            //TODO:Order upgrade keeps inv
+        }
+    }
+
 }

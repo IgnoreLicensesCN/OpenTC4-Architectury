@@ -27,7 +27,7 @@ public class EarthGolemUpgradeItem extends Item implements TravelingTrunkEntity.
     }
 
     @Override
-    public int travelingTrunkUpgrade$inventorySize(TravelingTrunkEntity trunk, ItemStack upgradeStack) {
-        return TravelingTrunkEntity.ITravelingTrunkUpgradeItem.super.travelingTrunkUpgrade$inventorySize(trunk, upgradeStack)+9;
+    public int travelingTrunkUpgrade$inventorySizeAddition(TravelingTrunkEntity trunk, ItemStack upgradeStack) {
+        return 9;
     }
 }

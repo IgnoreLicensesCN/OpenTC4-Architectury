@@ -27,8 +27,8 @@ public class OrderGolemUpgradeItem extends Item implements TravelingTrunkEntity.
     }
 
     @Override
-    public ItemStack travelingTrunkUpgrade$getTravelingTrunkStack(TravelingTrunkEntity trunk, ItemStack upgradeStack) {
+    public ItemStack travelingTrunkUpgrade$getTravelingTrunkStack(TravelingTrunkEntity trunk, ItemStack upgradeStack,ItemStack travelingTrunkStack) {
         //TODO:Order upgrade keeps inv
-        return TravelingTrunkEntity.ITravelingTrunkUpgradeItem.super.travelingTrunkUpgrade$getTravelingTrunkStack(trunk, upgradeStack);
+        return TravelingTrunkEntity.ITravelingTrunkUpgradeItem.super.travelingTrunkUpgrade$getTravelingTrunkStack(trunk, upgradeStack,travelingTrunkStack);
     }
 }
