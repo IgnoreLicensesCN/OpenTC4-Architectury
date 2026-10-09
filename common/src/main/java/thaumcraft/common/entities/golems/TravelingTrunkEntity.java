@@ -38,13 +38,14 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.StayableOwnableEntity;
 import thaumcraft.common.entities.ai.goals.CrossDimensionFollowingOwnerGoal;
+import thaumcraft.common.items.ThaumcraftItemInstances;
 
 import java.util.EnumSet;
 
 import static com.linearity.opentc4.Consts.TravelingTrunkEntityTagAccessors.*;
 import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
 
-public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<TravelingTrunkEntity.ITravelingTrunkUpgradeItem,TravelingTrunkEntity>
+public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<TravelingTrunkEntity.ITravelingTrunkUpgradeItem>
         implements
         StayableOwnableEntity,
         InteractionOverridenMob {
@@ -543,9 +544,8 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
         } else if (livingEntity instanceof Player && livingEntity2 instanceof Player && !((Player)livingEntity2).canHarmPlayer((Player)livingEntity)) {
             return false;
         } else {
-            return livingEntity instanceof AbstractHorse && ((AbstractHorse)livingEntity).isTamed()
-                    ? false
-                    : !(livingEntity instanceof TamableAnimal) || !((TamableAnimal)livingEntity).isTame();
+            return !((livingEntity instanceof AbstractHorse horse) && horse.isTamed())
+                    && !((livingEntity instanceof TamableAnimal tamableAnimal) && tamableAnimal.isTame());
         }
     }
 
@@ -556,7 +556,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
 
     public interface ITravelingTrunkUpgradeItem extends IAbstractGolemUpgradeItem<ITravelingTrunkUpgradeItem> {
 
-        default boolean golemUpgrade$isApplicableTo(ItemStack stack, AbstractGolemUpgradeApplicableEntity<?,?> couldBeTravelingTrunk) {
+        default boolean golemUpgrade$isApplicableTo(ItemStack stack, AbstractGolemUpgradeApplicableEntity<?> couldBeTravelingTrunk) {
             return couldBeTravelingTrunk instanceof TravelingTrunkEntity;
         }
 
@@ -599,9 +599,39 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
             return 0;
         }
         default ItemStack travelingTrunkUpgrade$getTravelingTrunkStack(TravelingTrunkEntity trunk,ItemStack upgradeStack,ItemStack travelingTrunkStack){
-
-            //TODO:Order upgrade keeps inv
+            return travelingTrunkStack;
         }
     }
 
+    @Override
+    public ItemStack collapseToItemStackWithoutSneaking() {
+        var stack = super.collapseToItemStackWithoutSneaking();
+        var level = level();
+        for (var pair:upgradesCacheView){
+            stack = pair.a().travelingTrunkUpgrade$getTravelingTrunkStack(this,pair.b(),stack);
+        }
+        Containers.dropContents(level,blockPosition(),inventory);
+        this.discard();
+        return stack;
+    }
+
+    @Override
+    public ItemStack collapseToItemStackWithSneaking() {
+        var stack = super.collapseToItemStackWithSneaking();
+        var level = level();
+        Containers.dropContents(level,blockPosition(),inventory);
+
+        this.discard();
+        return stack;
+    }
+
+    @Override
+    public boolean canBeCollapsedBy(LivingEntity living) {
+        return isOwner(living.getUUID());
+    }
+
+    @Override
+    public ItemStack getCollapseToBasicStack() {
+        return ThaumcraftItemInstances.TRAVELING_TRUNK().getDefaultInstance();
+    }
 }

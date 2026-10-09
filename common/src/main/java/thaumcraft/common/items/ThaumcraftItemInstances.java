@@ -42,7 +42,8 @@ import thaumcraft.common.items.equipment.masks.GrinningDevilMaskItem;
 import thaumcraft.common.items.equipment.masks.SippingFiendMaskItem;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
-import thaumcraft.common.items.golemupgrade.*;
+import thaumcraft.common.items.golem.GolemBellItem;
+import thaumcraft.common.items.golem.upgrade.primal.*;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
 import thaumcraft.common.items.jars.NodeJarBlockItem;
 import thaumcraft.common.items.jars.VoidJarBlockItem;
@@ -50,6 +51,7 @@ import thaumcraft.common.items.mateiral.DegradableTaintedMaterialItem;
 import thaumcraft.common.items.mateiral.PrimalCharmItem;
 import thaumcraft.common.items.mateiral.PrimePearlItem;
 import thaumcraft.common.items.misc.*;
+import thaumcraft.common.items.placeableentity.TravelingTrunkItem;
 import thaumcraft.common.items.research.InkWellItem;
 import thaumcraft.common.items.research.ThaumometerItem;
 import thaumcraft.common.items.transport.HandMirrorItem;
@@ -1001,5 +1003,11 @@ public class ThaumcraftItemInstances {
     }
     public static WaterGolemUpgradeItem WATER_GOLEM_UPGRADE() {
         return ThaumcraftItemsRegistry.SUPPLIER_WATER_GOLEM_UPGRADE.get();
+    }
+    public static TravelingTrunkItem TRAVELING_TRUNK() {
+        return ThaumcraftItemsRegistry.SUPPLIER_TRAVELING_TRUNK.get();
+    }
+    public static GolemBellItem GOLEM_BELL() {
+        return ThaumcraftItemsRegistry.SUPPLIER_GOLEM_BELL.get();
     }
 }

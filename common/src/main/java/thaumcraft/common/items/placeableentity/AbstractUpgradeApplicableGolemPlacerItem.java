@@ -14,7 +14,7 @@ import java.util.List;
 import static com.linearity.opentc4.Consts.AbstractGolemUpgradeApplicableEntityTagAccessors.UPGRADES;
 
 public abstract class AbstractUpgradeApplicableGolemPlacerItem<
-            GolemClass extends AbstractGolemUpgradeApplicableEntity<?,GolemClass>
+            GolemClass extends AbstractGolemUpgradeApplicableEntity<?>
         > extends AbstractEntityPlacerItem<GolemClass>{
     public AbstractUpgradeApplicableGolemPlacerItem(Properties properties) {
         super(properties);

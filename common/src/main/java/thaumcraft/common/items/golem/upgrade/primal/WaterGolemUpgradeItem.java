@@ -1,4 +1,4 @@
-package thaumcraft.common.items.golemupgrade;
+package thaumcraft.common.items.golem.upgrade.primal;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;

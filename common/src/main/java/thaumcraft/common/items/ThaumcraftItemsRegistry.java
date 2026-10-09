@@ -40,10 +40,12 @@ import thaumcraft.common.items.equipment.elemental.*;
 import thaumcraft.common.items.equipment.masks.*;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
-import thaumcraft.common.items.golemupgrade.*;
+import thaumcraft.common.items.golem.GolemBellItem;
+import thaumcraft.common.items.golem.upgrade.primal.*;
 import thaumcraft.common.items.jars.*;
 import thaumcraft.common.items.mateiral.*;
 import thaumcraft.common.items.misc.*;
+import thaumcraft.common.items.placeableentity.TravelingTrunkItem;
 import thaumcraft.common.items.research.*;
 import thaumcraft.common.items.transport.*;
 import thaumcraft.common.items.wands.FocusPouchItem;
@@ -1247,6 +1249,14 @@ public class ThaumcraftItemsRegistry {
     public static final RegistrySupplier<EntropyGolemUpgradeItem> SUPPLIER_ENTROPY_GOLEM_UPGRADE = ITEMS.register(
             "golem_upgrade_entropy",
             EntropyGolemUpgradeItem::new
+    );
+    public static final RegistrySupplier<TravelingTrunkItem> SUPPLIER_TRAVELING_TRUNK = ITEMS.register(
+            "traveling_trunk",
+            TravelingTrunkItem::new
+    );
+    public static final RegistrySupplier<GolemBellItem> SUPPLIER_GOLEM_BELL = ITEMS.register(
+            "golem_bell",
+            GolemBellItem::new
     );
     public static final Supplier<ItemStack> RANDOM_MANA_BEAN_SUPPLIER = new Supplier<>() {
         private final ThreadLocal<RandomSource> randomSourceThreadLocal = new ThreadLocal<>();

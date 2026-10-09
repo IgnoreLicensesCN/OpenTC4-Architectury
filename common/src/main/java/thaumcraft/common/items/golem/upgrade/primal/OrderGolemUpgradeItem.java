@@ -1,6 +1,7 @@
-package thaumcraft.common.items.golemupgrade;
+package thaumcraft.common.items.golem.upgrade.primal;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -28,7 +29,9 @@ public class OrderGolemUpgradeItem extends Item implements TravelingTrunkEntity.
 
     @Override
     public ItemStack travelingTrunkUpgrade$getTravelingTrunkStack(TravelingTrunkEntity trunk, ItemStack upgradeStack,ItemStack travelingTrunkStack) {
-        //TODO:Order upgrade keeps inv
-        return TravelingTrunkEntity.ITravelingTrunkUpgradeItem.super.travelingTrunkUpgrade$getTravelingTrunkStack(trunk, upgradeStack,travelingTrunkStack);
+        var tag = travelingTrunkStack.getOrCreateTag();
+        ContainerHelper.saveAllItems(tag,trunk.inventory);
+        trunk.inventory.clear();
+        return travelingTrunkStack;
     }
 }
