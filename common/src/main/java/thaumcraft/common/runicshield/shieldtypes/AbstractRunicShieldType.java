@@ -4,6 +4,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.ITagAccessorOwner;
 import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -78,6 +79,8 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
                 shieldMap.mergeInt(this, 1, Integer::sum);
                 shieldInfo.rechargeDelay += getTickCooldownAfterRegen(living, shieldInfo);
                 shieldInfo.shouldSyncCharge = true;
+            }else {
+                shieldInfo.rechargeDelay += 10;
             }
         } else if (capacity < shieldMap.getInt(this)) {
             shieldMap.put(this, capacity);
@@ -171,7 +174,11 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
 
     @Override
     public int compareTo(@NotNull AbstractRunicShieldType o) {
-        return Integer.compare(this.priority, o.priority);
+        int priorityResult = Integer.compare(this.priority, o.priority);
+        if (priorityResult != 0) {
+            return priorityResult;
+        }
+        return this.id.compareTo(o.id);
     }
 
     public abstract @Nullable CompoundTagAccessor<AdditionalInfoClass> getOwningTagAccessor();

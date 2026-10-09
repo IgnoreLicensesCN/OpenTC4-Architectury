@@ -74,7 +74,10 @@ public class EntropyGolemUpgradeItem extends Item implements TravelingTrunkEntit
                 var pos = itemEntity.position();
                 var trunkPos = trunk.position();
                 var vecToItem = pos.subtract(trunkPos);
-                itemEntity.addDeltaMovement(vecToItem.scale(-0.075 / vecToItem.length()));
+                var length = vecToItem.length();
+                if (length > 0.01){
+                    itemEntity.addDeltaMovement(vecToItem.scale(-0.075 / length));
+                }
             });
 
         }

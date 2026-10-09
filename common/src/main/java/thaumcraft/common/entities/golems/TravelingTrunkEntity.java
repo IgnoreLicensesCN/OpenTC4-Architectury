@@ -95,13 +95,20 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         thaumcraft$setStay(STAY.readBooleanFromCompoundTag(compoundTag));
+        loadInventoryFromNBT(compoundTag);
+    }
 
+    public void loadInventoryFromNBT(CompoundTag tag) {
+        updateSlotCount();
+        ContainerHelper.loadAllItems(tag, this.inventory);
+    }
+
+    protected void updateSlotCount() {
         int additionalSlotCount = 0;
         for (var upgradePair:upgradesCacheView){
             additionalSlotCount += upgradePair.a().travelingTrunkUpgrade$inventorySizeAddition(this,upgradePair.b());
         }
         setSlotCount(BASIC_SLOT_COUNT + additionalSlotCount);
-        ContainerHelper.loadAllItems(compoundTag, this.inventory);
     }
 
     @Override
@@ -167,13 +174,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
     @Override
     public void tick() {
         super.tick();
-        if (this.moveControl instanceof TravelingTrunkMoveControl travelingTrunkMoveControl) {
-            double movement = 1;
-            for (var upgradePair:upgradesCacheView){
-                movement *= upgradePair.a().travelingTrunkUpgrade$wantedMovementMultiplier(this,upgradePair.b());
-            }
-            travelingTrunkMoveControl.setWantedMovement(movement);
-        }
+        updateWantedMovement();
         if (this.isInWater()) {
             this.addDeltaMovement(VELOCITY_ADDITION_IN_WATER);
         }
@@ -211,6 +212,16 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
         }
         upgradesCacheView.forEach(upgradePair->upgradePair.a().travelingTrunkUpgrade$tick(this,upgradePair.b()));
 
+    }
+
+    protected void updateWantedMovement() {
+        if (this.moveControl instanceof TravelingTrunkMoveControl travelingTrunkMoveControl) {
+            double movement = 1;
+            for (var upgradePair:upgradesCacheView){
+                movement *= upgradePair.a().travelingTrunkUpgrade$wantedMovementMultiplier(this,upgradePair.b());
+            }
+            travelingTrunkMoveControl.setWantedMovement(movement);
+        }
     }
 
     @Override
@@ -543,7 +554,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
         return ITravelingTrunkUpgradeItem.class;
     }
 
-    public interface ITravelingTrunkUpgradeItem extends IAbstractGolemUpgradeItem<ITravelingTrunkUpgradeItem,TravelingTrunkEntity> {
+    public interface ITravelingTrunkUpgradeItem extends IAbstractGolemUpgradeItem<ITravelingTrunkUpgradeItem> {
 
         default boolean golemUpgrade$isApplicableTo(ItemStack stack, AbstractGolemUpgradeApplicableEntity<?,?> couldBeTravelingTrunk) {
             return couldBeTravelingTrunk instanceof TravelingTrunkEntity;
@@ -588,6 +599,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
             return 0;
         }
         default ItemStack travelingTrunkUpgrade$getTravelingTrunkStack(TravelingTrunkEntity trunk,ItemStack upgradeStack,ItemStack travelingTrunkStack){
+
             //TODO:Order upgrade keeps inv
         }
     }

@@ -17,36 +17,17 @@ import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches.
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableListAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableSetTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableStringSetTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.NullFilteredModifiableListAccessor;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
-import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
-import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 
 public class Consts {
     public static final int TAINT_SPREAD_DOWN_DISTANCE = -1;
     public static final int TAINT_SPREAD_UP_DISTANCE = 64;
     public static final int PURE_NODE_Y_RANGE = 8;
 
-
-    public static class PlayerDataAccessors {
-        public static final ModifiableAspectListAccessor PLAYER_RESEARCH_ASPECTS = new ModifiableAspectListAccessor("player_research_aspects");
-        private static final String CLUE = "THAUMCRAFT.CLUE";
-        public static final ModifiableSetTagAccessor<ClueResourceLocation> THAUMCRAFT_PLAYER_CLUE_ACCESSOR =
-                new ModifiableSetTagAccessor<>(
-                        CLUE,new ClueResourceLocationTagAccessor(
-                        CLUE+"_item")
-                );
-        private static final String RESEARCH = "THAUMCRAFT.RESEARCH";
-        public static final ModifiableListAccessor<ResearchItemResourceLocation> THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR =
-                new ModifiableListAccessor<>(
-                        RESEARCH,
-                        new ResearchItemResourceLocationTagAccessor(RESEARCH + "_key")
-                );
-    }
 
     public static class WorldCoordsCompoundTagAccessors {
         private static final String WORLD_X = "w_x"; // int

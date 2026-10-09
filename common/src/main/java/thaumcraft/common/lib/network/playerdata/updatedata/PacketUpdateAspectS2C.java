@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.network.playerdata.updatedata;
 
+import com.linearity.opentc4.OpenTC4;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.client.Minecraft;
@@ -62,10 +63,14 @@ public class PacketUpdateAspectS2C extends ThaumcraftBaseS2CMessage {
         var player = Minecraft.getInstance().player;
         if (aspect != null && player != null) {
             var info = ResearchAndScannedInfo.getFromLiving(player);
-            info.setResearchAspect(
-                    aspect,
-                    this.total
-            );
+            if (info != null){
+                info.setResearchAspect(
+                        aspect,
+                        this.total
+                );
+            }else {
+                OpenTC4.LOGGER.error("Couldn't find ResearchAndScannedInfo for " + player.getGameProfile().getName() + " " + player.getUUID() + " " + player.getClass());
+            }
 
             if (this.amountChanged > 0) {
                 var text = Component.translatable(

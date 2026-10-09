@@ -33,10 +33,10 @@ import static thaumcraft.common.lib.world.biomes.BiomeUtils.setPosTaint;
 
 public class ThaumcraftEldritchBossProvider {
     public static void init() {
-        BOSS_ROOM_GENERATOR.add(Impl::spawnGolemBossRoom,1);
-        BOSS_ROOM_GENERATOR.add(Impl::spawnCultistBossRoom,1);
-        BOSS_ROOM_GENERATOR.add(Impl::spawnWardenBossRoom,1);
-        BOSS_ROOM_GENERATOR.add(Impl::spawnTaintBossRoom,1);
+        BOSS_ROOM_GENERATOR.add(Impl::spawnGolemBossRoom,100);
+        BOSS_ROOM_GENERATOR.add(Impl::spawnCultistBossRoom,100);
+        BOSS_ROOM_GENERATOR.add(Impl::spawnWardenBossRoom,100);
+        BOSS_ROOM_GENERATOR.add(Impl::spawnTaintBossRoom,100);
     }
     public static final WeightedRandomCollection<IEldritchBossRoomGenerator> BOSS_ROOM_GENERATOR = new WeightedRandomCollection<>();
     public static void generateEldritchBossRoom(Level level, BlockPos pos,int centerX, int centerZ, int exit) {

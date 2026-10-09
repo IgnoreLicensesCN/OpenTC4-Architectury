@@ -84,7 +84,7 @@ public class RunicShieldInfo {
 
 
     public @Nullable <AdditionalInfoClass> AdditionalInfoClass getAdditionalInfo(AbstractRunicShieldType<AdditionalInfoClass> shieldType) {
-        return (AdditionalInfoClass) this.runicShieldAdditionalInfo.get(this);
+        return (AdditionalInfoClass) this.runicShieldAdditionalInfo.get(shieldType);
     }
 
     public <AdditionalInfoClass> void putAdditionalInfo(AbstractRunicShieldType<AdditionalInfoClass> shieldType, AdditionalInfoClass info) {
@@ -142,7 +142,7 @@ public class RunicShieldInfo {
                     int capacity = shieldCapacity.getInt(key);
                     int room = capacity - value;
                     if (room > 0) {
-                        required.put(key, value);
+                        required.put(key, room);
                     }
                 }
         );
@@ -156,12 +156,13 @@ public class RunicShieldInfo {
             }
             int randomIndex = random.nextInt(required.size());
             var pickingType = keys.get(randomIndex);
-            shieldCharged.put(pickingType, shieldCharged.getInt(pickingType));
+            shieldCharged.put(pickingType, shieldCharged.getInt(pickingType)+1);
             int requiredAfterAdded = required.getInt(pickingType) - 1;
-            if (requiredAfterAdded <= 0) {
+            if (requiredAfterAdded > 0) {
                 required.put(pickingType, requiredAfterAdded);
             } else {
                 required.removeInt(pickingType);
+                keys.remove(randomIndex);
             }
         }
     }

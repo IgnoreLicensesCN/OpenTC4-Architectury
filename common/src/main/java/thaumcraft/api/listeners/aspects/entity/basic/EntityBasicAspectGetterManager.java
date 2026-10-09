@@ -14,7 +14,7 @@ public class EntityBasicAspectGetterManager {
 
     //TODO:Entity bonus aspects
     public static @Unmodifiable AspectList<Aspect> getAspectsForEntity(Entity entity){
-        var result = new HashAspectList<Aspect>();
+        var result = new HashAspectList<>();
         for (var getter:ENTITY_BASIC_ASPECT_GETTERS.getListeners()){
             getter.onGetBasicAspect(entity,result);
         }

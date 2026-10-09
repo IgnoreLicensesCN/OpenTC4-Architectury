@@ -728,16 +728,31 @@ public class InfusionMatrixBlockEntity
 
         public int recalculateStabilityProviding(Level level,BlockPos matrixPos){
             int stabilityProviding = 0;
+            var blockPosWithOffset = new BlockPos.MutableBlockPos();
+            var blockPosWithOffsetTransformed = new BlockPos.MutableBlockPos();
+            var matrixX = blockPosWithOffset.getX();
+            var matrixY = blockPosWithOffset.getY();
+            var matrixZ = blockPosWithOffset.getZ();
             for (int yOffset=-10;yOffset<=5;yOffset++){
                 for (int xOffset = -12;xOffset <= 12;xOffset++) {
                     for (int zOffset = 0;zOffset <= 12;zOffset++) {
                         if (xOffset == 0 && zOffset == 0) {
                             continue;
                         }
-                        var blockPosOffset = new BlockPos(xOffset,yOffset,zOffset);
-                        var blockPosOffsetTransformed = new BlockPos(-xOffset,yOffset,-zOffset);
-                        int stabilityA = getStabilityFromBlock(level,level.getBlockState(blockPosOffset),matrixPos.offset(blockPosOffset),matrixPos);
-                        int stabilityB = getStabilityFromBlock(level,level.getBlockState(blockPosOffsetTransformed),matrixPos.offset(blockPosOffsetTransformed),matrixPos);
+                        blockPosWithOffset.set(xOffset + matrixX,yOffset + matrixY,zOffset + matrixZ);
+                        blockPosWithOffsetTransformed.set(-xOffset + matrixX,yOffset + matrixY,-zOffset + matrixZ);
+                        int stabilityA = getStabilityFromBlock(
+                                level,
+                                level.getBlockState(blockPosWithOffset),
+                                blockPosWithOffset,
+                                matrixPos
+                        );
+                        int stabilityB = getStabilityFromBlock(
+                                level,
+                                level.getBlockState(blockPosWithOffsetTransformed),
+                                blockPosWithOffsetTransformed,
+                                matrixPos
+                        );
                         if (stabilityB != stabilityA) {
                             stabilityProviding -= (stabilityB+stabilityA);
                         }else {

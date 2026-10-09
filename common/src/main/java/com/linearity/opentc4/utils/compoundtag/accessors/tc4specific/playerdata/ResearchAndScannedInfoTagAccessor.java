@@ -47,7 +47,9 @@ public class ResearchAndScannedInfoTagAccessor extends CompoundTagAccessor<Resea
         ResearchAndScannedInfo info = new ResearchAndScannedInfo();
         info.completedResearches.addAll(researchIDAccessor.readFromCompoundTag(innerTag));
         info.completedClues.addAll(clueIDAccessor.readFromCompoundTag(innerTag));
-        info.owningResearchAspect.addAll(researchAspectsAccessor.readFromCompoundTag(innerTag));
+        if (researchAspectsAccessor.compoundTagHasKey(innerTag)) {
+            info.owningResearchAspect.addAll(researchAspectsAccessor.readFromCompoundTag(innerTag));
+        }
         info.scannedThings.putAll(scannedThingsAccessor.readFromCompoundTag(innerTag));
         return info;
     }

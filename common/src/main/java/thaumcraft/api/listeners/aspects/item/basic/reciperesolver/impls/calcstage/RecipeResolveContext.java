@@ -23,7 +23,7 @@ public class RecipeResolveContext {
         this.resolvedAspect = resolvedAspect;
         this.aspectAdder = aspectAdder;
         this.itemsResolvedLastTurn = new HashSet<>(itemsResolvedLastTurn);
-        this.itemsResolvedLastTurnView = Collections.unmodifiableSet(itemsResolvedLastTurn);
+        this.itemsResolvedLastTurnView = Collections.unmodifiableSet(this.itemsResolvedLastTurn);
         this.itemsNewlyResolved = new HashSet<>();
         this.itemsNewlyResolvedView = Collections.unmodifiableSet(this.itemsNewlyResolved);
     }

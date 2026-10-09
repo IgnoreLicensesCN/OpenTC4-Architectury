@@ -278,17 +278,18 @@ public class InventoryUtils {
       }
    }
 
-   public static int isWandInHotbarWithRoom(Aspect aspect, int amount, Player player) {
-      for (int i = 0; i < 9; i++) {
-         ItemStack stack = player.getInventory().items.get(i);
-         if (!stack.isEmpty() && stack.getItem() instanceof WandCastingItem wand) {
-            if (wand.addCentiVis(stack, aspect, amount, false) < amount) {
-               return i;
-            }
-         }
-      }
-      return -1;
-   }
+//   @Deprecated(forRemoval = true)
+//   public static int isWandInHotbarWithRoom(Aspect aspect, int amount, Player player) {
+//      for (int i = 0; i < 9; i++) {
+//         ItemStack stack = player.getInventory().items.get(i);
+//         if (!stack.isEmpty() && stack.getItem() instanceof WandCastingItem wand) {
+//            if (wand.addCentiVis(stack, aspect, amount, false) < amount) {
+//               return i;
+//            }
+//         }
+//      }
+//      return -1;
+//   }
 
    public static @Nullable ItemStack isOwningCentiVisContainerWithRoom(Aspect aspect, int amount, Player player) {
       for (var slotStack:player.getInventory().items) {

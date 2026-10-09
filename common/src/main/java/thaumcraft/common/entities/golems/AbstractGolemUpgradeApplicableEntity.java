@@ -21,8 +21,8 @@ import static com.linearity.opentc4.Consts.AbstractGolemUpgradeApplicableEntityT
 import static com.linearity.opentc4.Consts.AbstractGolemUpgradeApplicableEntityTagAccessors.UPGRADES;
 
 public abstract class AbstractGolemUpgradeApplicableEntity<
-        UpgradeItem extends AbstractGolemUpgradeApplicableEntity.IAbstractGolemUpgradeItem<UpgradeItem,UpgradeGolem>,
-        UpgradeGolem extends AbstractGolemUpgradeApplicableEntity<UpgradeItem,UpgradeGolem>
+        UpgradeItem extends AbstractGolemUpgradeApplicableEntity.IAbstractGolemUpgradeItem<UpgradeItem>,
+        UpgradeGolemBasicClass extends AbstractGolemUpgradeApplicableEntity<UpgradeItem, UpgradeGolemBasicClass>
         > extends Mob implements OwnableEntity {
     private static final EntityDataAccessor<Optional<UUID>> DATA_ID_OWNER = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<List<ItemStack>> DATA_ID_UPGRADES = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializerAdditions.ITEM_STACK_NON_NULL_LIST);
@@ -76,12 +76,12 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
             if (upgradeClass.isInstance(item)) {
                 var upgrade = upgradeClass.cast(item);
                 cache.add(new SimplePair<>(upgradeClass.cast(item),upgradeStack));
-                var attrMap = upgrade.getAttributes(upgradeStack, (UpgradeGolem) this);
+                var attrMap = upgrade.getAttributes(upgradeStack, (UpgradeGolemBasicClass) this);
                 for (var attributeToApplyPair:attrMap.entrySet()){
                     var attributeToApply = attributeToApplyPair.getKey();
                     for (var attributeModifier:attributeToApplyPair.getValue()){
                         var attributeInstance = getAttribute(attributeToApply);
-                        if (attributeInstance != null){
+                        if (attributeInstance != null && !attributeInstance.hasModifier(attributeModifier)){
                             attributeInstance.addPermanentModifier(attributeModifier);
                         }
                     }
@@ -97,13 +97,12 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
     protected List<SimplePair<UpgradeItem,ItemStack>> upgradesCacheView = Collections.unmodifiableList(upgradesCache);
 
     public interface IAbstractGolemUpgradeItem<
-            ItemClass extends IAbstractGolemUpgradeItem<ItemClass,GolemClass>,
-            GolemClass extends AbstractGolemUpgradeApplicableEntity<ItemClass,GolemClass>
+            ItemClass extends IAbstractGolemUpgradeItem<ItemClass>
             > {
 
         boolean golemUpgrade$isApplicableTo(ItemStack stack,AbstractGolemUpgradeApplicableEntity<?,?> golem);
 
-        default Map<Attribute,Collection<AttributeModifier>> getAttributes(ItemStack upgradeStack, GolemClass golem) {
+        default Map<Attribute,Collection<AttributeModifier>> getAttributes(ItemStack upgradeStack, Mob golem) {
             return Collections.emptyMap();
         }
     }
@@ -112,7 +111,7 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
 
     public boolean isOwner(@Nullable UUID uuidToCheck) {
         var ownerUUID = getOwnerUUID();
-        if (getOwnerUUID() == this.uuid || getOwnerUUID() == null){
+        if (Objects.equals(this.uuid,getOwnerUUID()) || getOwnerUUID() == null){
             return true;
         }
         return uuidToCheck == ownerUUID;
@@ -141,8 +140,7 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
     }
 
     protected void installUpgrade(UpgradeItem installedUpgrade, ItemStack usingStack) {
-        var usingUpgradeStack = usingStack.split(1);
-        onAddedUpgradeStack(installedUpgrade,usingUpgradeStack);
+        onAddedUpgradeStack(installedUpgrade,usingStack);
     }
 
     protected void onAddedUpgradeStack(UpgradeItem installedUpgrade, ItemStack usingUpgradeStack) {

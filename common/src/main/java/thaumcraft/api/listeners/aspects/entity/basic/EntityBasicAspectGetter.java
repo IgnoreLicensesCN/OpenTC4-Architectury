@@ -12,7 +12,10 @@ public abstract class EntityBasicAspectGetter implements Comparable<EntityBasicA
     public EntityBasicAspectGetter(int weight) {
         this.weight = weight;
     }
-    public abstract void onGetBasicAspect(Entity entityToGetAspect, @Modifiable /*this is the result*/ AspectList<Aspect> aspects);
+    public abstract void onGetBasicAspect(
+            Entity entityToGetAspect,
+            @Modifiable /*this is the result*/ AspectList<Aspect> aspects
+    );
     @Override
     public int compareTo(@NotNull EntityBasicAspectGetter o) {
         return Integer.compare(weight, o.weight);

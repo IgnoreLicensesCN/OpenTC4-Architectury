@@ -130,6 +130,7 @@ public abstract class FontRendererMixin {
             return true;
         });
         String fullText = textDetector.toString();
+        if (!fullText.contains("[")) return;
 
         ComponentElementRenderer renderer = null;
         ComponentElementSplitParts splitParts = null;
@@ -161,7 +162,7 @@ public abstract class FontRendererMixin {
             } else if (currentPos > endTagIndex) {
                 afterList.add(new Object[]{style, cp});
             }
-            charCounter[0]++;
+            charCounter[0]+=Character.charCount(cp);
             return true;
         });
 

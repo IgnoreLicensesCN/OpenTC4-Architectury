@@ -6,12 +6,11 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.core.Vec3i;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 //maybe not best GC but i hope it works enough in daily life
 //this idea first appear when i want to fake my position.
@@ -73,7 +72,7 @@ public class CubeChunkedWeakLookups<StoreItem> {
     }
 
     protected int compressIntIntoChunk(int toCompress) {
-        return (toCompress >> chunkSizeBits);
+        return (toCompress >>> chunkSizeBits);
     }
 
     private static long packInt(int x, int z) {
@@ -88,30 +87,26 @@ public class CubeChunkedWeakLookups<StoreItem> {
     public void forItemsNearPosWithRange(Vec3i cubeCenterPos, Consumer<StoreItem> action, int halfLengthOfCube) {
         var posMin = cubeCenterPos.offset(-halfLengthOfCube, -halfLengthOfCube, -halfLengthOfCube);
         var posMax = cubeCenterPos.offset(halfLengthOfCube, halfLengthOfCube, halfLengthOfCube);
+        Predicate<StoreItem> wrappedConsumer = i -> {
+            action.accept(i);
+            return false;
+        };
         for (int yCurrent = compressIntIntoChunk(posMin.getY()); yCurrent <= compressIntIntoChunk(posMax.getY()); yCurrent += 1) {
             for (int xCurrent = compressIntIntoChunk(posMin.getX()); xCurrent <= compressIntIntoChunk(posMax.getX()); xCurrent += 1) {
                 for (int zCurrent = compressIntIntoChunk(posMin.getZ()); zCurrent <= compressIntIntoChunk(posMax.getZ()); zCurrent += 1) {
-                    var items = getInChunkBasedCoord(xCurrent, yCurrent, zCurrent);
-                    if (items != null) {
-                        items.forEach(action);
-                    }
+                    applyInChunkBasedCoord(xCurrent, yCurrent, zCurrent,wrappedConsumer);
                 }
             }
         }
     }
 
-    @FunctionalInterface
-    public interface Object2BooleanFunction<StoreItem> {
-        boolean apply(StoreItem storeItem);
-    }
-
     //true if broken(function returned true,you can consider this as calling break in for loop)
     @SuppressWarnings("UnusedReturnValue")
-    public boolean forItemsNearPosWithBreak(Vec3i cubeCenterPos, Object2BooleanFunction<StoreItem> action) {
+    public boolean forItemsNearPosWithBreak(Vec3i cubeCenterPos, Predicate<StoreItem> action) {
         return forItemsNearPosWithBreakWithRange(cubeCenterPos, action, chunkSize);
     }
 
-    public boolean forItemsNearPosWithBreakWithRange(Vec3i cubeCenterPos, Object2BooleanFunction<StoreItem> action, int rangeManhattan) {
+    public boolean forItemsNearPosWithBreakWithRange(Vec3i cubeCenterPos, Predicate<StoreItem> action, int rangeManhattan) {
 
         var posMin = cubeCenterPos.offset(-rangeManhattan, -rangeManhattan, -rangeManhattan);
         var posMax = cubeCenterPos.offset(rangeManhattan, rangeManhattan, rangeManhattan);
@@ -119,13 +114,8 @@ public class CubeChunkedWeakLookups<StoreItem> {
         for (int yCurrent = compressIntIntoChunk(posMin.getY()); yCurrent <= compressIntIntoChunk(posMax.getY()); yCurrent += 1) {
             for (int xCurrent = compressIntIntoChunk(posMin.getX()); xCurrent <= compressIntIntoChunk(posMax.getX()); xCurrent += 1) {
                 for (int zCurrent = compressIntIntoChunk(posMin.getZ()); zCurrent <= compressIntIntoChunk(posMax.getZ()); zCurrent += 1) {
-                    var items = getInChunkBasedCoord(xCurrent, yCurrent, zCurrent);
-                    if (items != null) {
-                        for (var item : items) {
-                            if (action.apply(item)) {
-                                return true;
-                            }
-                        }
+                    if (applyInChunkBasedCoord(xCurrent, yCurrent, zCurrent,action)){
+                        return true;
                     }
                 }
             }
@@ -133,11 +123,11 @@ public class CubeChunkedWeakLookups<StoreItem> {
         return false;
     }
 
-    private @Nullable("empty -> null") Collection<StoreItem> get(int x, int y, int z) {
-        return getInChunkBasedCoord(compressIntIntoChunk(x), compressIntIntoChunk(y), compressIntIntoChunk(z));
-    }
+//    private @Nullable("empty -> null") Collection<StoreItem> get(int x, int y, int z) {
+//        return applyInChunkBasedCoord(compressIntIntoChunk(x), compressIntIntoChunk(y), compressIntIntoChunk(z));
+//    }
 
-    private @Nullable("empty -> null") Collection<StoreItem> getInChunkBasedCoord(int x, int y, int z) {
+    private boolean applyInChunkBasedCoord(int x, int y, int z, Predicate<StoreItem> toApply) {
         var xzKey = packInt(
                 x,
                 z
@@ -147,7 +137,7 @@ public class CubeChunkedWeakLookups<StoreItem> {
                 (k, map) -> map.isEmpty() ? null : map
         );
         if (yMap == null) {
-            return null;
+            return false;
         }
 
         var result = yMap.computeIfPresent(y, (k, collection) -> collection.isEmpty() ? null : collection);
@@ -156,9 +146,16 @@ public class CubeChunkedWeakLookups<StoreItem> {
             if (yMap.isEmpty()) {
                 itemsContaining.remove(xzKey);
             }
-            return null;
+            return false;
         }
-        return result==null?null:List.copyOf(result);
+        if (result != null) {
+            for (var item : result) {
+                if (item != null && toApply.test(item)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 
