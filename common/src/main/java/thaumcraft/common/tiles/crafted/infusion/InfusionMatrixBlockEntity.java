@@ -708,12 +708,17 @@ public class InfusionMatrixBlockEntity
             block2StabilityMap.put(Blocks.ZOMBIE_WALL_HEAD, 1);
         }
         public static final Object2IntMap<TagKey<Block>> tag2StabilityMap = new Object2IntOpenHashMap<>();
+        public static final Map<Block,IInfusionStabilizerBlock> registeredStabilizerBlock = new IdentityHashMap<>();
 
         //mixin before new api?
         protected int getStabilityFromBlock(@NotNull Level level,BlockState bState, BlockPos pos,BlockPos matrixPos){
             var block = bState.getBlock();
             if (block instanceof IInfusionStabilizerBlock stabilizer) {
                 return stabilizer.getInfusionStabilizationPower(level, bState, pos, matrixPos);
+            }
+            var gotStabilizerInterface = registeredStabilizerBlock.get(block);
+            if (gotStabilizerInterface != null) {
+                return gotStabilizerInterface.getInfusionStabilizationPower(level, bState, pos, matrixPos);
             }
             int blockTypedStability = block2StabilityMap.getOrDefault(block, 0);
             if (blockTypedStability != 0) {

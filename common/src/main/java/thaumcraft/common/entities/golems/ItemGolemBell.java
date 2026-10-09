@@ -245,38 +245,38 @@ public class ItemGolemBell extends Item {
 
    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
       if (entity instanceof EntityTravelingTrunk && !entity.isDead) {
-         byte upgrade = (byte)((EntityTravelingTrunk)entity).getUpgrade();
-         if (upgrade == 3 && !((EntityTravelingTrunk)entity).func_152113_b().equals(player.getCommandSenderName())) {
-            return false;
-         } else if ((Platform.getEnvironment() == Env.CLIENT) && entity instanceof EntityLiving) {
-            ((EntityLiving)entity).spawnExplosionParticle();
-            return false;
-         } else {
-            ItemStack dropped = new ItemStack(ConfigItems.itemTrunkSpawner);
-            if (player.isSneaking()) {
-               if (upgrade > -1 && entity.level().rand.nextBoolean()) {
-                  entity.entityDropItem(new ItemStack(ConfigItems.itemGolemUpgrade, 1, upgrade), 0.5F);
-               }
-            } else {
-               if (((EntityTravelingTrunk)entity).hasCustomNameTag()) {
-                  dropped.setStackDisplayName(((EntityTravelingTrunk)entity).getCustomNameTag());
-               }
-
-               dropped.setTagInfo("upgrade", new NBTTagByte(upgrade));
-               if (upgrade == 4) {
-                  dropped.setTagInfo("inventory", ((EntityTravelingTrunk)entity).inventory.writeToNBT(new NBTTagList()));
-               }
-            }
-
-            entity.entityDropItem(dropped, 0.5F);
-            if (upgrade != 4 || player.isSneaking()) {
-               ((EntityTravelingTrunk)entity).inventory.dropAllItems();
-            }
-
-            entity.level().playSoundAtEntity(entity, "thaumcraft:zap", 0.5F, 1.0F);
-            entity.setDead();
-            return true;
-         }
+//         byte upgrade = (byte)((EntityTravelingTrunk)entity).getUpgrade();
+//         if (upgrade == 3 && !((EntityTravelingTrunk)entity).func_152113_b().equals(player.getCommandSenderName())) {
+//            return false;
+//         } else if ((Platform.getEnvironment() == Env.CLIENT) && entity instanceof EntityLiving) {
+//            ((EntityLiving)entity).spawnExplosionParticle();
+//            return false;
+//         } else {
+//            ItemStack dropped = new ItemStack(ConfigItems.itemTrunkSpawner);
+//            if (player.isSneaking()) {
+//               if (upgrade > -1 && entity.level().rand.nextBoolean()) {
+//                  entity.entityDropItem(new ItemStack(ConfigItems.itemGolemUpgrade, 1, upgrade), 0.5F);
+//               }
+//            } else {
+//               if (((EntityTravelingTrunk)entity).hasCustomNameTag()) {
+//                  dropped.setStackDisplayName(((EntityTravelingTrunk)entity).getCustomNameTag());
+//               }
+//
+//               dropped.setTagInfo("upgrade", new NBTTagByte(upgrade));
+//               if (upgrade == 4) {
+//                  dropped.setTagInfo("inventory", ((EntityTravelingTrunk)entity).inventory.writeToNBT(new NBTTagList()));
+//               }
+//            }
+//
+//            entity.entityDropItem(dropped, 0.5F);
+//            if (upgrade != 4 || player.isSneaking()) {
+//               ((EntityTravelingTrunk)entity).inventory.dropAllItems();
+//            }
+//
+//            entity.level().playSoundAtEntity(entity, "thaumcraft:zap", 0.5F, 1.0F);
+//            entity.setDead();
+//            return true;
+//         }
       } else if (entity instanceof EntityGolemBase && !entity.isDead) {
          if ((Platform.getEnvironment() == Env.CLIENT) && entity instanceof EntityLiving) {
             ((EntityLiving)entity).spawnExplosionParticle();

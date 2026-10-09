@@ -126,8 +126,11 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         var item = stack.getItem();
         var upgradeClass = getUpgradeClass();
         if (canInstallUpgrade(stack) && upgradeClass.isInstance(item)) {
-            stack = stack.split(1);
-            installUpgrade(upgradeClass.cast(item),stack);
+            var itemCasted = upgradeClass.cast(item);
+            if (itemCasted.golemUpgrade$isApplicableTo(stack,this)) {
+                stack = stack.split(1);
+                installUpgrade(upgradeClass.cast(item),stack);
+            }
             return true;
         }
         return false;

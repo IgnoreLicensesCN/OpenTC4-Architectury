@@ -73,7 +73,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
 
     public float lidrot = 0;
     public static AttributeSupplier.Builder createAttributes() {
-        return LivingEntity.createLivingAttributes()
+        return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 75)
                 .add(Attributes.ATTACK_DAMAGE,4);
     }
