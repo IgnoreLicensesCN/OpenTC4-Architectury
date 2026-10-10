@@ -5,6 +5,8 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import thaumcraft.common.entities.monster.cultists.CultistClericEntity;
 import thaumcraft.common.tiles.eldritch.EldritchAltarBlockEntity;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+
 public class CultistClericFocusAltarGoal extends Goal {
     protected CultistClericEntity cleric;
     public CultistClericFocusAltarGoal(CultistClericEntity c) {
@@ -27,7 +29,7 @@ public class CultistClericFocusAltarGoal extends Goal {
         if (this.cleric.hasRestriction()
                 && this.cleric.tickCount % 40 == 0
                 && (homePos.distSqr(cleric.blockPosition()) > 16.0F
-                || !(level.getBlockEntity(homePos) instanceof EldritchAltarBlockEntity))
+                || !(getExistingBlockEntity(level,homePos) instanceof EldritchAltarBlockEntity))
         ) {
             this.cleric.setIsRitualist(false);
         }

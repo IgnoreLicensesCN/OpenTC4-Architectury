@@ -117,12 +117,8 @@ public class CalcCacheableObject2IntMap<Obj>
     public Object2IntMap<Obj> operateEachValue(Object2IntMap<Obj> a,Object2IntMap<Obj> b, Supplier<Object2IntMap<Obj>> newMapSupplier, IntBinaryOperator oper) {
         var newMap = newMapSupplier.get();
         var bClone = new Object2IntOpenHashMap<>(b);
-        a.forEach((k,v) -> {
-            newMap.put(k,oper.applyAsInt(v,bClone.removeInt(k)));
-        });
-        bClone.forEach((k,v) -> {
-            newMap.put(k,oper.applyAsInt(0,v));
-        });
+        a.forEach((k,v) -> newMap.put(k,oper.applyAsInt(v,bClone.removeInt(k))));
+        bClone.forEach((k,v) -> newMap.put(k,oper.applyAsInt(0,v)));
         return Object2IntMaps.unmodifiable(newMap);
     }
 }

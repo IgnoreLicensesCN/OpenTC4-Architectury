@@ -71,7 +71,6 @@ public class ArcaneEarBlockEntity extends TileThaumcraft {
     public static final int TICK_DELAY = 10;
     public static final int TICK_DELAY_EVENT_MASK = 1 << TICK_DELAY;
     public static final int TICK_MASK = (1 << (TICK_DELAY + 1)) - 1;
-    public static final int ARCANE_EAR_LISTEN_DISTANCE = 64;
     private int shouldProvideSignalTick = 0;
 
     @Override

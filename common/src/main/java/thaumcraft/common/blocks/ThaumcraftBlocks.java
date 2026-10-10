@@ -59,6 +59,7 @@ import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.items.ThaumcraftItems.getCultistBannerStack;
 
 public class ThaumcraftBlocks {
@@ -1653,7 +1654,7 @@ public class ThaumcraftBlocks {
                 Blocks.RED_BANNER.defaultBlockState().setValue(BannerBlock.ROTATION, rotation),
                 3
         );
-        var be = level.getBlockEntity(pos);
+        var be = getExistingBlockEntity(level,pos);
         if (be instanceof BannerBlockEntity banner){
             banner.fromItem(getCultistBannerStack());
         }

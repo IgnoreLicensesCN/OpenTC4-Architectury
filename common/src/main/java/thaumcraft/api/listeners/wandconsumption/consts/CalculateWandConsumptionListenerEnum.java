@@ -34,7 +34,7 @@ public enum CalculateWandConsumptionListenerEnum {
     CASTING_MODIFIER_CRAFTING(new CalculateWandConsumptionListener(5) {
         @Override
         public void onCalculation(ConsumptionModifierCalculationContext context) {
-            if (context.wandConsumptionType == CONSUMPTION_CRAFTING) {
+            if (context.wandConsumptionType != CONSUMPTION_CRAFTING) {
                 return;
             }
             var casting = context.casting;

@@ -1,7 +1,5 @@
 package com.linearity.opentc4.utils.collectionlike.obj2intcalc;
 
-import org.apache.commons.lang3.function.TriFunction;
-
 import java.util.Map;
 import java.util.function.Supplier;
 

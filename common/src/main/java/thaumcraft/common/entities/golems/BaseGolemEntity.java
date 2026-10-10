@@ -41,6 +41,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
             var item = upgradeStack.getItem();
             for (var clz:golemUpgradeItemTypes){
                 if (clz.isInstance(item)){
+//                    golemUpgradesCache.put(clz,new SimplePair<>(item,upgradeStack));
                     golemUpgradesCache.checkAndPut(clz,item,upgradeStack);
                 }
             }
