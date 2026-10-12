@@ -554,7 +554,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
         return ITravelingTrunkUpgradeItem.class;
     }
 
-    public interface ITravelingTrunkUpgradeItem extends IAbstractGolemUpgradeItem<ITravelingTrunkUpgradeItem> {
+    public interface ITravelingTrunkUpgradeItem extends IAbstractGolemUpgradeItem {
 
         default boolean golemUpgrade$isApplicableTo(ItemStack stack, AbstractGolemUpgradeApplicableEntity<?> couldBeTravelingTrunk) {
             return couldBeTravelingTrunk instanceof TravelingTrunkEntity;

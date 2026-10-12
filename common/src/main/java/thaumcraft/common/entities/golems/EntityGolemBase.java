@@ -131,47 +131,47 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
 
    }
 
-   public boolean setupGolemInventory() {
-      ItemStack core = null;
-      if (!ItemGolemCore.hasInventory(this.getCore())) {
-         return false;
-      } else {
-         if (this.getCore() > -1) {
-            int invSize = 0;
-            switch (this.getCore()) {
-               case 3:
-               case 4:
-               case 6:
-                  break;
-               case 5:
-                  invSize = 1;
-                  invSize += this.getUpgradeAmount(2);
-                  break;
-               default:
-                  invSize = 6;
-                  invSize += this.getUpgradeAmount(2) * 6;
-            }
-
-            InventoryMob inventory2 = new InventoryMob(this, invSize);
-
-             System.arraycopy(this.inventory.inventory, 0, inventory2.inventory, 0, this.inventory.inventory.length);
-
-            this.inventory = inventory2;
-         }
-
-         byte[] oldcolors = this.colors;
-         this.colors = new byte[this.inventory.slotCount];
-
-         for(int a = 0; a < this.inventory.slotCount; ++a) {
-            this.colors[a] = -1;
-            if (a < oldcolors.length) {
-               this.colors[a] = oldcolors[a];
-            }
-         }
-
-         return true;
-      }
-   }
+//   public boolean setupGolemInventory() {
+//      ItemStack core = null;
+//      if (!ItemGolemCore.hasInventory(this.getCore())) {
+//         return false;
+//      } else {
+//         if (this.getCore() > -1) {
+//            int invSize = 0;
+//            switch (this.getCore()) {
+//               case 3:
+//               case 4:
+//               case 6:
+//                  break;
+//               case 5:
+//                  invSize = 1;
+//                  invSize += this.getUpgradeAmount(2);
+//                  break;
+//               default:
+//                  invSize = 6;
+//                  invSize += this.getUpgradeAmount(2) * 6;
+//            }
+//
+//            InventoryMob inventory2 = new InventoryMob(this, invSize);
+//
+//             System.arraycopy(this.inventory.inventory, 0, inventory2.inventory, 0, this.inventory.inventory.length);
+//
+//            this.inventory = inventory2;
+//         }
+//
+//         byte[] oldcolors = this.colors;
+//         this.colors = new byte[this.inventory.slotCount];
+//
+//         for(int a = 0; a < this.inventory.slotCount; ++a) {
+//            this.colors[a] = -1;
+//            if (a < oldcolors.length) {
+//               this.colors[a] = oldcolors[a];
+//            }
+//         }
+//
+//         return true;
+//      }
+//   }
 
    public boolean setupGolem() {
       if (Platform.getEnvironment() != Env.CLIENT) {

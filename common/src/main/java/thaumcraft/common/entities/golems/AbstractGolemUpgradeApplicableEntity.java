@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.golems;
 
+import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
 import com.linearity.opentc4.utils.collectionlike.SimplePair;
 import net.minecraft.nbt.CompoundTag;
@@ -22,14 +23,14 @@ import static com.linearity.opentc4.Consts.AbstractGolemUpgradeApplicableEntityT
 import static com.linearity.opentc4.Consts.AbstractGolemUpgradeApplicableEntityTagAccessors.UPGRADES;
 
 public abstract class AbstractGolemUpgradeApplicableEntity<
-        UpgradeItem extends AbstractGolemUpgradeApplicableEntity.IAbstractGolemUpgradeItem<UpgradeItem>
+        UpgradeItem extends AbstractGolemUpgradeApplicableEntity.IAbstractGolemUpgradeItem
         > extends Mob
         implements
         OwnableEntity,
         IItemStackCollapsibleGolem
 {
     private static final EntityDataAccessor<Optional<UUID>> DATA_ID_OWNER = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<List<ItemStack>> DATA_ID_UPGRADES = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializerAdditions.ITEM_STACK_NON_NULL_LIST);
+    private static final EntityDataAccessor< @Modifiable /*modification wont sync directly*/ List<ItemStack>> DATA_ID_UPGRADES = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializerAdditions.ITEM_STACK_NON_NULL_LIST);
     protected AbstractGolemUpgradeApplicableEntity(EntityType<? extends Mob> entityType, Level level) {
         super(entityType, level);
     }
@@ -96,13 +97,10 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         upgradesCache = cache;
         upgradesCacheView = Collections.unmodifiableList(upgradesCache);
     }
-
     private List<SimplePair<UpgradeItem,ItemStack>> upgradesCache = List.of();
     protected List<SimplePair<UpgradeItem,ItemStack>> upgradesCacheView = Collections.unmodifiableList(upgradesCache);
 
-    public interface IAbstractGolemUpgradeItem<
-            ItemClass extends IAbstractGolemUpgradeItem<ItemClass>
-            > {
+    public interface IAbstractGolemUpgradeItem {
 
         boolean golemUpgrade$isApplicableTo(ItemStack stack,AbstractGolemUpgradeApplicableEntity<?> golem);
 
@@ -143,7 +141,7 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         if (stack.isEmpty()){return false;}
         var item = stack.getItem();
         var upgradeClass = getUpgradeClass();
-        return upgradeClass.isInstance(item);
+        return upgradeClass.isInstance(item) && upgradeClass.cast(item).golemUpgrade$isApplicableTo(stack,this);
     }
 
     protected void installUpgrade(UpgradeItem installedUpgrade, ItemStack usingStack) {
