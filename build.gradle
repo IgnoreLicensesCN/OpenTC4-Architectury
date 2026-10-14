@@ -1,5 +1,91 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
+class CodeGen {
+
+    def static variedResourceLocationImports(){ """
+import net.minecraft.ResourceLocationException;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+"""
+    }
+// 定义你要注入的模板代码生成函数
+    def static generateTemplateCode(String className, String typeName) {
+        """
+    public static final ${className} EMPTY = new ${className}("", "");
+    public static final VariedResourceLocationBuilder<${typeName}, ${className}> BUILDER = ${className}::of;
+    public static final VariedResourceLocationParser<${typeName}, ${className}> PARSER = ${className}::of;
+
+    protected ${className}(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {
+        super(string, string2, dummy);
+    }
+
+    protected ${className}(String string, String string2) {
+        super(string, string2);
+    }
+
+    protected ${className}(String string) {
+        super(string);
+    }
+
+    protected ${className}(ResourceLocation resourceLocation) {
+        super(resourceLocation.getNamespace(), resourceLocation.getPath());
+    }
+
+    public static final Map<ResourceLocation, ${className}> mapToReferredResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<String, Map<String, ${className}>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+
+    static {
+        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("", s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
+    }
+
+    public static ${className} of(ResourceLocation resourceLocation) {
+        return mapToReferredResourceLocation.computeIfAbsent(resourceLocation, ${className}::new);
+    }
+
+    public static ${className} of(String namespace, String path) {
+        return mapFromNamespaceAndPathToResourceLocation
+                .computeIfAbsent(namespace, n -> new ConcurrentHashMap<>())
+                .computeIfAbsent(path, p -> new ${className}(namespace, path));
+    }
+
+    public static ${className} of(String namespaceAndPath) {
+        if (namespaceAndPath.isEmpty()) {
+            return of("", "");
+        }
+        var split = namespaceAndPath.split(":");
+        if (split.length != 2) {
+            throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);
+        }
+        return of(split[0], split[1]);
+    }
+
+    @Nullable
+    public static ${className} tryParse(String string) {
+        try {
+            return new ${className}(string);
+        } catch (ResourceLocationException var2) {
+            return null;
+        }
+    }
+
+    public static @NotNull ${className} ofExisting(String namespace, String path) {
+        var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
+        if (innerMap == null) {
+            return EMPTY;
+        }
+        return innerMap.getOrDefault(path, EMPTY);
+    }
+
+    public static @NotNull ${className} ofExisting(ResourceLocation resLoc) {
+        return ofExisting(resLoc.getNamespace(), resLoc.getPath());
+    }
+""".trim()
+    }
+}
+
 plugins {
     id 'dev.architectury.loom' version '1.11.458' apply false
     id 'architectury-plugin' version '3.4.162'
@@ -13,6 +99,7 @@ architectury {
 allprojects {
     group = rootProject.maven_group
     version = rootProject.mod_version
+
 }
 
 subprojects {
@@ -93,4 +180,71 @@ subprojects {
             // retrieving dependencies.
         }
     }
+
+    task preprocessResourceLocations {
+
+        def sourceDir = file("src/main/codeGenTemplate/variedresourcelocations") // 你的目标包路径
+        def outputDir = file("src/main/java/thaumcraft/common/lib/resourcelocations")
+        if (sourceDir.exists()) {
+            inputs.dir(sourceDir)
+        }
+        outputs.dir(outputDir)
+
+        doLast {
+            if (!sourceDir.exists()) {
+                return // 如果当前模块没有这个目录（比如纯 fabric 模块），直接跳过
+            }
+
+            // 正则匹配形如: //#include VariedResourceLocationSource("ClassName", "TypeName")
+            def pattern = ~/\/\/#include VariedResourceLocationSource\("([^"]+)",\s*"([^"]+)"\)/
+            def importPattern = ~/\/\/#include VariedResourceLocationImports/
+
+            sourceDir.eachFileRecurse { file ->
+                if (file.file && file.name.endsWith(".java")) {
+                    def content = file.text
+                    def matcher = pattern.matcher(content)
+
+                    def relativePath = sourceDir.toPath().relativize(file.toPath())
+                    def outFile = new File(outputDir, relativePath.toString())
+                    outFile.parentFile.mkdirs()
+                    if (matcher.find()) {
+                        println "found"
+                        // 提取参数
+                        def className = matcher.group(1)
+                        def typeName = matcher.group(2)
+
+                        // 生成你要替换进去的模板代码（这里以你前面展示的带缓存逻辑的代码为例）
+                        def generatedCode = CodeGen.generateTemplateCode(className, typeName)
+
+                        // 把整行注释替换为生成的模板代码
+                        def newContent = matcher.replaceAll(generatedCode)
+                        def importPatternMatcher = importPattern.matcher(newContent)
+                        if (importPatternMatcher.find()){
+                            newContent = importPatternMatcher.replaceAll(CodeGen.variedResourceLocationImports())
+                        }
+
+                        // 保持原有的目录结构输出到 generated 目录
+                        outFile.text = newContent
+
+                        println "Preprocessed: ${file.name} -> Class: ${className}, Type: ${typeName}"
+                    }
+                    else {
+//                        // 如果没有匹配的注释，直接复制原文件
+//                        def relativePath = sourceDir.toPath().relativize(file.toPath())
+//                        def outFile = new File(outputDir, relativePath.toString())
+//                        outFile.parentFile.mkdirs()
+                        outFile.text = file.text
+                    }
+                }
+            }
+        }
+    }
+//    sourceSets.main.java.srcDir file("$rootDir/generated/sources/preprocessor/src/main/java")
+    tasks.named('compileJava') {
+        dependsOn "preprocessResourceLocations_${project.name}"
+    }
+
+//// 绑定编译任务：让编译 Java 之前先执行这个预处理，并把生成的代码加入源码集
+//    compileJava.dependsOn preprocessResourceLocations
+//    sourceSets.main.java.srcDirs += "$buildDir/generated/sources/preprocessor/java"
 }
