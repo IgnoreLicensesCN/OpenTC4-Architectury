@@ -1,17 +1,19 @@
 package thaumcraft.common.lib.resourcelocations;
 
-import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
+import net.minecraft.ResourceLocationException;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+
 public class RunicShieldTypeResourceLocation extends VariedResourceLocation<AbstractRunicShieldType<?>, RunicShieldTypeResourceLocation> {
-    public static final RunicShieldTypeResourceLocation EMPTY = new RunicShieldTypeResourceLocation("","");
+    public static final RunicShieldTypeResourceLocation EMPTY = new RunicShieldTypeResourceLocation("", "");
     public static final VariedResourceLocationBuilder<AbstractRunicShieldType<?>, RunicShieldTypeResourceLocation> BUILDER = RunicShieldTypeResourceLocation::of;
     public static final VariedResourceLocationParser<AbstractRunicShieldType<?>, RunicShieldTypeResourceLocation> PARSER = RunicShieldTypeResourceLocation::of;
-
 
     protected RunicShieldTypeResourceLocation(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {
         super(string, string2, dummy);
@@ -24,31 +26,57 @@ public class RunicShieldTypeResourceLocation extends VariedResourceLocation<Abst
     protected RunicShieldTypeResourceLocation(String string) {
         super(string);
     }
+
     protected RunicShieldTypeResourceLocation(ResourceLocation resourceLocation) {
-        super(resourceLocation.getNamespace(),resourceLocation.getPath());
+        super(resourceLocation.getNamespace(), resourceLocation.getPath());
     }
 
-    public static final Map<ResourceLocation, RunicShieldTypeResourceLocation> mapToRunicShieldTypeResourceLocation = new ConcurrentHashMap<>();
-    public static final Map<String,Map<String, RunicShieldTypeResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<ResourceLocation, RunicShieldTypeResourceLocation> mapToReferredResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<String, Map<String, RunicShieldTypeResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+
     static {
-        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
+        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("", s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
     }
+
     public static RunicShieldTypeResourceLocation of(ResourceLocation resourceLocation) {
-        return mapToRunicShieldTypeResourceLocation.computeIfAbsent(resourceLocation, RunicShieldTypeResourceLocation::new);
+        return mapToReferredResourceLocation.computeIfAbsent(resourceLocation, RunicShieldTypeResourceLocation::new);
     }
+
     public static RunicShieldTypeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
-                .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> new RunicShieldTypeResourceLocation(namespace,path));
+                .computeIfAbsent(namespace, n -> new ConcurrentHashMap<>())
+                .computeIfAbsent(path, p -> new RunicShieldTypeResourceLocation(namespace, path));
     }
-    public static RunicShieldTypeResourceLocation of(String namespaceAndPath){
-        if (namespaceAndPath.isEmpty()){
-            return of("","");
+
+    public static RunicShieldTypeResourceLocation of(String namespaceAndPath) {
+        if (namespaceAndPath.isEmpty()) {
+            return of("", "");
         }
         var split = namespaceAndPath.split(":");
-        if (split.length != 2){
+        if (split.length != 2) {
             throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);
         }
-        return of(split[0],split[1]);
+        return of(split[0], split[1]);
+    }
+
+    @Nullable
+    public static RunicShieldTypeResourceLocation tryParse(String string) {
+        try {
+            return new RunicShieldTypeResourceLocation(string);
+        } catch (ResourceLocationException var2) {
+            return null;
+        }
+    }
+
+    public static @NotNull RunicShieldTypeResourceLocation ofExisting(String namespace, String path) {
+        var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
+        if (innerMap == null) {
+            return EMPTY;
+        }
+        return innerMap.getOrDefault(path, EMPTY);
+    }
+
+    public static @NotNull RunicShieldTypeResourceLocation ofExisting(ResourceLocation resLoc) {
+        return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }
