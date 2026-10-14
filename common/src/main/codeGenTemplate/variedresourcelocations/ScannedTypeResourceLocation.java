@@ -2,7 +2,6 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.ResourceLocationException;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -11,8 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 //oh here we go again, another "any-string" resourceLocation
 //you can mark your scanned type with this
 //you may need some i-ma-gi-na-tion to use this.
-public class ScannedTypeResourceLocation extends ResourceLocation {
-    public static final ScannedTypeResourceLocation EMPTY = new ScannedTypeResourceLocation("", "");
+public class ScannedTypeResourceLocation extends VariedResourceLocation<String, ScannedTypeResourceLocation> {
+    public static final ScannedTypeResourceLocation EMPTY = new ScannedTypeResourceLocation("","");
     public static final VariedResourceLocationBuilder<String, ScannedTypeResourceLocation> BUILDER = ScannedTypeResourceLocation::of;
     public static final VariedResourceLocationParser<String, ScannedTypeResourceLocation> PARSER = ScannedTypeResourceLocation::of;
 
@@ -28,39 +27,33 @@ public class ScannedTypeResourceLocation extends ResourceLocation {
     protected ScannedTypeResourceLocation(String string) {
         super(string);
     }
-
     protected ScannedTypeResourceLocation(ResourceLocation resourceLocation) {
-        super(resourceLocation.getNamespace(), resourceLocation.getPath());
+        super(resourceLocation.getNamespace(),resourceLocation.getPath());
     }
 
     public static final Map<ResourceLocation, ScannedTypeResourceLocation> mapToReferredResourceLocation = new ConcurrentHashMap<>();
-    public static final Map<String, Map<String, ScannedTypeResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
-
+    public static final Map<String,Map<String, ScannedTypeResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
     static {
-        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("", s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
+        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
     }
-
     public static ScannedTypeResourceLocation of(ResourceLocation resourceLocation) {
         return mapToReferredResourceLocation.computeIfAbsent(resourceLocation, ScannedTypeResourceLocation::new);
     }
-
     public static ScannedTypeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
-                .computeIfAbsent(namespace, n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> new ScannedTypeResourceLocation(namespace, path));
+                .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
+                .computeIfAbsent(path, p -> new ScannedTypeResourceLocation(namespace,path));
     }
-
-    public static ScannedTypeResourceLocation of(String namespaceAndPath) {
-        if (namespaceAndPath.isEmpty()) {
-            return of("", "");
+    public static ScannedTypeResourceLocation of(String namespaceAndPath){
+        if (namespaceAndPath.isEmpty()){
+            return of("","");
         }
         var split = namespaceAndPath.split(":");
-        if (split.length != 2) {
+        if (split.length != 2){
             throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);
         }
-        return of(split[0], split[1]);
+        return of(split[0],split[1]);
     }
-
     @Nullable
     public static ScannedTypeResourceLocation tryParse(String string) {
         try {
@@ -68,17 +61,5 @@ public class ScannedTypeResourceLocation extends ResourceLocation {
         } catch (ResourceLocationException var2) {
             return null;
         }
-    }
-
-    public static @NotNull("empty if not exist") ScannedTypeResourceLocation ofExisting(String namespace, String path) {
-        var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
-        if (innerMap == null) {
-            return EMPTY;
-        }
-        return innerMap.getOrDefault(path, EMPTY);
-    }
-
-    public static @NotNull("empty if not exist") ScannedTypeResourceLocation ofExisting(ResourceLocation resLoc) {
-        return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

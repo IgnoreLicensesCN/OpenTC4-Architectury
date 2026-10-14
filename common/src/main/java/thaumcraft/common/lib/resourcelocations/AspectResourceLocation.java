@@ -1,18 +1,18 @@
 package thaumcraft.common.lib.resourcelocations;
 
-import net.minecraft.ResourceLocationException;
-import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 
+import net.minecraft.ResourceLocationException;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AspectResourceLocation extends VariedResourceLocation<Aspect, AspectResourceLocation> {
-    public static final AspectResourceLocation EMPTY = new AspectResourceLocation("","");
+    public static final AspectResourceLocation EMPTY = new AspectResourceLocation("", "");
     public static final VariedResourceLocationBuilder<Aspect, AspectResourceLocation> BUILDER = AspectResourceLocation::of;
     public static final VariedResourceLocationParser<Aspect, AspectResourceLocation> PARSER = AspectResourceLocation::of;
-
 
     protected AspectResourceLocation(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {
         super(string, string2, dummy);
@@ -25,34 +25,38 @@ public class AspectResourceLocation extends VariedResourceLocation<Aspect, Aspec
     protected AspectResourceLocation(String string) {
         super(string);
     }
+
     protected AspectResourceLocation(ResourceLocation resourceLocation) {
-        super(resourceLocation.getNamespace(),resourceLocation.getPath());
+        super(resourceLocation.getNamespace(), resourceLocation.getPath());
     }
 
-    public static final Map<ResourceLocation, AspectResourceLocation> mapToAspectResourceLocation = new ConcurrentHashMap<>();
-    public static final Map<String,Map<String, AspectResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<ResourceLocation, AspectResourceLocation> mapToReferredResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<String, Map<String, AspectResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+
     static {
-        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
+        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("", s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
     }
+
     public static AspectResourceLocation of(ResourceLocation resourceLocation) {
-        return mapToAspectResourceLocation.computeIfAbsent(resourceLocation, AspectResourceLocation::new);
+        return mapToReferredResourceLocation.computeIfAbsent(resourceLocation, AspectResourceLocation::new);
     }
+
     public static AspectResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
-                .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> new AspectResourceLocation(namespace,path));
-    }
-    public static AspectResourceLocation of(String namespaceAndPath){
-        if (namespaceAndPath.isEmpty()){
-            return AspectResourceLocation.of("","");
-        }
-        var split = namespaceAndPath.split(":");
-        if (split.length != 2){
-            throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);
-        }
-        return of(split[0],split[1]);
+                .computeIfAbsent(namespace, n -> new ConcurrentHashMap<>())
+                .computeIfAbsent(path, p -> new AspectResourceLocation(namespace, path));
     }
 
+    public static AspectResourceLocation of(String namespaceAndPath) {
+        if (namespaceAndPath.isEmpty()) {
+            return of("", "");
+        }
+        var split = namespaceAndPath.split(":");
+        if (split.length != 2) {
+            throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);
+        }
+        return of(split[0], split[1]);
+    }
 
     @Nullable
     public static AspectResourceLocation tryParse(String string) {
@@ -61,5 +65,17 @@ public class AspectResourceLocation extends VariedResourceLocation<Aspect, Aspec
         } catch (ResourceLocationException var2) {
             return null;
         }
+    }
+
+    public static @NotNull AspectResourceLocation ofExisting(String namespace, String path) {
+        var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
+        if (innerMap == null) {
+            return EMPTY;
+        }
+        return innerMap.getOrDefault(path, EMPTY);
+    }
+
+    public static @NotNull AspectResourceLocation ofExisting(ResourceLocation resLoc) {
+        return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

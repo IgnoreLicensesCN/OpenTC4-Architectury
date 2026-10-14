@@ -1,15 +1,14 @@
 package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RunicShieldTypeResourceLocation extends ResourceLocation {
-    public static final RunicShieldTypeResourceLocation EMPTY = new RunicShieldTypeResourceLocation("", "");
+public class RunicShieldTypeResourceLocation extends VariedResourceLocation<AbstractRunicShieldType<?>, RunicShieldTypeResourceLocation> {
+    public static final RunicShieldTypeResourceLocation EMPTY = new RunicShieldTypeResourceLocation("","");
     public static final VariedResourceLocationBuilder<AbstractRunicShieldType<?>, RunicShieldTypeResourceLocation> BUILDER = RunicShieldTypeResourceLocation::of;
     public static final VariedResourceLocationParser<AbstractRunicShieldType<?>, RunicShieldTypeResourceLocation> PARSER = RunicShieldTypeResourceLocation::of;
 
@@ -25,48 +24,31 @@ public class RunicShieldTypeResourceLocation extends ResourceLocation {
     protected RunicShieldTypeResourceLocation(String string) {
         super(string);
     }
-
     protected RunicShieldTypeResourceLocation(ResourceLocation resourceLocation) {
-        super(resourceLocation.getNamespace(), resourceLocation.getPath());
+        super(resourceLocation.getNamespace(),resourceLocation.getPath());
     }
 
     public static final Map<ResourceLocation, RunicShieldTypeResourceLocation> mapToRunicShieldTypeResourceLocation = new ConcurrentHashMap<>();
-    public static final Map<String, Map<String, RunicShieldTypeResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
-
+    public static final Map<String,Map<String, RunicShieldTypeResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
     static {
-        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("", s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
+        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
     }
-
     public static RunicShieldTypeResourceLocation of(ResourceLocation resourceLocation) {
         return mapToRunicShieldTypeResourceLocation.computeIfAbsent(resourceLocation, RunicShieldTypeResourceLocation::new);
     }
-
     public static RunicShieldTypeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
-                .computeIfAbsent(namespace, n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> new RunicShieldTypeResourceLocation(namespace, path));
+                .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
+                .computeIfAbsent(path, p -> new RunicShieldTypeResourceLocation(namespace,path));
     }
-
-    public static RunicShieldTypeResourceLocation of(String namespaceAndPath) {
-        if (namespaceAndPath.isEmpty()) {
-            return of("", "");
+    public static RunicShieldTypeResourceLocation of(String namespaceAndPath){
+        if (namespaceAndPath.isEmpty()){
+            return of("","");
         }
         var split = namespaceAndPath.split(":");
-        if (split.length != 2) {
+        if (split.length != 2){
             throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);
         }
-        return of(split[0], split[1]);
-    }
-
-    public static @NotNull("empty if not exist") RunicShieldTypeResourceLocation ofExisting(String namespace, String path) {
-        var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
-        if (innerMap == null) {
-            return EMPTY;
-        }
-        return innerMap.getOrDefault(path, EMPTY);
-    }
-
-    public static @NotNull("empty if not exist") RunicShieldTypeResourceLocation ofExisting(ResourceLocation resLoc) {
-        return ofExisting(resLoc.getNamespace(), resLoc.getPath());
+        return of(split[0],split[1]);
     }
 }

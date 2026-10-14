@@ -1,16 +1,19 @@
 package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.ResourceLocationException;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+
 public class NodeIDResourceLocation extends VariedResourceLocation<ResourceLocation, NodeIDResourceLocation> {
-    public static final NodeIDResourceLocation EMPTY = new NodeIDResourceLocation("","");
+    public static final NodeIDResourceLocation EMPTY = new NodeIDResourceLocation("", "");
     public static final VariedResourceLocationBuilder<ResourceLocation, NodeIDResourceLocation> BUILDER = NodeIDResourceLocation::of;
     public static final VariedResourceLocationParser<ResourceLocation, NodeIDResourceLocation> PARSER = NodeIDResourceLocation::of;
-
 
     protected NodeIDResourceLocation(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {
         super(string, string2, dummy);
@@ -23,31 +26,57 @@ public class NodeIDResourceLocation extends VariedResourceLocation<ResourceLocat
     protected NodeIDResourceLocation(String string) {
         super(string);
     }
+
     protected NodeIDResourceLocation(ResourceLocation resourceLocation) {
-        super(resourceLocation.getNamespace(),resourceLocation.getPath());
+        super(resourceLocation.getNamespace(), resourceLocation.getPath());
     }
 
     public static final Map<ResourceLocation, NodeIDResourceLocation> mapToReferredResourceLocation = new ConcurrentHashMap<>();
-    public static final Map<String,Map<String, NodeIDResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<String, Map<String, NodeIDResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+
     static {
-        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
+        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("", s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
     }
+
     public static NodeIDResourceLocation of(ResourceLocation resourceLocation) {
         return mapToReferredResourceLocation.computeIfAbsent(resourceLocation, NodeIDResourceLocation::new);
     }
+
     public static NodeIDResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
-                .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> new NodeIDResourceLocation(namespace,path));
+                .computeIfAbsent(namespace, n -> new ConcurrentHashMap<>())
+                .computeIfAbsent(path, p -> new NodeIDResourceLocation(namespace, path));
     }
-    public static NodeIDResourceLocation of(String namespaceAndPath){
-        if (namespaceAndPath.isEmpty()){
-            return of("","");
+
+    public static NodeIDResourceLocation of(String namespaceAndPath) {
+        if (namespaceAndPath.isEmpty()) {
+            return of("", "");
         }
         var split = namespaceAndPath.split(":");
-        if (split.length != 2){
+        if (split.length != 2) {
             throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);
         }
-        return of(split[0],split[1]);
+        return of(split[0], split[1]);
+    }
+
+    @Nullable
+    public static NodeIDResourceLocation tryParse(String string) {
+        try {
+            return new NodeIDResourceLocation(string);
+        } catch (ResourceLocationException var2) {
+            return null;
+        }
+    }
+
+    public static @NotNull NodeIDResourceLocation ofExisting(String namespace, String path) {
+        var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
+        if (innerMap == null) {
+            return EMPTY;
+        }
+        return innerMap.getOrDefault(path, EMPTY);
+    }
+
+    public static @NotNull NodeIDResourceLocation ofExisting(ResourceLocation resLoc) {
+        return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

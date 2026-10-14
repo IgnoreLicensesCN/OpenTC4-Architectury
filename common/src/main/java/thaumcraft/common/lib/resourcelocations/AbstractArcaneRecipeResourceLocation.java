@@ -1,21 +1,19 @@
 package thaumcraft.common.lib.resourcelocations;
 
-import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.crafting.arcane.AbstractArcaneRecipe;
 
+import net.minecraft.ResourceLocationException;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class AbstractArcaneRecipeResourceLocation
-        extends AbstractRecipeResourceLocation<
-        AbstractArcaneRecipe,
-        AbstractArcaneRecipeResourceLocation
-        > {
-    public static final AbstractArcaneRecipeResourceLocation EMPTY = new AbstractArcaneRecipeResourceLocation("","");
+
+public class AbstractArcaneRecipeResourceLocation extends VariedResourceLocation<AbstractArcaneRecipe, AbstractArcaneRecipeResourceLocation> {
+    public static final AbstractArcaneRecipeResourceLocation EMPTY = new AbstractArcaneRecipeResourceLocation("", "");
     public static final VariedResourceLocationBuilder<AbstractArcaneRecipe, AbstractArcaneRecipeResourceLocation> BUILDER = AbstractArcaneRecipeResourceLocation::of;
     public static final VariedResourceLocationParser<AbstractArcaneRecipe, AbstractArcaneRecipeResourceLocation> PARSER = AbstractArcaneRecipeResourceLocation::of;
-
 
     protected AbstractArcaneRecipeResourceLocation(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {
         super(string, string2, dummy);
@@ -28,31 +26,58 @@ public class AbstractArcaneRecipeResourceLocation
     protected AbstractArcaneRecipeResourceLocation(String string) {
         super(string);
     }
+
     protected AbstractArcaneRecipeResourceLocation(ResourceLocation resourceLocation) {
-        super(resourceLocation.getNamespace(),resourceLocation.getPath());
+        super(resourceLocation.getNamespace(), resourceLocation.getPath());
     }
 
-    public static final Map<ResourceLocation, AbstractArcaneRecipeResourceLocation> mapToRecipeResourceLocation = new ConcurrentHashMap<>();
-    public static final Map<String,Map<String, AbstractArcaneRecipeResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<ResourceLocation, AbstractArcaneRecipeResourceLocation> mapToReferredResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<String, Map<String, AbstractArcaneRecipeResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
+
     static {
-        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
+        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("", s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
     }
+
     public static AbstractArcaneRecipeResourceLocation of(ResourceLocation resourceLocation) {
-        return mapToRecipeResourceLocation.computeIfAbsent(resourceLocation, AbstractArcaneRecipeResourceLocation::new);
+        return mapToReferredResourceLocation.computeIfAbsent(resourceLocation, AbstractArcaneRecipeResourceLocation::new);
     }
+
     public static AbstractArcaneRecipeResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
-                .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> new AbstractArcaneRecipeResourceLocation(namespace,path));
+                .computeIfAbsent(namespace, n -> new ConcurrentHashMap<>())
+                .computeIfAbsent(path, p -> new AbstractArcaneRecipeResourceLocation(namespace, path));
     }
-    public static AbstractArcaneRecipeResourceLocation of(String namespaceAndPath){
-        if (namespaceAndPath.isEmpty()){
-            return AbstractArcaneRecipeResourceLocation.of("","");
+
+    public static AbstractArcaneRecipeResourceLocation of(String namespaceAndPath) {
+        if (namespaceAndPath.isEmpty()) {
+            return of("", "");
         }
         var split = namespaceAndPath.split(":");
-        if (split.length != 2){
+        if (split.length != 2) {
             throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);
         }
-        return of(split[0],split[1]);
+        return of(split[0], split[1]);
+    }
+
+    @Nullable
+    public static AbstractArcaneRecipeResourceLocation tryParse(String string) {
+        try {
+            return new AbstractArcaneRecipeResourceLocation(string);
+        } catch (ResourceLocationException var2) {
+            return null;
+        }
+    }
+
+    public static @NotNull AbstractArcaneRecipeResourceLocation ofExisting(String namespace, String path) {
+        var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
+        if (innerMap == null) {
+            return EMPTY;
+        }
+        return innerMap.getOrDefault(path, EMPTY);
+    }
+
+    public static @NotNull AbstractArcaneRecipeResourceLocation ofExisting(ResourceLocation resLoc) {
+        return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }
+

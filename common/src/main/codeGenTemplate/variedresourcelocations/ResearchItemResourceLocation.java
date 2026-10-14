@@ -2,17 +2,16 @@ package thaumcraft.common.lib.resourcelocations;
 
 import net.minecraft.ResourceLocationException;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.research.ResearchItem;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ResearchItemResourceLocation extends ResourceLocation {
-    public static final ResearchItemResourceLocation EMPTY = new ResearchItemResourceLocation("", "");
-    public static final VariedResourceLocationBuilder<ResearchItem, ResearchItemResourceLocation> BUILDER = ResearchItemResourceLocation::of;
-    public static final VariedResourceLocationParser<ResearchItem, ResearchItemResourceLocation> PARSER = ResearchItemResourceLocation::of;
+public class ResearchItemResourceLocation extends VariedResourceLocation<ResearchItem,ResearchItemResourceLocation> {
+    public static final ResearchItemResourceLocation EMPTY = new ResearchItemResourceLocation("","");
+    public static final VariedResourceLocationBuilder<ResearchItem,ResearchItemResourceLocation> BUILDER = ResearchItemResourceLocation::of;
+    public static final VariedResourceLocationParser<ResearchItem,ResearchItemResourceLocation> PARSER = ResearchItemResourceLocation::of;
 
 
     protected ResearchItemResourceLocation(String string, String string2, @Nullable ResourceLocation.Dummy dummy) {
@@ -26,41 +25,36 @@ public class ResearchItemResourceLocation extends ResourceLocation {
     protected ResearchItemResourceLocation(String string) {
         super(string);
     }
-
     protected ResearchItemResourceLocation(ResourceLocation resourceLocation) {
-        super(resourceLocation.getNamespace(), resourceLocation.getPath());
+        super(resourceLocation.getNamespace(),resourceLocation.getPath());
     }
 
-    public static final Map<ResourceLocation, ResearchItemResourceLocation> mapToReferredResourceLocation = new ConcurrentHashMap<>();
-    public static final Map<String, Map<String, ResearchItemResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
-
+    public static final Map<ResourceLocation,ResearchItemResourceLocation> mapToReferredResourceLocation = new ConcurrentHashMap<>();
+    public static final Map<String,Map<String,ResearchItemResourceLocation>> mapFromNamespaceAndPathToResourceLocation = new ConcurrentHashMap<>();
     static {
-        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("", s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
+        mapFromNamespaceAndPathToResourceLocation.computeIfAbsent("",s -> new ConcurrentHashMap<>()).computeIfAbsent("", s -> EMPTY);
     }
-
     public static ResearchItemResourceLocation of(ResourceLocation resourceLocation) {
         return mapToReferredResourceLocation.computeIfAbsent(resourceLocation, ResearchItemResourceLocation::new);
     }
-
     public static ResearchItemResourceLocation of(String namespace, String path) {
         return mapFromNamespaceAndPathToResourceLocation
-                .computeIfAbsent(namespace, n -> new ConcurrentHashMap<>())
-                .computeIfAbsent(path, p -> new ResearchItemResourceLocation(namespace, path));
+                .computeIfAbsent(namespace,n -> new ConcurrentHashMap<>())
+                .computeIfAbsent(path, p -> new ResearchItemResourceLocation(namespace,path));
     }
-
-    public static ResearchItemResourceLocation of(String namespaceAndPath) {
-        if (namespaceAndPath.isEmpty()) {
-            return of("", "");
+    public static ResearchItemResourceLocation of(String namespaceAndPath){
+        if (namespaceAndPath.isEmpty()){
+            return of("","");
         }
         var split = namespaceAndPath.split(":");
-        if (split.length != 2) {
+        if (split.length != 2){
             throw new IllegalArgumentException("Invalid namespace and path: " + namespaceAndPath);
         }
-        return of(split[0], split[1]);
+        return of(split[0],split[1]);
     }
 
-    public ClueResourceLocation convertToClueResLoc() {
-        return ClueResourceLocation.of(this.getNamespace(), this.getPath());
+    public ClueResourceLocation convertToClueResLoc(){
+        return ClueResourceLocation.of(this.getNamespace(),this.getPath());
     }
 
     @Nullable
@@ -70,17 +64,5 @@ public class ResearchItemResourceLocation extends ResourceLocation {
         } catch (ResourceLocationException var2) {
             return null;
         }
-    }
-
-    public static @NotNull("empty if not exist") ResearchItemResourceLocation ofExisting(String namespace, String path) {
-        var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
-        if (innerMap == null) {
-            return EMPTY;
-        }
-        return innerMap.getOrDefault(path, EMPTY);
-    }
-
-    public static @NotNull("empty if not exist") ResearchItemResourceLocation ofExisting(ResourceLocation resLoc) {
-        return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }
