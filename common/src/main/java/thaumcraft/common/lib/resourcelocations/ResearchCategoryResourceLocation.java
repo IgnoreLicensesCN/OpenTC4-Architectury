@@ -9,8 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
-
 public class ResearchCategoryResourceLocation extends VariedResourceLocation<ResearchCategory, ResearchCategoryResourceLocation> {
     public static final ResearchCategoryResourceLocation EMPTY = new ResearchCategoryResourceLocation("", "");
     public static final VariedResourceLocationBuilder<ResearchCategory, ResearchCategoryResourceLocation> BUILDER = ResearchCategoryResourceLocation::of;
@@ -69,7 +67,7 @@ public class ResearchCategoryResourceLocation extends VariedResourceLocation<Res
         }
     }
 
-    public static @NotNull ResearchCategoryResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") ResearchCategoryResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -77,7 +75,7 @@ public class ResearchCategoryResourceLocation extends VariedResourceLocation<Res
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull ResearchCategoryResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") ResearchCategoryResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

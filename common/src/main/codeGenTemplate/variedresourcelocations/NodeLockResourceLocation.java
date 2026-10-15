@@ -2,7 +2,6 @@ package thaumcraft.common.lib.resourcelocations;
 
 import thaumcraft.api.nodes.INodeLockBlock;
 //#include VariedResourceLocationImports
-
 public class NodeLockResourceLocation extends VariedResourceLocation<INodeLockBlock, NodeLockResourceLocation> {
     //#include VariedResourceLocationSource("NodeLockResourceLocation", "INodeLockBlock")
 }

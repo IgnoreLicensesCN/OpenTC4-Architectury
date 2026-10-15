@@ -10,6 +10,7 @@ import thaumcraft.common.Thaumcraft;
 
 import static thaumcraft.api.scan.ScanManager.onScanItemStack;
 
+//TODO:[maybe wont finished]limited scan for itemstack so we wont get someone scanned all the items once join in server(by cheating packets)
 //oh it's for extension?or for TODO:[maybe wont finished]inventory scan
 public class PacketScannedItemStackC2S extends BaseC2SMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":scanned_stack_2s";

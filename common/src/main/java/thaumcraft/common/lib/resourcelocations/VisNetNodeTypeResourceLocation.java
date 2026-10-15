@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 //maybe it's bad to use "object"
 public class VisNetNodeTypeResourceLocation extends VariedResourceLocation<VisNetNodeBlockEntity, VisNetNodeTypeResourceLocation> {
     public static final VisNetNodeTypeResourceLocation EMPTY = new VisNetNodeTypeResourceLocation("", "");
@@ -69,7 +68,7 @@ public class VisNetNodeTypeResourceLocation extends VariedResourceLocation<VisNe
         }
     }
 
-    public static @NotNull VisNetNodeTypeResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") VisNetNodeTypeResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -77,7 +76,7 @@ public class VisNetNodeTypeResourceLocation extends VariedResourceLocation<VisNe
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull VisNetNodeTypeResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") VisNetNodeTypeResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

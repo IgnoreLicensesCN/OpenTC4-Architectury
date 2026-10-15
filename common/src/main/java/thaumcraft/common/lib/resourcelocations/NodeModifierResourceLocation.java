@@ -10,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class NodeModifierResourceLocation extends VariedResourceLocation<NodeModifier, NodeModifierResourceLocation> {
     public static final NodeModifierResourceLocation EMPTY = new NodeModifierResourceLocation("", "");
     public static final VariedResourceLocationBuilder<NodeModifier, NodeModifierResourceLocation> BUILDER = NodeModifierResourceLocation::of;
@@ -69,7 +68,7 @@ public class NodeModifierResourceLocation extends VariedResourceLocation<NodeMod
         }
     }
 
-    public static @NotNull NodeModifierResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") NodeModifierResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -77,7 +76,7 @@ public class NodeModifierResourceLocation extends VariedResourceLocation<NodeMod
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull NodeModifierResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") NodeModifierResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

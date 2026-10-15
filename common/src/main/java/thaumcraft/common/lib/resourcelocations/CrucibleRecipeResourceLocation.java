@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class CrucibleRecipeResourceLocation extends AbstractRecipeResourceLocation<CrucibleRecipe, CrucibleRecipeResourceLocation> {
     public static final CrucibleRecipeResourceLocation EMPTY = new CrucibleRecipeResourceLocation("", "");
     public static final VariedResourceLocationBuilder<CrucibleRecipe, CrucibleRecipeResourceLocation> BUILDER = CrucibleRecipeResourceLocation::of;
@@ -68,7 +67,7 @@ public class CrucibleRecipeResourceLocation extends AbstractRecipeResourceLocati
         }
     }
 
-    public static @NotNull CrucibleRecipeResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") CrucibleRecipeResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -76,7 +75,7 @@ public class CrucibleRecipeResourceLocation extends AbstractRecipeResourceLocati
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull CrucibleRecipeResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") CrucibleRecipeResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

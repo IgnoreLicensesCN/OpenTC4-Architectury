@@ -37,7 +37,7 @@ public class PacketAspectPlaceC2S extends BaseC2SMessage {
 
    public static PacketAspectPlaceC2S decode(FriendlyByteBuf buf) {
       var blockPos = buf.readBlockPos();
-      Aspect aspect = Aspect.getAspect(AspectResourceLocation.of(buf.readResourceLocation()));
+      Aspect aspect = Aspect.getAspect(AspectResourceLocation.ofExisting(buf.readResourceLocation()));
       byte q = buf.readByte();
       byte r = buf.readByte();
       return new PacketAspectPlaceC2S(blockPos, aspect, q, r);
@@ -52,6 +52,7 @@ public class PacketAspectPlaceC2S extends BaseC2SMessage {
 
    @Override
    public void handle(NetworkManager.PacketContext context) {
+      if (aspect.isEmpty()){return;}
       Player player = context.getPlayer();
       if (!(player instanceof ServerPlayer serverPlayer)) return;
       var server = serverPlayer.getServer();

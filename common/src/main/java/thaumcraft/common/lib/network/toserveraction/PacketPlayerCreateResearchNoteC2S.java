@@ -33,11 +33,12 @@ public class PacketPlayerCreateResearchNoteC2S extends BaseC2SMessage {
     }
 
     public static PacketPlayerCreateResearchNoteC2S decode(FriendlyByteBuf buf) {
-        return new PacketPlayerCreateResearchNoteC2S(ResearchItemResourceLocation.of(buf.readResourceLocation()),buf.readInt());
+        return new PacketPlayerCreateResearchNoteC2S(ResearchItemResourceLocation.ofExisting(buf.readResourceLocation()),buf.readInt());
     }
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
+        if (researchToCreateNote.getNamespace().isEmpty() || researchToCreateNote.getPath().isEmpty()){return;}
         if (inventorySlotWithInkWell < 0){
             return;
         }

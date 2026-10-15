@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 //only for research needs this.
 //store some string and tell both side "Oh we have something."
 //you may need some i-ma-gi-na-tion to use this.
@@ -70,7 +69,7 @@ public class ClueResourceLocation extends VariedResourceLocation<String, ClueRes
         }
     }
 
-    public static @NotNull ClueResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") ClueResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -78,7 +77,7 @@ public class ClueResourceLocation extends VariedResourceLocation<String, ClueRes
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull ClueResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") ClueResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class WandSpellEventTypeResourceLocation extends VariedResourceLocation<String, WandSpellEventTypeResourceLocation> {
     public static final WandSpellEventTypeResourceLocation EMPTY = new WandSpellEventTypeResourceLocation("", "");
     public static final VariedResourceLocationBuilder<String, WandSpellEventTypeResourceLocation> BUILDER = WandSpellEventTypeResourceLocation::of;
@@ -67,7 +66,7 @@ public class WandSpellEventTypeResourceLocation extends VariedResourceLocation<S
         }
     }
 
-    public static @NotNull WandSpellEventTypeResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") WandSpellEventTypeResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -75,7 +74,7 @@ public class WandSpellEventTypeResourceLocation extends VariedResourceLocation<S
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull WandSpellEventTypeResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") WandSpellEventTypeResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

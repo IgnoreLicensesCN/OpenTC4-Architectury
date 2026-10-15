@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class WandWaveAnimationResourceLocation extends VariedResourceLocation<String, WandWaveAnimationResourceLocation> {
     public static final WandWaveAnimationResourceLocation EMPTY = new WandWaveAnimationResourceLocation("", "");
     public static final VariedResourceLocationBuilder<String, WandWaveAnimationResourceLocation> BUILDER = WandWaveAnimationResourceLocation::of;
@@ -67,7 +66,7 @@ public class WandWaveAnimationResourceLocation extends VariedResourceLocation<St
         }
     }
 
-    public static @NotNull WandWaveAnimationResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") WandWaveAnimationResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -75,7 +74,7 @@ public class WandWaveAnimationResourceLocation extends VariedResourceLocation<St
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull WandWaveAnimationResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") WandWaveAnimationResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

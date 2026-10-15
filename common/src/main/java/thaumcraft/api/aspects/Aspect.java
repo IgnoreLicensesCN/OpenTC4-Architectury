@@ -51,7 +51,7 @@ public abstract class Aspect {
 	}
 
 	public static final Aspect EMPTY = new Aspect(
-			AspectResourceLocation.of(Thaumcraft.MOD_ID,""),
+			AspectResourceLocation.of("",""),
 			0x000000,
 			1,
 			true) {

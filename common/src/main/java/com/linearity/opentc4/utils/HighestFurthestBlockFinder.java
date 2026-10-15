@@ -1,7 +1,6 @@
 package com.linearity.opentc4.utils;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectRBTreeMap;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
@@ -13,17 +12,20 @@ import oshi.annotation.concurrent.NotThreadSafe;
 
 import java.util.function.Predicate;
 
+//TODO:Result cache in some situations to reduce lag
+
 //y then xz
 //tried to reduce "new BlockPos"
+//searches upper first
 @NotThreadSafe
-public class FurthestBlockFinder {
+public class HighestFurthestBlockFinder {
     private final Level level;
     private final Predicate<BlockState> matcher;
 
     private final int maxHeight;
     private final int maxXZManhattanDistance;
 
-    public FurthestBlockFinder(
+    public HighestFurthestBlockFinder(
             Level level,
             Predicate<BlockState> matcher,
             int maxHeight,

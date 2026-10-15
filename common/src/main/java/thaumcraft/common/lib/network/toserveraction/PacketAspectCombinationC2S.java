@@ -57,8 +57,8 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
 
    public static PacketAspectCombinationC2S decode(FriendlyByteBuf buf) {
       var tablePos = buf.readBlockPos();
-      Aspect aspect1 = Aspect.getAspect(AspectResourceLocation.of(buf.readResourceLocation()));
-      Aspect aspect2 = Aspect.getAspect(AspectResourceLocation.of(buf.readResourceLocation()));
+      Aspect aspect1 = Aspect.getAspect(AspectResourceLocation.ofExisting(buf.readResourceLocation()));
+      Aspect aspect2 = Aspect.getAspect(AspectResourceLocation.ofExisting(buf.readResourceLocation()));
       boolean ab1 = buf.readBoolean();
       boolean ab2 = buf.readBoolean();
       return new PacketAspectCombinationC2S(tablePos,aspect1,aspect2,ab1,ab2);
@@ -66,6 +66,9 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
 
    @Override
    public void handle(NetworkManager.PacketContext context) {
+      if (aspect1.isEmpty() || aspect2.isEmpty()) {
+         return;
+      }
       Player player = context.getPlayer();
       if (!(player instanceof ServerPlayer serverPlayer)) return;
       var server = serverPlayer.getServer();

@@ -1,7 +1,7 @@
 package thaumcraft.common.items.equipment.elemental;
 
 import com.linearity.opentc4.utils.consts.EntityTypeTests;
-import com.linearity.opentc4.utils.FurthestBlockFinder;
+import com.linearity.opentc4.utils.HighestFurthestBlockFinder;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -99,7 +99,7 @@ public class ElementalAxeItem extends AxeItem implements IDropFollowingUserTool,
     public BlockPos redirectBreakPosToPos(BlockPos originalPos, Entity entityUsingTool,ItemStack usingStack) {
         var level = entityUsingTool.level();
         if (level.getBlockState(originalPos).is(BlockTags.MINEABLE_WITH_AXE)) {
-            return new FurthestBlockFinder(level,state -> state.is(BlockTags.MINEABLE_WITH_AXE),64,5).find(originalPos);
+            return new HighestFurthestBlockFinder(level, state -> state.is(BlockTags.MINEABLE_WITH_AXE),64,5).find(originalPos);
         }
         return originalPos;
     }

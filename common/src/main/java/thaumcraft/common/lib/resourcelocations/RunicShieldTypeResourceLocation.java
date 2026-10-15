@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class RunicShieldTypeResourceLocation extends VariedResourceLocation<AbstractRunicShieldType<?>, RunicShieldTypeResourceLocation> {
     public static final RunicShieldTypeResourceLocation EMPTY = new RunicShieldTypeResourceLocation("", "");
     public static final VariedResourceLocationBuilder<AbstractRunicShieldType<?>, RunicShieldTypeResourceLocation> BUILDER = RunicShieldTypeResourceLocation::of;
@@ -68,7 +67,7 @@ public class RunicShieldTypeResourceLocation extends VariedResourceLocation<Abst
         }
     }
 
-    public static @NotNull RunicShieldTypeResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") RunicShieldTypeResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -76,7 +75,7 @@ public class RunicShieldTypeResourceLocation extends VariedResourceLocation<Abst
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull RunicShieldTypeResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") RunicShieldTypeResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

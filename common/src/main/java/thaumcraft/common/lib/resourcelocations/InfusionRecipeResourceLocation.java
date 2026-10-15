@@ -10,7 +10,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class InfusionRecipeResourceLocation extends AbstractRecipeResourceLocation<InfusionRecipe, InfusionRecipeResourceLocation> {
     public static final InfusionRecipeResourceLocation EMPTY = new InfusionRecipeResourceLocation("", "");
     public static final VariedResourceLocationBuilder<InfusionRecipe, InfusionRecipeResourceLocation> BUILDER = InfusionRecipeResourceLocation::of;
@@ -69,7 +68,7 @@ public class InfusionRecipeResourceLocation extends AbstractRecipeResourceLocati
         }
     }
 
-    public static @NotNull InfusionRecipeResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") InfusionRecipeResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -77,7 +76,7 @@ public class InfusionRecipeResourceLocation extends AbstractRecipeResourceLocati
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull InfusionRecipeResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") InfusionRecipeResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

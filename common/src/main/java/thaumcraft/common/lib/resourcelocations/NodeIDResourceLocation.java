@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class NodeIDResourceLocation extends VariedResourceLocation<ResourceLocation, NodeIDResourceLocation> {
     public static final NodeIDResourceLocation EMPTY = new NodeIDResourceLocation("", "");
     public static final VariedResourceLocationBuilder<ResourceLocation, NodeIDResourceLocation> BUILDER = NodeIDResourceLocation::of;
@@ -68,7 +67,7 @@ public class NodeIDResourceLocation extends VariedResourceLocation<ResourceLocat
         }
     }
 
-    public static @NotNull NodeIDResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") NodeIDResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -76,7 +75,7 @@ public class NodeIDResourceLocation extends VariedResourceLocation<ResourceLocat
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull NodeIDResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") NodeIDResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

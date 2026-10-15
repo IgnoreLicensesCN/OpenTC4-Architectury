@@ -67,7 +67,7 @@ public class AspectResourceLocation extends VariedResourceLocation<Aspect, Aspec
         }
     }
 
-    public static @NotNull AspectResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") AspectResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -75,7 +75,7 @@ public class AspectResourceLocation extends VariedResourceLocation<Aspect, Aspec
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull AspectResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") AspectResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

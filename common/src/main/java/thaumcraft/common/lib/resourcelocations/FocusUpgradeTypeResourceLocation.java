@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class FocusUpgradeTypeResourceLocation extends VariedResourceLocation<FocusUpgradeType, FocusUpgradeTypeResourceLocation> {
     public static final FocusUpgradeTypeResourceLocation EMPTY = new FocusUpgradeTypeResourceLocation("", "");
     public static final VariedResourceLocationBuilder<FocusUpgradeType, FocusUpgradeTypeResourceLocation> BUILDER = FocusUpgradeTypeResourceLocation::of;
@@ -68,7 +67,7 @@ public class FocusUpgradeTypeResourceLocation extends VariedResourceLocation<Foc
         }
     }
 
-    public static @NotNull FocusUpgradeTypeResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") FocusUpgradeTypeResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -76,7 +75,7 @@ public class FocusUpgradeTypeResourceLocation extends VariedResourceLocation<Foc
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull FocusUpgradeTypeResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") FocusUpgradeTypeResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

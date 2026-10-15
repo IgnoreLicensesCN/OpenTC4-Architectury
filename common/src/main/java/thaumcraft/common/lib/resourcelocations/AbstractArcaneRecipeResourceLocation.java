@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class AbstractArcaneRecipeResourceLocation extends VariedResourceLocation<AbstractArcaneRecipe, AbstractArcaneRecipeResourceLocation> {
     public static final AbstractArcaneRecipeResourceLocation EMPTY = new AbstractArcaneRecipeResourceLocation("", "");
     public static final VariedResourceLocationBuilder<AbstractArcaneRecipe, AbstractArcaneRecipeResourceLocation> BUILDER = AbstractArcaneRecipeResourceLocation::of;
@@ -68,7 +67,7 @@ public class AbstractArcaneRecipeResourceLocation extends VariedResourceLocation
         }
     }
 
-    public static @NotNull AbstractArcaneRecipeResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") AbstractArcaneRecipeResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -76,7 +75,7 @@ public class AbstractArcaneRecipeResourceLocation extends VariedResourceLocation
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull AbstractArcaneRecipeResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") AbstractArcaneRecipeResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

@@ -1,7 +1,6 @@
 package thaumcraft.common.lib.resourcelocations;
 
 //#include VariedResourceLocationImports
-
 public class WandWaveAnimationResourceLocation extends VariedResourceLocation<String, WandWaveAnimationResourceLocation> {
     //#include VariedResourceLocationSource("WandWaveAnimationResourceLocation", "String")
 }

@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 //oh here we go again, another "any-string" resourceLocation
 //you can mark your scanned type with this
 //you may need some i-ma-gi-na-tion to use this.
@@ -70,7 +69,7 @@ public class ScannedTypeResourceLocation extends VariedResourceLocation<String, 
         }
     }
 
-    public static @NotNull ScannedTypeResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") ScannedTypeResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -78,7 +77,7 @@ public class ScannedTypeResourceLocation extends VariedResourceLocation<String, 
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull ScannedTypeResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") ScannedTypeResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }

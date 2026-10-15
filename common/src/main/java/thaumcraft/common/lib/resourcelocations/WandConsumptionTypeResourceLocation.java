@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class WandConsumptionTypeResourceLocation extends VariedResourceLocation<String, WandConsumptionTypeResourceLocation> {
     public static final WandConsumptionTypeResourceLocation EMPTY = new WandConsumptionTypeResourceLocation("", "");
     public static final VariedResourceLocationBuilder<String, WandConsumptionTypeResourceLocation> BUILDER = WandConsumptionTypeResourceLocation::of;
@@ -67,7 +66,7 @@ public class WandConsumptionTypeResourceLocation extends VariedResourceLocation<
         }
     }
 
-    public static @NotNull WandConsumptionTypeResourceLocation ofExisting(String namespace, String path) {
+    public static @NotNull("null -> empty") WandConsumptionTypeResourceLocation ofExisting(String namespace, String path) {
         var innerMap = mapFromNamespaceAndPathToResourceLocation.get(namespace);
         if (innerMap == null) {
             return EMPTY;
@@ -75,7 +74,7 @@ public class WandConsumptionTypeResourceLocation extends VariedResourceLocation<
         return innerMap.getOrDefault(path, EMPTY);
     }
 
-    public static @NotNull WandConsumptionTypeResourceLocation ofExisting(ResourceLocation resLoc) {
+    public static @NotNull("null -> empty") WandConsumptionTypeResourceLocation ofExisting(ResourceLocation resLoc) {
         return ofExisting(resLoc.getNamespace(), resLoc.getPath());
     }
 }
