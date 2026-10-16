@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import com.linearity.opentc4.utils.collectionlike.ListenerManager;
@@ -15,6 +16,9 @@ import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
 
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static thaumcraft.api.listeners.warp.consts.AfterPickEventListeners.SPAWN_GUARD_IF_NO_EVENT;
 import static thaumcraft.api.listeners.warp.consts.AfterWarpEventListeners.*;
@@ -135,19 +139,27 @@ public class WarpEventManager {
     public static final int defaultCheckWarpEventDelay = 2000;
 
     //unit:tick
-    public static int getWarpEventDelayForPlayer(LivingEntity living) {
+    public static int getWarpEventDelayFor(LivingEntity living) {
         int result = defaultCheckWarpEventDelay;
         for (GettingWarpDelayListener listener : gettingWarpDelayListenerManager.getListeners()) {
-            result = listener.onGettingWarpEventDelayForLiving(living);
+            result = listener.onGettingWarpEventDelayForLiving(living,result);
         }
         return result;
     }
 
+    public static final Map<Item,IWarpingGear> warpingGearMap = new ConcurrentHashMap<>();
     public static int getFinalWarp(ItemStack stack,@Nullable Entity entityEquipped) {
-        if (stack != null && stack.getItem() instanceof IWarpingGear armor) {
+        if (stack == null){
+            return 0;
+        }
+        var item = stack.getItem();
+        if (item instanceof IWarpingGear armor) {
             return armor.getWarp(stack, entityEquipped);
         }
-        //need some map to lookup?
+        var warpingGearGot = warpingGearMap.get(item);
+        if (warpingGearGot != null) {
+            return warpingGearGot.getWarp(stack, entityEquipped);
+        }
         return 0;
     }
 

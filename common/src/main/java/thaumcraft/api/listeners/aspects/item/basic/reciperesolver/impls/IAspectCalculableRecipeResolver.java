@@ -4,16 +4,21 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.AbstractRecipeResolver;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.VanillaTypedRecipeResolver;
 import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.impls.calcstage.RecipeResolveContext;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static thaumcraft.api.listeners.aspects.item.basic.reciperesolver.VanillaTypedRecipeResolver.resolveItemsCommon;
@@ -37,6 +42,10 @@ public class IAspectCalculableRecipeResolver extends AbstractRecipeResolver {
 
     @Override
     public void reloadRecipes() {
+//        ITEM_WITH_NBT_CRAFTED_FROM_RECIPES.clear();
+        ITEM_CRAFTED_FROM_RECIPES.clear();
+        ITEM_IN_RECIPES.clear();
+        RECIPES_RESOLVED.clear();
         for (var recipe:onReloadRecipesGetter.get()){
             if (!recipe.supportsAspectCalculation()){
                 continue;
@@ -66,19 +75,77 @@ public class IAspectCalculableRecipeResolver extends AbstractRecipeResolver {
 
     @Override
     public void resolveItems(RecipeResolveContext context) {
+        VanillaTypedRecipeResolver.ResolveProgressAndRecipeAccessor<IAspectCalculableRecipe> accessor =
+                new VanillaTypedRecipeResolver.ResolveProgressAndRecipeAccessor<>() {
+            @Override
+            public ItemStack getResultStack(IAspectCalculableRecipe iAspectCalculableRecipe) {
+                return iAspectCalculableRecipe.getAspectCalculationOutput();
+            }
+
+            @Override
+            public Collection<Item> getItemsToResolve() {
+                return context.itemsResolvedLastTurnView;
+            }
+
+            @Override
+            public Collection<IAspectCalculableRecipe> getResolvedRecipes() {
+                return RECIPES_RESOLVED;
+            }
+
+            @Override
+            public Collection<IAspectCalculableRecipe> getItemsCraftedFromRecipes(Item item) {
+                return ITEM_CRAFTED_FROM_RECIPES.get(item);
+            }
+
+            @Override
+            public Collection<IAspectCalculableRecipe> getRecipesWhereItemIsInIngredient(Item item) {
+                return ITEM_IN_RECIPES.get(item);
+            }
+
+            @Override
+            public UnmodifiableAspectList<Aspect> getAlreadyCalculatedAspectForItem(Item item) {
+                return context.getAlreadyCalculatedAspectForItem(item);
+            }
+
+            @Override
+            public List<List<ItemStack>> getIngredientItems(IAspectCalculableRecipe iAspectCalculableRecipe) {
+                return iAspectCalculableRecipe.getAspectCalculationInputs();
+            }
+
+            @Override
+            public List<List<Function<ItemStack, ItemStack>>> getRemainingItems(IAspectCalculableRecipe iAspectCalculableRecipe) {
+                return iAspectCalculableRecipe.getAspectCalculationRemaining();
+            }
+
+            @Override
+            public void addResolvedItem(Item item) {
+                context.addResolvedItem(item);
+            }
+
+            @Override
+            public void addResolvedAspectForItem(Item item, UnmodifiableAspectList<Aspect> aspects) {
+                context.addResolvedAspectForItem(item, aspects);
+            }
+
+            @Override
+            public AspectList<Aspect> modifyCalculatedAspect(IAspectCalculableRecipe iAspectCalculableRecipe, AspectList<Aspect> aspectsNotModified) {
+                return resolvedAspectResultModifier.apply(iAspectCalculableRecipe, aspectsNotModified);
+            }
+        };
         resolveItemsCommon(
-                context.itemsResolvedLastTurnView,
-                RECIPES_RESOLVED,
-                ITEM_CRAFTED_FROM_RECIPES,
-                ITEM_IN_RECIPES,
-                IAspectCalculableRecipe::getAspectCalculationOutput,
-                context::getAlreadyCalculatedAspectForItem,
-                IAspectCalculableRecipe::getAspectCalculationInputs,
-                IAspectCalculableRecipe::getAspectCalculationRemaining,
-                context::addResolvedItem,
-                context::addResolvedAspectForItem,
-                resolvedAspectResultModifier
-//                (recipe,aspList) -> aspList.multiplyAndCeil(CRAFTING_ASPECTS_MULTIPLIER)//i dont want this now
+                accessor
+//                context.itemsResolvedLastTurnView,
+//                RECIPES_RESOLVED,
+//                ITEM_CRAFTED_FROM_RECIPES,
+//                ITEM_IN_RECIPES,
+//                IAspectCalculableRecipe::getAspectCalculationOutput,
+//                context::getAlreadyCalculatedAspectForItem,
+//                IAspectCalculableRecipe::getAspectCalculationInputs,
+//                IAspectCalculableRecipe::getAspectCalculationRemaining,
+//                context::addResolvedItem,
+//                context::addResolvedAspectForItem,
+//                resolvedAspectResultModifier
+////                (recipe,aspList) -> aspList.multiplyAndCeil(CRAFTING_ASPECTS_MULTIPLIER)//i dont want this now
         );
     }
 }

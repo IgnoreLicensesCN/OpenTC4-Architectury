@@ -41,13 +41,13 @@ public class BrainJarBlockEntity extends TileThaumcraft implements IValueContain
     @Override
     public void readCustomNBT(CompoundTag compoundTag) {
         super.readCustomNBT(compoundTag);
-        this.xp = EXP.readFromCompoundTag(compoundTag);
+        this.xp = EXP.readIntFromCompoundTag(compoundTag);
     }
 
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
-        EXP.writeToCompoundTag(compoundTag, this.xp);
+        EXP.writeIntToCompoundTag(compoundTag, this.xp);
 
     }
 

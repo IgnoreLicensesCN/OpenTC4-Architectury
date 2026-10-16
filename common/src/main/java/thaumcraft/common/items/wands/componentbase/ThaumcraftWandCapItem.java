@@ -4,6 +4,7 @@ import com.linearity.opentc4.annotations.forvalue.PercentageFloatValue;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatMaps;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.items.abstracts.wandabstraction.component.IWandCapPropertiesOwnerComponentItem;
@@ -17,12 +18,12 @@ public abstract class ThaumcraftWandCapItem extends Item implements IWandCapProp
     }
 
     @Override
-    public @PercentageFloatValue float getBaseCostModifier() {
+    public @PercentageFloatValue float getBaseCostModifier(ItemStack stack) {
         return 0;
     }
 
     @Override
-    public @NotNull Object2FloatMap<Aspect> getSpecialCostModifierAspects() {
+    public @NotNull Object2FloatMap<Aspect> getSpecialCostModifierAspects(ItemStack stack) {
         return Object2FloatMaps.emptyMap();
     }
 

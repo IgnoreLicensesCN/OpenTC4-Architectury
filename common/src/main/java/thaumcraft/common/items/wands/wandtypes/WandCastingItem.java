@@ -228,7 +228,7 @@ public class WandCastingItem extends Item
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        appendWandHoverText(this, stack, level, list, tooltipFlag, Minecraft.getInstance().player);
+        appendWandHoverText(this, stack, level, list, tooltipFlag, null);
     }
 
 
@@ -424,9 +424,9 @@ public class WandCastingItem extends Item
 
     @Override
     public @PercentageFloatValue float getCostDiscountForAspect(ItemStack wandStack, Aspect aspect) {
-        var cap = getWandComponents(wandStack);
-        if (cap instanceof IVisCostModifierOwnerComponentItem visCostModifierOwner) {
-            return visCostModifierOwner.getSpecialCostModifierAspects().getOrDefault(aspect,visCostModifierOwner.getBaseCostModifier());
+        var cap = getWandCapAsItemStack(wandStack);
+        if (cap.getItem() instanceof IVisCostModifierOwnerComponentItem visCostModifierOwner) {
+            return visCostModifierOwner.getSpecialCostModifierAspects(cap).getOrDefault(aspect,visCostModifierOwner.getBaseCostModifier(cap));
         }
         return 0;
     }

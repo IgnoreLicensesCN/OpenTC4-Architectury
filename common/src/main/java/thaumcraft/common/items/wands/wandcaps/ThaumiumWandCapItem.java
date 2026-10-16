@@ -1,5 +1,6 @@
 package thaumcraft.common.items.wands.wandcaps;
 
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.common.items.abstracts.wandabstraction.component.ICraftingCostAspectOwnerComponentItem;
@@ -14,7 +15,7 @@ public class ThaumiumWandCapItem extends ThaumcraftWandCapItem implements ICraft
 
 
     @Override
-    public float getBaseCostModifier() {
+    public float getBaseCostModifier(ItemStack stack) {
         return -0.1F;
     }
 

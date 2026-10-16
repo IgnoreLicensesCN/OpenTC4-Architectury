@@ -1,10 +1,13 @@
 package thaumcraft.api.wands;
 
 import com.linearity.opentc4.OpenTC4CommonProxy;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -30,6 +33,7 @@ import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class WandUtils {
 
@@ -50,7 +54,15 @@ public class WandUtils {
         );
     }
     public static final DecimalFormat CENTIVIS_DECIMAL_FORMAT = new DecimalFormat("#######.##");
+    public static final Supplier<Supplier<LivingEntity>>  getClientSidePlayer = () -> () ->
+        Minecraft.getInstance().player
+    ;
     public static void appendWandHoverText(Item wandItem, ItemStack wandStack, @Nullable Level level, List<Component> list, TooltipFlag flag, LivingEntity livingEntity) {
+        if (livingEntity == null) {
+            if (Platform.getEnvironment() == Env.CLIENT) {
+                livingEntity = getClientSidePlayer.get().get();
+            }
+        }
         int pos = list.size();
         String tt2 = "";
         boolean shiftKeyDownFlag = OpenTC4CommonProxy.INSTANCE.isShiftKeyDown();
@@ -60,8 +72,9 @@ public class WandUtils {
             var visOwning = centiVisContainer.getAllCentiVisOwning(wandStack);
             var visCapacity = centiVisContainer.getAllCentiVisCapacity(wandStack);
 
+            LivingEntity finalLivingEntity = livingEntity;
             visOwning.forEach(
-                    (aspect, value) -> addAspectSpecificText(wandItem, wandStack, list, livingEntity, aspect,value, visCapacity, shiftKeyDownFlag, tt)
+                    (aspect, value) -> addAspectSpecificText(wandItem, wandStack, list, finalLivingEntity, aspect,value, visCapacity, shiftKeyDownFlag, tt)
             );
 
             if (!shiftKeyDownFlag){

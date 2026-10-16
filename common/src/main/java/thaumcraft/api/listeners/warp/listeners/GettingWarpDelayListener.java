@@ -8,7 +8,8 @@ public abstract class GettingWarpDelayListener implements Comparable<GettingWarp
         this.priority = priority;
     }
 
-    public abstract int onGettingWarpEventDelayForLiving(LivingEntity living);
+    //return warp delay wanted
+    public abstract int onGettingWarpEventDelayForLiving(LivingEntity living,int warpDelay);
 
     @Override
     public int compareTo(GettingWarpDelayListener o) {

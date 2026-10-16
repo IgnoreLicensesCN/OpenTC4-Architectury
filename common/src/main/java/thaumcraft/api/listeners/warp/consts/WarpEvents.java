@@ -29,7 +29,7 @@ public class WarpEvents {
 
    public static void checkWarpEvent(LivingEntity living) {
 
-      if (!Config.wuss && living.tickCount > 0 && living.tickCount % getWarpEventDelayForPlayer(living) == 0) {
+      if (!Config.wuss && living.tickCount > 0 && living.tickCount % getWarpEventDelayFor(living) == 0) {
          tryTriggerRandomWarpEvent(living);
       }
 

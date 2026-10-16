@@ -2,6 +2,7 @@ package thaumcraft.common.items.wands.wandcaps;
 
 import com.linearity.opentc4.utils.collectionlike.UnmodifiableAspectFloatEntry;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
@@ -18,7 +19,7 @@ public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftin
 
 
     @Override
-    public float getBaseCostModifier() {
+    public float getBaseCostModifier(ItemStack stack) {
         return 0;
     }
 
@@ -29,7 +30,7 @@ public class SilverWandCapItem extends ThaumcraftWandCapItem implements ICraftin
             new UnmodifiableAspectFloatEntry<>(Aspects.WATER,.05f)
     );
     @Override
-    public @NotNull Object2FloatMap<Aspect> getSpecialCostModifierAspects() {
+    public @NotNull Object2FloatMap<Aspect> getSpecialCostModifierAspects(ItemStack stack) {
         return specialCostModifierAspects;
     }
 
