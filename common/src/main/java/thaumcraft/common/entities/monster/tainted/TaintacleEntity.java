@@ -153,8 +153,6 @@ public class TaintacleEntity extends Monster implements IMobAttackDamageTypeRepl
         var level = level();
         if (!level.isClientSide){
             damageIfNotInTainted();
-        }else {
-            ClientTickContext.clientTick(this);
         }
     }
 

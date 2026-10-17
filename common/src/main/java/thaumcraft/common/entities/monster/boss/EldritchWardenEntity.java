@@ -254,10 +254,6 @@ public class EldritchWardenEntity extends ThaumcraftBossEntity implements IChamp
         if (this.thaumcraftBoss$getInvulnerableTicks() == invulnerableTicksLimit){
             this.level().broadcastEntityEvent(this, (byte) 18);
         }
-        var level = this.level();
-        if (level.isClientSide){
-            EldritchGuardianEntity.ClientTickContext.clientTick(this);
-        }
     }
 
     protected void performFieldFrenzy() {

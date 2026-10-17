@@ -27,8 +27,17 @@ public class EntityDataSerializerAdditions {
             return result;
         }
     };
+    public static final EntityDataSerializer<byte[]> BYTE_ARRAY = new EntityDataSerializer.ForValueType<>() {
+        public void write(FriendlyByteBuf friendlyByteBuf, byte[] array) {
+            friendlyByteBuf.writeBytes(array);
+        }
+        public byte@NotNull[] read(FriendlyByteBuf friendlyByteBuf) {
+            return friendlyByteBuf.readBytes(friendlyByteBuf.readVarInt()).array();
+        }
+    };
 
     public static void registerSerializers(){
         EntityDataSerializers.registerSerializer(ITEM_STACK_NON_NULL_LIST);
+        EntityDataSerializers.registerSerializer(BYTE_ARRAY);
     }
 }

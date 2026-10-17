@@ -107,10 +107,6 @@ public class TaintSporeEntity extends Monster {
             this.setSize(this.getSize() + 1);
             this.growth = 0;
         }
-
-        if (ClientFXUtils.checkPlatformClient()) {
-            ClientTickContext.clientTick(this);
-        }
         
         var selfBlockPos = blockPosition();
         if (level().getBlockState(new BlockPos(

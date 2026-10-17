@@ -5,7 +5,7 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemModifierItem;
 
-public interface IGolemCarryItemPowerProviderItem extends IGolemModifierItem, IGolemAbilityModifierItem {
+public interface IGolemCarryItemPowerProviderItem extends IGolemAbilityModifierItem {
     int getCarryCountCanProvide(BaseGolemEntity golem, ItemStack upgradeStack);
 
     @Override

@@ -131,47 +131,47 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
 
    }
 
-//   public boolean setupGolemInventory() {
-//      ItemStack core = null;
-//      if (!ItemGolemCore.hasInventory(this.getCore())) {
-//         return false;
-//      } else {
-//         if (this.getCore() > -1) {
-//            int invSize = 0;
-//            switch (this.getCore()) {
-//               case 3:
-//               case 4:
-//               case 6:
-//                  break;
-//               case 5:
-//                  invSize = 1;
-//                  invSize += this.getUpgradeAmount(2);
-//                  break;
-//               default:
-//                  invSize = 6;
-//                  invSize += this.getUpgradeAmount(2) * 6;
-//            }
-//
-//            InventoryMob inventory2 = new InventoryMob(this, invSize);
-//
-//             System.arraycopy(this.inventory.inventory, 0, inventory2.inventory, 0, this.inventory.inventory.length);
-//
-//            this.inventory = inventory2;
-//         }
-//
-//         byte[] oldcolors = this.colors;
-//         this.colors = new byte[this.inventory.slotCount];
-//
-//         for(int a = 0; a < this.inventory.slotCount; ++a) {
-//            this.colors[a] = -1;
-//            if (a < oldcolors.length) {
-//               this.colors[a] = oldcolors[a];
-//            }
-//         }
-//
-//         return true;
-//      }
-//   }
+   public boolean setupGolemInventory() {
+      ItemStack core = null;
+      if (!ItemGolemCore.hasInventory(this.getCore())) {
+         return false;
+      } else {
+         if (this.getCore() > -1) {
+            int invSize = 0;
+            switch (this.getCore()) {
+               case 3:
+               case 4:
+               case 6:
+                  break;
+               case 5:
+                  invSize = 1;
+                  invSize += this.getUpgradeAmount(2);
+                  break;
+               default:
+                  invSize = 6;
+                  invSize += this.getUpgradeAmount(2) * 6;
+            }
+
+            InventoryMob inventory2 = new InventoryMob(this, invSize);
+
+             System.arraycopy(this.inventory.inventory, 0, inventory2.inventory, 0, this.inventory.inventory.length);
+
+            this.inventory = inventory2;
+         }
+
+         byte[] oldcolors = this.colors;
+         this.colors = new byte[this.inventory.slotCount];
+
+         for(int a = 0; a < this.inventory.slotCount; ++a) {
+            this.colors[a] = -1;
+            if (a < oldcolors.length) {
+               this.colors[a] = oldcolors[a];
+            }
+         }
+
+         return true;
+      }
+   }
 
    public boolean setupGolem() {
       if (Platform.getEnvironment() != Env.CLIENT) {
@@ -1075,36 +1075,36 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
 
    }
 
-   protected void updateFallState(double par1, boolean par3) {
-      if (par3 && this.fallDistance > 0.0F) {
-         int var4 = MathHelper.floor_double(this.posX);
-         int var5 = MathHelper.floor_double(this.posY - (double)0.2F - (double)this.yOffset);
-         int var6 = MathHelper.floor_double(this.posZ);
-         this.level().getBlock(var4, var5, var6);
-         if (this.level().isAirBlock(var4, var5, var6) && this.level().getBlock(var4, var5 - 1, var6) == Blocks.fence) {
-            this.level().getBlock(var4, var5 - 1, var6);
-         }
-      }
+//   protected void updateFallState(double par1, boolean par3) {
+//      if (par3 && this.fallDistance > 0.0F) {
+//         int var4 = MathHelper.floor_double(this.posX);
+//         int var5 = MathHelper.floor_double(this.posY - (double)0.2F - (double)this.yOffset);
+//         int var6 = MathHelper.floor_double(this.posZ);
+//         this.level().getBlock(var4, var5, var6);
+//         if (this.level().isAirBlock(var4, var5, var6) && this.level().getBlock(var4, var5 - 1, var6) == Blocks.fence) {
+//            this.level().getBlock(var4, var5 - 1, var6);
+//         }
+//      }
+//
+//      if (par3) {
+//         if (this.fallDistance > 0.0F) {
+//            this.fall(this.fallDistance);
+//            this.fallDistance = 0.0F;
+//         }
+//      } else if (par1 < (double)0.0F) {
+//         this.fallDistance = (float)((double)this.fallDistance - par1);
+//      }
+//
+//   }
 
-      if (par3) {
-         if (this.fallDistance > 0.0F) {
-            this.fall(this.fallDistance);
-            this.fallDistance = 0.0F;
-         }
-      } else if (par1 < (double)0.0F) {
-         this.fallDistance = (float)((double)this.fallDistance - par1);
-      }
-
-   }
-
-   public EntityLivingBase getAttackTarget() {
-      EntityLivingBase e = super.getAttackTarget();
-      if (e != null && !e.isEntityAlive()) {
-         e = null;
-      }
-
-      return e;
-   }
+//   public EntityLivingBase getAttackTarget() {
+//      EntityLivingBase e = super.getAttackTarget();
+//      if (e != null && !e.isEntityAlive()) {
+//         e = null;
+//      }
+//
+//      return e;
+//   }
 
    public int getTotalArmorValue() {
       int var1 = super.getTotalArmorValue() + this.golemType.armor;

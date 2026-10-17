@@ -156,9 +156,7 @@ public class EldritchGuardianEntity extends DoorBreakingMonster implements Range
     public void tick() {
         super.tick();
         var level = this.level();
-        if (level.isClientSide){
-            ClientTickContext.clientTick(this);
-        }else {
+        if (!level.isClientSide){
             var difficulty = level.getDifficulty();
             if (level.dimension() != Config.dimensionOuterId
                     && (this.tickCount == 0 || this.tickCount % 100 == 0)

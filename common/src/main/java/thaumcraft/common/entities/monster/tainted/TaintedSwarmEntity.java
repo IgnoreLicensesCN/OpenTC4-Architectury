@@ -35,13 +35,11 @@ import java.util.List;
 import static thaumcraft.common.entities.ThaumcraftEntities.handleTargetSelectorForTaintedMob;
 
 public class TaintedSwarmEntity extends Monster {
-    protected final boolean isClientSide;
     public TaintedSwarmEntity(Level level) {
         this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_SWARM(), level);
     }
     public TaintedSwarmEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
-        isClientSide = level.isClientSide;
         this.moveControl = new TaintedSwarmEntityMoveControl(this);
     }
 
@@ -56,7 +54,7 @@ public class TaintedSwarmEntity extends Monster {
     public static class ClientTickContext {
 
         public final List<FXSwarm> swarm = new ArrayList<>();
-        public static void tickEntity(TaintedSwarmEntity entity) {
+        public static void clientTick(TaintedSwarmEntity entity) {
             var level = entity.level();
             if (!(level instanceof ClientLevel clientLevel)) {
                 return;
@@ -78,9 +76,6 @@ public class TaintedSwarmEntity extends Monster {
     public void tick() {
         super.tick();
         this.setDeltaMovement(this.getDeltaMovement().multiply(1, 0.6, 1));
-        if (isClientSide) {
-            ClientTickContext.tickEntity(this);
-        }
     }
 
     @Override

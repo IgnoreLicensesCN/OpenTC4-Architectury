@@ -5,7 +5,7 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemModifierItem;
 
-public interface IGolemStrengthModifierItem extends IGolemModifierItem, IGolemAbilityModifierItem {
+public interface IGolemStrengthModifierItem extends IGolemAbilityModifierItem {
     int getStrengthModified(BaseGolemEntity golem,ItemStack upgradeStack, int strength);
 
     @Override

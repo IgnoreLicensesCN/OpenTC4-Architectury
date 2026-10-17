@@ -70,10 +70,6 @@ public class TaintSporeSwarmerEntity extends Monster {
             this.swarmBurst(1);
         }
 
-        if (level.isClientSide) {
-            ClientTickContext.clientTick(this);
-        }
-
         if (this.deathTime == 1) {
             this.swarmBurst(1);
         }

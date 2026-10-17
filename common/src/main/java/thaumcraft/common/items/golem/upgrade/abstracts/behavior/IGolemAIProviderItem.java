@@ -6,7 +6,7 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemModifierItem;
 
-public interface IGolemAIProviderItem extends IGolemModifierItem, IGolemAbilityModifierItem {
+public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
     default void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GoalSelector goalSelector, GoalSelector targetSelector){
         //this.tasks.addTask(0, new AIAvoidCreeperSwell(this));
         //this.tasks.addTask(5, new AIOpenDoor(this, true));
