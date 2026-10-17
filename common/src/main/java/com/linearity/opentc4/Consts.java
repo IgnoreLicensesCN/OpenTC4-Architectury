@@ -384,4 +384,10 @@ public class Consts {
     public static class TravelingTrunkEntityTagAccessors {
         public static final BooleanTagAccessor STAY = new BooleanTagAccessor("stay");
     }
+    public static class BaseGolemEntityTagAccessors {
+        public static final IntTagAccessor INVENTORY_SIZE = new IntTagAccessor("inventory_size");
+        public static final ByteArrayTagAccessor INVENTORY_COLORS = new ByteArrayTagAccessor("inventory_colors");
+        public static final BlockPosAccessor HOME_POS = new BlockPosAccessor("home_pos");
+        public static final ResourceLocationTagAccessor HOME_LEVEL = new ResourceLocationTagAccessor("home_level");
+    }
 }

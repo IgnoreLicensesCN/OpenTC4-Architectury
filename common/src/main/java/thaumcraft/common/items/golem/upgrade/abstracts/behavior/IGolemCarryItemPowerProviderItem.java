@@ -2,8 +2,14 @@ package thaumcraft.common.items.golem.upgrade.abstracts.behavior;
 
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
+import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemModifierItem;
 
-public interface IGolemCarryItemPowerProviderItem extends IGolemModifierItem {
+public interface IGolemCarryItemPowerProviderItem extends IGolemModifierItem, IGolemAbilityModifierItem {
     int getCarryCountCanProvide(BaseGolemEntity golem, ItemStack upgradeStack);
+
+    @Override
+    default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
+        abilitiesData.carryPower += getCarryCountCanProvide(golem,upgradeStack);
+    }
 }

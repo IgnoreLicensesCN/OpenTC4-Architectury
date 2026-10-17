@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
+import thaumcraft.common.entities.golems.BaseGolemEntity;
 
 //used for golem ai not here.
 public class GolemFetterBlock extends SuppressedWarningBlock {
@@ -65,5 +66,9 @@ public class GolemFetterBlock extends SuppressedWarningBlock {
                 }
             }
         }
+    }
+
+    public boolean shouldSetGolemOnFetter(BlockState state, BaseGolemEntity golem) {
+        return state.getValue(LIT);
     }
 }

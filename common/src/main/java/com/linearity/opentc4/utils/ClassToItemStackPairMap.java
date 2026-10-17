@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.List;
+import java.util.Set;
 
 public class ClassToItemStackPairMap {
     private final ListMultimap<Class<?>, SimplePair<?, ItemStack>> delegate = ArrayListMultimap.create();
@@ -31,6 +32,10 @@ public class ClassToItemStackPairMap {
         return (List<SimplePair<T, ItemStack>>) (Object) delegate.get(type);
     }
 
+    public Set<Class<?>> getKeys(){
+        return delegate.keySet();
+    }
+
     public void clear() {
         delegate.clear();
     }
@@ -42,6 +47,10 @@ public class ClassToItemStackPairMap {
         }
         public @UnmodifiableView <T> List<SimplePair<T, ItemStack>> get(Class<T> type) {
             return delegate.get(type);
+        }
+
+        public Set<Class<?>> getKeys(){
+            return delegate.getKeys();
         }
     }
 }

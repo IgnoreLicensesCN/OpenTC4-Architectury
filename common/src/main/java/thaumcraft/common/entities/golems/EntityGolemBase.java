@@ -307,12 +307,13 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
          }
 
          speed *= 1.0F + (float)this.getUpgradeAmount(0) * 0.15F;
-         if (this.advanced) {
-            speed *= 1.1F;
-         }
 
          if (this.isInWater() && (this.getGolemType() == EnumGolemType.STONE || this.getGolemType() == EnumGolemType.IRON || this.getGolemType() == EnumGolemType.THAUMIUM)) {
             speed *= 2.0F;
+         }
+
+         if (this.advanced) {
+            speed *= 1.1F;
          }
 
          return speed;
@@ -383,7 +384,8 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
             }
          }
 
-         if (this.getDistanceSq(this.getHomePosition().posX, this.getHomePosition().posY, this.getHomePosition().posZ) >= (double)2304.0F || this.isEntityInsideOpaqueBlock()) {
+         if (this.getDistanceSq(this.getHomePosition().posX, this.getHomePosition().posY, this.getHomePosition().posZ) >= (double)2304.0F
+                 || this.isEntityInsideOpaqueBlock()) {
             int var1 = MathHelper.floor_double(this.getHomePosition().posX);
             int var2 = MathHelper.floor_double(this.getHomePosition().posZ);
             int var3 = MathHelper.floor_double(this.getHomePosition().posY);
@@ -1223,65 +1225,67 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
       return 20 - (this.advanced ? 2 : 0);
    }
 
-   protected String getLivingSound() {
-      return "thaumcraft:cameraclack";
-   }
+//   protected String getLivingSound() {
+//      return "thaumcraft:cameraclack";
+//   }
+//
+//   protected String getHurtSound() {
+//      return "thaumcraft:cameraclack";
+//   }
+//
+//   protected String getDeathSound() {
+//      return "thaumcraft:cameraclack";
+//   }
 
-   protected String getHurtSound() {
-      return "thaumcraft:cameraclack";
-   }
+//   public void writeSpawnData(ByteBuf data) {
+//      data.writeByte(this.getCore());
+//      data.writeBoolean(this.advanced);
+//      data.writeByte(this.inventory.slotCount);
+//      data.writeByte(this.upgrades.length);
+//
+//      for(byte b : this.upgrades) {
+//         data.writeByte(b);
+//      }
+//
+//   }
 
-   protected String getDeathSound() {
-      return "thaumcraft:cameraclack";
-   }
+//   public void readSpawnData(ByteBuf data) {
+//      try {
+//         this.setCore(data.readByte());
+//         this.advanced = data.readBoolean();
+//         if (this.getCore() >= 0) {
+//            this.bootup = 0.0F;
+//         }
+//
+//         this.inventory = new InventoryMob(this, data.readByte());
+//         this.colors = new byte[this.inventory.slotCount];
+//
+//         for(int a = 0; a < this.inventory.slotCount; ++a) {
+//            this.colors[a] = -1;
+//         }
+//
+//         this.upgrades = new byte[data.readByte()];
+//
+//         for(int a = 0; a < this.upgrades.length; ++a) {
+//            this.upgrades[a] = data.readByte();
+//         }
+//
+//         int bonus = 0;
+//
+//         try {
+//            bonus = this.getGolemDecoration().contains("H") ? 5 : 0;
+//         } catch (Exception ignored) {
+//         }
+//
+//         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getGolemType().health + bonus);
+//      } catch (Exception ignored) {
+//      }
+//
+//   }
 
-   public void writeSpawnData(ByteBuf data) {
-      data.writeByte(this.getCore());
-      data.writeBoolean(this.advanced);
-      data.writeByte(this.inventory.slotCount);
-      data.writeByte(this.upgrades.length);
-
-      for(byte b : this.upgrades) {
-         data.writeByte(b);
-      }
-
-   }
-
-   public void readSpawnData(ByteBuf data) {
-      try {
-         this.setCore(data.readByte());
-         this.advanced = data.readBoolean();
-         if (this.getCore() >= 0) {
-            this.bootup = 0.0F;
-         }
-
-         this.inventory = new InventoryMob(this, data.readByte());
-         this.colors = new byte[this.inventory.slotCount];
-
-         for(int a = 0; a < this.inventory.slotCount; ++a) {
-            this.colors[a] = -1;
-         }
-
-         this.upgrades = new byte[data.readByte()];
-
-         for(int a = 0; a < this.upgrades.length; ++a) {
-            this.upgrades[a] = data.readByte();
-         }
-
-         int bonus = 0;
-
-         try {
-            bonus = this.getGolemDecoration().contains("H") ? 5 : 0;
-         } catch (Exception ignored) {
-         }
-
-         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getGolemType().health + bonus);
-      } catch (Exception ignored) {
-      }
-
-   }
-
-   public String getCommandSenderName() {
-      return this.hasCustomNameTag() ? this.getCustomNameTag() : Component.translatable("item.ItemGolemPlacer." + this.getGolemType().ordinal() + ".name");
-   }
+//   public String getCommandSenderName() {
+//      return this.hasCustomNameTag() ?
+//              this.getCustomNameTag() :
+//              Component.translatable("item.ItemGolemPlacer." + this.getGolemType().ordinal() + ".name");
+//   }
 }

@@ -146,11 +146,10 @@ public abstract class Aspect {
 				'}';
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof Aspect aspect)) return false;
-        return this == o;
-	}
+//	@Override
+//	public boolean equals(Object o) {
+//        return this == o;
+//	}
 
 	@Override
 	public int hashCode() {
