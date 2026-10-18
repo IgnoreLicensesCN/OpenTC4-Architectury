@@ -4,7 +4,8 @@ package thaumcraft.common.lib.network;
 import dev.architectury.networking.simple.SimpleNetworkManager;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.fx.*;
-import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsC2S;
+import thaumcraft.common.lib.network.gamedata.PacketAddItemAspectsS2C;
+import thaumcraft.common.lib.network.gamedata.PacketRequestSyncItemAspectsC2S;
 import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsS2C;
 import thaumcraft.common.lib.network.misc.*;
 import thaumcraft.common.lib.network.playerdata.updatedata.*;
@@ -79,7 +80,8 @@ public class PacketHandler {
         PacketFXZapS2C.messageType = INSTANCE.registerS2C(PacketFXZapS2C.ID, PacketFXZapS2C::decode);
 
         PacketSyncItemAspectsS2C.messageType = INSTANCE.registerS2C(PacketSyncItemAspectsS2C.ID,PacketSyncItemAspectsS2C::decode);
-        PacketSyncItemAspectsC2S.messageType = INSTANCE.registerC2S(PacketSyncItemAspectsC2S.ID,PacketSyncItemAspectsC2S::decode);
+        PacketAddItemAspectsS2C.messageType = INSTANCE.registerS2C(PacketAddItemAspectsS2C.ID, PacketAddItemAspectsS2C::decode);
+        PacketRequestSyncItemAspectsC2S.messageType = INSTANCE.registerC2S(PacketRequestSyncItemAspectsC2S.ID, PacketRequestSyncItemAspectsC2S::decode);
 
 //        int idx = 0;
 //      INSTANCE.registerMessage(PacketBiomeChange.class, PacketBiomeChange.class, idx++, Side.CLIENT);

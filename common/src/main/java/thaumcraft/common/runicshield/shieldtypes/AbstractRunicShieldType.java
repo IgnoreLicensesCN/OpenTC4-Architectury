@@ -4,7 +4,6 @@ import com.linearity.opentc4.utils.compoundtag.accessors.ITagAccessorOwner;
 import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -29,7 +28,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static thaumcraft.api.damagesource.ThaumcraftDamageSources.Tags.BYPASS_RUNIC_SHIELD;
 import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CONSUMPTION_RECHARGE_RUNIC_SHIELD;
-import static thaumcraft.common.runicshield.ThaumcraftRunicShieldTypes.CHARGED;
 
 //TODO:[maybe wont finished] Attribute to calculate but maybe not so fine?maybe we dont need this kind
 public abstract class AbstractRunicShieldType<AdditionalInfoClass>
@@ -60,10 +58,20 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
         return rechargeCost;
     }
 
+    public int getDefaultRegenCooldown() {
+        return 40;
+    }
+
     public int getTickCooldownAfterRegen(LivingEntity living, RunicShieldInfo shieldInfo) {
-        //TODO:[maybe wont finished]also "Vote in democracy" to decide if change to chargedShield's own feature(recharge tick random decrease)
-        int chargedTypeCapacity = Math.clamp(shieldInfo.shieldCapacity.getInt(CHARGED), 0, 4);
-        return 40 - (10 * chargedTypeCapacity);
+        int cooldown = getDefaultRegenCooldown();
+        for (var pair: shieldInfo.shieldCapacity.object2IntEntrySet()) {
+            cooldown = pair.getKey().modifyRegenCooldown(living,shieldInfo,pair.getIntValue(),cooldown);
+        }
+        return cooldown;
+    }
+
+    public int modifyRegenCooldown(LivingEntity living, RunicShieldInfo shieldInfo,int shieldCapacity,int cooldown) {
+        return cooldown;
     }
 
     //called every tick

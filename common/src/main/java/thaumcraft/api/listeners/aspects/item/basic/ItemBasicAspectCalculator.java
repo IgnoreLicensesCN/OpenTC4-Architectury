@@ -77,10 +77,12 @@ public class ItemBasicAspectCalculator {
 
 
     public static void onDatapackReload(){
+        ITEM_BASIC_ASPECTS_CALCULATED.clear();
         ItemBasicAspectRegistration.onDatapackReload();
         var context = new RecipeResolveContext(getter,adder,ITEMS_WITH_REGISTERED_BASIC_ASPECTS);
         for (RecipeCalculateStage listener : calculateStages.getListeners()) {
             listener.startStage(context);
+            //reload for next stage
             Set<Item> calculatedNow = new HashSet<>(ITEM_BASIC_ASPECTS_CALCULATED.size());
             ITEM_BASIC_ASPECTS_CALCULATED.forEach(
                     (item,aspects) -> {

@@ -12,7 +12,7 @@ import thaumcraft.api.listeners.aspects.item.basic.additional.AddAdditionalBasic
 import thaumcraft.api.listeners.aspects.item.basic.additional.consts.AddAdditionalBasicAspectListeners;
 import thaumcraft.api.listeners.aspects.item.basic.additional.listeners.AddAdditionalBasicAspectListener;
 import thaumcraft.api.listeners.aspects.item.basic.getters.listeners.ItemBasicAspectGetListener;
-import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsC2S;
+import thaumcraft.common.lib.network.gamedata.PacketRequestSyncItemAspectsC2S;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +43,7 @@ public class ItemBasicAspectGetter {
                 && System.currentTimeMillis() - REQUESTED_ASPECT_LIST_AT.get() > REQUEST_ASPECT_LIST_COOLDOWN
         ) {
             REQUESTED_ASPECT_LIST_AT.set(System.currentTimeMillis());
-            new PacketSyncItemAspectsC2S().sendToServer();
+            new PacketRequestSyncItemAspectsC2S().sendToServer();
         }
         return CLIENT_CACHE.getOrDefault(i,UnmodifiableAspectList.EMPTY);
     }

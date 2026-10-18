@@ -22,6 +22,7 @@ import thaumcraft.common.blocks.ThaumcraftBlockAndItemColors;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.items.ThaumcraftItemsRegistry;
+import thaumcraft.common.lib.network.gamedata.PacketRequestSyncItemAspectsC2S;
 import thaumcraft.common.lib.world.HolderCache;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 import thaumcraft.common.lootbag.ThaumcraftLootBags;
@@ -113,6 +114,7 @@ public final class OpenTC4 {
     public static void onDatapackReload(){
         //caches
         {
+            PacketRequestSyncItemAspectsC2S.resultToSync.clear();
             ItemBasicAspectCalculator.onDatapackReload();
             ItemBasicAspectGetter.onDatapackReload();
             HolderCache.onDatapackReload();

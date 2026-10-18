@@ -8,10 +8,9 @@ import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 import java.util.*;
 
 public class RecipeResolveContext {
-    public final ResolvedAspectGetter resolvedAspect;
+    public final ResolvedAspectGetter resolvedAspectGetter;
     public final ResolvedAspectAdder aspectAdder;
 
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private final Set<Item> itemsResolvedLastTurn;
     public final Set<Item> itemsResolvedLastTurnView;
 
@@ -19,8 +18,8 @@ public class RecipeResolveContext {
     public final Set<Item> itemsNewlyResolvedView;
     private final Map<Item, UnmodifiableAspectList<Aspect>> adderCache = new HashMap<>();
 
-    public RecipeResolveContext(ResolvedAspectGetter resolvedAspect, ResolvedAspectAdder aspectAdder, Set<Item> itemsResolvedLastTurn) {
-        this.resolvedAspect = resolvedAspect;
+    public RecipeResolveContext(ResolvedAspectGetter resolvedAspectGetter, ResolvedAspectAdder aspectAdder, Set<Item> itemsResolvedLastTurn) {
+        this.resolvedAspectGetter = resolvedAspectGetter;
         this.aspectAdder = aspectAdder;
         this.itemsResolvedLastTurn = new HashSet<>(itemsResolvedLastTurn);
         this.itemsResolvedLastTurnView = Collections.unmodifiableSet(this.itemsResolvedLastTurn);
@@ -45,7 +44,7 @@ public class RecipeResolveContext {
         return true;
     }
     public UnmodifiableAspectList<Aspect> getAlreadyCalculatedAspectForItem(Item item){
-        return resolvedAspect.getAlreadyCalculatedAspectForItem(item);
+        return resolvedAspectGetter.getAlreadyCalculatedAspectForItem(item);
     }
     public void addResolvedAspectForItem(Item item, UnmodifiableAspectList<Aspect> aspects){
         var current = adderCache.getOrDefault(item,UnmodifiableAspectList.EMPTY);

@@ -18,7 +18,7 @@ public enum ItemBasicAspectGetListeners {
                 }
             }
     ),
-    VANILLA_AND_THAUMCRAFT_RECIPE(
+    CALCULATED(
             new ItemBasicAspectGetListener(1000) {
 
                 @Override

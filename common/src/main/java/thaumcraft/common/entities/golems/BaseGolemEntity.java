@@ -60,7 +60,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
 
     public abstract GolemBasicAbilityProperties getBasicAbilityProperties();
 
-    public static List<ObjectIntPair<Class<? extends IGolemModifierItem>>> defaultGolemUpgradeItemTypes = new AutoSortThreadSafeList<>();
+    public static List<ObjectIntPair<Class<? extends IGolemModifierItem>/*int:priority(lower ones comes first)*/>> defaultGolemUpgradeItemTypes = new AutoSortThreadSafeList<>();
 
     static {
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemCoreItem.class, 0));

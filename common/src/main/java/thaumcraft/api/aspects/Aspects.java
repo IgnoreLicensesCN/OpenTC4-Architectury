@@ -1,6 +1,9 @@
 package thaumcraft.api.aspects;
 
 import dev.architectury.registry.registries.RegistrySupplier;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMaps;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.common.Thaumcraft;
@@ -12,6 +15,8 @@ import java.util.*;
 
 public class Aspects {
     public static final LinkedHashMap<AspectResourceLocation, Aspect> ALL_ASPECTS = new LinkedHashMap<>();
+    static final Object2IntMap<AspectResourceLocation> ASPECT_PALETTE = new Object2IntOpenHashMap<>();
+    public static final Object2IntMap<AspectResourceLocation> ASPECT_PALETTE_VIEW = Object2IntMaps.unmodifiable(ASPECT_PALETTE);
     public static final LinkedHashMap<AspectResourceLocation, PrimalAspect> PRIMAL_ASPECTS = new LinkedHashMap<>();
     public static final List<PrimalAspect> PRIMAL_ASPECT_LIST = new ArrayList<>(6);
     public static final LinkedHashMap<AspectResourceLocation, CompoundAspect> COMPOUND_ASPECTS = new LinkedHashMap<>();

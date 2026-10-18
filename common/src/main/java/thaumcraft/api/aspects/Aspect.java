@@ -11,6 +11,8 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.api.research.ResearchAndScannedInfo;
 
+import static thaumcraft.api.aspects.Aspects.ASPECT_PALETTE;
+
 public abstract class Aspect {
 
 	public final @NotNull AspectResourceLocation aspectKey;
@@ -35,6 +37,8 @@ public abstract class Aspect {
 		this.blend = blend;
 		Aspects.ALL_ASPECTS.put(aspectKey, this);
 		this.hash = Aspects.ALL_ASPECTS.size();//all aspect with same key should be same
+		//keep hash unique,we need this to encode and decode
+		ASPECT_PALETTE.put(aspectKey,hash);
 	}
 	@SuppressWarnings("unused")
 	//CONSTRUCTOR FOR EMPTY

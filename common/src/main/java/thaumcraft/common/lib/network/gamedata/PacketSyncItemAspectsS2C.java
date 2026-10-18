@@ -3,19 +3,15 @@ package thaumcraft.common.lib.network.gamedata;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
-import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
-import net.minecraft.core.registries.BuiltInRegistries;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.item.Item;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.aspectlists.AspectList;
-import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectView;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 
-import java.util.HashMap;
-import java.util.Map;
+import static thaumcraft.api.aspects.Aspects.ASPECT_PALETTE_VIEW;
+import static thaumcraft.common.lib.network.ByteBufUtil.*;
 
 
 public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
@@ -27,63 +23,33 @@ public class PacketSyncItemAspectsS2C extends BaseS2CMessage {
         return messageType;
     }
 
-    private final Map<Item, AspectList<Aspect>> syncResult;
-
+//    private final Map<Item, AspectList<Aspect>> syncResult;
+    public Int2ObjectMap<AspectResourceLocation> palette;
     public PacketSyncItemAspectsS2C() {
-        Map<Item, AspectList<Aspect>> result = new HashMap<>();
-        BuiltInRegistries.ITEM.forEach(
-                i -> result.put(i,ItemBasicAspectGetter.getBasicAspectsServer(i))
-        );
-        syncResult = result;
-    }
-    public PacketSyncItemAspectsS2C(
-            Map<Item, AspectList<Aspect>> syncResult
-    ) {
-        this.syncResult = syncResult;
+        this.palette = new Int2ObjectOpenHashMap<>();
+        ASPECT_PALETTE_VIEW.forEach((key, value) -> {
+            palette.put(value, key);
+        });
     }
 
+    public PacketSyncItemAspectsS2C(Int2ObjectMap<AspectResourceLocation> palette) {
+        this.palette = palette;
+    }
     @Override
     public void write(FriendlyByteBuf bufOuter) {
-        bufOuter.writeMap(
-                syncResult,
-                (friendlyByteBuf, item) -> bufOuter.writeId(BuiltInRegistries.ITEM, item),
-                (bufForAspList, aspectUnmodifiableAspectList) -> {
-                    bufForAspList.writeInt(aspectUnmodifiableAspectList.size());
-                    aspectUnmodifiableAspectList.forEach(
-                            (aspect,amount) -> {
-                                bufForAspList.writeResourceLocation(aspect.aspectKey);
-                                bufForAspList.writeInt(amount);
-                            }
-                    );
-                }
-        );
+        writeAspectPalette(bufOuter);
+//        ITEM_ASPECTS_MAP_WRITER.accept(bufOuter, syncResult);
     }
 
-    public static PacketSyncItemAspectsS2C decode(FriendlyByteBuf bufOuter) {
-        return new PacketSyncItemAspectsS2C(
-                bufOuter.readMap(
-                        bufForItem -> bufForItem.readById(BuiltInRegistries.ITEM),
-                        bufForAspList -> {
-                            int mapSize = bufForAspList.readInt();
-                            Object2IntLinkedOpenHashMap<Aspect> aspForItem = new Object2IntLinkedOpenHashMap<>(mapSize,1);
-                            for (int i = 0; i < mapSize; i++) {
-                                var aspectResLoc = bufForAspList.readResourceLocation();
-                                var aspect = Aspect.getAspect(AspectResourceLocation.of(aspectResLoc));
-                                if (aspect == null) {
-                                    throw new IllegalArgumentException("Invalid aspect resource location: " + aspectResLoc);
-                                }
-                                aspForItem.put(aspect, bufForAspList.readInt());
-                            }
-                            return new UnmodifiableAspectView<>(aspForItem);
-                        }
-                    )
-        );
+    public static Int2ObjectMap<AspectResourceLocation> CLIENT_PALETTE = new Int2ObjectOpenHashMap<>();
 
+    public static PacketSyncItemAspectsS2C decode(FriendlyByteBuf bufOuter) {
+        return new PacketSyncItemAspectsS2C(readAspectPalette(bufOuter));
     }
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
-        ItemBasicAspectGetter.CLIENT_CACHE.clear();
-        ItemBasicAspectGetter.CLIENT_CACHE.putAll(syncResult);
+        ItemBasicAspectGetter.CLIENT_CACHE.clear();//maybe not safe?especially for udp.
+        CLIENT_PALETTE = palette;
     }
 }
