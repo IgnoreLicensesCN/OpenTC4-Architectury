@@ -18,12 +18,15 @@ public record HexEntry(Aspect aspect, HexType type) {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof HexEntry hexEntry)) return false;
-        return type == hexEntry.type && Objects.equals(aspect, hexEntry.aspect);
+        if (!(o instanceof HexEntry(Aspect aspect1, HexType type1))) return false;
+
+        return type == type1 && Objects.equals(aspect, aspect1);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(aspect, type);
+        int result = Objects.hashCode(aspect);
+        result = 31 * result + Objects.hashCode(type);
+        return result;
     }
 }

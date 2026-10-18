@@ -122,14 +122,16 @@ public class ThaumcraftApi {
     public record ResearchKeyAndPage(String research, int page) {
         @Override
         public boolean equals(Object o) {
-
             if (!(o instanceof ResearchKeyAndPage(String research1, int page1))) return false;
+
             return page == page1 && Objects.equals(research, research1);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(research, page);
+            int result = Objects.hashCode(research);
+            result = 31 * result + page;
+            return result;
         }
     }
 

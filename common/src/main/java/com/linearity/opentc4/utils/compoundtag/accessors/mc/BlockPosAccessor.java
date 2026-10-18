@@ -1,5 +1,6 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.mc;
 
+import com.linearity.opentc4.mixinaccessors.IAccessorCacheableTag;
 import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
 import net.minecraft.core.BlockPos;
@@ -20,6 +21,22 @@ public class BlockPosAccessor extends CompoundTagAccessor<BlockPos> {
 
     @Override
     public BlockPos readFromCompoundTag(CompoundTag tag) {
+        if (tag instanceof IAccessorCacheableTag cacheableTag) {
+            var result = cacheableTag.opentc4$getTagCache(this);
+            if (result == null) {
+                if (compoundTagHasKey(tag)){
+                    result = new BlockPos(
+                            xAccessor.readIntFromCompoundTag(tag),
+                            yAccessor.readIntFromCompoundTag(tag),
+                            zAccessor.readIntFromCompoundTag(tag)
+                    );
+                }else {
+                    result = NULL_POS_TO_WRITE;
+                }
+                cacheableTag.opentc4$setTagCache(this,result);
+            }
+            return result;
+        }
         return new BlockPos(
                 xAccessor.readIntFromCompoundTag(tag),
                 yAccessor.readIntFromCompoundTag(tag),
@@ -28,10 +45,13 @@ public class BlockPosAccessor extends CompoundTagAccessor<BlockPos> {
     }
 
     @Override
-    public void writeToCompoundTag(CompoundTag tag, BlockPos value) {
+    public void writeToCompoundTag(CompoundTag tag, BlockPos /*maybe MutableBlockPos?*/ value) {
         xAccessor.writeIntToCompoundTag(tag,value.getX());
         yAccessor.writeIntToCompoundTag(tag,value.getY());
         zAccessor.writeIntToCompoundTag(tag,value.getZ());
+        if (tag instanceof IAccessorCacheableTag cacheableTag) {
+            cacheableTag.opentc4$setTagCache(this,new BlockPos(value));
+        }
     }
 
     @Override

@@ -38,7 +38,7 @@ public class MazeHandler {
    }
 
 //   private static void readNBT(CompoundTag nbt) {
-//      ListTag tagList = MAZE_HANDLER_CELLS_ACCESSOR.readFromCompoundTag(nbt);
+//      ListTag tagList = MAZE_HANDLER_CELLS_ACCESSOR.readFromCompoundTagWithHolderGetter(nbt);
 //
 //      for(int a = 0; a < tagList.size(); ++a) {
 //         CompoundTag cell = tagList.getCompound(a);

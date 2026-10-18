@@ -25,6 +25,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -36,9 +37,7 @@ import thaumcraft.common.blocks.crafted.GolemFetterBlock;
 import thaumcraft.common.items.golem.upgrade.abstracts.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.*;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.linearity.opentc4.Consts.BaseGolemEntityTagAccessors.*;
 import static com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor.NULL_POS_TO_WRITE;
@@ -56,6 +55,12 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
 
     public BaseGolemEntity(EntityType<? extends Mob> entityType, Level level) {
         super(entityType, level);
+        var navi = new GroundPathNavigation(this,level);
+        this.navigation = navi;
+        navi.setCanFloat(true);
+        navi.setCanOpenDoors(true);
+        navi.setCanPassDoors(true);
+        navi.setCanWalkOverFences(true);
     }
 
     public abstract GolemBasicAbilityProperties getBasicAbilityProperties();
@@ -124,7 +129,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
                 this.targetSelector.removeAllGoals(_ignored -> true);
             }else {
                 refreshGoals();
-                this.setSpeed(abilitiesData.speedMultiplier * abilitiesData.properties.speed);
+                this.setSpeed((float) (abilitiesData.speedMultiplier * getAttributeValue(Attributes.MOVEMENT_SPEED)));
             }
         }
         if (!this.isAIAvailable()){
@@ -170,9 +175,17 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
                                                                 mutablePos,
                                                                 Direction.UP)
 //                                                                && !this.level().isBlockNormalCubeDefault(x + xOffset, y + yOffset, z + zOffset, false)
-                                                        ) {
+                                                        ) { 
                                                             var teleportPos = mutablePos.getCenter();
-                                                            this.teleportTo(serverLevel, teleportPos.x, teleportPos.y, teleportPos.z, Set.of(), this.getXRot(), this.getYRot());
+                                                            this.teleportTo(
+                                                                    serverLevel,
+                                                                    teleportPos.x,
+                                                                    teleportPos.y,
+                                                                    teleportPos.z,
+                                                                    Set.of(),
+                                                                    this.getXRot(),
+                                                                    this.getYRot()
+                                                            );
 //                                                                this.setLocationAndAngles((float) (x + xOffset) + 0.5F, (double) y + (double) yOffset, (float) (z + zOffset) + 0.5F, this.rotationYaw, this.rotationPitch);
 //                                                                this.getNavigator().clearPathEntity();
                                                             this.navigation.stop();
@@ -183,16 +196,15 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
                                             }
                                         }
                                     }
-                                    , () -> {
-                                    }
+                                    , () -> {}
                             ),
-                            () -> {
-                            });
+                            () -> {});
 
         }
     }
 
     public NonNullList<ItemStack> inventory = NonNullList.withSize(0, ItemStack.EMPTY);
+    public final Set<Marker> markers = new HashSet<>();
 
     public static class GolemAbilitiesData {
         public int carryPower;//item carry capacity:*1,fluid carry capacity(mb):*1000
@@ -278,6 +290,8 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         for (var additionalDataProviderPair:golemUpgradesCacheView.get(IGolemAdditionalDataProviderItem.class)) {
             additionalDataProviderPair.a().readAdditional(this,additionalDataProviderPair.b(),tag);
         }
+        markers.clear();
+        MARKERS.readFromCompoundTagInto(tag,markers);
     }
 
     @Override
@@ -291,6 +305,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         for (var additionalDataProviderPair:golemUpgradesCacheView.get(IGolemAdditionalDataProviderItem.class)) {
             additionalDataProviderPair.a().writeAdditional(this,additionalDataProviderPair.b(),tag);
         }
+        MARKERS.writeToCompoundTag(tag, markers);
     }
 
     protected void refreshAbilities() {
@@ -469,17 +484,17 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
     public static class GolemBasicAbilityProperties {
         public final int basicUpgradeSize;
         public final int carryPower;
-        public final float speed;
+//        public final float speed;
         public final int regenDelay;
         public final int regenAmount;
         public final int strength;
         public final int attackDelay;
         public final int attackFireTicks;
 
-        public GolemBasicAbilityProperties(int basicUpgradeSize, int carryPower, float speed, int regenDelay, int strength, int attackDelay, int regenAmount, int attackFireTicks) {
+        public GolemBasicAbilityProperties(int basicUpgradeSize, int carryPower/*, float speed*/, int regenDelay, int strength, int attackDelay, int regenAmount, int attackFireTicks) {
             this.basicUpgradeSize = basicUpgradeSize;
             this.carryPower = carryPower;
-            this.speed = speed;
+//            this.speed = speed;
             this.regenDelay = regenDelay;
             this.regenAmount = regenAmount;
             this.strength = strength;
@@ -489,12 +504,12 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
 
         public static class Builder {
             public GolemBasicAbilityProperties build() {
-                return new GolemBasicAbilityProperties(basicUpgradeSize, carryPower, speed, regenDelay, strength, attackDelay, regenAmount, attackFireTicks);
+                return new GolemBasicAbilityProperties(basicUpgradeSize, carryPower/*, speed*/, regenDelay, strength, attackDelay, regenAmount, attackFireTicks);
             }
 
             public int basicUpgradeSize = 1;
             public int carryPower = 1;
-            public float speed = 0.38F;
+//            public float speed = 0.38F;
             public int regenDelay = 75;
             public int strength = 0;
             public int attackDelay = 20;
@@ -511,10 +526,10 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
                 return this;
             }
 
-            public Builder speed(float speed) {
-                this.speed = speed;
-                return this;
-            }
+//            public Builder speed(float speed) {
+//                this.speed = speed;
+//                return this;
+//            }
 
             public Builder regenDelay(int regenDelay) {
                 this.regenDelay = regenDelay;

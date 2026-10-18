@@ -1,5 +1,6 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.mc;
 
+import com.linearity.opentc4.mixinaccessors.IAccessorCacheableTag;
 import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessorImpl;
 import net.minecraft.core.HolderGetter;
@@ -21,13 +22,24 @@ public class BlockStateAccessor extends CompoundTagAccessor<BlockState> {
         throw new UnsupportedOperationException("need blockHolderGetter");
     }
 
-    public BlockState readFromCompoundTag(HolderGetter<Block> blockHolderGetter, CompoundTag tag) {
+    public BlockState readFromCompoundTagWithHolderGetter(HolderGetter<Block> blockHolderGetter, CompoundTag tag) {
+        if (tag instanceof IAccessorCacheableTag cacheableTag) {
+            var result = cacheableTag.opentc4$getTagCache(this);
+            if (result == null) {
+                result = NbtUtils.readBlockState(blockHolderGetter,accessor.readFromCompoundTag(tag));
+                cacheableTag.opentc4$setTagCache(this,result);
+            }
+            return result;
+        }
         return NbtUtils.readBlockState(blockHolderGetter,accessor.readFromCompoundTag(tag));
     }
 
     @Override
     public void writeToCompoundTag(CompoundTag tag, BlockState value) {
         accessor.writeToCompoundTag(tag,NbtUtils.writeBlockState(value));
+        if (tag instanceof IAccessorCacheableTag cacheableTag){
+            cacheableTag.opentc4$setTagCache(this, value);
+        }
     }
 
     @Override

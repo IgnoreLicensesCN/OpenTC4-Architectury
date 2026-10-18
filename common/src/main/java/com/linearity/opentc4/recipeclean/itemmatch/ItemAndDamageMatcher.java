@@ -14,12 +14,15 @@ public class ItemAndDamageMatcher extends RecipeItemMatcher{
         @Override
         public boolean equals(Object o) {
             if (!(o instanceof ItemAndDamageCacheKey(Item item1, int damage1))) return false;
+
             return damage == damage1 && Objects.equals(item, item1);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(item, damage);
+            int result = Objects.hashCode(item);
+            result = 31 * result + damage;
+            return result;
         }
     }
 

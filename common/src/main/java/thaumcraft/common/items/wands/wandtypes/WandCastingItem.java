@@ -1,16 +1,17 @@
 package thaumcraft.common.items.wands.wandtypes;
 
 import com.google.common.collect.MapMaker;
-import com.google.common.util.concurrent.AtomicDouble;
+import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
+import org.jetbrains.annotations.Unmodifiable;
+import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.ArrayCentiVisList;
 import thaumcraft.common.items.abstracts.wandabstraction.component.*;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.*;
 import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 import com.linearity.opentc4.annotations.forvalue.PercentageFloatValue;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,9 +32,11 @@ import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 import static com.linearity.opentc4.Consts.WandCastingCompoundTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableItemStack.opentc4$getOrCreateCachedObjectFromItemStack;
 import static thaumcraft.api.wands.WandUtils.appendWandHoverText;
 
 //maybe just an example,you can also make you own one.
@@ -68,7 +71,7 @@ public class WandCastingItem extends Item
     }
 
     @NotNull("null -> empty")
-    protected ItemStack getWandCapAsItemStack(@NotNull ItemStack stack) {
+    protected @Unmodifiable ItemStack getWandCapAsItemStack(@NotNull ItemStack stack) {
         if (!stack.hasTag()) {
             return ItemStack.EMPTY;
         }
@@ -76,14 +79,11 @@ public class WandCastingItem extends Item
         if (tag == null) {
             return ItemStack.EMPTY;
         }
-        if (!WAND_CAP_ACCESSOR.compoundTagHasKey(tag)) {
-            return ItemStack.EMPTY;
-        }
-        return WAND_CAP_ACCESSOR.readFromCompoundTag(tag);
+        return WAND_CAP_ACCESSOR.readFromCompoundTagWithoutCopyCache(tag);
     }
 
     @NotNull("null -> empty")
-    protected ItemStack getWandRodAsItemStack(@NotNull ItemStack stack) {
+    protected @Unmodifiable ItemStack getWandRodAsItemStack(@NotNull ItemStack stack) {
         if (!stack.hasTag()) {
             return ItemStack.EMPTY;
         }
@@ -91,19 +91,32 @@ public class WandCastingItem extends Item
         if (tag == null) {
             return ItemStack.EMPTY;
         }
-        if (!WAND_ROD_ACCESSOR.compoundTagHasKey(tag)) {
-            return ItemStack.EMPTY;
-        }
-        return WAND_ROD_ACCESSOR.readFromCompoundTag(tag);
+        return WAND_ROD_ACCESSOR.readFromCompoundTagWithoutCopyCache(tag);
     }
 
-    @Override
-    public List<ItemStack> getWandComponents(ItemStack componentOwnerStack) {
-        int initCapacity = 2;
-        if (this.canApplyFocus()){
-            initCapacity += 1;
+    public static class WandCastingItemCachedObjectsForItemStack {
+        public static final Supplier<WandCastingItemCachedObjectsForItemStack> SUPPLIER = () -> new WandCastingItemCachedObjectsForItemStack(
+                new ArrayList<>(3)
+        );
+        public final @Modifiable List<ItemStack> components;
+        public final @UnmodifiableView List<ItemStack> componentsView;
+
+        public WandCastingItemCachedObjectsForItemStack(@Modifiable List<ItemStack> components) {
+            this.components = components;
+            this.componentsView = Collections.unmodifiableList(components);
         }
-        List<ItemStack> items = new ArrayList<>(initCapacity);
+    }
+    @Override
+    public @UnmodifiableView List<ItemStack> getWandComponents(@NotNull ItemStack componentOwnerStack) {
+
+        var cached = opentc4$getOrCreateCachedObjectFromItemStack(
+                componentOwnerStack,
+                WandCastingItemCachedObjectsForItemStack.class,
+                WandCastingItemCachedObjectsForItemStack.SUPPLIER
+        );
+
+        var items = cached.components;
+        items.clear();
         var cap = getWandCapAsItemStack(componentOwnerStack);
         if (!cap.isEmpty()) {
             items.add(cap);
@@ -118,7 +131,7 @@ public class WandCastingItem extends Item
                 items.add(focus);
             }
         }
-        return Collections.unmodifiableList(items);
+        return cached.componentsView;
     }
 
 
@@ -134,12 +147,13 @@ public class WandCastingItem extends Item
             int finalParentAtContainerIndex,
             boolean parentSelected
     ) {
-        wandComponentsForEach(selfStack,component -> {
+        for (var component:getWandComponents(finalParentStack)) {
             if (component.getItem() instanceof IInventoryTickableComponentItem listener) {
                 listener.tickAsComponent(
-                        finalParentStack, selfStack, component, level, owner, finalParentAtContainerIndex, parentSelected);
+                        finalParentStack, selfStack, component, level, owner, finalParentAtContainerIndex, parentSelected
+                );
             }
-        });
+        }
     }
 
     @Override
@@ -149,17 +163,17 @@ public class WandCastingItem extends Item
 
     @Override
     public float getCraftingVisMultiplier(ItemStack usingWand, Aspect aspect) {
-        AtomicDouble result = new AtomicDouble(1);
-        wandComponentsForEach(usingWand,component -> {
-            if (component.getItem() instanceof IArcaneCraftingVisMultiplierProviderComponentItem provider) {
-                result.updateAndGet(v ->  (v * provider.getCraftingVisMultiplier(usingWand, aspect)));
+        double result = 1;
+        for (var componentStack: getWandComponents(usingWand)) {
+            if (componentStack.getItem() instanceof IArcaneCraftingVisMultiplierProviderComponentItem provider) {
+                result *= provider.getCraftingVisMultiplier(usingWand, aspect);
             }
-        });
-        return (float) result.get();
+        }
+        return (float) result;
     }
 
     @Override
-    public @NotNull ItemStack getFocusItemStack(ItemStack wand) {
+    public @NotNull @Unmodifiable ItemStack getFocusItemStack(ItemStack wand) {
         if (!wand.hasTag()) {
             return ItemStack.EMPTY;
         }
@@ -167,24 +181,21 @@ public class WandCastingItem extends Item
         if (tag == null) {
             return ItemStack.EMPTY;
         }
-        if (!WAND_FOCUS_ACCESSOR.compoundTagHasKey(tag)) {
-            return ItemStack.EMPTY;
-        }
-        return WAND_FOCUS_ACCESSOR.readFromCompoundTag(tag);
+        return WAND_FOCUS_ACCESSOR.readFromCompoundTagWithoutCopyCache(tag);
     }
 
     @Override
-    public ItemStack changeFocusItemStack(ItemStack wand, ItemStack focus) {
+    public @Modifiable @NotNull ItemStack changeFocusItemStack(ItemStack wand, ItemStack focus) {
         if (!canApplyFocus()) {
             throw new IllegalStateException("cannot change focus but called changeFocusItemStack!");
         }
         var tag = wand.getTag();
         if (tag == null) {
-            return null;
+            return ItemStack.EMPTY;
         }
         if (!WAND_FOCUS_ACCESSOR.compoundTagHasKey(tag)) {
             WAND_FOCUS_ACCESSOR.writeToCompoundTag(tag, focus);
-            return null;
+            return ItemStack.EMPTY;
         }
         var result = WAND_FOCUS_ACCESSOR.readFromCompoundTag(tag);
         WAND_FOCUS_ACCESSOR.writeToCompoundTag(tag, focus);
@@ -211,18 +222,17 @@ public class WandCastingItem extends Item
     //costs high and maybe should be cached
     @Override
     public CentiVisList<Aspect> getAllCentiVisCapacity(ItemStack usingWand) {
-        final CalcCacheableCentiVisList<Aspect>[] result = new CalcCacheableCentiVisList[]{CalcCacheableCentiVisList.emptySingleton()};
-        wandComponentsForEach(usingWand,component -> {
-            var componentItem = component.getItem();
+        CalcCacheableCentiVisList<Aspect> result = CalcCacheableCentiVisList.emptySingleton();
+        for (var componentStack : getWandComponents(usingWand)) {
+            var componentItem = componentStack.getItem();
             if (componentItem instanceof IAspectCapacityOwnerComponentItem<? extends Aspect> owner) {
-                result[0] = result[0].add(
-                        (CalcCacheableCentiVisList<Aspect>) owner.getCentiVisCapacity(),
+                result = result.add(
+                        (CalcCacheableCentiVisList<Aspect>) owner.getCentiVisCapacity(componentStack),
                         ArrayCentiVisList::new
                 );
             }
-        });
-
-        return result[0].wrapped;
+        }
+        return result.wrapped;
     }
 
 

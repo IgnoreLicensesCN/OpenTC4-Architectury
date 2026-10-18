@@ -1,6 +1,7 @@
 package thaumcraft.common.items.wands.rods.staffrods;
 
 import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
@@ -17,7 +18,7 @@ public class GreatWoodStaffRodItem extends ThaumcraftStaffRodItem implements ICr
 
     public static final CalcCacheableCentiVisList<Aspect> capacity = new CalcCacheableCentiVisList<>(getPrimalAspectCentiVisListWithValueCastedUnmodifiable(125 * CENTIVIS_MULTIPLIER),true);
     @Override
-    public @UnmodifiableView CalcCacheableCentiVisList<Aspect> getCentiVisCapacity() {
+    public @UnmodifiableView CalcCacheableCentiVisList<Aspect> getCentiVisCapacity(ItemStack stack) {
         return capacity;
     }
 

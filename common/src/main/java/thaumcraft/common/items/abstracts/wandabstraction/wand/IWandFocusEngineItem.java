@@ -1,5 +1,6 @@
 package thaumcraft.common.items.abstracts.wandabstraction.wand;
 
+import com.linearity.opentc4.annotations.Modifiable;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,5 +13,6 @@ public interface IWandFocusEngineItem {
 
     @NotNull("null -> empty")
     ItemStack getFocusItemStack(ItemStack wand);
-    ItemStack changeFocusItemStack(ItemStack wand, ItemStack focus);
+    //returns focus it owns before
+    @Modifiable @NotNull ItemStack changeFocusItemStack(ItemStack wand, ItemStack focus);
 }

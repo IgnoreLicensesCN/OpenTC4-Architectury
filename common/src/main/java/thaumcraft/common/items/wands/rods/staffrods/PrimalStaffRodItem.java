@@ -35,7 +35,7 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenStaffRodItem implem
             );
     @Override
     @UnmodifiableView
-    public CalcCacheableCentiVisList<Aspect> getCentiVisCapacity() {
+    public CalcCacheableCentiVisList<Aspect> getCentiVisCapacity(ItemStack stack) {
         return capacity;
     }
 

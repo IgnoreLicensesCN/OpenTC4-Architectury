@@ -517,35 +517,35 @@ public class ResearchManager {
 //    }
 //
 //    public static void loadResearchNBT(CompoundTag entityData, Player player) {
-//        THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR.readFromCompoundTag(entityData)
+//        THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR.readFromCompoundTagWithHolderGetter(entityData)
 //                .forEach(
 //                        researchTag -> completeResearchUnsaved(player, researchTag)
 //                );
 ////        ListTag list = THAUMCRAFT_PLAYER_RESEARCH_ACCESSOR
-////                .readFromCompoundTag(entityData);
+////                .readFromCompoundTagWithHolderGetter(entityData);
 ////
 ////        if (list == null) return;
 ////
 ////        for (int i = 0; i < list.size(); ++i) {
 ////            CompoundTag rs = list.getCompound(i);
-////            var key = LIST_TAG_RESEARCH_ACCESSOR.readFromCompoundTag(rs);
+////            var key = LIST_TAG_RESEARCH_ACCESSOR.readFromCompoundTagWithHolderGetter(rs);
 ////            if (key != null) {
 ////                completeResearchUnsaved(player, key);
 ////            }
 ////        }
 //    }
 //    public static void loadClueNBT(CompoundTag entityData, Player player) {
-//        THAUMCRAFT_PLAYER_CLUE_ACCESSOR.readFromCompoundTag(entityData).forEach(
+//        THAUMCRAFT_PLAYER_CLUE_ACCESSOR.readFromCompoundTagWithHolderGetter(entityData).forEach(
 //                clueResourceLocation -> completeClueUnsaved(player, clueResourceLocation)
 //        );
 ////        ListTag list = THAUMCRAFT_PLAYER_CLUE_ACCESSOR
-////                .readFromCompoundTag(entityData);
+////                .readFromCompoundTagWithHolderGetter(entityData);
 ////
 ////        if (list == null) return;
 ////
 ////        for (int i = 0; i < list.size(); ++i) {
 ////            CompoundTag rs = list.getCompound(i);
-////            var key = LIST_TAG_CLUE_ACCESSOR.readFromCompoundTag(rs);
+////            var key = LIST_TAG_CLUE_ACCESSOR.readFromCompoundTagWithHolderGetter(rs);
 ////            if (key != null) {
 ////                completeClueUnsaved(player, key);
 ////            }
@@ -554,19 +554,19 @@ public class ResearchManager {
 //    public static void loadAspectNBT(CompoundTag entityData, Player player) {
 //
 //        PLAYER_RESEARCH_ASPECTS
-//                .readFromCompoundTag(entityData)
+//                .readFromCompoundTagWithHolderGetter(entityData)
 //                .forEach(
 //                        (key, value) -> completeAspectUnsaved(player, key, value)
 //                );
 //
 ////        ListTag list = THAUMCRAFT_PLAYER_ASPECTS_ACCESSOR
-////                .readFromCompoundTag(entityData);
+////                .readFromCompoundTagWithHolderGetter(entityData);
 ////        if (list == null) return;
 ////
 ////        for (int i = 0; i < list.size(); ++i) {
 ////            CompoundTag rs = list.getCompound(i);
 ////
-////            var key = LIST_TAG_ASPECT_ACCESSOR.readFromCompoundTag(rs);
+////            var key = LIST_TAG_ASPECT_ACCESSOR.readFromCompoundTagWithHolderGetter(rs);
 ////            if (key == null) continue;
 ////
 ////            Aspect aspect = Aspect.getAspect(key);
@@ -611,12 +611,12 @@ public class ResearchManager {
 //    public static void loadScannedNBT(CompoundTag entityData, Player player) {
 //
 //        // ---- THAUMCRAFT.SCAN.OBJECTS ----
-//        ListTag objList = THAUMCRAFT_PLAYER_SCAN_OBJECTS_ACCESSOR.readFromCompoundTag(entityData);
+//        ListTag objList = THAUMCRAFT_PLAYER_SCAN_OBJECTS_ACCESSOR.readFromCompoundTagWithHolderGetter(entityData);
 //
 //        if (objList != null) {
 //            for (int i = 0; i < objList.size(); ++i) {
 //                CompoundTag rs = objList.getCompound(i);
-//                String key = LIST_TAG_SCANNED_OBJECT_ACCESSOR.readFromCompoundTag(rs);
+//                String key = LIST_TAG_SCANNED_OBJECT_ACCESSOR.readFromCompoundTagWithHolderGetter(rs);
 //                if (key != null) {
 //                    completeScannedObjectUnsaved(player, key);
 //                }
@@ -624,12 +624,12 @@ public class ResearchManager {
 //        }
 //
 //        // ---- THAUMCRAFT.SCAN.ENTITIES ----
-//        ListTag entList = THAUMCRAFT_PLAYER_SCAN_ENTITIES_ACCESSOR.readFromCompoundTag(entityData);
+//        ListTag entList = THAUMCRAFT_PLAYER_SCAN_ENTITIES_ACCESSOR.readFromCompoundTagWithHolderGetter(entityData);
 //
 //        if (entList != null) {
 //            for (int i = 0; i < entList.size(); ++i) {
 //                CompoundTag rs = entList.getCompound(i);
-//                String key = LIST_TAG_SCANNED_ENTITY_ACCESSOR.readFromCompoundTag(rs);
+//                String key = LIST_TAG_SCANNED_ENTITY_ACCESSOR.readFromCompoundTagWithHolderGetter(rs);
 //                if (key != null) {
 //                    completeScannedEntityUnsaved(player, key);
 //                }
@@ -637,12 +637,12 @@ public class ResearchManager {
 //        }
 //
 //        // ---- THAUMCRAFT.SCAN.PHENOMENA ----
-//        ListTag pheList = THAUMCRAFT_PLAYER_SCAN_PHENOMENA_ACCESSOR.readFromCompoundTag(entityData);
+//        ListTag pheList = THAUMCRAFT_PLAYER_SCAN_PHENOMENA_ACCESSOR.readFromCompoundTagWithHolderGetter(entityData);
 //
 //        if (pheList != null) {
 //            for (int i = 0; i < pheList.size(); ++i) {
 //                CompoundTag rs = pheList.getCompound(i);
-//                String key = LIST_TAG_SCANNED_PHENOMENA_ACCESSOR.readFromCompoundTag(rs);
+//                String key = LIST_TAG_SCANNED_PHENOMENA_ACCESSOR.readFromCompoundTagWithHolderGetter(rs);
 //                if (key != null) {
 //                    completeScannedPhenomenaUnsaved(player, key);
 //                }

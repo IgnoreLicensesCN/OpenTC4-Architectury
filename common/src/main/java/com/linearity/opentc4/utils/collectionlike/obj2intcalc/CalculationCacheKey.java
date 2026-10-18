@@ -20,6 +20,8 @@ public class CalculationCacheKey<Obj,S extends CalcCacheableCollection<Obj,S>> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(a, b);
+        int result = Objects.hashCode(a);
+        result = 31 * result + Objects.hashCode(b);
+        return result;
     }
 }

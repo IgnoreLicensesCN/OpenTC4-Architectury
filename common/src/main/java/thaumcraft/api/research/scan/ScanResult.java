@@ -56,6 +56,10 @@ public class ScanResult {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(type, item, entity, phenomena);
+		int result = type;
+		result = 31 * result + Objects.hashCode(item);
+		result = 31 * result + Objects.hashCode(entity);
+		result = 31 * result + Objects.hashCode(phenomena);
+		return result;
 	}
 }

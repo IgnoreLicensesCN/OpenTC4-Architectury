@@ -23,23 +23,42 @@ import thaumcraft.common.items.wands.render.waveanimations.AbstractWandWaveAnima
 import thaumcraft.common.items.wands.render.waveanimations.ThaumcraftWandWaveAnimations;
 
 import java.util.List;
+import java.util.function.Supplier;
+
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableItemStack.opentc4$getOrCreateCachedObjectFromItemStack;
 
 public interface IWandFocusItem<Asp extends Aspect> {
 
     //i hate this part
     @Unmodifiable
     @Deprecated(since = "vote in democracy to remove this and use map for faster calc if there's lots of upgrades")
+    @NotNull
     //not recommended
-    List<FocusUpgradeType> getAppliedFocusUpgradesWithOrder(ItemStack focusStack);
+    List<FocusUpgradeType> getAppliedFocusUpgradesWithOrder(@NotNull ItemStack focusStack);
+
+    class IWandFocusItemCachedObjectsForItemStack{
+        public static final Supplier<IWandFocusItemCachedObjectsForItemStack> SUPPLIER = () -> new IWandFocusItemCachedObjectsForItemStack(new Object2IntOpenHashMap<>());
+        public final Object2IntMap<FocusUpgradeType> appliedFocusUpgrades;
+
+        public IWandFocusItemCachedObjectsForItemStack(Object2IntMap<FocusUpgradeType> appliedFocusUpgrades) {
+            this.appliedFocusUpgrades = appliedFocusUpgrades;
+        }
+    }
 
     @ApiStatus.Internal
-    default @ModifiableCopy Object2IntMap<FocusUpgradeType> getAppliedFocusUpgrades(ItemStack focusStack){
+    default @ModifiableCopy Object2IntMap<FocusUpgradeType> getAppliedFocusUpgrades(@NotNull ItemStack focusStack){
+
+        var cached = opentc4$getOrCreateCachedObjectFromItemStack(
+                focusStack,
+                IWandFocusItemCachedObjectsForItemStack.class,
+                IWandFocusItemCachedObjectsForItemStack.SUPPLIER
+        );
+
         var upgrades = getAppliedFocusUpgradesWithOrder(focusStack);
-        var map = new Object2IntOpenHashMap<FocusUpgradeType>();
         for (var upgrade:upgrades){
-            map.merge(upgrade, 1,Integer::sum);
+            cached.appliedFocusUpgrades.merge(upgrade, 1,Integer::sum);
         }
-        return map;
+        return new Object2IntOpenHashMap<>(cached.appliedFocusUpgrades);
     }
     //use this!
     default Object2IntMap<FocusUpgradeType> getFocusUpgradesWithWandModifiers(ItemStack focusStack, @Nullable ItemStack wandStack) {

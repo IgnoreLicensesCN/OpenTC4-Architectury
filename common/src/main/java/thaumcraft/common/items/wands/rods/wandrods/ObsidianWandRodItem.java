@@ -1,6 +1,7 @@
 package thaumcraft.common.items.wands.rods.wandrods;
 
 import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
@@ -22,7 +23,7 @@ public class ObsidianWandRodItem extends ThaumcraftAspectRegenWandRodItem implem
     );
     @Override
     @UnmodifiableView
-    public CalcCacheableCentiVisList<Aspect> getCentiVisCapacity() {
+    public CalcCacheableCentiVisList<Aspect> getCentiVisCapacity(ItemStack stack) {
         return capacity;
     }
 

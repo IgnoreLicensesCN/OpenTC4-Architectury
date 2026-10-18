@@ -41,7 +41,7 @@ public class WardedBlockEntity extends OwnedBlockEntity {
             tagToRead = compoundTag;
             return;
         }
-        storingState = STORING_BLOCK_STATE.readFromCompoundTag(this.level.holderLookup(Registries.BLOCK),compoundTag);
+        storingState = STORING_BLOCK_STATE.readFromCompoundTagWithHolderGetter(this.level.holderLookup(Registries.BLOCK),compoundTag);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class WardedBlockEntity extends OwnedBlockEntity {
         super.setLevel(level);
 
         if (this.level != null && tagToRead != null) {
-            storingState = STORING_BLOCK_STATE.readFromCompoundTag(this.level.holderLookup(Registries.BLOCK),tagToRead);
+            storingState = STORING_BLOCK_STATE.readFromCompoundTagWithHolderGetter(this.level.holderLookup(Registries.BLOCK),tagToRead);
             tagToRead = null;
         }
     }

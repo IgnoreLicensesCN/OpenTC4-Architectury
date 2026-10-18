@@ -32,7 +32,7 @@ public class StrictItemStackNoCountMatcher extends RecipeItemMatcher {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(stack);
+        return stack.hashCode();
     }
 
     @Override

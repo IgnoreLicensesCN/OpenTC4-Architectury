@@ -32,11 +32,12 @@ public class ItemBasicAspectGetter {
     private static final Map<Item,AspectList<Aspect>> CACHE = new HashMap<>();
     public static final Map<Item, AspectList<Aspect>> CLIENT_CACHE = new HashMap<>();
     public static final AtomicLong REQUESTED_ASPECT_LIST_AT = new AtomicLong(0);
-    public static final long REQUEST_ASPECT_LIST_COOLDOWN = 5000;//milliseconds
+    public static final long REQUEST_ASPECT_LIST_COOLDOWN = 30*1000;//milliseconds
     //expose to outer to get basic aspects
     public static AspectList<Aspect> getBasicAspects(@NotNull Item i,boolean isClientSide){
         return isClientSide ? getBasicAspectsClient(i) : getBasicAspectsServer(i);
     }
+    //TODO:[maybe wont finished]Local file-based cache and sync with server
     public static AspectList<Aspect> getBasicAspectsClient(@NotNull Item i) {
 
         if (CLIENT_CACHE.isEmpty()

@@ -39,7 +39,7 @@ public class AdditionalPlayerDataManager {
         }
 
     }
-    //readFromCompoundTag
+    //readFromCompoundTagWithHolderGetter
     public static void readPlayerDataFromTag(ServerPlayer player, CompoundTag tag) {
         RunicShieldInfo.setForLiving(player,SHIELD_ACCESSOR.readFromCompoundTag(tag));
         WarpInfo.setForLivingEntity(player,PLAYER_WARP_INFO.readFromCompoundTag(tag));

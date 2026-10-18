@@ -6,6 +6,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockStateAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.DirectionTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.ItemStackTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.golem.MarkerTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.NullableCrucibleRecipeAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.ModifiableAspectListAccessor;
@@ -16,11 +17,10 @@ import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.node.NodeIn
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches.HexGridAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.*;
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableListAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.ModifiableStringSetTagAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.NullFilteredModifiableListAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.*;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
+import thaumcraft.common.entities.golems.Marker;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 
 public class Consts {
@@ -111,8 +111,8 @@ public class Consts {
 
     public static class FocusUpgradeCompoundTagAccessors {
         private static final String WAND_UPGRADE = "upgrade";
-        public static final ModifiableListAccessor<FocusUpgradeTypeResourceLocation> FOCUS_UPGRADE_ACCESSOR =
-                new ModifiableListAccessor<>(WAND_UPGRADE,new FocusUpgradeTypeResourceLocationTagAccessor(WAND_UPGRADE));
+        public static final UnmodifiableListAccessor<FocusUpgradeTypeResourceLocation> FOCUS_UPGRADE_ACCESSOR =
+                new UnmodifiableListAccessor<>(WAND_UPGRADE,new FocusUpgradeTypeResourceLocationTagAccessor(WAND_UPGRADE));
         public static final JsonObjectTagAccessor FOCUS_UPGRADE_JSON_ACCESSOR = new JsonObjectTagAccessor(WAND_UPGRADE);
     }
 
@@ -389,5 +389,6 @@ public class Consts {
         public static final ByteArrayTagAccessor INVENTORY_COLORS = new ByteArrayTagAccessor("inventory_colors");
         public static final BlockPosAccessor HOME_POS = new BlockPosAccessor("home_pos");
         public static final ResourceLocationTagAccessor HOME_LEVEL = new ResourceLocationTagAccessor("home_level");
+        public static final ModifiableSetTagAccessor<Marker> MARKERS = new ModifiableSetTagAccessor<>("markers",new MarkerTagAccessor("marker"));
     }
 }

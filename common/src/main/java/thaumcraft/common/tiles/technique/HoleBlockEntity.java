@@ -34,7 +34,7 @@ public class HoleBlockEntity extends TileThaumcraft {
         super.readCustomNBT(compoundTag);
 
         if (level != null) {
-            storingState = STORING_BLOCK_STATE.readFromCompoundTag(level.holderLookup(Registries.BLOCK),compoundTag);
+            storingState = STORING_BLOCK_STATE.readFromCompoundTagWithHolderGetter(level.holderLookup(Registries.BLOCK),compoundTag);
         }else {
             storedTag = compoundTag;
         }
@@ -47,7 +47,7 @@ public class HoleBlockEntity extends TileThaumcraft {
     public void setLevel(Level level) {
         super.setLevel(level);
         if (this.level != null && storedTag != null) {
-            storingState = STORING_BLOCK_STATE.readFromCompoundTag(level.holderLookup(Registries.BLOCK),storedTag);
+            storingState = STORING_BLOCK_STATE.readFromCompoundTagWithHolderGetter(level.holderLookup(Registries.BLOCK),storedTag);
             storedTag = null;
         }
     }

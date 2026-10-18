@@ -28,7 +28,9 @@ public record EquippedBaubleSlot(
 
     @Override
     public int hashCode() {
-        return Objects.hash(slotType, index);
+        int result = Objects.hashCode(slotType);
+        result = 31 * result + index;
+        return result;
     }
 
     @Override

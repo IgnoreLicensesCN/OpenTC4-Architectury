@@ -30,12 +30,12 @@ public class ModifiableListAccessor<T> extends CompoundTagAccessor<List<T>> {
         return list;
     }
 
-    public void readFromCompoundTagInto(CompoundTag tag, @Modifiable List<T> list) {
+    public void readFromCompoundTagInto(CompoundTag tag, @Modifiable Collection<T> toAddIn) {
         var listTag = listAccessor.readFromCompoundTag(tag);
         var len = listTag.size();
         for (int i = 0; i < len; i++) {
             var compound = listTag.getCompound(i);
-            list.add(listItemAccessor.readFromCompoundTag(compound));
+            toAddIn.add(listItemAccessor.readFromCompoundTag(compound));
         }
     }
 

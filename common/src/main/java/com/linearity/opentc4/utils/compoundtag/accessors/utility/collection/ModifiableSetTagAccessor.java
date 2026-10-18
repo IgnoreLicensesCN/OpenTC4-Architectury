@@ -32,4 +32,8 @@ public class ModifiableSetTagAccessor<T> extends CompoundTagAccessor<Set<T>> {
     public boolean compoundTagHasKey(CompoundTag tag) {
         return accessorInternal.compoundTagHasKey(tag);
     }
+
+    public void readFromCompoundTagInto(CompoundTag tag, Set<T> intoSet) {
+        accessorInternal.readFromCompoundTagInto(tag,intoSet);
+    }
 }

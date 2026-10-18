@@ -13,6 +13,9 @@ public record SimpleTri<A,B,C>(A a, B b, C c) {
 
     @Override
     public int hashCode() {
-        return Objects.hash(a, b, c);
+        int result = Objects.hashCode(a);
+        result = 31 * result + Objects.hashCode(b);
+        result = 31 * result + Objects.hashCode(c);
+        return result;
     }
 }

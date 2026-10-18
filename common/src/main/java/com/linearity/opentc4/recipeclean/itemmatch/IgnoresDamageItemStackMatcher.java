@@ -52,9 +52,8 @@ public class IgnoresDamageItemStackMatcher extends RecipeItemMatcher {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(stack);
+        return stack.hashCode();
     }
-
 
     public @NotNull IgnoresDamageItemStackMatcher of(ItemStack stack) {
         return cache.computeIfAbsent(stack, IgnoresDamageItemStackMatcher::new);
