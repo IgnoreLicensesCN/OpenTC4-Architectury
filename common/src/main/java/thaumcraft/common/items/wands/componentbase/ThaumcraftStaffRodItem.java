@@ -14,8 +14,7 @@ public class ThaumcraftStaffRodItem extends Item implements IWandRodPropertiesOw
 
 
     @Override
-    @UnmodifiableView
-    public CalcCacheableCentiVisList<Aspect> getCentiVisCapacity(ItemStack stack) {
+    public @UnmodifiableView CalcCacheableCentiVisList<Aspect> getCentiVisCapacity(ItemStack stack) {
         return CalcCacheableCentiVisList.emptySingleton();
     }
 

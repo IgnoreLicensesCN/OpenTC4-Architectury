@@ -10,10 +10,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.IWandComponentsOwnerItem;
@@ -23,49 +21,29 @@ import thaumcraft.common.items.wands.render.waveanimations.AbstractWandWaveAnima
 import thaumcraft.common.items.wands.render.waveanimations.ThaumcraftWandWaveAnimations;
 
 import java.util.List;
-import java.util.function.Supplier;
 
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableItemStack.opentc4$getOrCreateCachedObjectFromItemStack;
+import static com.linearity.opentc4.Consts.FocusUpgradeCompoundTagAccessors.FOCUS_UPGRADE_ACCESSOR;
 
 public interface IWandFocusItem<Asp extends Aspect> {
 
-    //i hate this part
-    @Unmodifiable
-    @Deprecated(since = "vote in democracy to remove this and use map for faster calc if there's lots of upgrades")
-    @NotNull
-    //not recommended
-    List<FocusUpgradeType> getAppliedFocusUpgradesWithOrder(@NotNull ItemStack focusStack);
 
-    class IWandFocusItemCachedObjectsForItemStack{
-        public static final Supplier<IWandFocusItemCachedObjectsForItemStack> SUPPLIER = () -> new IWandFocusItemCachedObjectsForItemStack(new Object2IntOpenHashMap<>());
-        public final Object2IntMap<FocusUpgradeType> appliedFocusUpgrades;
-
-        public IWandFocusItemCachedObjectsForItemStack(Object2IntMap<FocusUpgradeType> appliedFocusUpgrades) {
-            this.appliedFocusUpgrades = appliedFocusUpgrades;
-        }
-    }
-
-    @ApiStatus.Internal
     default @ModifiableCopy Object2IntMap<FocusUpgradeType> getAppliedFocusUpgrades(@NotNull ItemStack focusStack){
-
-        var cached = opentc4$getOrCreateCachedObjectFromItemStack(
-                focusStack,
-                IWandFocusItemCachedObjectsForItemStack.class,
-                IWandFocusItemCachedObjectsForItemStack.SUPPLIER
-        );
-
-        var upgrades = getAppliedFocusUpgradesWithOrder(focusStack);
-        for (var upgrade:upgrades){
-            cached.appliedFocusUpgrades.merge(upgrade, 1,Integer::sum);
+        if (!focusStack.hasTag()){
+            return new Object2IntOpenHashMap<>();
         }
-        return new Object2IntOpenHashMap<>(cached.appliedFocusUpgrades);
+        var tag = focusStack.getTag();
+        if (tag == null){
+            return new Object2IntOpenHashMap<>();
+        }
+        return new Object2IntOpenHashMap<>(FOCUS_UPGRADE_ACCESSOR.readFromCompoundTag(tag));
+    }
+    default void setAppliedFocusUpgrades(@NotNull ItemStack focusStack,Object2IntMap<FocusUpgradeType> upgrades){
+        var tag = focusStack.getOrCreateTag();
+        FOCUS_UPGRADE_ACCESSOR.writeToCompoundTag(tag,upgrades);
     }
     //use this!
-    default Object2IntMap<FocusUpgradeType> getFocusUpgradesWithWandModifiers(ItemStack focusStack, @Nullable ItemStack wandStack) {
+    default Object2IntMap<FocusUpgradeType> getFocusUpgradesWithWandModifiers(ItemStack focusStack, @NotNull("null -> empty") ItemStack wandStack) {
         var appliedUpgrades = getAppliedFocusUpgrades(focusStack);
-        if (wandStack == null) {
-            return appliedUpgrades;
-        }
         if (wandStack.getItem() instanceof IWandComponentsOwnerItem componentsOwner) {
             for (ItemStack component: componentsOwner.getWandComponents(wandStack)) {
                 if (component.getItem() instanceof IFocusUpgradeModifierComponentItem modifier) {
@@ -75,8 +53,11 @@ public interface IWandFocusItem<Asp extends Aspect> {
         }
         return appliedUpgrades;
     }
-    void storeFocusUpgrades(ItemStack stack, List<FocusUpgradeType> wandUpgrades);
-    void addFocusUpgrade(ItemStack stack, FocusUpgradeType type);
+//    void storeFocusUpgrades(ItemStack stack, List<FocusUpgradeType> wandUpgrades);
+    default void addFocusUpgrade(ItemStack stack, FocusUpgradeType type){
+        var tag = stack.getOrCreateTag();
+        FOCUS_UPGRADE_ACCESSOR.updateCacheAndValue(tag,m -> m.mergeInt(type,1,Integer::sum));
+    };
 
     default boolean isUpgradedWith(ItemStack focusStack, FocusUpgradeType focusUpgradetype,Object2IntMap<FocusUpgradeType> upgrades) {
         return upgrades.getInt(focusUpgradetype) > 0;
@@ -107,7 +88,7 @@ public interface IWandFocusItem<Asp extends Aspect> {
 
 
     //only for displaying
-    default boolean isCentiVisCostPerTick(ItemStack focusStack,@Nullable ItemStack wandStack) {
+    default boolean isCentiVisCostPerTick(ItemStack focusStack,@NotNull("null -> empty") ItemStack wandStack) {
         return false;
     }
 

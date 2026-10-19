@@ -1,11 +1,11 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.mc;
 
+import com.linearity.opentc4.utils.compoundtag.accessors.CacheableCompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.ByteTagAccessor;
-import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 
-public class DirectionTagAccessor extends CompoundTagAccessor<Direction> {
+public class DirectionTagAccessor extends CacheableCompoundTagAccessor<Direction> {
 
     private final ByteTagAccessor byteTagAccessor;
     public DirectionTagAccessor(String tagKey) {
@@ -14,7 +14,7 @@ public class DirectionTagAccessor extends CompoundTagAccessor<Direction> {
     }
 
     @Override
-    public Direction readFromCompoundTag(CompoundTag tag) {
+    public Direction readFromCompoundTagWithoutCache(CompoundTag tag) {
         byte index = byteTagAccessor.readByteFromCompoundTag(tag);
         if (index < 0 || index >= Direction.values().length) {
             return Direction.NORTH;
@@ -23,7 +23,7 @@ public class DirectionTagAccessor extends CompoundTagAccessor<Direction> {
     }
 
     @Override
-    public void writeToCompoundTag(CompoundTag tag, Direction value) {
+    public void writeToCompoundTagWithoutCache(CompoundTag tag, Direction value) {
         byteTagAccessor.writeByteToCompoundTag(tag,(byte)value.ordinal());
     }
 

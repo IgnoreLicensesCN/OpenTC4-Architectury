@@ -38,7 +38,6 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
-import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
@@ -123,7 +122,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
 //    }
 
     @Override
-    public boolean isCentiVisCostPerTick(ItemStack focusStack, @Nullable ItemStack wandStack) {
+    public boolean isCentiVisCostPerTick(ItemStack focusStack, @NotNull("null -> empty") ItemStack wandStack) {
         return true;
     }
 

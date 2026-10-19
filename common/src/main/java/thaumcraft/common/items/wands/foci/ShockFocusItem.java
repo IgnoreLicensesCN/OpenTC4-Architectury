@@ -1,6 +1,8 @@
 package thaumcraft.common.items.wands.foci;
 
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.server.level.ServerLevel;
@@ -49,7 +51,7 @@ public class ShockFocusItem extends BasicFocusItem{
 
     @Override
     public int getActivationCooldownTicks(ItemStack focusStack, @NotNull ItemStack wandStack) {
-        var upgrades = getAppliedFocusUpgrades(focusStack);
+        var upgrades = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
         return upgrades.getInt(CHAIN_LIGHTING) > 0 ? 10:
                 upgrades.getInt(EARTH_SHOCK) > 0 ? 20:
                         5
@@ -69,7 +71,7 @@ public class ShockFocusItem extends BasicFocusItem{
     public static final List<FocusUpgradeType> RANK_2_UPGRADES =
             List.of(FRUGAL, POTENCY, CHAIN_LIGHTING, EARTH_SHOCK);
     public static final List<FocusUpgradeType> RANK_3_UPGRADES =
-            List.of(FRUGAL, FRUGAL, ENLARGE);
+            List.of(FRUGAL, POTENCY, ENLARGE);
     public static final List<FocusUpgradeType> RANK_4_UPGRADES =
             List.of(FRUGAL, POTENCY, ENLARGE);
     @Override
@@ -280,6 +282,7 @@ public class ShockFocusItem extends BasicFocusItem{
     }
     @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.CLIENT)
     public static void playLightingEffect(Level level, LivingEntity living, double xx, double yy, double zz, boolean offset) {
+        if (Platform.getEnvironment() != Env.CLIENT){return;}
         if (!(level instanceof ClientLevel clientLevel)) {return;}
         var eyePos = living.getEyePosition();
         var lookVec = living.getLookAngle();

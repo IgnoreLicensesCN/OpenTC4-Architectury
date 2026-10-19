@@ -141,7 +141,7 @@ public class HellBatFocusItem extends BasicFocusItem {
     public static final List<FocusUpgradeType> RANK_2_UPGRADES =
             List.of(FRUGAL, POTENCY, BAT_BOMBS, DEVIL_BATS);
     public static final List<FocusUpgradeType> RANK_3_UPGRADES =
-            List.of(FRUGAL, FRUGAL);
+            List.of(FRUGAL, POTENCY);
     public static final List<FocusUpgradeType> RANK_4_UPGRADES =
             List.of(FRUGAL, POTENCY, VAMPIRE_BATS);
 

@@ -17,6 +17,7 @@ import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.baseimpl.centivis.LinkedHashCentiVisList;
+import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
 import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 
@@ -31,6 +32,9 @@ import static com.linearity.opentc4.OpenTC4.throwDuplicate;
 
 //maybe i should evolve this part.
 public class FocusUpgradeType {
+    public static final FocusUpgradeType EMPTY = new FocusUpgradeType(
+            FocusUpgradeTypeResourceLocation.EMPTY, UnmodifiableAspectList.empty()
+    );
     //idk if anyone want to tag upgrade but place it here
     public static final Multimap<ResourceLocation, FocusUpgradeType> FOCUS_UPGRADE_TYPE_TAGGED = MultimapBuilder.hashKeys().hashSetValues().build();
 
@@ -60,7 +64,8 @@ public class FocusUpgradeType {
 
     public FocusUpgradeType(
             FocusUpgradeTypeResourceLocation id,
-            AspectList<Aspect> aspects){
+            AspectList<Aspect> aspects
+    ){
         this.id = id;
         this.aspects = aspects;
         var upgradeType = types.put(id, this);

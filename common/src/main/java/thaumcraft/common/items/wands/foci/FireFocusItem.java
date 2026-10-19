@@ -82,12 +82,12 @@ public class FireFocusItem extends BasicFocusItem{
 
     @Override
     public AbstractWandWaveAnimation getWaveAnimation(ItemStack focusStack,ItemStack wandStack) {
-        var upgrades = getAppliedFocusUpgrades(focusStack);
+        var upgrades = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
         return isUpgradedWith(focusStack,FIREBALL,upgrades) ? ThaumcraftWandWaveAnimations.WAVE:ThaumcraftWandWaveAnimations.CHARGE;
     }
 
     @Override
-    public boolean isCentiVisCostPerTick(ItemStack focusStack, @Nullable ItemStack wandStack) {
+    public boolean isCentiVisCostPerTick(ItemStack focusStack, @NotNull("null -> empty") ItemStack wandStack) {
         return getFocusUpgradesWithWandModifiers(focusStack,wandStack).getInt(FIREBALL) <= 0;
     }
 
@@ -104,8 +104,8 @@ public class FireFocusItem extends BasicFocusItem{
 
     @Override
     public int getActivationCooldownTicks(ItemStack focusStack, @NotNull ItemStack wandStack) {
-        var upgrades = getAppliedFocusUpgradesWithOrder(focusStack);
-        if (upgrades.contains(FIREBALL)) {
+        var upgrades = getFocusUpgradesWithWandModifiers(focusStack,wandStack);
+        if (isUpgradedWith(focusStack,FIREBALL,upgrades)) {
             return 20;
         }
         return 0;

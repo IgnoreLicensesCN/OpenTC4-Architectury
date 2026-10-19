@@ -1,5 +1,6 @@
 package thaumcraft.common.items.wands.rods.staffrods;
 
+import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.world.entity.Entity;
@@ -47,7 +48,7 @@ public class PrimalStaffRodItem extends ThaumcraftAspectRegenStaffRodItem implem
     }
 
     @Override
-    public Object2IntMap<FocusUpgradeType> modifyWandUpgrades(ItemStack componentStack, Object2IntMap<FocusUpgradeType> wandUpgrades) {
+    public @Modifiable Object2IntMap<FocusUpgradeType> modifyWandUpgrades(ItemStack componentStack, @Modifiable Object2IntMap<FocusUpgradeType> wandUpgrades) {
         wandUpgrades.merge(ThaumcraftFocusUpgradeTypes.POTENCY,1,Integer::sum);
         return wandUpgrades;
     }

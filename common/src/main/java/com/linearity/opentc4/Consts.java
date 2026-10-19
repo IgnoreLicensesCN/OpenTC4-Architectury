@@ -6,6 +6,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockStateAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.DirectionTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.ItemStackTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.FocusUpgradeTypeTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.golem.MarkerTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.NullableCrucibleRecipeAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.AspectAccessor;
@@ -20,6 +21,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.utility.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.*;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
+import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.common.entities.golems.Marker;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 
@@ -111,9 +113,8 @@ public class Consts {
 
     public static class FocusUpgradeCompoundTagAccessors {
         private static final String WAND_UPGRADE = "upgrade";
-        public static final UnmodifiableListAccessor<FocusUpgradeTypeResourceLocation> FOCUS_UPGRADE_ACCESSOR =
-                new UnmodifiableListAccessor<>(WAND_UPGRADE,new FocusUpgradeTypeResourceLocationTagAccessor(WAND_UPGRADE));
-        public static final JsonObjectTagAccessor FOCUS_UPGRADE_JSON_ACCESSOR = new JsonObjectTagAccessor(WAND_UPGRADE);
+        public static final UnmodifiableObject2IntMapAccessor<FocusUpgradeType> FOCUS_UPGRADE_ACCESSOR =
+                new UnmodifiableObject2IntMapAccessor<>(WAND_UPGRADE,new FocusUpgradeTypeTagAccessor(WAND_UPGRADE));
     }
 
     public static class EldritchRingMapToMazeSize{

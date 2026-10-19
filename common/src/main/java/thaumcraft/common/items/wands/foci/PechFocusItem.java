@@ -38,7 +38,7 @@ public class PechFocusItem extends BasicFocusItem {
     public static final List<FocusUpgradeType> RANK_2_UPGRADES =
             List.of(FRUGAL, POTENCY);
     public static final List<FocusUpgradeType> RANK_3_UPGRADES =
-            List.of(FRUGAL, FRUGAL, EXTEND);
+            List.of(FRUGAL, POTENCY, EXTEND);
     public static final List<FocusUpgradeType> RANK_4_UPGRADES =
             List.of(FRUGAL, POTENCY, NIGHT_SHADE);
 

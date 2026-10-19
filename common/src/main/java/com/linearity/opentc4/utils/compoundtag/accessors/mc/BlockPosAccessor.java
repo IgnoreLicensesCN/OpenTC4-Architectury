@@ -1,12 +1,11 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.mc;
 
-import com.linearity.opentc4.mixinaccessors.IAccessorCacheableTag;
-import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
+import com.linearity.opentc4.utils.compoundtag.accessors.CacheableCompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 
-public class BlockPosAccessor extends CompoundTagAccessor<BlockPos> {
+public class BlockPosAccessor extends CacheableCompoundTagAccessor<BlockPos> {
     public static final BlockPos NULL_POS_TO_WRITE = new BlockPos(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
     protected final IntTagAccessor xAccessor;
     protected final IntTagAccessor yAccessor;
@@ -20,38 +19,27 @@ public class BlockPosAccessor extends CompoundTagAccessor<BlockPos> {
     }
 
     @Override
-    public BlockPos readFromCompoundTag(CompoundTag tag) {
-        if (tag instanceof IAccessorCacheableTag cacheableTag) {
-            var result = cacheableTag.opentc4$getTagCache(this);
-            if (result == null) {
-                if (compoundTagHasKey(tag)){
-                    result = new BlockPos(
-                            xAccessor.readIntFromCompoundTag(tag),
-                            yAccessor.readIntFromCompoundTag(tag),
-                            zAccessor.readIntFromCompoundTag(tag)
-                    );
-                }else {
-                    result = NULL_POS_TO_WRITE;
-                }
-                cacheableTag.opentc4$setTagCache(this,result);
-            }
-            return result;
+    public BlockPos readFromCompoundTagWithoutCache(CompoundTag tag) {
+        if (compoundTagHasKey(tag)) {
+            return new BlockPos(
+                    xAccessor.readIntFromCompoundTag(tag),
+                    yAccessor.readIntFromCompoundTag(tag),
+                    zAccessor.readIntFromCompoundTag(tag)
+            );
         }
-        return new BlockPos(
-                xAccessor.readIntFromCompoundTag(tag),
-                yAccessor.readIntFromCompoundTag(tag),
-                zAccessor.readIntFromCompoundTag(tag)
-        );
+        return NULL_POS_TO_WRITE;
+    }
+
+    @Override
+    public void writeToCompoundTagWithoutCache(CompoundTag tag, BlockPos value) {
+        xAccessor.writeIntToCompoundTag(tag, value.getX());
+        yAccessor.writeIntToCompoundTag(tag, value.getY());
+        zAccessor.writeIntToCompoundTag(tag, value.getZ());
     }
 
     @Override
     public void writeToCompoundTag(CompoundTag tag, BlockPos /*maybe MutableBlockPos?*/ value) {
-        xAccessor.writeIntToCompoundTag(tag,value.getX());
-        yAccessor.writeIntToCompoundTag(tag,value.getY());
-        zAccessor.writeIntToCompoundTag(tag,value.getZ());
-        if (tag instanceof IAccessorCacheableTag cacheableTag) {
-            cacheableTag.opentc4$setTagCache(this,new BlockPos(value));
-        }
+        super.writeToCompoundTag(tag, new BlockPos(value));
     }
 
     @Override
