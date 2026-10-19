@@ -10,6 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.GrassColor;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.warp.WarpInfo;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.abstracts.AbstractCrystalBlock;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 import thaumcraft.common.items.abstracts.IGoggles;
@@ -223,7 +224,7 @@ public class ThaumcraftBlockAndItemColors {
         //TODO:[maybe wont finished]rotate the compass stone like compass(wtf)
         ModelPredicateProviderRegistryAccessor.register(
                 COMPASS_STONE(),
-                new ResourceLocation("near_node"), (itemStack, clientLevel, livingEntity, i) -> {
+                new ResourceLocation(Thaumcraft.MOD_ID,"near_node"), (itemStack, clientLevel, livingEntity, i) -> {
                     if (livingEntity == null) {
                         return 0.0F;
                     }
@@ -267,12 +268,12 @@ public class ThaumcraftBlockAndItemColors {
                 });
         ModelPredicateProviderRegistryAccessor.register(
                 SANITY_CHECKER(),
-                new ResourceLocation("warp_index"),
+                new ResourceLocation(Thaumcraft.MOD_ID, "warp_index"),
                 (itemStack, clientLevel, livingEntity, i) -> calculateWarpProgressKindStateForLiving(livingEntity)
         );
     }
 
-    private static final Map<LivingEntity,Integer> mappingCache = new MapMaker().weakKeys().makeMap();
+    private static final Map<LivingEntity,Integer> mappingCache = new MapMaker().weakKeys().makeMap();//TODO:[maybe wont finished]insert to livingEntity(client mixin,since this texture is client-side logic) as a field
     public static int calculateWarpProgressKindStateForLiving(LivingEntity livingEntity) {
         var info = WarpInfo.getFromLivingEntity(livingEntity);
         if (info == null) return 0;

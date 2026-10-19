@@ -1,6 +1,7 @@
 package thaumcraft.common.entities.golems;
 
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
+import com.linearity.opentc4.mixinaccessors.InteractionOverridenMob;
 import com.linearity.opentc4.mixinaccessors.cliententity.BaseGolemEntityClientAccessor;
 import com.linearity.opentc4.utils.ClassToItemStackPairMap;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
@@ -10,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +19,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
@@ -27,6 +31,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.RangedAttackMob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -43,7 +48,8 @@ import static com.linearity.opentc4.Consts.BaseGolemEntityTagAccessors.*;
 import static com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor.NULL_POS_TO_WRITE;
 import static thaumcraft.common.entities.golems.BaseGolemEntity.BaseGolemEntityClientEventSignals.*;
 
-public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEntity<BaseGolemEntity.IGolemUpgradeItem> implements RangedAttackMob {
+public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEntity<BaseGolemEntity.IGolemUpgradeItem> 
+        implements RangedAttackMob, InteractionOverridenMob {
 
     public static class BaseGolemEntityClientEventSignals {
         public static final byte START_ACTION_TIMER = 4;
@@ -77,6 +83,9 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemAdditionalDataProviderItem.class, 600));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemDamageModifierItem.class,700));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemDamageListenerItem.class, 800));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemCollapseToItemStackListenerItem.class, 900));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemPlayerInteractionListenerItem.class, 1000));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemHomeRangeModifierItem.class, 1100));
     }
 
     public List<ObjectIntPair<Class<? extends IGolemModifierItem>>> getAvailableGolemModifierTypes() {
@@ -138,6 +147,14 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         if (this.isOnFetter) {
             this.setSpeed(0);
         }
+    }
+
+    public int getHomeRange(){
+        int range = abilitiesData.homeRange;
+        for (var modifierPair:golemUpgradesCacheView.get(IGolemHomeRangeModifierItem.class)){
+            range = modifierPair.a().modifyHomeRange(this,modifierPair.b(),range);
+        }
+        return range;
     }
 
     public void tryTeleportHome() {
@@ -218,6 +235,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         public final GoalSelector goalSelector;
         public final GoalSelector targetSelector;
         public final GolemBasicAbilityProperties properties;
+        public int homeRange = 16;
 
         public GolemAbilitiesData(GoalSelector goalSelector, GoalSelector targetSelector, GolemBasicAbilityProperties properties) {
             this.carryPower = properties.carryPower;
@@ -240,6 +258,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
             this.attackFireTicks = properties.attackFireTicks;
             this.speedMultiplier = 1;
             this.inventorySize = 0;
+            this.homeRange = 16;
         }
 
         public void safetyCheckAndFix() {
@@ -251,6 +270,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
             this.regenAmount = Math.max(this.regenAmount, 0);
             this.strength = Math.max(this.strength, 0);
             this.attackFireTicks = Math.max(this.attackFireTicks,0);
+            this.homeRange = Math.max(this.homeRange, 0);
         }
     }
 
@@ -264,7 +284,8 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         return this.abilitiesData.attackDelay;
     }
 
-    protected @NotNull ResourceLocation homeLevelResourceLocation = level().dimension().location();
+    @NotNull
+    public ResourceLocation homeLevelResourceLocation = level().dimension().location();
 
     private static final EntityDataAccessor<byte[]> DATA_ID_INVENTORY_COLORS = SynchedEntityData.defineId(BaseGolemEntity.class, EntityDataSerializerAdditions.BYTE_ARRAY);
 
@@ -279,9 +300,16 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
     public void readAdditionalSaveData(CompoundTag tag) {
         this.abilitiesData.inventorySize = INVENTORY_SIZE.readIntFromCompoundTag(tag);
         this.inventory = NonNullList.withSize(this.abilitiesData.inventorySize, ItemStack.EMPTY);
-        setInventoryColors(INVENTORY_COLORS.readFromCompoundTag(tag));
+
+        {
+            byte[] inventoryColors = new byte[inventory.size()];
+            var inventoryColorsBefore = INVENTORY_COLORS.readFromCompoundTag(tag);
+            System.arraycopy(inventoryColorsBefore, 0, inventoryColors, 0, Math.min(inventoryColorsBefore.length, inventoryColors.length));
+            setInventoryColors(inventoryColors);
+        }
+
         ContainerHelper.loadAllItems(tag, this.inventory);
-        this.restrictTo(HOME_POS.readFromCompoundTag(tag), 48);
+        this.restrictTo(HOME_POS.readFromCompoundTag(tag), getDefaultRestrictionSize());
         var homeLevelResourceLocation = HOME_LEVEL.readFromCompoundTag(tag);
         if (!homeLevelResourceLocation.getNamespace().isEmpty() && !homeLevelResourceLocation.getPath().isEmpty()) {
             this.homeLevelResourceLocation = homeLevelResourceLocation;
@@ -292,6 +320,10 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         }
         markers.clear();
         MARKERS.readFromCompoundTagInto(tag,markers);
+    }
+
+    public int getDefaultRestrictionSize(){
+        return 48;
     }
 
     @Override
@@ -306,6 +338,32 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
             additionalDataProviderPair.a().writeAdditional(this,additionalDataProviderPair.b(),tag);
         }
         MARKERS.writeToCompoundTag(tag, markers);
+    }
+
+    @Override
+    public ItemStack collapseToItemStackWithoutSneaking() {
+        for (var collapseListenerPair:golemUpgradesCacheView.get(IGolemCollapseToItemStackListenerItem.class)) {
+            collapseListenerPair.a().onCollapseToItemStackWithoutSneaking(this,collapseListenerPair.b());
+        }
+        Containers.dropContents(level(),blockPosition(),inventory);
+        inventory.clear();
+        return super.collapseToItemStackWithoutSneaking();
+    }
+
+    @Override
+    public ItemStack collapseToItemStackWithSneaking() {
+        for (var collapseListenerPair:golemUpgradesCacheView.get(IGolemCollapseToItemStackListenerItem.class)) {
+            collapseListenerPair.a().onCollapseToItemStackWithSneaking(this,collapseListenerPair.b());
+        }
+        var result = super.collapseToItemStackWithSneaking();
+        var stackTag = result.getOrCreateTag();
+        ContainerHelper.saveAllItems(stackTag, inventory);
+        INVENTORY_SIZE.writeIntToCompoundTag(stackTag, inventory.size());
+        INVENTORY_COLORS.writeToCompoundTag(stackTag, getInventoryColors());
+//        HOME_POS.writeToCompoundTag(stackTag, getRestrictCenter());
+//        HOME_LEVEL.writeToCompoundTag(stackTag, homeLevelResourceLocation);
+        MARKERS.writeToCompoundTag(stackTag, markers);
+        return result;
     }
 
     protected void refreshAbilities() {
@@ -504,17 +562,26 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
 
         public static class Builder {
             public GolemBasicAbilityProperties build() {
-                return new GolemBasicAbilityProperties(basicUpgradeSize, carryPower/*, speed*/, regenDelay, strength, attackDelay, regenAmount, attackFireTicks);
+                return new GolemBasicAbilityProperties(basicUpgradeSize, carryPower, regenDelay, strength, attackDelay, regenAmount, attackFireTicks);
             }
 
-            public int basicUpgradeSize = 1;
-            public int carryPower = 1;
-//            public float speed = 0.38F;
-            public int regenDelay = 75;
-            public int strength = 0;
-            public int attackDelay = 20;
-            public int regenAmount = 1;
-            public int attackFireTicks = 0;
+            public static Builder copy(GolemBasicAbilityProperties properties) {
+                return new Builder().strength(properties.strength)
+                        .carryPower(properties.carryPower)
+                        .basicUpgradeSize(properties.basicUpgradeSize)
+                        .regenDelay(properties.regenDelay)
+                        .regenAmount(properties.regenAmount)
+                        .attackFireTicks(properties.attackFireTicks)
+                        .attackDelay(properties.attackDelay);
+            }
+
+            protected int basicUpgradeSize = 1;
+            protected int carryPower = 1;
+            protected int regenDelay = 75;
+            protected int strength = 0;
+            protected int attackDelay = 20;
+            protected int regenAmount = 1;
+            protected int attackFireTicks = 0;
 
             public Builder basicUpgradeSize(int basicUpgradeSize) {
                 this.basicUpgradeSize = basicUpgradeSize;
@@ -641,4 +708,22 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         };
     }
 
+    @Override
+    public boolean canBeCollapsedBy(LivingEntity living) {
+        return isOwner(living.getUUID());
+    }
+
+    @Override
+    public InteractionResult thaumcraft$interact(Player player, InteractionHand interactionHand) {
+        if (!isOwner(player.getUUID())) {
+            if (level().isClientSide()) {
+                player.sendSystemMessage(Component.translatable("thaumcraft.golem.interact.interact_not_owned_golem"));
+            }
+            return InteractionResult.PASS;
+        }
+        for (var interactionListenerPair:golemUpgradesCacheView.get(IGolemPlayerInteractionListenerItem.class)) {
+            interactionListenerPair.a().listenerOnPlayerInteract(this,interactionListenerPair.b(),player,interactionHand);
+        }
+        return InteractionResult.SUCCESS;
+    }
 }

@@ -4,6 +4,7 @@ import com.linearity.opentc4.utils.compoundtag.accessors.CacheableCompoundTagAcc
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
+//TODO:[maybe wont finished]ItemStackUnmodifiableView and CompoundTagUnmodifiableView
 public class ItemStackTagAccessor extends CacheableCompoundTagAccessor<ItemStack> {
 
     public ItemStackTagAccessor(String tagKey) {
@@ -21,7 +22,7 @@ public class ItemStackTagAccessor extends CacheableCompoundTagAccessor<ItemStack
         return ItemStack.of(tag.getCompound(tagKey));
     }
 
-    //PROMISE TO ME you wont modify it.
+    //PROMISE TO ME you WON'T modify it.
     public ItemStack readFromCompoundTagWithoutCopyCache(CompoundTag tag) {
         return super.readFromCompoundTag(tag);
     }

@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
 
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_CHICKEN;
-import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_COW;
 import static thaumcraft.common.entities.ThaumcraftEntities.usualCanConvertToTaintedMob;
 import static thaumcraft.common.entities.ThaumcraftEntities.usualTaintedMobConversion;
 

@@ -22,6 +22,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
+import thaumcraft.common.entities.golems.typedgolems.*;
+import thaumcraft.common.entities.golems.typedgolems.advanced.*;
 import thaumcraft.common.entities.monster.WispEntity;
 import thaumcraft.common.entities.monster.boss.*;
 import thaumcraft.common.entities.monster.eldritch.EldritchCrabEntity;
@@ -211,6 +213,54 @@ public class ThaumcraftEntities {
         }
         public static EntityType<TravelingTrunkEntity> TRAVELING_TRUNK() {
             return Registry.SUPPLIER_TRAVELING_TRUNK.get();
+        }
+        public static EntityType<StrawGolemEntity> STRAW_GOLEM() {
+            return Registry.SUPPLIER_STRAW_GOLEM.get();
+        }
+        public static EntityType<AdvancedStrawGolemEntity> ADVANCED_STRAW_GOLEM() {
+            return Registry.SUPPLIER_ADVANCED_STRAW_GOLEM.get();
+        }
+        public static EntityType<ClayGolemEntity> CLAY_GOLEM() {
+            return Registry.SUPPLIER_CLAY_GOLEM.get();
+        }
+        public static EntityType<AdvancedClayGolemEntity> ADVANCED_CLAY_GOLEM() {
+            return Registry.SUPPLIER_ADVANCED_CLAY_GOLEM.get();
+        }
+        public static EntityType<IronGolemEntity> IRON_GOLEM() {
+            return Registry.SUPPLIER_IRON_GOLEM.get();
+        }
+        public static EntityType<AdvancedIronGolemEntity> ADVANCED_IRON_GOLEM() {
+            return Registry.SUPPLIER_ADVANCED_IRON_GOLEM.get();
+        }
+        public static EntityType<ThaumiumGolemEntity> THAUMIUM_GOLEM() {
+            return Registry.SUPPLIER_THAUMIUM_GOLEM.get();
+        }
+        public static EntityType<AdvancedThaumiumGolemEntity> ADVANCED_THAUMIUM_GOLEM() {
+            return Registry.SUPPLIER_ADVANCED_THAUMIUM_GOLEM.get();
+        }
+        public static EntityType<TallowGolemEntity> TALLOW_GOLEM() {
+            return Registry.SUPPLIER_TALLOW_GOLEM.get();
+        }
+        public static EntityType<AdvancedTallowGolemEntity> ADVANCED_TALLOW_GOLEM() {
+            return Registry.SUPPLIER_ADVANCED_TALLOW_GOLEM.get();
+        }
+        public static EntityType<StoneGolemEntity> STONE_GOLEM() {
+            return Registry.SUPPLIER_STONE_GOLEM.get();
+        }
+        public static EntityType<AdvancedStoneGolemEntity> ADVANCED_STONE_GOLEM() {
+            return Registry.SUPPLIER_ADVANCED_STONE_GOLEM.get();
+        }
+        public static EntityType<FleshGolemEntity> FLESH_GOLEM() {
+            return Registry.SUPPLIER_FLESH_GOLEM.get();
+        }
+        public static EntityType<AdvancedFleshGolemEntity> ADVANCED_FLESH_GOLEM() {
+            return Registry.SUPPLIER_ADVANCED_FLESH_GOLEM.get();
+        }
+        public static EntityType<WoodGolemEntity> WOOD_GOLEM() {
+            return Registry.SUPPLIER_WOOD_GOLEM.get();
+        }
+        public static EntityType<AdvancedWoodGolemEntity> ADVANCED_WOOD_GOLEM() {
+            return Registry.SUPPLIER_ADVANCED_WOOD_GOLEM.get();
         }
     }
 
@@ -558,12 +608,147 @@ public class ThaumcraftEntities {
                         .build("aspect_orb")
         );
         public static final RegistrySupplier<EntityType<TravelingTrunkEntity>> SUPPLIER_TRAVELING_TRUNK = ENTITIES.register("traveling_trunk",
-                () -> EntityType.Builder.<TravelingTrunkEntity>of(TravelingTrunkEntity::new, MobCategory.MISC)
+                () -> EntityType.Builder.<TravelingTrunkEntity>of(TravelingTrunkEntity::new, MobCategory.CREATURE)
                         .sized(0.8F, 0.8F)
                         .clientTrackingRange(10)
                         .updateInterval(20)
                         .fireImmune()
                         .build("traveling_trunk")
+        );
+        public static final RegistrySupplier<EntityType<StrawGolemEntity>> SUPPLIER_STRAW_GOLEM = ENTITIES.register(
+                "straw_golem",
+                () -> EntityType.Builder.<StrawGolemEntity>of(StrawGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("straw_golem")
+        );
+        public static final RegistrySupplier<EntityType<AdvancedStrawGolemEntity>> SUPPLIER_ADVANCED_STRAW_GOLEM = ENTITIES.register(
+                "advanced_straw_golem",
+                () -> EntityType.Builder.<AdvancedStrawGolemEntity>of(AdvancedStrawGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("advanced_straw_golem")
+        );
+        public static final RegistrySupplier<EntityType<WoodGolemEntity>> SUPPLIER_WOOD_GOLEM = ENTITIES.register(
+                "wood_golem",
+                () -> EntityType.Builder.<WoodGolemEntity>of(WoodGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("wood_golem")
+        );
+        public static final RegistrySupplier<EntityType<AdvancedWoodGolemEntity>> SUPPLIER_ADVANCED_WOOD_GOLEM = ENTITIES.register(
+                "advanced_wood_golem",
+                () -> EntityType.Builder.<AdvancedWoodGolemEntity>of(AdvancedWoodGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("advanced_wood_golem")
+        );
+        public static final RegistrySupplier<EntityType<FleshGolemEntity>> SUPPLIER_FLESH_GOLEM = ENTITIES.register(
+                "flesh_golem",
+                () -> EntityType.Builder.<FleshGolemEntity>of(FleshGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("flesh_golem")
+        );
+        public static final RegistrySupplier<EntityType<AdvancedFleshGolemEntity>> SUPPLIER_ADVANCED_FLESH_GOLEM = ENTITIES.register(
+                "advanced_flesh_golem",
+                () -> EntityType.Builder.<AdvancedFleshGolemEntity>of(AdvancedFleshGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("advanced_flesh_golem")
+        );
+        public static final RegistrySupplier<EntityType<TallowGolemEntity>> SUPPLIER_TALLOW_GOLEM = ENTITIES.register(
+                "tallow_golem",
+                () -> EntityType.Builder.<TallowGolemEntity>of(TallowGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("tallow_golem")
+        );
+        public static final RegistrySupplier<EntityType<AdvancedTallowGolemEntity>> SUPPLIER_ADVANCED_TALLOW_GOLEM = ENTITIES.register(
+                "advanced_tallow_golem",
+                () -> EntityType.Builder.<AdvancedTallowGolemEntity>of(AdvancedTallowGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .build("advanced_tallow_golem")
+        );
+        public static final RegistrySupplier<EntityType<StoneGolemEntity>> SUPPLIER_STONE_GOLEM = ENTITIES.register(
+                "stone_golem",
+                () -> EntityType.Builder.<StoneGolemEntity>of(StoneGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("stone_golem")
+        );
+        public static final RegistrySupplier<EntityType<AdvancedStoneGolemEntity>> SUPPLIER_ADVANCED_STONE_GOLEM = ENTITIES.register(
+                "advanced_stone_golem",
+                () -> EntityType.Builder.<AdvancedStoneGolemEntity>of(AdvancedStoneGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("advanced_stone_golem")
+        );public static final RegistrySupplier<EntityType<IronGolemEntity>> SUPPLIER_IRON_GOLEM = ENTITIES.register(
+                "iron_golem",
+                () -> EntityType.Builder.<IronGolemEntity>of(IronGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("iron_golem")
+        );
+        public static final RegistrySupplier<EntityType<AdvancedIronGolemEntity>> SUPPLIER_ADVANCED_IRON_GOLEM = ENTITIES.register(
+                "advanced_iron_golem",
+                () -> EntityType.Builder.<AdvancedIronGolemEntity>of(AdvancedIronGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("advanced_iron_golem")
+        );
+        public static final RegistrySupplier<EntityType<ThaumiumGolemEntity>> SUPPLIER_THAUMIUM_GOLEM = ENTITIES.register(
+                "thaumium_golem",
+                () -> EntityType.Builder.<ThaumiumGolemEntity>of(ThaumiumGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("thaumium_golem")
+        );
+        public static final RegistrySupplier<EntityType<AdvancedThaumiumGolemEntity>> SUPPLIER_ADVANCED_THAUMIUM_GOLEM = ENTITIES.register(
+                "advanced_thaumium_golem",
+                () -> EntityType.Builder.<AdvancedThaumiumGolemEntity>of(AdvancedThaumiumGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("advanced_thaumium_golem")
+        );
+        public static final RegistrySupplier<EntityType<ClayGolemEntity>> SUPPLIER_CLAY_GOLEM = ENTITIES.register(
+                "clay_golem",
+                () -> EntityType.Builder.<ClayGolemEntity>of(ClayGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("clay_golem")
+        );
+        public static final RegistrySupplier<EntityType<AdvancedClayGolemEntity>> SUPPLIER_ADVANCED_CLAY_GOLEM = ENTITIES.register(
+                "advanced_clay_golem",
+                () -> EntityType.Builder.<AdvancedClayGolemEntity>of(AdvancedClayGolemEntity::new, MobCategory.CREATURE)
+                        .sized(0.4F, 0.95F)
+                        .clientTrackingRange(10)
+                        .updateInterval(20)
+                        .fireImmune()
+                        .build("advanced_clay_golem")
         );
     }
 
@@ -617,7 +802,22 @@ public class ThaumcraftEntities {
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.ELDRITCH_WARDEN(),EldritchWardenEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.GIANT_TAINTACLE(),GiantTaintacleEntity.createAttributes().build());
         registerDefaultAttribute(ThaumcraftEntityTypeInstances.TRAVELING_TRUNK(),TravelingTrunkEntity.createAttributes().build());
-
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.ADVANCED_STRAW_GOLEM(),AdvancedStrawGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.ADVANCED_CLAY_GOLEM(),AdvancedClayGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.ADVANCED_FLESH_GOLEM(),AdvancedFleshGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.ADVANCED_WOOD_GOLEM(),AdvancedWoodGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.ADVANCED_TALLOW_GOLEM(),AdvancedTallowGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.ADVANCED_THAUMIUM_GOLEM(),AdvancedThaumiumGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.ADVANCED_WOOD_GOLEM(),AdvancedWoodGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.ADVANCED_IRON_GOLEM(),AdvancedIronGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.STRAW_GOLEM(),StrawGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.CLAY_GOLEM(),ClayGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.FLESH_GOLEM(),FleshGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.WOOD_GOLEM(),WoodGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.TALLOW_GOLEM(),TallowGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.THAUMIUM_GOLEM(),ThaumiumGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.WOOD_GOLEM(),WoodGolemEntity.createAttributes().build());
+        registerDefaultAttribute(ThaumcraftEntityTypeInstances.IRON_GOLEM(),IronGolemEntity.createAttributes().build());
     }
 
     private static void registerSpawnPlacements() {

@@ -2,6 +2,7 @@ package thaumcraft.common.items.wands.wandtypes;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.annotations.ReturnValueUnstable;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import org.jetbrains.annotations.Unmodifiable;
@@ -107,7 +108,7 @@ public class WandCastingItem extends Item
         }
     }
     @Override
-    public @UnmodifiableView List<ItemStack> getWandComponents(@NotNull ItemStack componentOwnerStack) {
+    public @UnmodifiableView @ReturnValueUnstable List<ItemStack> getWandComponents(@NotNull ItemStack componentOwnerStack) {
 
         var cached = opentc4$getOrCreateCachedObjectFromItemStack(
                 componentOwnerStack,

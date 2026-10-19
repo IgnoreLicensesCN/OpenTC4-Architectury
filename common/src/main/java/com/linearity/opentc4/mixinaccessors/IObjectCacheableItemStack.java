@@ -1,13 +1,8 @@
 package com.linearity.opentc4.mixinaccessors;
 
-import com.google.common.collect.ClassToInstanceMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 
-import java.util.Map;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -51,6 +46,7 @@ import java.util.function.Supplier;
  *  <p>luckily it's totally unmodifiable,so we can just put</p>
  *  <pre>{@code
  *  @Override
+ * @ReturnValueUnstable
  *     public List<ItemStack> getWandComponents(@NotNull ItemStack componentOwnerStack) {
  *
  *         var cacheableItemStack = (IObjectCacheableItemStack)(Object)componentOwnerStack;

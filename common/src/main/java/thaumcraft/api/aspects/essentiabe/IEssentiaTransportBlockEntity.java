@@ -11,7 +11,7 @@ import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
  * <p>--IgnoreLicensesCN</p>
  */
 //TODO:[maybe wont finished] IEssentiaTransportBlock
-    @UtilityLikeAbstraction(reason = "useless now")
+@UtilityLikeAbstraction(reason = "useless now")
 public interface IEssentiaTransportBlockEntity extends IEssentiaTransportOutBlockEntity, IEssentiaTransportInBlockEntity {
 
 

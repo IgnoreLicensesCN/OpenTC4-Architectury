@@ -7,8 +7,8 @@ public enum EnumGolemType {
    STRAW(10, 0, 0.38F, false, 1, 1, 75, 0),
    WOOD(20, 6, 0.35F, false, 1, 4, 75, 1),
    TALLOW(20, 9, 0.33F, false, 2, 8, 75, 2),
-   CLAY(25, 9, 0.33F, true, 1, 8, 100, 2),
    FLESH(15, 6, 0.35F, false, 2, 4, 40, 1),
+   CLAY(25, 9, 0.33F, true, 1, 8, 100, 2),
    STONE(30, 12, 0.32F, true, 1, 16, 100, 3),
    IRON(35, 15, 0.31F, true, 1, 32, 125, 4),
    THAUMIUM(40, 15, 0.32F, true, 2, 32, 100, 4);

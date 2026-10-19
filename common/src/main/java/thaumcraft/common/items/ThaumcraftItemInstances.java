@@ -43,6 +43,8 @@ import thaumcraft.common.items.equipment.masks.SippingFiendMaskItem;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.golem.GolemBellItem;
+import thaumcraft.common.items.golem.golems.*;
+import thaumcraft.common.items.golem.golems.advanced.*;
 import thaumcraft.common.items.golem.upgrade.primal.*;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
 import thaumcraft.common.items.jars.NodeJarBlockItem;
@@ -1009,5 +1011,53 @@ public class ThaumcraftItemInstances {
     }
     public static GolemBellItem GOLEM_BELL() {
         return ThaumcraftItemsRegistry.SUPPLIER_GOLEM_BELL.get();
+    }
+    public static StrawGolemItem STRAW_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_STRAW_GOLEM.get();
+    }
+    public static AdvancedStrawGolemItem ADVANCED_STRAW_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ADVANCED_STRAW_GOLEM.get();
+    }
+    public static StoneGolemItem STONE_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_STONE_GOLEM.get();
+    }
+    public static AdvancedStoneGolemItem ADVANCED_STONE_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ADVANCED_STONE_GOLEM.get();
+    }
+    public static IronGolemItem IRON_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_IRON_GOLEM.get();
+    }
+    public static AdvancedIronGolemItem ADVANCED_IRON_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ADVANCED_IRON_GOLEM.get();
+    }
+    public static ClayGolemItem CLAY_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_CLAY_GOLEM.get();
+    }
+    public static AdvancedClayGolemItem ADVANCED_CLAY_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ADVANCED_CLAY_GOLEM.get();
+    }
+    public static FleshGolemItem FLESH_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_FLESH_GOLEM.get();
+    }
+    public static AdvancedFleshGolemItem ADVANCED_FLESH_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ADVANCED_FLESH_GOLEM.get();
+    }
+    public static WoodGolemItem WOOD_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_WOOD_GOLEM.get();
+    }
+    public static AdvancedWoodGolemItem ADVANCED_WOOD_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ADVANCED_WOOD_GOLEM.get();
+    }
+    public static TallowGolemItem TALLOW_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_TALLOW_GOLEM.get();
+    }
+    public static AdvancedTallowGolemItem ADVANCED_TALLOW_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ADVANCED_TALLOW_GOLEM.get();
+    }
+    public static ThaumiumGolemItem THAUMIUM_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_THAUMIUM_GOLEM.get();
+    }
+    public static AdvancedThaumiumGolemItem ADVANCED_THAUMIUM_GOLEM() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ADVANCED_THAUMIUM_GOLEM.get();
     }
 }

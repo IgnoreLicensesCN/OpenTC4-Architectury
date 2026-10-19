@@ -41,6 +41,8 @@ import thaumcraft.common.items.equipment.masks.*;
 import thaumcraft.common.items.equipment.specialtool.*;
 import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.golem.GolemBellItem;
+import thaumcraft.common.items.golem.golems.*;
+import thaumcraft.common.items.golem.golems.advanced.*;
 import thaumcraft.common.items.golem.upgrade.primal.*;
 import thaumcraft.common.items.jars.*;
 import thaumcraft.common.items.mateiral.*;
@@ -1257,6 +1259,70 @@ public class ThaumcraftItemsRegistry {
     public static final RegistrySupplier<GolemBellItem> SUPPLIER_GOLEM_BELL = ITEMS.register(
             "golem_bell",
             GolemBellItem::new
+    );
+    public static final RegistrySupplier<StrawGolemItem> SUPPLIER_STRAW_GOLEM = ITEMS.register(
+            "straw_golem",
+            StrawGolemItem::new
+    );
+    public static final RegistrySupplier<AdvancedStrawGolemItem> SUPPLIER_ADVANCED_STRAW_GOLEM = ITEMS.register(
+            "advanced_straw_golem",
+            AdvancedStrawGolemItem::new
+    );
+    public static final RegistrySupplier<StoneGolemItem> SUPPLIER_STONE_GOLEM = ITEMS.register(
+            "stone_golem",
+            StoneGolemItem::new
+    );
+    public static final RegistrySupplier<AdvancedStoneGolemItem> SUPPLIER_ADVANCED_STONE_GOLEM = ITEMS.register(
+            "advanced_stone_golem",
+            AdvancedStoneGolemItem::new
+    );
+    public static final RegistrySupplier<IronGolemItem> SUPPLIER_IRON_GOLEM = ITEMS.register(
+            "iron_golem",
+            IronGolemItem::new
+    );
+    public static final RegistrySupplier<AdvancedIronGolemItem> SUPPLIER_ADVANCED_IRON_GOLEM = ITEMS.register(
+            "advanced_iron_golem",
+            AdvancedIronGolemItem::new
+    );
+    public static final RegistrySupplier<ClayGolemItem> SUPPLIER_CLAY_GOLEM = ITEMS.register(
+            "clay_golem",
+            ClayGolemItem::new
+    );
+    public static final RegistrySupplier<AdvancedClayGolemItem> SUPPLIER_ADVANCED_CLAY_GOLEM = ITEMS.register(
+            "advanced_clay_golem",
+            AdvancedClayGolemItem::new
+    );
+    public static final RegistrySupplier<FleshGolemItem> SUPPLIER_FLESH_GOLEM = ITEMS.register(
+            "flesh_golem",
+            FleshGolemItem::new
+    );
+    public static final RegistrySupplier<AdvancedFleshGolemItem> SUPPLIER_ADVANCED_FLESH_GOLEM = ITEMS.register(
+            "advanced_flesh_golem",
+            AdvancedFleshGolemItem::new
+    );
+    public static final RegistrySupplier<TallowGolemItem> SUPPLIER_TALLOW_GOLEM = ITEMS.register(
+            "tallow_golem",
+            TallowGolemItem::new
+    );
+    public static final RegistrySupplier<AdvancedTallowGolemItem> SUPPLIER_ADVANCED_TALLOW_GOLEM = ITEMS.register(
+            "advanced_tallow_golem",
+            AdvancedTallowGolemItem::new
+    );
+    public static final RegistrySupplier<ThaumiumGolemItem> SUPPLIER_THAUMIUM_GOLEM = ITEMS.register(
+            "thaumium_golem",
+            ThaumiumGolemItem::new
+    );
+    public static final RegistrySupplier<AdvancedThaumiumGolemItem> SUPPLIER_ADVANCED_THAUMIUM_GOLEM = ITEMS.register(
+            "advanced_thaumium_golem",
+            AdvancedThaumiumGolemItem::new
+    );
+    public static final RegistrySupplier<WoodGolemItem> SUPPLIER_WOOD_GOLEM = ITEMS.register(
+            "wood_golem",
+            WoodGolemItem::new
+    );
+    public static final RegistrySupplier<AdvancedWoodGolemItem> SUPPLIER_ADVANCED_WOOD_GOLEM = ITEMS.register(
+            "advanced_wood_golem",
+            AdvancedWoodGolemItem::new
     );
     public static final Supplier<ItemStack> RANDOM_MANA_BEAN_SUPPLIER = new Supplier<>() {
         private final ThreadLocal<RandomSource> randomSourceThreadLocal = new ThreadLocal<>();

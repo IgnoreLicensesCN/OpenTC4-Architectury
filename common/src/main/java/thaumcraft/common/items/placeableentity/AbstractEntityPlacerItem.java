@@ -46,7 +46,6 @@ public abstract class AbstractEntityPlacerItem<EntityClass extends Entity> exten
                 }
                 applyEntityTags(entity,useOnContext);
 
-
                 if (player == null || !player.isCreative()){
                     stack.shrink(1);
                 }
