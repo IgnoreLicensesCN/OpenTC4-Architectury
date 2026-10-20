@@ -6,6 +6,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.placeableentity.AbstractUpgradeApplicableGolemPlacerItem;
 
+import java.util.Arrays;
+
 import static com.linearity.opentc4.Consts.BaseGolemEntityTagAccessors.*;
 
 public abstract class BaseGolemPlacerItem<GolemClass extends BaseGolemEntity> extends AbstractUpgradeApplicableGolemPlacerItem<GolemClass> {

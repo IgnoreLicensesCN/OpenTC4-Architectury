@@ -126,7 +126,7 @@ public class ArcaneWandRecipe extends AbstractArcaneRecipe {
         if (result == null){
             return ItemStack.EMPTY;
         }
-        return result.a();
+        return result.a().copy();
     }
 
     @Override

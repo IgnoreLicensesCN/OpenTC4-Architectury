@@ -64,7 +64,7 @@ public class SceptreCastingItem extends WandCastingItem implements IArcaneCrafti
     }
 
     @Override
-    public float getCraftingVisMultiplier(ItemStack usingWand, Aspect aspect) {
-        return super.getCraftingVisMultiplier(usingWand, aspect) + 0.05F;
+    public float getCraftingVisDecreasePercent(ItemStack usingWand, Aspect aspect) {
+        return super.getCraftingVisDecreasePercent(usingWand, aspect) + 0.05F;
     }
 }

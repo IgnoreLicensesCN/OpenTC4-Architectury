@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.golems;
 
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
-import com.linearity.opentc4.mixinaccessors.InteractionOverridenMob;
+import com.linearity.opentc4.mixinaccessors.InteractionOverrideMob;
 import com.linearity.opentc4.mixinaccessors.cliententity.BaseGolemEntityClientAccessor;
 import com.linearity.opentc4.utils.ClassToItemStackPairMap;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
@@ -39,6 +39,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.crafted.GolemFetterBlock;
+import thaumcraft.common.items.golem.GolemBellItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.*;
 
@@ -49,7 +50,7 @@ import static com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAcces
 import static thaumcraft.common.entities.golems.BaseGolemEntity.BaseGolemEntityClientEventSignals.*;
 
 public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEntity<BaseGolemEntity.IGolemUpgradeItem> 
-        implements RangedAttackMob, InteractionOverridenMob {
+        implements RangedAttackMob, InteractionOverrideMob {
 
     public static class BaseGolemEntityClientEventSignals {
         public static final byte START_ACTION_TIMER = 4;
@@ -86,6 +87,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemCollapseToItemStackListenerItem.class, 900));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemPlayerInteractionListenerItem.class, 1000));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemHomeRangeModifierItem.class, 1100));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemColorfulMarkerProviderItem.class, 1200));
     }
 
     public List<ObjectIntPair<Class<? extends IGolemModifierItem>>> getAvailableGolemModifierTypes() {
@@ -222,6 +224,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
 
     public NonNullList<ItemStack> inventory = NonNullList.withSize(0, ItemStack.EMPTY);
     public final Set<Marker> markers = new HashSet<>();
+    public @NotNull Direction homeDirection = Direction.UP;
 
     public static class GolemAbilitiesData {
         public int carryPower;//item carry capacity:*1,fluid carry capacity(mb):*1000
@@ -320,6 +323,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         }
         markers.clear();
         MARKERS.readFromCompoundTagInto(tag,markers);
+        homeDirection = HOME_FACE.readFromCompoundTag(tag);
     }
 
     public int getDefaultRestrictionSize(){
@@ -338,6 +342,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
             additionalDataProviderPair.a().writeAdditional(this,additionalDataProviderPair.b(),tag);
         }
         MARKERS.writeToCompoundTag(tag, markers);
+        HOME_FACE.writeToCompoundTag(tag, homeDirection);
     }
 
     @Override
@@ -710,19 +715,24 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
 
     @Override
     public boolean canBeCollapsedBy(LivingEntity living) {
-        return isOwner(living.getUUID());
+        return isOwnedBy(living.getUUID());
     }
 
     @Override
     public InteractionResult thaumcraft$interact(Player player, InteractionHand interactionHand) {
-        if (!isOwner(player.getUUID())) {
+        if (!isOwnedBy(player.getUUID())) {
             if (level().isClientSide()) {
                 player.sendSystemMessage(Component.translatable("thaumcraft.golem.interact.interact_not_owned_golem"));
             }
             return InteractionResult.PASS;
         }
-        for (var interactionListenerPair:golemUpgradesCacheView.get(IGolemPlayerInteractionListenerItem.class)) {
-            interactionListenerPair.a().listenerOnPlayerInteract(this,interactionListenerPair.b(),player,interactionHand);
+        var usingStack = player.getItemInHand(interactionHand);
+        if (usingStack.getItem() instanceof GolemBellItem golemBell){
+            golemBell.onInteractGolem(player,interactionHand,usingStack,this);
+        }else {
+            for (var interactionListenerPair:golemUpgradesCacheView.get(IGolemPlayerInteractionListenerItem.class)) {
+                interactionListenerPair.a().listenerOnPlayerInteract(this,interactionListenerPair.b(),player,interactionHand);
+            }
         }
         return InteractionResult.SUCCESS;
     }

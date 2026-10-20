@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin;
 
-import com.linearity.opentc4.mixinaccessors.InteractionOverridenMob;
+import com.linearity.opentc4.mixinaccessors.InteractionOverrideMob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -35,7 +35,7 @@ public class MobMixin {
             cancellable = true
     )
     public void opentc4$interactionOverridden(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (this instanceof InteractionOverridenMob mob){
+        if (this instanceof InteractionOverrideMob mob){
             cir.setReturnValue(mob.thaumcraft$interact(player,interactionHand));
         }
     }

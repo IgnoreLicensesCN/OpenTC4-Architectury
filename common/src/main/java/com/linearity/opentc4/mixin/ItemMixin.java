@@ -15,11 +15,11 @@ import java.util.List;
 @Mixin(Item.class)
 public class ItemMixin {
 
-    @Inject(
-            method = "appendHoverText",
-            at = @At("HEAD")
-    )
-    private void opentc4$appendHoverText(ItemStack itemStack, Level level, List<Component> list, TooltipFlag tooltipFlag, CallbackInfo ci) {
-
-    }
+//    @Inject(
+//            method = "appendHoverText",
+//            at = @At("HEAD")
+//    )
+//    private void opentc4$appendHoverText(ItemStack itemStack, Level level, List<Component> list, TooltipFlag tooltipFlag, CallbackInfo ci) {
+//
+//    }
 }

@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class Marker {
+   public static final byte INVALID_MARKER_COLOR = 0;
+   public static final byte MARKER_COLOR_MAX = 16;
    public final @NotNull BlockPos pos;
    public final @NotNull ResourceLocation dim;
    public final @NotNull Direction side;
@@ -46,7 +48,7 @@ public class Marker {
           return Objects.equals(this.pos, marker.pos)
                   && Objects.equals(this.dim,marker.dim)
                   && this.side == marker.side
-                  && (this.color == marker.color || this.color == -1 || marker.color == -1);
+                  && (this.color == marker.color || this.color == INVALID_MARKER_COLOR || marker.color == INVALID_MARKER_COLOR);
       }
    }
 }

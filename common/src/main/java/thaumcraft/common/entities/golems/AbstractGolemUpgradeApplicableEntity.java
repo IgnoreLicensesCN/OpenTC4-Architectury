@@ -111,12 +111,12 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
 
     public abstract Class<UpgradeItem> getUpgradeClass();
 
-    public boolean isOwner(@Nullable UUID uuidToCheck) {
+    public boolean isOwnedBy(@Nullable UUID uuidToCheck) {
         var ownerUUID = getOwnerUUID();
         if (Objects.equals(this.uuid,getOwnerUUID()) || getOwnerUUID() == null){
             return true;
         }
-        return uuidToCheck == ownerUUID;
+        return Objects.equals(ownerUUID,uuidToCheck);
     }
 
     protected boolean tryInstallUpgradeFromStack(ItemStack stack) {

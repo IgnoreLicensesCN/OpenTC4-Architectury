@@ -16,10 +16,6 @@ import thaumcraft.common.entities.ThaumcraftEntityEvents;
 
 @Mixin(Entity.class)
 public class EntityMixin {
-
-    @Shadow
-    private Level level;
-
     @WrapOperation(
             method = "updateFluidHeightAndDoFluidPushing",
             at = @At(

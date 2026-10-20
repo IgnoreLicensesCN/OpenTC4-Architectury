@@ -163,7 +163,7 @@ public class WandCastingItem extends Item
     }
 
     @Override
-    public float getCraftingVisMultiplier(ItemStack usingWand, Aspect aspect) {
+    public float getCraftingVisDecreasePercent(ItemStack usingWand, Aspect aspect) {
         double result = 1;
         for (var componentStack: getWandComponents(usingWand)) {
             if (componentStack.getItem() instanceof IArcaneCraftingVisMultiplierProviderComponentItem provider) {

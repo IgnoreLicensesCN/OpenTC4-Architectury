@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.golems;
 
 import com.linearity.opentc4.annotations.StoleFrom;
-import com.linearity.opentc4.mixinaccessors.InteractionOverridenMob;
+import com.linearity.opentc4.mixinaccessors.InteractionOverrideMob;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -48,7 +48,7 @@ import static dev.architectury.registry.menu.MenuRegistry.openExtendedMenu;
 public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<TravelingTrunkEntity.ITravelingTrunkUpgradeItem>
         implements
         StayableOwnableEntity,
-        InteractionOverridenMob {
+        InteractionOverrideMob {
 
     public TravelingTrunkEntity(Level worldIn) {
         this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.TRAVELING_TRUNK(), worldIn);
@@ -627,7 +627,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
 
     @Override
     public boolean canBeCollapsedBy(LivingEntity living) {
-        return isOwner(living.getUUID());
+        return isOwnedBy(living.getUUID());
     }
 
     @Override

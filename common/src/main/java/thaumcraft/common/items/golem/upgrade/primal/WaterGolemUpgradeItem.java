@@ -44,7 +44,7 @@ public class WaterGolemUpgradeItem extends Item implements TravelingTrunkEntity.
 
     @Override
     public InteractionResult travelingTrunkUpgrade$modifyInteraction(TravelingTrunkEntity trunk, ItemStack upgradeStack, Player player, InteractionHand interactionHand) {
-        if (trunk.isOwner(player.getUUID())) {
+        if (trunk.isOwnedBy(player.getUUID())) {
             return InteractionResult.PASS;
         }
         return TravelingTrunkEntity.ITravelingTrunkUpgradeItem.super.travelingTrunkUpgrade$modifyInteraction(trunk, upgradeStack, player, interactionHand);

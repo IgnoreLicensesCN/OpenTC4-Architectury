@@ -42,11 +42,10 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
-
 public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent implements IEntityInLavaBlock, EntityBlock {
 
     public static final VoxelShape STABLE_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
+    //TODO:[maybe wont finished]turn into "item" match then "tag" match then "forRecipeItemMatcher" match
     public static final Map<RecipeItemMatcher, ItemStack> infernalFurnaceSmeltingBonus = new ConcurrentHashMap<>();
 
     public InfernalFurnaceLavaBlock(Properties properties) {
@@ -111,10 +110,10 @@ public class InfernalFurnaceLavaBlock extends AbstractInfernalFurnaceComponent i
      * @param out The bonus item that can be produced from the smelting operation e.g. new ItemStack(nuggetGold,0,0).
      *            Stacksize should be 0 unless you want to guarantee that at least 1 item is always produced.
      */
-    public static void addInfernalFurnaceSmeltingBonus(String in, ItemStack out) {
+    public static void addInfernalFurnaceSmeltingBonus(TagItemMatcher in, ItemStack out) {
         var setIn = new ItemStack(out.getItem(), 0);
         setIn.setDamageValue(out.getDamageValue());
-        infernalFurnaceSmeltingBonus.put(TagItemMatcher.of(in), setIn);
+        infernalFurnaceSmeltingBonus.put(in, setIn);
     }
 
     @Override

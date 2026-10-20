@@ -1,10 +1,11 @@
-package thaumcraft.common.items.golem.upgrade.abstracts.behavior;
+package thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample;
 
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.IGolemModifierItem;
 
+@UtilityLikeAbstraction
 public interface IGolemAttackDelayProviderItem extends IGolemAbilityModifierItem {
     int getAttackDelayModified(BaseGolemEntity golem,ItemStack upgradeStack, int attackDelay);
 

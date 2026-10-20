@@ -41,7 +41,7 @@ public enum CalculateWandConsumptionListenerEnum {
             var wandStack = context.wandStack;
             var aspect = context.aspect;
             if ((casting instanceof IArcaneCraftingVisMultiplierProviderItem craftingVisMultiplierProvider)) {
-                context.currentConsumption -= craftingVisMultiplierProvider.getCraftingVisMultiplier(wandStack, aspect);
+                context.currentConsumption -= craftingVisMultiplierProvider.getCraftingVisDecreasePercent(wandStack, aspect);
             }
         }
     }),
