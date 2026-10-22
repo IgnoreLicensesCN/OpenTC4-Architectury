@@ -5,5 +5,5 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemModifierItem;
 
 public interface IGolemHomeRangeModifierItem extends IGolemModifierItem {
-    int modifyHomeRange(BaseGolemEntity baseGolemEntity, ItemStack b, int range);
+    float modifyHomeRange(BaseGolemEntity baseGolemEntity, ItemStack b, float range);
 }

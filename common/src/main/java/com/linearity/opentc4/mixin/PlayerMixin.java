@@ -3,7 +3,6 @@ package com.linearity.opentc4.mixin;
 import com.linearity.opentc4.mixinaccessors.*;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
@@ -19,9 +18,8 @@ import thaumcraft.common.items.abstracts.IFlyingAbilityProviderWearing;
 import thaumcraft.common.items.abstracts.ISwordLikeItem;
 import thaumcraft.api.research.ResearchAndScannedInfo;
 import thaumcraft.common.items.wands.WandCooldownManager;
+import thaumcraft.common.runicshield.RunicShieldHandler;
 import thaumcraft.common.runicshield.RunicShieldInfo;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 import static thaumcraft.common.lib.events.EventHandlerEntity.updateSpeedForHasteEnchantment;
 
@@ -84,25 +82,9 @@ public class PlayerMixin
             at = @At("HEAD"),
             argsOnly = true
     )
-    private float opentc4$playerActuallyHurt$modifyDamageWithRunicShield(float f, DamageSource damageSource){
+    private float opentc4$playerActuallyHurt$modifyDamageWithRunicShield(float damage, DamageSource damageSource){
         var player = (Player)(Object)this;
-        if (!player.level().isClientSide){
-            var shieldInfo = RunicShieldInfo.getFromLiving(player);
-            if (shieldInfo != null){
-                AtomicReference<Float> floatAtomicReference = new AtomicReference<>(f);
-                shieldInfo.shieldCapacity.keySet().forEach(
-                        shieldType ->
-                                floatAtomicReference.updateAndGet(
-                                        finalDamage -> shieldType.beforeActuallyHurt(player, damageSource,finalDamage,shieldInfo))
-                );
-                if (shieldInfo.shouldSyncCharge && player instanceof ServerPlayer serverPlayer){
-                    shieldInfo.syncChargeSendPacket(serverPlayer);
-                }
-                shieldInfo.shouldSyncCharge = false;
-                return floatAtomicReference.get();
-            }
-        }
-        return f;
+        return RunicShieldHandler.modifyDamageWithRunicShield(damage, damageSource, player);
     }
 
     //hope wont crash
@@ -115,8 +97,8 @@ public class PlayerMixin
     )
     private ItemStack opentc4$bypassSweepCheck(Player player, InteractionHand hand, Operation<ItemStack> original) {
         ItemStack itemStack = original.call(player, hand);
-        if (itemStack.getItem() instanceof ISwordLikeItem) {
-            return Items.DIAMOND_SWORD.getDefaultInstance();
+        if (itemStack.getItem() instanceof ISwordLikeItem swordLikeItem) {
+            return swordLikeItem.getSwordStackToCheatCheck(itemStack);
         }
         return itemStack;
     }

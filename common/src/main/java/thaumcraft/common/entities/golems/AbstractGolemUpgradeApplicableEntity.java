@@ -11,6 +11,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
@@ -18,20 +19,21 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 import static com.linearity.opentc4.Consts.AbstractGolemUpgradeApplicableEntityTagAccessors.OWNER;
 import static com.linearity.opentc4.Consts.AbstractGolemUpgradeApplicableEntityTagAccessors.UPGRADES;
 
 public abstract class AbstractGolemUpgradeApplicableEntity<
         UpgradeItem extends AbstractGolemUpgradeApplicableEntity.IAbstractGolemUpgradeItem
-        > extends Mob
+        > extends PathfinderMob
         implements
         OwnableEntity,
         IItemStackCollapsibleGolem
 {
     private static final EntityDataAccessor<Optional<UUID>> DATA_ID_OWNER = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor< @Modifiable /*modification wont sync directly*/ List<ItemStack>> DATA_ID_UPGRADES = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializerAdditions.ITEM_STACK_NON_NULL_LIST);
-    protected AbstractGolemUpgradeApplicableEntity(EntityType<? extends Mob> entityType, Level level) {
+    protected AbstractGolemUpgradeApplicableEntity(EntityType<? extends AbstractGolemUpgradeApplicableEntity> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -84,10 +86,11 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
                 var attrMap = upgrade.getAttributes(upgradeStack, this);
                 for (var attributeToApplyPair:attrMap.entrySet()){
                     var attributeToApply = attributeToApplyPair.getKey();
-                    for (var attributeModifier:attributeToApplyPair.getValue()){
+                    for (var attributeModifierProvider:attributeToApplyPair.getValue()){
                         var attributeInstance = getAttribute(attributeToApply);
-                        if (attributeInstance != null && !attributeInstance.hasModifier(attributeModifier)){
-                            attributeInstance.addPermanentModifier(attributeModifier);
+                        var modifier = attributeModifierProvider.get();
+                        if (attributeInstance != null && !attributeInstance.hasModifier(modifier)){
+                            attributeInstance.addPermanentModifier(modifier);
                         }
                     }
                 }
@@ -104,7 +107,7 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
 
         boolean golemUpgrade$isApplicableTo(ItemStack stack,AbstractGolemUpgradeApplicableEntity<?> golem);
 
-        default Map<Attribute,Collection<AttributeModifier>> getAttributes(ItemStack upgradeStack, Mob golem) {
+        default Map<Attribute, Collection<Supplier<AttributeModifier>>> getAttributes(ItemStack upgradeStack, Mob golem) {
             return Collections.emptyMap();
         }
     }

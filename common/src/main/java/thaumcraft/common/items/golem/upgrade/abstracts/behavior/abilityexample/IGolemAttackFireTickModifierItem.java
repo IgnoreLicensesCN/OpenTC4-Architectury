@@ -6,11 +6,10 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem;
 
 @UtilityLikeAbstraction
-public interface IGolemStrengthModifierItem extends IGolemAbilityModifierItem {
-    int getStrengthModified(BaseGolemEntity golem,ItemStack upgradeStack, int strength);
-
+public interface IGolemAttackFireTickModifierItem extends IGolemAbilityModifierItem {
+    float modifyAttackFireTick(BaseGolemEntity golem, ItemStack upgradeStack, float attackFireTicks);
     @Override
     default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
-        abilitiesData.strength = getStrengthModified(golem,upgradeStack,abilitiesData.strength);
+        abilitiesData.attackFireTicks = modifyAttackFireTick(golem, upgradeStack, abilitiesData.attackFireTicks);
     }
 }

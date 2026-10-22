@@ -22,12 +22,6 @@ public abstract class BaseGolemPlacerItem<GolemClass extends BaseGolemEntity> ex
         if (stackTag != null){
             int inventorySize = INVENTORY_SIZE.readIntFromCompoundTag(stackTag);
             golemPlaced.inventory = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
-            {
-                byte[] inventoryColors = new byte[inventorySize];
-                var inventoryColorsBefore = INVENTORY_COLORS.readFromCompoundTag(stackTag);
-                System.arraycopy(inventoryColorsBefore, 0, inventoryColors, 0, Math.min(inventoryColorsBefore.length, inventoryColors.length));
-                golemPlaced.setInventoryColors(inventoryColors);
-            }
             golemPlaced.restrictTo(
                     useOnContext.getClickedPos(),
                     golemPlaced.getDefaultRestrictionSize()

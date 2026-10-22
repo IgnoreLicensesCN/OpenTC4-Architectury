@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import thaumcraft.common.entities.monster.pech.AbstractPechEntity;
@@ -17,5 +18,6 @@ public class EntityTypeTests {
     public static final EntityTypeTest<Entity, ExperienceOrb> EXPERIENCE_ORB_TEST = EntityTypeTest.forClass(ExperienceOrb.class);
     public static final EntityTypeTest<Entity, ItemEntity> ITEM_ENTITY_TEST = EntityTypeTest.forClass(ItemEntity.class);
     public static final EntityTypeTest<Entity, AbstractPechEntity> PECH_TEST = EntityTypeTest.forClass(AbstractPechEntity.class);
+    public static final EntityTypeTest<Entity, Creeper> CREEPER_TEST = EntityTypeTest.forClass(Creeper.class);
 
 }

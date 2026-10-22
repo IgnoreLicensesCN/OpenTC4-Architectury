@@ -6,6 +6,8 @@ import com.linearity.opentc4.mixinaccessors.cliententity.BaseGolemEntityClientAc
 import com.linearity.opentc4.utils.ClassToItemStackPairMap;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -28,7 +30,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
@@ -42,6 +43,8 @@ import thaumcraft.common.blocks.crafted.GolemFetterBlock;
 import thaumcraft.common.items.golem.GolemBellItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.*;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem;
+import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLocation;
 
 import java.util.*;
 
@@ -52,6 +55,20 @@ import static thaumcraft.common.entities.golems.BaseGolemEntity.BaseGolemEntityC
 public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEntity<BaseGolemEntity.IGolemUpgradeItem> 
         implements RangedAttackMob, InteractionOverrideMob {
 
+    protected final GolemGoalSelector wrappedGoalSelector = new GolemGoalSelector(this.goalSelector);
+    protected final GolemGoalSelector wrappedTargetSelector = new GolemGoalSelector(this.targetSelector);
+
+    protected final Set<DecorationOccupiedTypeResourceLocation> decorationTypes = new HashSet<>();
+
+    @Override
+    public boolean hasRestriction() {
+        if (NULL_POS_TO_WRITE.equals(this.getRestrictCenter())){
+            return false;
+        }
+        return super.hasRestriction();
+    }
+
+
     public static class BaseGolemEntityClientEventSignals {
         public static final byte START_ACTION_TIMER = 4;
         public static final byte HEAL = 5;
@@ -60,7 +77,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         public static final byte START_RIGHT_ARM_TIMER = 8;
     }
 
-    public BaseGolemEntity(EntityType<? extends Mob> entityType, Level level) {
+    public BaseGolemEntity(EntityType<? extends BaseGolemEntity> entityType, Level level) {
         super(entityType, level);
         var navi = new GroundPathNavigation(this,level);
         this.navigation = navi;
@@ -82,7 +99,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemRangedAttackPerformerItem.class, 400));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemAbilityModifierItem.class, 500));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemAdditionalDataProviderItem.class, 600));
-        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemDamageModifierItem.class,700));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemReceivedDamageModifierItem.class,700));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemDamageListenerItem.class, 800));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemCollapseToItemStackListenerItem.class, 900));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemPlayerInteractionListenerItem.class, 1000));
@@ -117,7 +134,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         if (regenTickCounter > 0) {
             regenTickCounter--;
         } else if (this.getHealth() != this.getMaxHealth()) {
-            this.regenTickCounter = abilitiesData.regenDelay;
+            this.regenTickCounter = (int) abilitiesData.regenDelay;
             this.heal(abilitiesData.regenAmount);
             level.broadcastEntityEvent(this, BaseGolemEntityClientEventSignals.HEAL);
         }
@@ -136,7 +153,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         }
         if (isAIAvailableBefore != isAIAvailable()){
             if (this.isOnFetter) {
-                this.goalSelector.removeAllGoals(_ignored -> true);
+                this.wrappedGoalSelector.removeAllGoals(_ignored -> true);
                 this.targetSelector.removeAllGoals(_ignored -> true);
             }else {
                 refreshGoals();
@@ -152,11 +169,11 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
     }
 
     public int getHomeRange(){
-        int range = abilitiesData.homeRange;
+        float range = abilitiesData.homeRange;
         for (var modifierPair:golemUpgradesCacheView.get(IGolemHomeRangeModifierItem.class)){
             range = modifierPair.a().modifyHomeRange(this,modifierPair.b(),range);
         }
-        return range;
+        return (int) range;
     }
 
     public void tryTeleportHome() {
@@ -227,20 +244,20 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
     public @NotNull Direction homeDirection = Direction.UP;
 
     public static class GolemAbilitiesData {
-        public int carryPower;//item carry capacity:*1,fluid carry capacity(mb):*1000
-        public int inventorySize = 0;
-        public int attackDelay;
-        public int regenDelay;
-        public int regenAmount;
-        public int strength;
-        public int attackFireTicks;
+        public float carryPower;//item carry capacity:*1,fluid carry capacity(mb):*1000
+        public float inventorySize = 0;
+        public float attackDelay;
+        public float regenDelay;
+        public float regenAmount;
+        public float strength;
+        public float attackFireTicks;
         public float speedMultiplier = 1;
-        public final GoalSelector goalSelector;
-        public final GoalSelector targetSelector;
+        public final GolemGoalSelector goalSelector;
+        public final GolemGoalSelector targetSelector;
         public final GolemBasicAbilityProperties properties;
-        public int homeRange = 16;
+        public float homeRange = 16;
 
-        public GolemAbilitiesData(GoalSelector goalSelector, GoalSelector targetSelector, GolemBasicAbilityProperties properties) {
+        public GolemAbilitiesData(GolemGoalSelector goalSelector, GolemGoalSelector targetSelector, GolemBasicAbilityProperties properties) {
             this.carryPower = properties.carryPower;
             this.attackDelay = properties.attackDelay;
             this.regenDelay = properties.regenDelay;
@@ -277,14 +294,14 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         }
     }
 
-    private final GolemAbilitiesData abilitiesData = new GolemAbilitiesData(this.goalSelector, this.targetSelector, getBasicAbilityProperties());
+    private final GolemAbilitiesData abilitiesData = new GolemAbilitiesData(this.wrappedGoalSelector, this.wrappedTargetSelector, getBasicAbilityProperties());
 
     public int getCarryPower() {
-        return this.abilitiesData.carryPower;
+        return (int) this.abilitiesData.carryPower;
     }
 
     public int getAttackDelay() {
-        return this.abilitiesData.attackDelay;
+        return (int) this.abilitiesData.attackDelay;
     }
 
     @NotNull
@@ -302,14 +319,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         this.abilitiesData.inventorySize = INVENTORY_SIZE.readIntFromCompoundTag(tag);
-        this.inventory = NonNullList.withSize(this.abilitiesData.inventorySize, ItemStack.EMPTY);
-
-        {
-            byte[] inventoryColors = new byte[inventory.size()];
-            var inventoryColorsBefore = INVENTORY_COLORS.readFromCompoundTag(tag);
-            System.arraycopy(inventoryColorsBefore, 0, inventoryColors, 0, Math.min(inventoryColorsBefore.length, inventoryColors.length));
-            setInventoryColors(inventoryColors);
-        }
+        this.inventory = NonNullList.withSize((int) this.abilitiesData.inventorySize, ItemStack.EMPTY);
 
         ContainerHelper.loadAllItems(tag, this.inventory);
         this.restrictTo(HOME_POS.readFromCompoundTag(tag), getDefaultRestrictionSize());
@@ -318,12 +328,12 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
             this.homeLevelResourceLocation = homeLevelResourceLocation;
         }
         super.readAdditionalSaveData(tag);
-        for (var additionalDataProviderPair:golemUpgradesCacheView.get(IGolemAdditionalDataProviderItem.class)) {
-            additionalDataProviderPair.a().readAdditional(this,additionalDataProviderPair.b(),tag);
-        }
         markers.clear();
         MARKERS.readFromCompoundTagInto(tag,markers);
         homeDirection = HOME_FACE.readFromCompoundTag(tag);
+        for (var additionalDataProviderPair:golemUpgradesCacheView.get(IGolemAdditionalDataProviderItem.class)) {
+            additionalDataProviderPair.a().readAdditional(this,additionalDataProviderPair.b(),tag);
+        }
     }
 
     public int getDefaultRestrictionSize(){
@@ -333,16 +343,15 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        INVENTORY_SIZE.writeIntToCompoundTag(tag, this.abilitiesData.inventorySize);
-        INVENTORY_COLORS.writeToCompoundTag(tag, getInventoryColors());
+        INVENTORY_SIZE.writeIntToCompoundTag(tag, (int) this.abilitiesData.inventorySize);
         ContainerHelper.saveAllItems(tag, this.inventory);
         HOME_POS.writeToCompoundTag(tag, getRestrictCenter());
         HOME_LEVEL.writeToCompoundTag(tag, this.homeLevelResourceLocation);
+        MARKERS.writeToCompoundTag(tag, markers);
+        HOME_FACE.writeToCompoundTag(tag, homeDirection);
         for (var additionalDataProviderPair:golemUpgradesCacheView.get(IGolemAdditionalDataProviderItem.class)) {
             additionalDataProviderPair.a().writeAdditional(this,additionalDataProviderPair.b(),tag);
         }
-        MARKERS.writeToCompoundTag(tag, markers);
-        HOME_FACE.writeToCompoundTag(tag, homeDirection);
     }
 
     @Override
@@ -364,7 +373,6 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         var stackTag = result.getOrCreateTag();
         ContainerHelper.saveAllItems(stackTag, inventory);
         INVENTORY_SIZE.writeIntToCompoundTag(stackTag, inventory.size());
-        INVENTORY_COLORS.writeToCompoundTag(stackTag, getInventoryColors());
 //        HOME_POS.writeToCompoundTag(stackTag, getRestrictCenter());
 //        HOME_LEVEL.writeToCompoundTag(stackTag, homeLevelResourceLocation);
         MARKERS.writeToCompoundTag(stackTag, markers);
@@ -383,7 +391,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
     protected void reconstructInventory() {
         var oldInventory = this.inventory;
         int inventorySizePrev = oldInventory.size();
-        int inventorySizeNext = this.abilitiesData.inventorySize;
+        int inventorySizeNext = (int) this.abilitiesData.inventorySize;
         if (inventorySizePrev != inventorySizeNext) {
             var level = level();
             var pos = position();
@@ -418,6 +426,10 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
             }
         }
         refreshAbilities();
+        decorationTypes.clear();
+        for (var decorationPair:golemUpgradesCacheView.get(IGolemDecorationItem.class)){
+            decorationTypes.addAll(decorationPair.a().getOccupiedTypes(this, decorationPair.b()));
+        }
     }
 
     @Override
@@ -432,7 +444,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
     public static AttributeSupplier.Builder createGolemAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 20)
-                .add(Attributes.ATTACK_DAMAGE, 1)
+                .add(Attributes.ATTACK_DAMAGE, 2)
                 .add(Attributes.MOVEMENT_SPEED, 0.6)
                 .add(Attributes.FOLLOW_RANGE, 32);
     }
@@ -443,10 +455,10 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
     }
 
     public void refreshGoals() {
-        this.goalSelector.removeAllGoals(_ignored -> true);
+        this.wrappedGoalSelector.removeAllGoals(_ignored -> true);
         this.targetSelector.removeAllGoals(_ignored -> true);
         for (var providerPair : golemUpgradesCacheView.get(IGolemAIProviderItem.class)) {
-            providerPair.a().registerGoalForGolem(this, providerPair.b(), this.goalSelector, this.targetSelector);
+            providerPair.a().registerGoalForGolem(this, providerPair.b(), this.wrappedGoalSelector, this.wrappedTargetSelector);
         }
     }
 
@@ -493,7 +505,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
             return false;
         }
         var item = stack.getItem();
-        return !golemCoreFullFor(item) && !basicUpgradeFullFor(item) && !decorationItemFullFor(item);
+        return !golemCoreFullFor(item) && !basicUpgradeFullFor(item) && !decorationItemFullFor(stack);
     }
 
     protected boolean golemCoreFullFor(Item item) {
@@ -504,8 +516,17 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         return item instanceof IGolemBasicUpgradeItem && getGolemBasicUpgradeCapacity() <= golemUpgradesCacheView.get(IGolemBasicUpgradeItem.class).size();
     }
 
-    protected boolean decorationItemFullFor(Item item) {
-        return item instanceof IGolemDecorationItem decoration && golemUpgradesCacheView.get(IGolemDecorationItem.class).stream().anyMatch(p -> p.a() == decoration);
+    protected boolean decorationItemFullFor(ItemStack stack) {
+        var item = stack.getItem();
+        if (!(item instanceof IGolemDecorationItem decoration)) {
+            return false;
+        }
+        for (var decoType: decoration.getOccupiedTypes(this, stack)) {
+            if (decorationTypes.contains(decoType)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -528,8 +549,8 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         if (damageSource.is(DamageTypes.CACTUS)){
             f = Float.NaN;
         }
-        for (var damageModifierPair:golemUpgradesCacheView.get(IGolemDamageModifierItem.class)) {
-            f = damageModifierPair.a().modifyDamage(this,damageModifierPair.b(),damageSource,f);
+        for (var damageModifierPair:golemUpgradesCacheView.get(IGolemReceivedDamageModifierItem.class)) {
+            f = damageModifierPair.a().modifyReceivedDamage(this,damageModifierPair.b(),damageSource,f);
         }
         if (Float.isNaN(f)) {
             return false;
@@ -689,28 +710,16 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         }
     }
 
-    public void startActionTimer() {
-        ClientTickContext.startActionTimer(this);
-    }
-
-    public void startLeftArmTimer() {
-        ClientTickContext.startLeftArmTimer(this);
-    }
-
-    public void startRightArmTimer() {
-        ClientTickContext.startRightArmTimer(this);
-    }
-
     @Override
     public void handleEntityEvent(byte b) {
         switch (b) {
-            case START_ACTION_TIMER -> startActionTimer();
+            case START_ACTION_TIMER -> ClientTickContext.startActionTimer(this);
             case HEAL -> ClientTickContext.clientTick(this);
-            case START_RIGHT_ARM_TIMER -> startRightArmTimer();
+            case START_RIGHT_ARM_TIMER -> ClientTickContext.startRightArmTimer(this);
             case BOOT_UP -> ClientTickContext.bootup(this);
-            case START_LEFT_ARM_TIMER -> startLeftArmTimer();
+            case START_LEFT_ARM_TIMER -> ClientTickContext.startLeftArmTimer(this);
             default -> super.handleEntityEvent(b);
-        };
+        }
     }
 
     @Override

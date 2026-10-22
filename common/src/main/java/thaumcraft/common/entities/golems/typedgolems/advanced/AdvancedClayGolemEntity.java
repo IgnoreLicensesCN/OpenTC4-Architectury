@@ -32,6 +32,7 @@ public class AdvancedClayGolemEntity extends AdvancedGolemEntity {
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
             GolemBasicAbilityProperties.Builder
                     .copy(ClayGolemEntity.ABILITY_PROPERTIES)
+                    .attackDelay(ClayGolemEntity.ABILITY_PROPERTIES.attackDelay -2)
                     .basicUpgradeSize(ClayGolemEntity.ABILITY_PROPERTIES.basicUpgradeSize + 1).build();
     @Override
     public GolemBasicAbilityProperties getBasicAbilityProperties() {

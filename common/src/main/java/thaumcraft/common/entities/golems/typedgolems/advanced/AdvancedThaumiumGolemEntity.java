@@ -33,6 +33,7 @@ public class AdvancedThaumiumGolemEntity extends AdvancedGolemEntity {
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
             GolemBasicAbilityProperties.Builder
                     .copy(ThaumiumGolemEntity.ABILITY_PROPERTIES)
+                    .attackDelay(ThaumiumGolemEntity.ABILITY_PROPERTIES.attackDelay -2)
                     .basicUpgradeSize(ThaumiumGolemEntity.ABILITY_PROPERTIES.basicUpgradeSize + 1).build();
 
     @Override

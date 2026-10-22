@@ -3,8 +3,10 @@ package thaumcraft.common.runicshield;
 import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableObject2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
@@ -77,5 +79,22 @@ public class RunicShieldHandler {
                 }
             }
         }
+    }
+
+    public static float modifyDamageWithRunicShield(float damage, DamageSource damageSource, LivingEntity player) {
+        if (!player.level().isClientSide){
+            var shieldInfo = RunicShieldInfo.getFromLiving(player);
+            if (shieldInfo != null){
+                for (var shieldType:shieldInfo.shieldCapacity.keySet()){
+                    damage = shieldType.beforeActuallyHurt(player, damageSource, damage,shieldInfo);
+                }
+                if (shieldInfo.shouldSyncCharge && player instanceof ServerPlayer serverPlayer){
+                    shieldInfo.syncChargeSendPacket(serverPlayer);
+                }
+                shieldInfo.shouldSyncCharge = false;
+                return damage;
+            }
+        }
+        return damage;
     }
 }

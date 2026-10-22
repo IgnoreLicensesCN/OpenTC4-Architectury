@@ -66,6 +66,7 @@ public class ThaumcraftSounds {
         public static final ResourceLocation RES_MONOLITH = new ResourceLocation(Thaumcraft.MOD_ID,"monolith");
         public static final ResourceLocation RES_UPGRADE = new ResourceLocation(Thaumcraft.MOD_ID,"upgrade");
         public static final ResourceLocation RES_CAMERA_CLACK = new ResourceLocation(Thaumcraft.MOD_ID,"cameraclack");
+        public static final ResourceLocation RES_GOLEM_IRON_SHOOT = new ResourceLocation(Thaumcraft.MOD_ID,"golemironshoot");
     }
 
     public static final SoundEvent RUNIC_SHIELD_CHARGE = SoundEvent.createFixedRangeEvent(ResourceLocations.RES_RUNIC_SHIELD_CHARGE,16.F);
@@ -128,4 +129,5 @@ public class ThaumcraftSounds {
     public static final SoundEvent MONOLITH = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_MONOLITH);
     public static final SoundEvent UPGRADE = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_UPGRADE);
     public static final SoundEvent CAMERA_CLACK = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_CAMERA_CLACK);
+    public static final SoundEvent GOLEM_IRON_SHOOT = SoundEvent.createVariableRangeEvent(ResourceLocations.RES_GOLEM_IRON_SHOOT);
 }

@@ -91,9 +91,9 @@ public class GolemBellItem extends Item {
                             markerExisting = new Marker(markerExisting.pos,markerExisting.dim,markerExisting.side,newColor);
                             addMarkerFor(golem, markerExisting, stackTag);
                         } else {
-                            golem.markers.remove(markerExisting);
+                            removeMarkerFor(golem, markerExisting, stackTag);
                         }
-                    }else {
+                    } else {
                         Marker marker = new Marker(usedAtPos,levelResLoc,usedAtFace,INVALID_MARKER_COLOR);
                         addMarkerFor(golem, marker, stackTag);
                     }

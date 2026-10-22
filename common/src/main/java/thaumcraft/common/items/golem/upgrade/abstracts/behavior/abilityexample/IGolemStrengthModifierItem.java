@@ -6,11 +6,11 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem;
 
 @UtilityLikeAbstraction
-public interface IGolemInventorySizeProviderItem extends IGolemAbilityModifierItem {
-    int getInventorySizeCanProvide(BaseGolemEntity golem, ItemStack upgradeStack);
+public interface IGolemStrengthModifierItem extends IGolemAbilityModifierItem {
+    float getStrengthModified(BaseGolemEntity golem,ItemStack upgradeStack, float strength);
 
     @Override
     default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
-        abilitiesData.inventorySize += getInventorySizeCanProvide(golem,upgradeStack);
+        abilitiesData.strength = getStrengthModified(golem,upgradeStack,abilitiesData.strength);
     }
 }

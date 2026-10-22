@@ -35,3 +35,4 @@
 * all 4 Infusion Pillars wont change instantly when one broken but infusion matrix still checks during infusion
 * scan always add aspect as the same amount(old TC4 is:when owned amount >= 100(can be configured) sqrt amount to get,when >= 1.25*(100(can be configured)) only get 1)
 * now try to scan yourself with (essentia_)mirror!
+* advanced golems are now unique classes so you have to create your own.

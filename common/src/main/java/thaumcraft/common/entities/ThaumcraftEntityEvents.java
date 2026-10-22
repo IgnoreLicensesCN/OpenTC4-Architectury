@@ -24,10 +24,12 @@ import thaumcraft.common.entities.championmod.abstracts.modifier.IDamageListener
 import thaumcraft.common.entities.championmod.abstracts.modifier.IDamageModifierChampionModifier;
 import thaumcraft.common.entities.championmod.abstracts.modifier.ITickableChampionModifier;
 import thaumcraft.common.entities.championmod.impl.WardedChampionModifier;
+import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.monster.tainted.ThaumicSlimeEntity;
 import thaumcraft.common.items.abstracts.ISpecialDamageCalculationEquipmentItem;
 import thaumcraft.common.items.abstracts.armorcomponents.IAttackOthersListenerArmor;
 import thaumcraft.common.items.abstracts.armorcomponents.IBeingAttackedListenerArmor;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemCauseDamageListenerItem;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 import java.util.*;
@@ -139,7 +141,11 @@ public class ThaumcraftEntityEvents {
         public static void onBeingDamaged(LivingEntity living,DamageSource damageSource, float damageCausedNoArmorReduce,float damageCausedReduced) {
             var entityCausedDamage = damageSource.getEntity();
             if (entityCausedDamage != null) {
-
+                if (entityCausedDamage instanceof BaseGolemEntity golem) {
+                    for (var listenerPair:golem.golemUpgradesCacheView.get(IGolemCauseDamageListenerItem.class)){
+                        listenerPair.a().onGolemCausedDamage(golem,listenerPair.b(),living,damageSource,damageCausedNoArmorReduce);
+                    }
+                }
                 for (var stack : entityCausedDamage.getArmorSlots()) {
                     if (stack.getItem() instanceof IAttackOthersListenerArmor armor) {
                         armor.onAttackOtherEntity(
@@ -165,20 +171,20 @@ public class ThaumcraftEntityEvents {
                 }
             }
             if (living instanceof IChampionModifierOwnerLivingEntity owner) {
-                owner.opentc4$getChampionModifiersForChecker(
+                for (var modifier:owner.opentc4$getChampionModifiersForChecker(
                         (ignoredA,ignoredB) -> true,
                         IDamageListenerChampionModifier.class
-                ).forEach(
-                        modifier -> modifier.championModifierOnDamage(living,damageSource,damageCausedNoArmorReduce,damageCausedReduced)
-                );
+                )){
+                    modifier.championModifierOnDamage(living,damageSource,damageCausedNoArmorReduce,damageCausedReduced);
+                }
             }
             if (damageSource.getEntity() instanceof LivingEntity attacker && attacker instanceof IChampionModifierOwnerLivingEntity owner) {
-                owner.opentc4$getChampionModifiersForChecker(
+                for (var modifier:owner.opentc4$getChampionModifiersForChecker(
                         (ignoredA,ignoredB) -> true,
                         IAttackListenerChampionModifier.class
-                ).forEach(
-                        modifier -> modifier.championModifierOnAttack(living,attacker,damageSource,damageCausedNoArmorReduce,damageCausedReduced)
-                );
+                )){
+                    modifier.championModifierOnAttack(living,attacker,damageSource,damageCausedNoArmorReduce,damageCausedReduced);
+                }
             }
             if (living.getType().is(ELDRITCH)){
                 WardedChampionModifier.performEldritchRunicEffectIfAbsorptionExists(living,damageSource);

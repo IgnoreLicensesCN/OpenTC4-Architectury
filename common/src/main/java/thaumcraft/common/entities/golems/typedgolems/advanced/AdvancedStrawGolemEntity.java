@@ -33,6 +33,7 @@ public class AdvancedStrawGolemEntity extends AdvancedGolemEntity {
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
             GolemBasicAbilityProperties.Builder
                     .copy(StrawGolemEntity.ABILITY_PROPERTIES)
+                    .attackDelay(StrawGolemEntity.ABILITY_PROPERTIES.attackDelay -2)
                     .basicUpgradeSize(StrawGolemEntity.ABILITY_PROPERTIES.basicUpgradeSize + 1).build();
 
     @Override

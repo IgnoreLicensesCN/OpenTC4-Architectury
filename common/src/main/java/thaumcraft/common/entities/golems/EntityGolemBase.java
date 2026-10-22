@@ -17,7 +17,6 @@ import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -204,7 +203,7 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
       this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(damage);
       this.tasks.taskEntries.clear();
       if (this.getCore() > -1) {
-         this.tasks.addTask(0, new AIAvoidCreeperSwell(this));
+         this.tasks.addTask(0, new AvoidCreeperGoal(this));
       }
 
       switch (this.getCore()) {
@@ -336,7 +335,7 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
       this.dataWatcher.addObject(19, (byte)0);
       this.dataWatcher.addObject(20, "");
       this.dataWatcher.addObject(21, -1);
-      this.dataWatcher.addObject(22, "");
+      this.dataWatcher.addObject(22, "");//colors(hex) for slot("h" -> invalid color)
       this.dataWatcher.addObject(23, "");
    }
 
@@ -1212,80 +1211,80 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
       }
    }
 
-   public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLiving) {
-      EntityDart var2 = new EntityDart(this.level(), this, par1EntityLiving, 1.6F, 7.0F - (float)this.getUpgradeAmount(3) * 1.75F);
-      float f = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
-      var2.setDamage(f * 0.4F);
-      this.playSound("thaumcraft:golemironshoot", 0.5F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.6F));
-      this.level().spawnEntityInWorld(var2);
-      this.startLeftArmTimer();
-   }
+//   public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLiving) {
+//      EntityDart var2 = new EntityDart(this.level(), this, par1EntityLiving, 1.6F, 7.0F - (float)this.getUpgradeAmount(3) * 1.75F);
+//      float f = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
+//      var2.setDamage(f * 0.4F);
+//      this.playSound("thaumcraft:golemironshoot", 0.5F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.6F));
+//      this.level().spawnEntityInWorld(var2);
+//      this.startLeftArmTimer();
+//   }
 
-   public int getAttackSpeed() {
-      return 20 - (this.advanced ? 2 : 0);
-   }
+//   public int getAttackSpeed() {
+//      return 20 - (this.advanced ? 2 : 0);
+//   }
 
-   protected String getLivingSound() {
-      return "thaumcraft:cameraclack";
-   }
+//   protected String getLivingSound() {
+//      return "thaumcraft:cameraclack";
+//   }
+//
+//   protected String getHurtSound() {
+//      return "thaumcraft:cameraclack";
+//   }
+//
+//   protected String getDeathSound() {
+//      return "thaumcraft:cameraclack";
+//   }
 
-   protected String getHurtSound() {
-      return "thaumcraft:cameraclack";
-   }
-
-   protected String getDeathSound() {
-      return "thaumcraft:cameraclack";
-   }
-
-   public void writeSpawnData(ByteBuf data) {
-      data.writeByte(this.getCore());
-      data.writeBoolean(this.advanced);
-      data.writeByte(this.inventory.slotCount);
-      data.writeByte(this.upgrades.length);
-
-      for(byte b : this.upgrades) {
-         data.writeByte(b);
-      }
-
-   }
-
-   public void readSpawnData(ByteBuf data) {
-      try {
-         this.setCore(data.readByte());
-         this.advanced = data.readBoolean();
-         if (this.getCore() >= 0) {
-            this.bootup = 0.0F;
-         }
-
-         this.inventory = new InventoryMob(this, data.readByte());
-         this.colors = new byte[this.inventory.slotCount];
-
-         for(int a = 0; a < this.inventory.slotCount; ++a) {
-            this.colors[a] = -1;
-         }
-
-         this.upgrades = new byte[data.readByte()];
-
-         for(int a = 0; a < this.upgrades.length; ++a) {
-            this.upgrades[a] = data.readByte();
-         }
-
-         int bonus = 0;
-
-         try {
-            bonus = this.getGolemDecoration().contains("H") ? 5 : 0;
-         } catch (Exception ignored) {
-         }
-
-         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getGolemType().health + bonus);
-      } catch (Exception ignored) {
-      }
-
-   }
-
-   public String getCommandSenderName() {
-      return this.hasCustomNameTag() ?
-              this.getCustomNameTag() :
-              Component.translatable("item.ItemGolemPlacer." + this.getGolemType().ordinal() + ".name");
-   }
+//   public void writeSpawnData(ByteBuf data) {
+//      data.writeByte(this.getCore());
+//      data.writeBoolean(this.advanced);
+//      data.writeByte(this.inventory.slotCount);
+//      data.writeByte(this.upgrades.length);
+//
+//      for(byte b : this.upgrades) {
+//         data.writeByte(b);
+//      }
+//
+//   }
+//
+//   public void readSpawnData(ByteBuf data) {
+//      try {
+//         this.setCore(data.readByte());
+//         this.advanced = data.readBoolean();
+//         if (this.getCore() >= 0) {
+//            this.bootup = 0.0F;
+//         }
+//
+//         this.inventory = new InventoryMob(this, data.readByte());
+//         this.colors = new byte[this.inventory.slotCount];
+//
+//         for(int a = 0; a < this.inventory.slotCount; ++a) {
+//            this.colors[a] = -1;
+//         }
+//
+//         this.upgrades = new byte[data.readByte()];
+//
+//         for(int a = 0; a < this.upgrades.length; ++a) {
+//            this.upgrades[a] = data.readByte();
+//         }
+//
+//         int bonus = 0;
+//
+//         try {
+//            bonus = this.getGolemDecoration().contains("H") ? 5 : 0;
+//         } catch (Exception ignored) {
+//         }
+//
+//         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getGolemType().health + bonus);
+//      } catch (Exception ignored) {
+//      }
+//
+//   }
+//
+//   public String getCommandSenderName() {
+//      return this.hasCustomNameTag() ?
+//              this.getCustomNameTag() :
+//              Component.translatable("item.ItemGolemPlacer." + this.getGolemType().ordinal() + ".name");
+//   }
 }

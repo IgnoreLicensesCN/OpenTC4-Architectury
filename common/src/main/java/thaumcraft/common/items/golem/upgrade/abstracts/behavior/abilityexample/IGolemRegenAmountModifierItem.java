@@ -6,11 +6,11 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem;
 
 @UtilityLikeAbstraction
-public interface IGolemRegenDelayModifierItem extends IGolemAbilityModifierItem {
-    int getModifiedRegenDelay(BaseGolemEntity golem, ItemStack upgradeStack, int regenDelay);
+public interface IGolemRegenAmountModifierItem extends IGolemAbilityModifierItem {
+    float getModifiedRegenAmount(BaseGolemEntity golem, ItemStack upgradeStack, float regenAmount);
 
     @Override
     default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
-        abilitiesData.regenDelay += getModifiedRegenDelay(golem,upgradeStack, abilitiesData.regenDelay);
+        abilitiesData.regenAmount += getModifiedRegenAmount(golem,upgradeStack, abilitiesData.regenAmount);
     }
 }

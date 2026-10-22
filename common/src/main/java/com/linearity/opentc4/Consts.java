@@ -387,11 +387,13 @@ public class Consts {
     }
     public static class BaseGolemEntityTagAccessors  {
         public static final IntTagAccessor INVENTORY_SIZE = new IntTagAccessor("inventory_size");
-        public static final ByteArrayTagAccessor INVENTORY_COLORS = new ByteArrayTagAccessor("inventory_colors");
         public static final BlockPosAccessor HOME_POS = new BlockPosAccessor("home_pos");
         public static final ResourceLocationTagAccessor HOME_LEVEL = new ResourceLocationTagAccessor("home_level");
         public static final ModifiableSetTagAccessor<Marker> MARKERS = new ModifiableSetTagAccessor<>("markers",new MarkerTagAccessor("marker"));
         public static final DirectionTagAccessor HOME_FACE = new DirectionTagAccessor("home_face");
+    }
+    public static class IGolemColorfulMarkerProviderDefaultItemTagAccessors {
+        public static final ByteArrayTagAccessor INVENTORY_COLORS = new ByteArrayTagAccessor("inventory_colors");
     }
     public static class GolemBellTagAccessors {
         public static final ModifiableSetTagAccessor<Marker> MARKERS = BaseGolemEntityTagAccessors.MARKERS;

@@ -33,6 +33,7 @@ public class AdvancedTallowGolemEntity extends AdvancedGolemEntity {
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
             GolemBasicAbilityProperties.Builder
                     .copy(TallowGolemEntity.ABILITY_PROPERTIES)
+                    .attackDelay(TallowGolemEntity.ABILITY_PROPERTIES.attackDelay -2)
                     .basicUpgradeSize(TallowGolemEntity.ABILITY_PROPERTIES.basicUpgradeSize + 1).build();
 
     @Override

@@ -33,6 +33,7 @@ public class AdvancedFleshGolemEntity extends AdvancedGolemEntity {
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
             GolemBasicAbilityProperties.Builder
                     .copy(FleshGolemEntity.ABILITY_PROPERTIES)
+                    .attackDelay(FleshGolemEntity.ABILITY_PROPERTIES.attackDelay -2)
                     .basicUpgradeSize(FleshGolemEntity.ABILITY_PROPERTIES.basicUpgradeSize + 1).build();
 
     @Override
