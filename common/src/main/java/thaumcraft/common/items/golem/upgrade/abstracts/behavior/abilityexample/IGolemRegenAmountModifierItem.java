@@ -7,10 +7,10 @@ import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem
 
 @UtilityLikeAbstraction
 public interface IGolemRegenAmountModifierItem extends IGolemAbilityModifierItem {
-    float getModifiedRegenAmount(BaseGolemEntity golem, ItemStack upgradeStack, float regenAmount);
+    float getModifiedRegenAmount(BaseGolemEntity golem, ItemStack upgradeStack, float regenAmount, float defaultRegenAmount);
 
     @Override
     default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
-        abilitiesData.regenAmount += getModifiedRegenAmount(golem,upgradeStack, abilitiesData.regenAmount);
+        abilitiesData.regenAmount = getModifiedRegenAmount(golem,upgradeStack, abilitiesData.regenAmount, golem.getBasicAbilityProperties().regenAmount);
     }
 }

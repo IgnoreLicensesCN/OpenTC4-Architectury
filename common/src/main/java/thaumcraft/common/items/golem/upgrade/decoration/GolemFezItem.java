@@ -28,7 +28,7 @@ public class GolemFezItem extends Item implements IGolemDecorationItem, IGolemRe
     }
 
     @Override
-    public float getModifiedRegenDelay(BaseGolemEntity golem, ItemStack upgradeStack, float regenDelay) {
-        return (regenDelay*0.66f);
+    public float getModifiedRegenDelay(BaseGolemEntity golem, ItemStack upgradeStack, float regenDelay, float defaultRegenDelay) {
+        return regenDelay - defaultRegenDelay*0.33f;
     }
 }

@@ -29,7 +29,7 @@ import thaumcraft.common.entities.monster.tainted.ThaumicSlimeEntity;
 import thaumcraft.common.items.abstracts.ISpecialDamageCalculationEquipmentItem;
 import thaumcraft.common.items.abstracts.armorcomponents.IAttackOthersListenerArmor;
 import thaumcraft.common.items.abstracts.armorcomponents.IBeingAttackedListenerArmor;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemCauseDamageListenerItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.IGolemCauseDamageListenerItem;
 import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 import java.util.*;

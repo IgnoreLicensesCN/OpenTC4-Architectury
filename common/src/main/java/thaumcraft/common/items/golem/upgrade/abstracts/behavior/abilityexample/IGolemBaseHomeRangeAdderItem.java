@@ -7,9 +7,9 @@ import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem
 
 @UtilityLikeAbstraction
 public interface IGolemBaseHomeRangeAdderItem extends IGolemAbilityModifierItem {
-    float modifyGolemBaseHomeRange(BaseGolemEntity golem, ItemStack upgradeStack, float homeRange);
+    float modifyGolemBaseHomeRange(BaseGolemEntity golem, ItemStack upgradeStack, float homeRange, float defaultHomeRange);
     @Override
     default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData){
-        abilitiesData.homeRange = modifyGolemBaseHomeRange(golem,upgradeStack,abilitiesData.homeRange);
+        abilitiesData.homeRange = modifyGolemBaseHomeRange(golem,upgradeStack,abilitiesData.homeRange, golem.getBasicAbilityProperties().homeRange);
     }
 }

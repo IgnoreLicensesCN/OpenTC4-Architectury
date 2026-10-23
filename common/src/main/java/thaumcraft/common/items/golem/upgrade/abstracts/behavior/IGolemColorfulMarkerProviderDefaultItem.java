@@ -1,11 +1,13 @@
 package thaumcraft.common.items.golem.upgrade.abstracts.behavior;
 
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 
 import static com.linearity.opentc4.Consts.IGolemColorfulMarkerProviderDefaultItemTagAccessors.INVENTORY_COLORS;
 
+@UtilityLikeAbstraction
 public interface IGolemColorfulMarkerProviderDefaultItem extends IGolemColorfulMarkerProviderItem,IGolemAdditionalDataProviderItem {
     @Override
     default void readAdditional(BaseGolemEntity golemPlaced, ItemStack upgradeStack, CompoundTag tag){

@@ -7,10 +7,10 @@ import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem
 
 @UtilityLikeAbstraction
 public interface IGolemCarryItemPowerProviderItem extends IGolemAbilityModifierItem {
-    int getCarryCountCanProvide(BaseGolemEntity golem, ItemStack upgradeStack);
+    float modifyCarryCount(BaseGolemEntity golem, ItemStack upgradeStack,float carry, float defaultCarry);
 
     @Override
     default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
-        abilitiesData.carryPower += getCarryCountCanProvide(golem,upgradeStack);
+        abilitiesData.carryPower = modifyCarryCount(golem,upgradeStack, abilitiesData.carryPower, golem.getBasicAbilityProperties().carryPower);
     }
 }

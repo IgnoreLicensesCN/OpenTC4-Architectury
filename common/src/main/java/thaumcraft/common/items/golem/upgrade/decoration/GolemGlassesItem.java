@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemDecorationItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemHomeRangeModifierItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemHomeRangeModifierItem;
 import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLocation;
 
 import java.util.Set;
@@ -28,7 +28,7 @@ public class GolemGlassesItem extends Item implements IGolemDecorationItem, IGol
     }
 
     @Override
-    public float modifyHomeRange(BaseGolemEntity baseGolemEntity, ItemStack b, float range) {
-        return range + Math.max(range * 0.1F, 1.0F);
+    public float modifyHomeRange(BaseGolemEntity baseGolemEntity, ItemStack b, float range, float defaultRange) {
+        return range + Math.max(defaultRange * 0.1F, 1.0F);
     }
 }

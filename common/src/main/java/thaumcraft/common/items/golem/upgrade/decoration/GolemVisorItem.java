@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemDecorationItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemCauseDamageListenerItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.IGolemCauseDamageListenerItem;
 import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLocation;
 import thaumcraft.common.lib.utils.EntityUtils;
 

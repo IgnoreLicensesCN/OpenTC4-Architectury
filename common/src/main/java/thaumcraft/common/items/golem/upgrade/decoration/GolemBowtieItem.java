@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemDecorationItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemSpeedMultiplierModifierItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemSpeedMultiplierModifierItem;
 import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLocation;
 
 import java.util.Set;

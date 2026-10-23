@@ -43,6 +43,11 @@ import thaumcraft.common.items.golem.GolemBellItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemHomeRangeModifierItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.*;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.rangedattack.IGolemRangedAttackPerformerItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.rangedattack.IGolemShootCooldownModifierItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.rangedattack.IGolemShootAccuracyModifierItem;
 import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLocation;
 
 import java.util.*;
@@ -132,7 +137,8 @@ public abstract class BaseGolemEntity
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemPlayerInteractionListenerItem.class, 1000));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemHomeRangeModifierItem.class, 1100));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemColorfulMarkerProviderItem.class, 1200));
-        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemShootDartAccuracyModifierItem.class,1300));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemShootAccuracyModifierItem.class,1300));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemShootCooldownModifierItem.class,1400));
     }
 
     public List<ObjectIntPair<Class<? extends IGolemModifierItem>>> getAvailableGolemModifierTypes() {
@@ -197,11 +203,7 @@ public abstract class BaseGolemEntity
     }
 
     public int getHomeRange(){
-        float range = abilitiesData.homeRange;
-        for (var modifierPair:golemUpgradesCacheView.get(IGolemHomeRangeModifierItem.class)){
-            range = modifierPair.a().modifyHomeRange(this,modifierPair.b(),range);
-        }
-        return (int) range;
+        return (int) abilitiesData.homeRange;
     }
 
     public void tryTeleportHome() {
@@ -577,8 +579,9 @@ public abstract class BaseGolemEntity
         if (damageSource.is(DamageTypes.CACTUS)){
             f = Float.NaN;
         }
+        var defaultDamage = f;
         for (var damageModifierPair:golemUpgradesCacheView.get(IGolemReceivedDamageModifierItem.class)) {
-            f = damageModifierPair.a().modifyReceivedDamage(this,damageModifierPair.b(),damageSource,f);
+            f = damageModifierPair.a().modifyReceivedDamage(this,damageModifierPair.b(),damageSource,f,defaultDamage);
         }
         if (Float.isNaN(f)) {
             return false;
@@ -601,8 +604,9 @@ public abstract class BaseGolemEntity
         public final int strength;
         public final int attackDelay;
         public final int attackFireTicks;
+        public final int homeRange;
 
-        public GolemBasicAbilityProperties(int basicUpgradeSize, int carryPower, int regenDelay, int strength, int attackDelay, int regenAmount, int attackFireTicks) {
+        public GolemBasicAbilityProperties(int basicUpgradeSize, int carryPower, int regenDelay, int strength, int attackDelay, int regenAmount, int attackFireTicks, int homeRange) {
             this.basicUpgradeSize = basicUpgradeSize;
             this.carryPower = carryPower;
             this.regenDelay = regenDelay;
@@ -610,11 +614,12 @@ public abstract class BaseGolemEntity
             this.strength = strength;
             this.attackDelay = attackDelay;
             this.attackFireTicks = attackFireTicks;
+            this.homeRange = homeRange;
         }
 
         public static class Builder {
             public GolemBasicAbilityProperties build() {
-                return new GolemBasicAbilityProperties(basicUpgradeSize, carryPower, regenDelay, strength, attackDelay, regenAmount, attackFireTicks);
+                return new GolemBasicAbilityProperties(basicUpgradeSize, carryPower, regenDelay, strength, attackDelay, regenAmount, attackFireTicks, homeRange);
             }
 
             public static Builder copy(GolemBasicAbilityProperties properties) {
@@ -634,6 +639,7 @@ public abstract class BaseGolemEntity
             protected int attackDelay = 20;
             protected int regenAmount = 1;
             protected int attackFireTicks = 0;
+            protected int homeRange = 16;
 
             public Builder basicUpgradeSize(int basicUpgradeSize) {
                 this.basicUpgradeSize = basicUpgradeSize;
@@ -667,6 +673,11 @@ public abstract class BaseGolemEntity
 
             public Builder attackFireTicks(int attackFireTicks){
                 this.attackFireTicks = attackFireTicks;
+                return this;
+            }
+
+            public Builder homeRange(int homeRange){
+                this.homeRange = homeRange;
                 return this;
             }
         }

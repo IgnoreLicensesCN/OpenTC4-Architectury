@@ -1,4 +1,4 @@
-package thaumcraft.common.items.golem.upgrade.abstracts.behavior;
+package thaumcraft.common.items.golem.upgrade.abstracts.behavior.rangedattack;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;

@@ -7,10 +7,10 @@ import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem
 
 @UtilityLikeAbstraction
 public interface IGolemStrengthModifierItem extends IGolemAbilityModifierItem {
-    float getStrengthModified(BaseGolemEntity golem,ItemStack upgradeStack, float strength);
+    float getStrengthModified(BaseGolemEntity golem,ItemStack upgradeStack, float strength, float defaultStrength);
 
     @Override
     default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
-        abilitiesData.strength = getStrengthModified(golem,upgradeStack,abilitiesData.strength);
+        abilitiesData.strength = getStrengthModified(golem,upgradeStack,abilitiesData.strength, golem.getBasicAbilityProperties().strength);
     }
 }

@@ -7,10 +7,10 @@ import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem
 
 @UtilityLikeAbstraction
 public interface IGolemAttackDelayProviderItem extends IGolemAbilityModifierItem {
-    float getAttackDelayModified(BaseGolemEntity golem,ItemStack upgradeStack, float attackDelay);
+    float getAttackDelayModified(BaseGolemEntity golem,ItemStack upgradeStack, float attackDelay, float defaultAttackDelay);
 
     @Override
     default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
-        abilitiesData.attackDelay = getAttackDelayModified(golem,upgradeStack,abilitiesData.attackDelay);
+        abilitiesData.attackDelay = getAttackDelayModified(golem,upgradeStack,abilitiesData.attackDelay, golem.getBasicAbilityProperties().attackDelay);
     }
 }

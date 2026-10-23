@@ -1,4 +1,4 @@
-package thaumcraft.common.items.golem.upgrade.abstracts.behavior;
+package thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.ItemStack;
