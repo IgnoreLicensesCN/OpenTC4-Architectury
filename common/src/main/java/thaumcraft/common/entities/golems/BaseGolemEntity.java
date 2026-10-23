@@ -2,12 +2,12 @@ package thaumcraft.common.entities.golems;
 
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
 import com.linearity.opentc4.mixinaccessors.InteractionOverrideMob;
+import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
 import com.linearity.opentc4.mixinaccessors.cliententity.BaseGolemEntityClientAccessor;
 import com.linearity.opentc4.utils.ClassToItemStackPairMap;
+import com.linearity.opentc4.utils.QueuedItemCooldowns;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
-import dev.architectury.platform.Platform;
-import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -34,6 +34,7 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -105,6 +106,7 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemPlayerInteractionListenerItem.class, 1000));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemHomeRangeModifierItem.class, 1100));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemColorfulMarkerProviderItem.class, 1200));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemShootDartAccuracyModifierItem.class,1300));
     }
 
     public List<ObjectIntPair<Class<? extends IGolemModifierItem>>> getAvailableGolemModifierTypes() {

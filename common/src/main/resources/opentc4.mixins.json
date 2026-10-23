@@ -26,6 +26,7 @@
     "client.entity.TaintedSwarmEntityMixin",
     "client.entity.TaintSporeEntityMixin",
     "client.entity.TaintSporeSwarmerEntityMixin",
+    "client.render.ItemPropertiesMixin",
     "client.render.ItemRendererMixin",
     "client.render.ModelPredicateProviderRegistryAccessor"
   ],
@@ -38,6 +39,7 @@
     "BlockStateBaseMixin",
     "BrainProviderAccessor",
     "ChickenMixin",
+    "ChorusFruitItemMixin",
     "ClimateSettingsMixin",
     "CompoundTagMixin",
     "CowMixin",
@@ -51,6 +53,7 @@
     "EntityTypeMixin",
     "FallingBlockEntityAccessor",
     "GoalAccessor",
+    "InstrumentItemMixin",
     "ItemEntityMixin",
     "ItemMixin",
     "ItemStackMixin",

@@ -2,7 +2,10 @@ package thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample;
 
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.GolemMoveToRestrictionCenterGoal;
@@ -21,34 +24,37 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final Function<BaseGolemEntity, Goal> AVOID_CREEPER_GOAL =
                 golem ->
                         new AvoidEntityGoal<>(
-                golem,
-                Creeper.class,
-                9,
-                1.125,
-                1.25,
-                probablyCreeper ->
-                        probablyCreeper instanceof Creeper creeper
-                                && (creeper.getSwellDir()>0 || creeper.isIgnited())
-        );
+                                golem,
+                                Creeper.class,
+                                9,
+                                1.125,
+                                1.25,
+                                probablyCreeper ->
+                                        probablyCreeper instanceof Creeper creeper
+                                                && (creeper.getSwellDir() > 0 || creeper.isIgnited())
+                        );
         public static final GoalResourceLocation GET_HOME_IF_FAR = GoalResourceLocation.of(Thaumcraft.MOD_ID, "get_home_if_far");
-        public static final Function<BaseGolemEntity,Goal> GET_HOME_IF_FAR_GOAL = golem -> new GolemMoveToRestrictionCenterGoal(
+        public static final Function<BaseGolemEntity, Goal> GET_HOME_IF_FAR_GOAL = golem -> new GolemMoveToRestrictionCenterGoal(
                 golem,
                 1,
                 2,
                 3
         );
+        public static final GoalResourceLocation WATCH_CLOSEST_PLAYER = GoalResourceLocation.of("watch_closest_player");
+        public static final Function<BaseGolemEntity, Goal> WATCH_CLOSEST_PLAYER_GOAL = golem -> new LookAtPlayerGoal(golem, Player.class, 6);
+        public static final GoalResourceLocation IDLE = GoalResourceLocation.of(Thaumcraft.MOD_ID, "idle");
+        public static final Function<BaseGolemEntity, Goal> IDLE_GOAL = RandomLookAroundGoal::new;
     }
-    default void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GolemGoalSelector goalSelector, GolemGoalSelector targetSelector){
-        goalSelector.addGoalIfNotExist(0,AVOID_CREEPER, AVOID_CREEPER_GOAL,golem);
-        goalSelector.addGoalIfNotExist(6,GET_HOME_IF_FAR,GET_HOME_IF_FAR_GOAL,golem);
-        //this.tasks.addTask(6, new AIReturnHome(this));
-        //this.tasks.addTask(7, new EntityAIWatchClosest(this, Player.class, 6.0F));
-        //this.tasks.addTask(8, new EntityAILookIdle(this));
-        //TODO
+
+    default void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GolemGoalSelector goalSelector, GolemGoalSelector targetSelector) {
+        goalSelector.addGoalIfNotExist(0, AVOID_CREEPER, AVOID_CREEPER_GOAL, golem);
+        goalSelector.addGoalIfNotExist(6, GET_HOME_IF_FAR, GET_HOME_IF_FAR_GOAL, golem);
+        goalSelector.addGoalIfNotExist(7, WATCH_CLOSEST_PLAYER, WATCH_CLOSEST_PLAYER_GOAL, golem);
+        goalSelector.addGoalIfNotExist(8, IDLE, IDLE_GOAL, golem);
     }
 
     @Override
     default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
-        registerGoalForGolem(golem, upgradeStack, abilitiesData.goalSelector,abilitiesData.targetSelector);
+        registerGoalForGolem(golem, upgradeStack, abilitiesData.goalSelector, abilitiesData.targetSelector);
     }
 }

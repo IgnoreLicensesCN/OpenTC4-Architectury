@@ -11,6 +11,7 @@ import thaumcraft.common.entities.golems.GolemGoalSelector;
 import thaumcraft.common.entities.projectile.DartEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemDecorationItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemRangedAttackPerformerItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemShootDartAccuracyModifierItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem;
 import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLocation;
 
@@ -36,12 +37,19 @@ public class GolemDartLauncherItem extends Item implements IGolemDecorationItem,
 
     @Override
     public boolean canPerformRangedAttackForGolem(LivingEntity shooter, ItemStack upgradeStack, LivingEntity target, float f) {
-        return false;//TODO
+        return true;
     }
 
     @Override
     public void performRangedAttackForGolem(LivingEntity shooter, ItemStack upgradeStack, LivingEntity target, float f) {
-        var dart = new DartEntity(shooter.level(), this, target, 1.6F, 7.0F - (float)this.getUpgradeAmount(3) * 1.75F);
+        float divergence = 7;
+        if (shooter instanceof BaseGolemEntity baseGolem){
+            for (var modifierPair:baseGolem.golemUpgradesCacheView.get(IGolemShootDartAccuracyModifierItem.class)){
+                divergence = modifierPair.a().modifyShootAccuracy(baseGolem, modifierPair.b(), divergence);
+            }
+        }
+
+        var dart = new DartEntity(shooter, target,shooter.level(), 1.6F, divergence/* - (float)this.getUpgradeAmount(3) * 1.75F TODO:this*/);
         float damage = (float) shooter.getAttributeValue(Attributes.ATTACK_DAMAGE);
         dart.setBaseDamage(damage * 0.4F);
         shooter.playSound(ThaumcraftSounds.GOLEM_IRON_SHOOT, 0.5F, 1.0F / (shooter.getRandom().nextFloat() * 0.4F + 0.6F));

@@ -2,6 +2,8 @@ package thaumcraft.common.entities.golems;
 
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
+import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
+import com.linearity.opentc4.utils.QueuedItemCooldowns;
 import com.linearity.opentc4.utils.collectionlike.SimplePair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -14,6 +16,7 @@ import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -29,8 +32,10 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         > extends PathfinderMob
         implements
         OwnableEntity,
-        IItemStackCollapsibleGolem
+        IItemStackCollapsibleGolem,
+        ItemCooldownOwnerEntity //trunk may eat eternal beef?but golem really shoots dart.
 {
+    public final ItemCooldowns itemCooldowns = new QueuedItemCooldowns();
     private static final EntityDataAccessor<Optional<UUID>> DATA_ID_OWNER = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor< @Modifiable /*modification wont sync directly*/ List<ItemStack>> DATA_ID_UPGRADES = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializerAdditions.ITEM_STACK_NON_NULL_LIST);
     protected AbstractGolemUpgradeApplicableEntity(EntityType<? extends AbstractGolemUpgradeApplicableEntity> entityType, Level level) {
@@ -178,5 +183,11 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         }
         this.setUpgradeStacks(List.of());
         return stack;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        itemCooldowns.tick();
     }
 }

@@ -2,6 +2,7 @@ package thaumcraft.common.entities.golems;
 
 import com.linearity.opentc4.annotations.StoleFrom;
 import com.linearity.opentc4.mixinaccessors.InteractionOverrideMob;
+import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -28,6 +29,7 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -289,26 +291,20 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
             Player player,
             InteractionHand interactionHand,
             ItemStack usingStack) {
-        var foodProperties = usingStack.getItem().getFoodProperties();
+        var item = usingStack.getItem();
+        var cooldowns = this.opentc4$getItemCooldowns();
+        if (cooldowns.isOnCooldown(item)) {
+            return false;
+        }
+        var foodProperties = item.getFoodProperties();
         if (foodProperties != null){
             //may works fine for eternal beef(or some bad food?whatever)
             //Trunk-And-Eternal-beef army?You and what army?
             upgradesCacheView.forEach(upgradePair ->
                     upgradePair.a().travelingTrunkUpgrade$onFeed(this,upgradePair.b(), usingStack, player, interactionHand)
             );
-            usingStack.getItem().finishUsingItem(usingStack,this.level(),this);
-
-            //TODO:[maybe wont finished]vote in democracy(crazy)
-            // to decide if add cooldown
-            // for "player using stack"
-            // or "all living entity"
-            // or "this living entity",
-            // and add item cooldown
-            // (in most cases we may have to add this cooldown manually!unless we make this entity a player(which may leads to lots of bugs).
-            // I can also make a api for item cooldowns but we have to make it applicable for other mods ONE BY ONE
-            // or even 2IntFunction to add cooldown
-
-//                player.getCooldowns().addCooldown(usingStack.getItem(),);
+            item.finishUsingItem(usingStack,this.level(),this);
+            ItemCooldownOwnerEntity.cooldownForNotCoolingDown(usingStack,this,cooldowns);
             return true;
         }
         return false;
