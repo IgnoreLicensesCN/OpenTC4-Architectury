@@ -36,8 +36,14 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         ItemCooldownOwnerEntity //trunk may eat eternal beef?but golem really shoots dart.
 {
     public final ItemCooldowns itemCooldowns = new QueuedItemCooldowns();
+
+    @Override
+    public ItemCooldowns opentc4$getItemCooldowns() {
+        return itemCooldowns;
+    }
+
     private static final EntityDataAccessor<Optional<UUID>> DATA_ID_OWNER = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor< @Modifiable /*modification wont sync directly*/ List<ItemStack>> DATA_ID_UPGRADES = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializerAdditions.ITEM_STACK_NON_NULL_LIST);
+    private static final EntityDataAccessor<@Modifiable /*modification wont sync directly*/ List<ItemStack>> DATA_ID_UPGRADES = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializerAdditions.ITEM_STACK_NON_NULL_LIST);
     protected AbstractGolemUpgradeApplicableEntity(EntityType<? extends AbstractGolemUpgradeApplicableEntity> entityType, Level level) {
         super(entityType, level);
     }
@@ -62,7 +68,6 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         UPGRADES.writeToCompoundTag(compoundTag,getUpgradeStacks());
         var ownerUUID = getOwnerUUID();
         OWNER.writeToCompoundTag(compoundTag,ownerUUID == null ? this.uuid : ownerUUID);
-
     }
     @Override
     public @Nullable UUID getOwnerUUID(){

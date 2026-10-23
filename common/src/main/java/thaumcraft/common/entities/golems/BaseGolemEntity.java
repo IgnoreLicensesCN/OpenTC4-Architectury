@@ -2,10 +2,8 @@ package thaumcraft.common.entities.golems;
 
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
 import com.linearity.opentc4.mixinaccessors.InteractionOverrideMob;
-import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
 import com.linearity.opentc4.mixinaccessors.cliententity.BaseGolemEntityClientAccessor;
 import com.linearity.opentc4.utils.ClassToItemStackPairMap;
-import com.linearity.opentc4.utils.QueuedItemCooldowns;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import net.minecraft.core.BlockPos;
@@ -28,13 +26,13 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -53,8 +51,36 @@ import static com.linearity.opentc4.Consts.BaseGolemEntityTagAccessors.*;
 import static com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor.NULL_POS_TO_WRITE;
 import static thaumcraft.common.entities.golems.BaseGolemEntity.BaseGolemEntityClientEventSignals.*;
 
-public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEntity<BaseGolemEntity.IGolemUpgradeItem> 
-        implements RangedAttackMob, InteractionOverrideMob {
+public abstract class BaseGolemEntity
+        extends AbstractGolemUpgradeApplicableEntity<BaseGolemEntity.IGolemUpgradeItem>
+        implements
+        RangedAttackMob,
+        InteractionOverrideMob {
+    public static final UUID SPEED_MODOFIER_UUID = UUID.fromString("6b9a6842-f707-498a-8a58-f0c2fa3d88f4");
+    public AttributeModifier getSpeedModifierAttribute() {
+        return new AttributeModifier(SPEED_MODOFIER_UUID,
+                "golem speed modifier", abilitiesData.speedMultiplier, AttributeModifier.Operation.MULTIPLY_TOTAL
+        );
+    }
+    public AttributeModifier getFreezingSpeedModifierAttribute() {
+        return new AttributeModifier(SPEED_MODOFIER_UUID,
+                "golem speed modifier", 0, AttributeModifier.Operation.MULTIPLY_TOTAL
+        );
+    }
+    public void resetSpeedModifier() {
+        var attrInstance = getAttribute(Attributes.MOVEMENT_SPEED);
+        if (attrInstance != null) {
+            attrInstance.removeModifier(SPEED_MODOFIER_UUID);
+            attrInstance.addTransientModifier(getSpeedModifierAttribute());
+        }
+    }
+    public void freezeSpeedModifier() {
+        var attrInstance = getAttribute(Attributes.MOVEMENT_SPEED);
+        if (attrInstance != null) {
+            attrInstance.removeModifier(SPEED_MODOFIER_UUID);
+            attrInstance.addTransientModifier(getFreezingSpeedModifierAttribute());
+        }
+    }
 
     protected final GolemGoalSelector wrappedGoalSelector = new GolemGoalSelector(this.goalSelector);
     protected final GolemGoalSelector wrappedTargetSelector = new GolemGoalSelector(this.targetSelector);
@@ -159,14 +185,14 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
                 this.targetSelector.removeAllGoals(_ignored -> true);
             }else {
                 refreshGoals();
-                this.setSpeed((float) (abilitiesData.speedMultiplier * getAttributeValue(Attributes.MOVEMENT_SPEED)));
+                resetSpeedModifier();
             }
         }
         if (!this.isAIAvailable()){
             this.navigation.stop();
         }
         if (this.isOnFetter) {
-            this.setSpeed(0);
+            freezeSpeedModifier();
         }
     }
 
@@ -570,17 +596,15 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
     public static class GolemBasicAbilityProperties {
         public final int basicUpgradeSize;
         public final int carryPower;
-//        public final float speed;
         public final int regenDelay;
         public final int regenAmount;
         public final int strength;
         public final int attackDelay;
         public final int attackFireTicks;
 
-        public GolemBasicAbilityProperties(int basicUpgradeSize, int carryPower/*, float speed*/, int regenDelay, int strength, int attackDelay, int regenAmount, int attackFireTicks) {
+        public GolemBasicAbilityProperties(int basicUpgradeSize, int carryPower, int regenDelay, int strength, int attackDelay, int regenAmount, int attackFireTicks) {
             this.basicUpgradeSize = basicUpgradeSize;
             this.carryPower = carryPower;
-//            this.speed = speed;
             this.regenDelay = regenDelay;
             this.regenAmount = regenAmount;
             this.strength = strength;
@@ -620,11 +644,6 @@ public abstract class BaseGolemEntity extends AbstractGolemUpgradeApplicableEnti
                 this.carryPower = carryPower;
                 return this;
             }
-
-//            public Builder speed(float speed) {
-//                this.speed = speed;
-//                return this;
-//            }
 
             public Builder regenDelay(int regenDelay) {
                 this.regenDelay = regenDelay;

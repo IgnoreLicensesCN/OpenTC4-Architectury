@@ -1,11 +1,15 @@
 package thaumcraft.common.items.golem.upgrade.decoration;
 
+import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Unmodifiable;
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
+import thaumcraft.common.entities.ai.goals.GolemRangedAttackGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
 import thaumcraft.common.entities.projectile.DartEntity;
@@ -14,14 +18,25 @@ import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemRangedAtta
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemShootDartAccuracyModifierItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem;
 import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLocation;
+import thaumcraft.common.lib.resourcelocations.GoalResourceLocation;
 
 import java.util.*;
+import java.util.function.Function;
 
 import static thaumcraft.common.entities.golems.BaseGolemEntity.BaseGolemEntityClientEventSignals.START_LEFT_ARM_TIMER;
 import static thaumcraft.common.items.golem.upgrade.abstracts.IGolemDecorationItem.DefaultDecorationTypes.*;
 
 //ItemGolemDecoration:0
-public class GolemDartLauncherItem extends Item implements IGolemDecorationItem, IGolemRangedAttackPerformerItem, IGolemAIProviderItem {
+public class GolemDartLauncherItem extends Item
+        implements
+        IGolemDecorationItem,
+        IGolemRangedAttackPerformerItem,
+        IGolemAIProviderItem,
+        ItemCooldownOwnerEntity.IItemCooldownProviderItem
+{
+    public static final GoalResourceLocation DART_ATTACK = GoalResourceLocation.of(Thaumcraft.MOD_ID,"dart_attack");
+    public static final Function<BaseGolemEntity, Goal> DART_ATTACK_GOAL = GolemRangedAttackGoal::new;
+
     public GolemDartLauncherItem() {
         this(new Properties());
     }
@@ -37,6 +52,9 @@ public class GolemDartLauncherItem extends Item implements IGolemDecorationItem,
 
     @Override
     public boolean canPerformRangedAttackForGolem(LivingEntity shooter, ItemStack upgradeStack, LivingEntity target, float f) {
+        if (shooter instanceof ItemCooldownOwnerEntity cooldownOwner){
+            return !cooldownOwner.opentc4$getItemCooldowns().isOnCooldown(upgradeStack.getItem());
+        }
         return true;
     }
 
@@ -62,6 +80,11 @@ public class GolemDartLauncherItem extends Item implements IGolemDecorationItem,
     @Override
     public void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GolemGoalSelector goalSelector, GolemGoalSelector targetSelector) {
         IGolemAIProviderItem.super.registerGoalForGolem(golem, upgradeStack, goalSelector, targetSelector);
-        //TODO
+        goalSelector.addGoalIfNotExist(2,DART_ATTACK,DART_ATTACK_GOAL,golem);
+    }
+
+    @Override
+    public int getItemCooldownForItemStackAndEntity(ItemStack itemStack, LivingEntity livingEntity) {
+        return 30 /* - this.theGolem.getUpgradeAmount(0) * 8 todo upgrade decrease*/;
     }
 }
