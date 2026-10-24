@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.golems;
 
-import thaumcraft.common.entities.golems.properties.ExtraPropertiesValueMap;
+import thaumcraft.common.entities.golems.properties.ExtraAbilityDataMap;
 import thaumcraft.common.entities.golems.properties.GolemBasicAbilityProperties;
 
 public class GolemAbilitiesData {
@@ -16,7 +16,7 @@ public class GolemAbilitiesData {
     public final GolemGoalSelector goalSelector;
     public final GolemGoalSelector targetSelector;
     public final GolemBasicAbilityProperties properties;
-    public ExtraPropertiesValueMap extraProperties;
+    public ExtraAbilityDataMap extraAbilitiesData;
     public float homeRange;
 
     public GolemAbilitiesData(GolemGoalSelector goalSelector, GolemGoalSelector targetSelector, GolemBasicAbilityProperties properties) {
@@ -31,8 +31,8 @@ public class GolemAbilitiesData {
         this.inventorySizeMultiplier = properties.inventorySizeMultiplier;
         this.homeRange = properties.basicHomeRange;
         this.properties = properties;
-        this.extraProperties = new ExtraPropertiesValueMap();
-        this.extraProperties.setTo(properties.extraProperties);
+        this.extraAbilitiesData = new ExtraAbilityDataMap();
+        this.extraAbilitiesData.setTo(properties.extraProperties);
     }
 
     public void reset() {
@@ -46,7 +46,7 @@ public class GolemAbilitiesData {
         this.inventorySize = properties.basicInventorySize;
         this.inventorySizeMultiplier = properties.inventorySizeMultiplier;
         this.homeRange = properties.basicHomeRange;
-        this.extraProperties.restoreTo(properties.extraProperties);
+        this.extraAbilitiesData.restoreTo(properties.extraProperties);
     }
 
     public void safetyCheckAndFix() {
@@ -60,6 +60,6 @@ public class GolemAbilitiesData {
         this.attackFireTicks = Math.max(this.attackFireTicks, 0);
         this.inventorySizeMultiplier = Math.max(this.inventorySizeMultiplier, 0);
         this.homeRange = Math.max(this.homeRange, 0);
-        this.extraProperties.safetyCheckAndFix();
+        this.extraAbilitiesData.safetyCheckAndFix();
     }
 }

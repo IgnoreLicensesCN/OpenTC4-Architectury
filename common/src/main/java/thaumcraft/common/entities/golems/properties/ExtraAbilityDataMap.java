@@ -1,11 +1,11 @@
 package thaumcraft.common.entities.golems.properties;
 
-public class ExtraPropertiesValueMap extends ExtraPropertiesMap {
-    public ExtraPropertiesValueMap() {
+public class ExtraAbilityDataMap extends ExtraPropertiesMap {
+    public ExtraAbilityDataMap() {
         super(ExtraPropertiesDefinition.REGISTERED_DEFAULT_VALUES_MAP_VIEW.delegate.internalMap);
     }
 
-    public ExtraPropertiesValueMap(ExtraPropertiesDefinitionMap definitionMap) {
+    public ExtraAbilityDataMap(ExtraPropertiesDefinitionMap definitionMap) {
         super(definitionMap.internalMap);
     }
 
@@ -14,6 +14,14 @@ public class ExtraPropertiesValueMap extends ExtraPropertiesMap {
         var result = super.get(marker);
         if (result == null) {
             throw new IllegalArgumentException("Marker " + marker + " is not registered");
+        }
+        return result;
+    }
+
+    public <T> T getOrDefault(ExtraPropertiesMarker<T> marker, T defaultValue) {
+        var result = super.get(marker);
+        if (result == null) {
+            return defaultValue;
         }
         return result;
     }
