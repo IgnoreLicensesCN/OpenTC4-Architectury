@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.rangedattack.IGolemRangedAttackPerformerItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.IGolemRangedAttackPerformerItem;
 
 import java.util.EnumSet;
 

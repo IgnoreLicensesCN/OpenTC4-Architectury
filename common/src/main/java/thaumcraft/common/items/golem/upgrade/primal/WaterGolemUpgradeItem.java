@@ -11,12 +11,20 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemHomeRangeModifierItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.IGolemShootAccuracyModifierItem;
 
 import java.util.List;
 
 //GolemUpgrade:3
-public class WaterGolemUpgradeItem extends Item implements TravelingTrunkEntity.ITravelingTrunkUpgradeItem {
+public class WaterGolemUpgradeItem extends Item
+        implements
+        TravelingTrunkEntity.ITravelingTrunkUpgradeItem,
+        IGolemShootAccuracyModifierItem,
+        IGolemHomeRangeModifierItem
+{
     public WaterGolemUpgradeItem(Properties properties) {
         super(properties);
     }
@@ -48,5 +56,15 @@ public class WaterGolemUpgradeItem extends Item implements TravelingTrunkEntity.
             return InteractionResult.PASS;
         }
         return TravelingTrunkEntity.ITravelingTrunkUpgradeItem.super.travelingTrunkUpgrade$modifyInteraction(trunk, upgradeStack, player, interactionHand);
+    }
+
+    @Override
+    public float modifyShootDivergence(BaseGolemEntity golem, ItemStack stack, float divergence, float divergenceDefault) {
+        return Math.max(0,divergence - divergenceDefault * 0.25f) /*1.75F/7F*/;
+    }
+
+    @Override
+    public float modifyHomeRange(BaseGolemEntity baseGolemEntity, ItemStack stack, float range, float defaultRange) {
+        return range + (defaultRange/4.F);
     }
 }

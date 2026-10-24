@@ -43,6 +43,7 @@ import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.golem.GolemBellItem;
 import thaumcraft.common.items.golem.golems.*;
 import thaumcraft.common.items.golem.golems.advanced.*;
+import thaumcraft.common.items.golem.upgrade.decoration.*;
 import thaumcraft.common.items.golem.upgrade.primal.*;
 import thaumcraft.common.items.jars.*;
 import thaumcraft.common.items.mateiral.*;
@@ -1323,6 +1324,38 @@ public class ThaumcraftItemsRegistry {
     public static final RegistrySupplier<AdvancedWoodGolemItem> SUPPLIER_ADVANCED_WOOD_GOLEM = ITEMS.register(
             "advanced_wood_golem",
             AdvancedWoodGolemItem::new
+    );
+    public static final RegistrySupplier<GolemBowtieItem> SUPPLIER_GOLEM_BOWTIE = ITEMS.register(
+            "golem_bowtie",
+            GolemBowtieItem::new
+    );
+    public static final RegistrySupplier<GolemDartLauncherItem> SUPPLIER_GOLEM_DART_LAUNCHER = ITEMS.register(
+            "golem_dart_launcher",
+            GolemDartLauncherItem::new
+    );
+    public static final RegistrySupplier<GolemFezItem> SUPPLIER_GOLEM_FEZ = ITEMS.register(
+            "golem_fez",
+            GolemFezItem::new
+    );
+    public static final RegistrySupplier<GolemGlassesItem> SUPPLIER_GOLEM_GLASSES = ITEMS.register(
+            "golem_glasses",
+            GolemGlassesItem::new
+    );
+    public static final RegistrySupplier<GolemIronPlatingItem> SUPPLIER_GOLEM_IRON_PLATING = ITEMS.register(
+            "golem_iron_plating",
+            GolemIronPlatingItem::new
+    );
+    public static final RegistrySupplier<GolemMaceItem> SUPPLIER_GOLEM_MACE = ITEMS.register(
+            "golem_mace",
+            GolemMaceItem::new
+    );
+    public static final RegistrySupplier<GolemTophatItem> SUPPLIER_GOLEM_TOPHAT = ITEMS.register(
+            "golem_tophat",
+            GolemTophatItem::new
+    );
+    public static final RegistrySupplier<GolemVisorItem> SUPPLIER_GOLEM_VISOR = ITEMS.register(
+            "golem_visor",
+            GolemVisorItem::new
     );
     public static final Supplier<ItemStack> RANDOM_MANA_BEAN_SUPPLIER = new Supplier<>() {
         private final ThreadLocal<RandomSource> randomSourceThreadLocal = new ThreadLocal<>();

@@ -45,6 +45,7 @@ import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.golem.GolemBellItem;
 import thaumcraft.common.items.golem.golems.*;
 import thaumcraft.common.items.golem.golems.advanced.*;
+import thaumcraft.common.items.golem.upgrade.decoration.*;
 import thaumcraft.common.items.golem.upgrade.primal.*;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
 import thaumcraft.common.items.jars.NodeJarBlockItem;
@@ -1059,5 +1060,29 @@ public class ThaumcraftItemInstances {
     }
     public static AdvancedThaumiumGolemItem ADVANCED_THAUMIUM_GOLEM() {
         return ThaumcraftItemsRegistry.SUPPLIER_ADVANCED_THAUMIUM_GOLEM.get();
+    }
+    public static GolemBowtieItem GOLEM_BOWTIE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_GOLEM_BOWTIE.get();
+    }
+    public static GolemDartLauncherItem GOLEM_DART_LAUNCHER() {
+        return ThaumcraftItemsRegistry.SUPPLIER_GOLEM_DART_LAUNCHER.get();
+    }
+    public static GolemFezItem GOLEM_FEZ() {
+        return ThaumcraftItemsRegistry.SUPPLIER_GOLEM_FEZ.get();
+    }
+    public static GolemGlassesItem GOLEM_GLASSES() {
+        return ThaumcraftItemsRegistry.SUPPLIER_GOLEM_GLASSES.get();
+    }
+    public static GolemIronPlatingItem GOLEM_IRON_PLATING() {
+        return ThaumcraftItemsRegistry.SUPPLIER_GOLEM_IRON_PLATING.get();
+    }
+    public static GolemMaceItem GOLEM_MACE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_GOLEM_MACE.get();
+    }
+    public static GolemTophatItem GOLEM_TOPHAT() {
+        return ThaumcraftItemsRegistry.SUPPLIER_GOLEM_TOPHAT.get();
+    }
+    public static GolemVisorItem GOLEM_VISOR() {
+        return ThaumcraftItemsRegistry.SUPPLIER_GOLEM_VISOR.get();
     }
 }

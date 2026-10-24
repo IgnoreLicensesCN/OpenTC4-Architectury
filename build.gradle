@@ -131,6 +131,9 @@ subprojects {
         implementation 'org.jsoup:jsoup:1.17.2'
         implementation 'org.apache.commons:commons-rng-sampling:1.5'
         implementation 'org.apache.commons:commons-rng-simple:1.5'
+
+        compileOnly 'org.projectlombok:lombok:1.18.30'
+        annotationProcessor 'org.projectlombok:lombok:1.18.30'
     }
 
     java {
@@ -145,6 +148,7 @@ subprojects {
 
     tasks.withType(JavaCompile).configureEach {
         it.options.release = 21
+        it.options.annotationProcessorPath = configurations.annotationProcessor
     }
     tasks.named('shadowJar', ShadowJar) {
         archiveClassifier.set('') // 覆盖默认 jar

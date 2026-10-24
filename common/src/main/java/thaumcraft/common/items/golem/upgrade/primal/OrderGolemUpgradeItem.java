@@ -9,11 +9,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.IGolemTargetControlItem;
 
 import java.util.List;
 
 //GolemUpgrade:4
-public class OrderGolemUpgradeItem extends Item implements TravelingTrunkEntity.ITravelingTrunkUpgradeItem {
+public class OrderGolemUpgradeItem extends Item implements TravelingTrunkEntity.ITravelingTrunkUpgradeItem, IGolemTargetControlItem {
     public OrderGolemUpgradeItem(Properties properties) {
         super(properties);
     }

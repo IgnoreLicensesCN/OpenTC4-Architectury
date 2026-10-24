@@ -44,16 +44,18 @@ import thaumcraft.common.items.golem.upgrade.abstracts.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemHomeRangeModifierItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.IGolemTargetControlItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.*;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.rangedattack.IGolemRangedAttackPerformerItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.rangedattack.IGolemShootCooldownModifierItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.rangedattack.IGolemShootAccuracyModifierItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.IGolemRangedAttackPerformerItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.IGolemShootCooldownModifierItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.IGolemShootAccuracyModifierItem;
 import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLocation;
 
 import java.util.*;
 
 import static com.linearity.opentc4.Consts.BaseGolemEntityTagAccessors.*;
 import static com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor.NULL_POS_TO_WRITE;
+import static net.minecraft.network.syncher.EntityDataSerializers.BYTE;
 import static thaumcraft.common.entities.golems.BaseGolemEntity.BaseGolemEntityClientEventSignals.*;
 
 public abstract class BaseGolemEntity
@@ -139,6 +141,7 @@ public abstract class BaseGolemEntity
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemColorfulMarkerProviderItem.class, 1200));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemShootAccuracyModifierItem.class,1300));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemShootCooldownModifierItem.class,1400));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemTargetControlItem.class,1500));
     }
 
     public List<ObjectIntPair<Class<? extends IGolemModifierItem>>> getAvailableGolemModifierTypes() {
@@ -276,6 +279,7 @@ public abstract class BaseGolemEntity
     public static class GolemAbilitiesData {
         public float carryPower;//item carry capacity:*1,fluid carry capacity(mb):*1000
         public float inventorySize = 0;
+        public float inventorySizeMultiplier = 0;
         public float attackDelay;
         public float regenDelay;
         public float regenAmount;
@@ -285,7 +289,7 @@ public abstract class BaseGolemEntity
         public final GolemGoalSelector goalSelector;
         public final GolemGoalSelector targetSelector;
         public final GolemBasicAbilityProperties properties;
-        public float homeRange = 16;
+        public float homeRange;
 
         public GolemAbilitiesData(GolemGoalSelector goalSelector, GolemGoalSelector targetSelector, GolemBasicAbilityProperties properties) {
             this.carryPower = properties.carryPower;
@@ -296,6 +300,8 @@ public abstract class BaseGolemEntity
             this.attackFireTicks = properties.attackFireTicks;
             this.goalSelector = goalSelector;
             this.targetSelector = targetSelector;
+            this.inventorySizeMultiplier = properties.inventorySizeMultiplier;
+            this.homeRange = properties.basicHomeRange;
             this.properties = properties;
         }
 
@@ -306,9 +312,10 @@ public abstract class BaseGolemEntity
             this.regenAmount = properties.regenAmount;
             this.strength = properties.strength;
             this.attackFireTicks = properties.attackFireTicks;
-            this.speedMultiplier = 1;
-            this.inventorySize = 0;
-            this.homeRange = 16;
+            this.speedMultiplier = properties.basicSpeedMultiplier;
+            this.inventorySize = properties.basicInventorySize;
+            this.inventorySizeMultiplier = properties.inventorySizeMultiplier;
+            this.homeRange = properties.basicHomeRange;
         }
 
         public void safetyCheckAndFix() {
@@ -320,6 +327,7 @@ public abstract class BaseGolemEntity
             this.regenAmount = Math.max(this.regenAmount, 0);
             this.strength = Math.max(this.strength, 0);
             this.attackFireTicks = Math.max(this.attackFireTicks,0);
+            this.inventorySizeMultiplier = Math.max(this.inventorySizeMultiplier, 0);
             this.homeRange = Math.max(this.homeRange, 0);
         }
     }
@@ -337,7 +345,15 @@ public abstract class BaseGolemEntity
     @NotNull
     public ResourceLocation homeLevelResourceLocation = level().dimension().location();
 
-    private static final EntityDataAccessor<byte[]> DATA_ID_INVENTORY_COLORS = SynchedEntityData.defineId(BaseGolemEntity.class, EntityDataSerializerAdditions.BYTE_ARRAY);
+    public static final EntityDataAccessor<byte[]> DATA_ID_INVENTORY_COLORS = SynchedEntityData.defineId(BaseGolemEntity.class, EntityDataSerializerAdditions.BYTE_ARRAY);
+    public static final EntityDataAccessor<Byte> DATA_ID_ATTACK_CONTROL_FLAGS = SynchedEntityData.defineId(BaseGolemEntity.class,BYTE);
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_ID_INVENTORY_COLORS,new byte[0]);
+        this.entityData.define(DATA_ID_ATTACK_CONTROL_FLAGS, (byte) 0);
+    }
 
     public byte[] getInventoryColors() {
         return this.entityData.get(DATA_ID_INVENTORY_COLORS);
@@ -421,7 +437,7 @@ public abstract class BaseGolemEntity
     protected void reconstructInventory() {
         var oldInventory = this.inventory;
         int inventorySizePrev = oldInventory.size();
-        int inventorySizeNext = (int) this.abilitiesData.inventorySize;
+        int inventorySizeNext = (int) (this.abilitiesData.inventorySize * this.abilitiesData.inventorySizeMultiplier);
         if (inventorySizePrev != inventorySizeNext) {
             var level = level();
             var pos = position();
@@ -594,93 +610,6 @@ public abstract class BaseGolemEntity
             }
         }
         return result;
-    }
-
-    public static class GolemBasicAbilityProperties {
-        public final int basicUpgradeSize;
-        public final int carryPower;
-        public final int regenDelay;
-        public final int regenAmount;
-        public final int strength;
-        public final int attackDelay;
-        public final int attackFireTicks;
-        public final int homeRange;
-
-        public GolemBasicAbilityProperties(int basicUpgradeSize, int carryPower, int regenDelay, int strength, int attackDelay, int regenAmount, int attackFireTicks, int homeRange) {
-            this.basicUpgradeSize = basicUpgradeSize;
-            this.carryPower = carryPower;
-            this.regenDelay = regenDelay;
-            this.regenAmount = regenAmount;
-            this.strength = strength;
-            this.attackDelay = attackDelay;
-            this.attackFireTicks = attackFireTicks;
-            this.homeRange = homeRange;
-        }
-
-        public static class Builder {
-            public GolemBasicAbilityProperties build() {
-                return new GolemBasicAbilityProperties(basicUpgradeSize, carryPower, regenDelay, strength, attackDelay, regenAmount, attackFireTicks, homeRange);
-            }
-
-            public static Builder copy(GolemBasicAbilityProperties properties) {
-                return new Builder().strength(properties.strength)
-                        .carryPower(properties.carryPower)
-                        .basicUpgradeSize(properties.basicUpgradeSize)
-                        .regenDelay(properties.regenDelay)
-                        .regenAmount(properties.regenAmount)
-                        .attackFireTicks(properties.attackFireTicks)
-                        .attackDelay(properties.attackDelay);
-            }
-
-            protected int basicUpgradeSize = 1;
-            protected int carryPower = 1;
-            protected int regenDelay = 75;
-            protected int strength = 0;
-            protected int attackDelay = 20;
-            protected int regenAmount = 1;
-            protected int attackFireTicks = 0;
-            protected int homeRange = 16;
-
-            public Builder basicUpgradeSize(int basicUpgradeSize) {
-                this.basicUpgradeSize = basicUpgradeSize;
-                return this;
-            }
-
-            public Builder carryPower(int carryPower) {
-                this.carryPower = carryPower;
-                return this;
-            }
-
-            public Builder regenDelay(int regenDelay) {
-                this.regenDelay = regenDelay;
-                return this;
-            }
-
-            public Builder strength(int strength) {
-                this.strength = strength;
-                return this;
-            }
-
-            public Builder attackDelay(int attackDelay) {
-                this.attackDelay = attackDelay;
-                return this;
-            }
-
-            public Builder regenAmount(int regenAmount) {
-                this.regenAmount = regenAmount;
-                return this;
-            }
-
-            public Builder attackFireTicks(int attackFireTicks){
-                this.attackFireTicks = attackFireTicks;
-                return this;
-            }
-
-            public Builder homeRange(int homeRange){
-                this.homeRange = homeRange;
-                return this;
-            }
-        }
     }
 
     public static class ClientTickContext {

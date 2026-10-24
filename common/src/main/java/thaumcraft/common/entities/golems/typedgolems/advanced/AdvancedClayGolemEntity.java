@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.golems.AdvancedGolemEntity;
+import thaumcraft.common.entities.golems.GolemBasicAbilityProperties;
 import thaumcraft.common.entities.golems.typedgolems.ClayGolemEntity;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 
@@ -30,8 +31,7 @@ public class AdvancedClayGolemEntity extends AdvancedGolemEntity {
     }
 
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
-            GolemBasicAbilityProperties.Builder
-                    .copy(ClayGolemEntity.ABILITY_PROPERTIES)
+            ClayGolemEntity.ABILITY_PROPERTIES.toBuilder()
                     .attackDelay(ClayGolemEntity.ABILITY_PROPERTIES.attackDelay -2)
                     .basicUpgradeSize(ClayGolemEntity.ABILITY_PROPERTIES.basicUpgradeSize + 1).build();
     @Override

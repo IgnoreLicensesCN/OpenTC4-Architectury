@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.golems.AdvancedGolemEntity;
+import thaumcraft.common.entities.golems.GolemBasicAbilityProperties;
 import thaumcraft.common.entities.golems.typedgolems.TallowGolemEntity;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 
@@ -31,8 +32,7 @@ public class AdvancedTallowGolemEntity extends AdvancedGolemEntity {
     }
 
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
-            GolemBasicAbilityProperties.Builder
-                    .copy(TallowGolemEntity.ABILITY_PROPERTIES)
+            TallowGolemEntity.ABILITY_PROPERTIES.toBuilder()
                     .attackDelay(TallowGolemEntity.ABILITY_PROPERTIES.attackDelay -2)
                     .basicUpgradeSize(TallowGolemEntity.ABILITY_PROPERTIES.basicUpgradeSize + 1).build();
 

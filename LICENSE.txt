@@ -26,7 +26,7 @@ This product includes components from the following projects:
 - FastUtil (Apache License 2.0)
 - Apache Commons RNG (Apache License 2.0)
 - Jsoup (MIT License)
-
+- Project Lombok (MIT License)
 These components are used under their respective licenses.
 The core mod code and modifications are licensed under the MIT License.
 --------------------------------------------------------------------------------

@@ -13,13 +13,21 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAttackFireTickModifierItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemInventorySizeMultiplierItem;
 
 import java.util.EnumSet;
 import java.util.List;
 
 //GolemUpgrade:2
-public class FireGolemUpgradeItem extends Item implements TravelingTrunkEntity.ITravelingTrunkUpgradeItem {
+public class FireGolemUpgradeItem extends Item
+        implements
+        TravelingTrunkEntity.ITravelingTrunkUpgradeItem,
+        IGolemInventorySizeMultiplierItem,
+        IGolemAttackFireTickModifierItem
+{
     public FireGolemUpgradeItem(Properties properties) {
         super(properties);
     }
@@ -37,6 +45,22 @@ public class FireGolemUpgradeItem extends Item implements TravelingTrunkEntity.I
     public void travelingTrunkUpgrade$registerTargetGoals(TravelingTrunkEntity trunk, ItemStack upgradeStack, GoalSelector targetSelector) {
         targetSelector.addGoal(1, new TravelingTrunkEntityOwnerHurtByTargetGoal(trunk));
         targetSelector.addGoal(2, new TravelingTrunkOwnerHurtTargetGoal(trunk));
+    }
+
+    @Override
+    public float modifyInventorySizeMultiplier(BaseGolemEntity golem, ItemStack upgradeStack,float multiplier, float basicInventorySizeMultiplier) {
+        return multiplier+basicInventorySizeMultiplier;
+    }
+
+    @Override
+    public void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
+        IGolemInventorySizeMultiplierItem.super.modifyGolemAbility(golem, upgradeStack, abilitiesData);
+        IGolemAttackFireTickModifierItem.super.modifyGolemAbility(golem, upgradeStack, abilitiesData);
+    }
+
+    @Override
+    public float modifyAttackFireTick(BaseGolemEntity golem, ItemStack upgradeStack, float attackFireTicks, float defaultAttackFireTicks) {
+        return attackFireTicks + 1;
     }
 
     @StoleFrom("net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal")

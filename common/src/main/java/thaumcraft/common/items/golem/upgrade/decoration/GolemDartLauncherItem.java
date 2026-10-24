@@ -14,9 +14,9 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
 import thaumcraft.common.entities.projectile.DartEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemDecorationItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.rangedattack.IGolemRangedAttackPerformerItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.rangedattack.IGolemShootCooldownModifierItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.rangedattack.IGolemShootAccuracyModifierItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.IGolemRangedAttackPerformerItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.IGolemShootCooldownModifierItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.IGolemShootAccuracyModifierItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem;
 import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLocation;
 import thaumcraft.common.lib.resourcelocations.GoalResourceLocation;
@@ -67,12 +67,12 @@ public class GolemDartLauncherItem extends Item
         float divergence = DEFAULT_DIVERGENCE;
         if (shooter instanceof BaseGolemEntity baseGolem){
             for (var modifierPair:baseGolem.golemUpgradesCacheView.get(IGolemShootAccuracyModifierItem.class)){
-                divergence = modifierPair.a().modifyShootAccuracy(baseGolem, modifierPair.b(), divergence, DEFAULT_DIVERGENCE);
+                divergence = modifierPair.a().modifyShootDivergence(baseGolem, modifierPair.b(), divergence, DEFAULT_DIVERGENCE);
             }
         }
         divergence = Math.max(0,divergence);
 
-        var dart = new DartEntity(shooter, target,shooter.level(), 1.6F, divergence/* - (float)this.getUpgradeAmount(3) * 1.75F TODO:impl this*/);
+        var dart = new DartEntity(shooter, target,shooter.level(), 1.6F, divergence);
         float damage = (float) shooter.getAttributeValue(Attributes.ATTACK_DAMAGE);
         dart.setBaseDamage(damage * 0.4F);
         shooter.playSound(ThaumcraftSounds.GOLEM_IRON_SHOOT, 0.5F, 1.0F / (shooter.getRandom().nextFloat() * 0.4F + 0.6F));
@@ -93,10 +93,10 @@ public class GolemDartLauncherItem extends Item
         float cooldown = DEFAULT_COOLDOWN;
         if (livingEntity instanceof BaseGolemEntity baseGolem){
             for (var modifierPair:baseGolem.golemUpgradesCacheView.get(IGolemShootCooldownModifierItem.class)){
-                cooldown = modifierPair.a().modifyDartCooldown(baseGolem, modifierPair.b(), cooldown, DEFAULT_COOLDOWN);
+                cooldown = modifierPair.a().modifyShootCooldown(baseGolem, modifierPair.b(), cooldown, DEFAULT_COOLDOWN);
             }
         }
         cooldown = Math.max(0,cooldown);
-        return (int) cooldown /* - this.theGolem.getUpgradeAmount(0) * 8 todo upgrade decrease cooldown and impl this*/;
+        return (int) cooldown;
     }
 }
