@@ -3,6 +3,7 @@ package thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
+import thaumcraft.common.entities.golems.GolemAbilitiesData;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem;
 
 @UtilityLikeAbstraction
@@ -10,7 +11,7 @@ public interface IGolemStrengthModifierItem extends IGolemAbilityModifierItem {
     float getStrengthModified(BaseGolemEntity golem,ItemStack upgradeStack, float strength, float defaultStrength);
 
     @Override
-    default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
+    default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, GolemAbilitiesData abilitiesData) {
         abilitiesData.strength = getStrengthModified(golem,upgradeStack,abilitiesData.strength, golem.getBasicAbilityProperties().strength);
     }
 }

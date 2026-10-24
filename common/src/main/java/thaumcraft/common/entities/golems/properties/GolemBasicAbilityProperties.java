@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.golems;
+package thaumcraft.common.entities.golems.properties;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -32,4 +32,6 @@ public class GolemBasicAbilityProperties {
     public final int basicSpeedMultiplier = 1;
     @Builder.Default
     public final int basicHomeRange = 16;
+    @Builder.Default
+    public final ExtraPropertiesDefinitionMap extraProperties = new ExtraPropertiesDefinitionMap(ExtraPropertiesDefinition.REGISTERED_DEFAULT_VALUES_MAP_VIEW);
 }

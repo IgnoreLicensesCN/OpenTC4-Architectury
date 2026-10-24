@@ -14,6 +14,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
+import thaumcraft.common.entities.golems.GolemAbilitiesData;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemCarryItemPowerProviderItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemStrengthModifierItem;
@@ -99,7 +100,7 @@ public class EarthGolemUpgradeItem extends Item
     }
 
     @Override
-    public void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
+    public void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, GolemAbilitiesData abilitiesData) {
         IGolemStrengthModifierItem.super.modifyGolemAbility(golem, upgradeStack, abilitiesData);
         IGolemCarryItemPowerProviderItem.super.modifyGolemAbility(golem, upgradeStack, abilitiesData);
     }

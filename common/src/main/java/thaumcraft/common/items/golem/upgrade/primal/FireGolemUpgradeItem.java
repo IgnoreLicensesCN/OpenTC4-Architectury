@@ -14,6 +14,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
+import thaumcraft.common.entities.golems.GolemAbilitiesData;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAttackFireTickModifierItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemInventorySizeMultiplierItem;
@@ -53,7 +54,7 @@ public class FireGolemUpgradeItem extends Item
     }
 
     @Override
-    public void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
+    public void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, GolemAbilitiesData abilitiesData) {
         IGolemInventorySizeMultiplierItem.super.modifyGolemAbility(golem, upgradeStack, abilitiesData);
         IGolemAttackFireTickModifierItem.super.modifyGolemAbility(golem, upgradeStack, abilitiesData);
     }

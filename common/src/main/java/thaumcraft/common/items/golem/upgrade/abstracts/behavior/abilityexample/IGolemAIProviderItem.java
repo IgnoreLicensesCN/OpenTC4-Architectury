@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.GolemMoveToRestrictionCenterGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
+import thaumcraft.common.entities.golems.GolemAbilitiesData;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem;
 import thaumcraft.common.lib.resourcelocations.GoalResourceLocation;
@@ -54,7 +55,7 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
     }
 
     @Override
-    default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, BaseGolemEntity.GolemAbilitiesData abilitiesData) {
+    default void modifyGolemAbility(BaseGolemEntity golem, ItemStack upgradeStack, GolemAbilitiesData abilitiesData) {
         registerGoalForGolem(golem, upgradeStack, abilitiesData.goalSelector, abilitiesData.targetSelector);
     }
 }

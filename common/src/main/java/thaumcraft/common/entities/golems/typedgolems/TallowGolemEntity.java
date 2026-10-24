@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
-import thaumcraft.common.entities.golems.GolemBasicAbilityProperties;
+import thaumcraft.common.entities.golems.properties.GolemBasicAbilityProperties;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 
 public class TallowGolemEntity extends BaseGolemEntity {
