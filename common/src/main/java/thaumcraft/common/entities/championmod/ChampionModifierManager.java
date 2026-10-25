@@ -118,6 +118,7 @@ public class ChampionModifierManager {
         REGISTERED_MODIFIERS.put(modifier.uuid, modifier);
     }
 
+    //should inline
     public static void forEachChampionModifierOnEntity(LivingEntity living, Consumer<ChampionModifier> consumer) {
         var attributeInstance = living.getAttribute(CHAMPION_MOD());
         if (attributeInstance != null) {

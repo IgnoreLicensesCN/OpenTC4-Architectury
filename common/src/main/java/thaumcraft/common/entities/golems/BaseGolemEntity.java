@@ -292,6 +292,18 @@ public abstract class BaseGolemEntity
 
     public static final EntityDataAccessor<byte[]> DATA_ID_INVENTORY_COLORS = SynchedEntityData.defineId(BaseGolemEntity.class, EntityDataSerializerAdditions.BYTE_ARRAY);
     public static final EntityDataAccessor<Byte> DATA_ID_ATTACK_CONTROL_FLAGS = SynchedEntityData.defineId(BaseGolemEntity.class,BYTE);
+    public static final byte FLAG_CAN_ATTACK_HOSTILES = 1;
+    public static final byte FLAG_CAN_ATTACK_ANIMALS = 1<<1;
+    public static final byte FLAG_CAN_ATTACK_PLAYERS = 1<<2;
+    public static final byte FLAG_CAN_ATTACK_CREEPERS = 1<<3;
+
+    public byte getAttackControlFlags(){
+        return entityData.get(DATA_ID_ATTACK_CONTROL_FLAGS);
+    }
+    public void setAttackControlFlags(byte flags){
+        entityData.set(DATA_ID_ATTACK_CONTROL_FLAGS,flags);
+    }
+
 
     @Override
     protected void defineSynchedData() {

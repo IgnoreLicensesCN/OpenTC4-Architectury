@@ -34,7 +34,7 @@ public class TallowGolemEntity extends BaseGolemEntity {
     }
 
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
-            new GolemBasicAbilityProperties.Builder()
+            GolemBasicAbilityProperties.builder()
                     .basicUpgradeSize(2)
                     .carryPower(8)
                     .regenDelay(75)

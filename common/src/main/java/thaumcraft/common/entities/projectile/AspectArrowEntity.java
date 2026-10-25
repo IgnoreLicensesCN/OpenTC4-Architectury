@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
-import thaumcraft.api.damagesource.ThaumcraftDamageSources;
+import thaumcraft.api.damage.ThaumcraftDamageSources;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.IThaumcraftAspectArrowProperties;
 

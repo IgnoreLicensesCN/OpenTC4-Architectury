@@ -33,7 +33,7 @@ public class StoneGolemEntity extends BaseGolemEntity {
     }
 
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
-            new GolemBasicAbilityProperties.Builder()
+            GolemBasicAbilityProperties.builder()
                     .basicUpgradeSize(1)
                     .carryPower(16)
                     .regenDelay(100)

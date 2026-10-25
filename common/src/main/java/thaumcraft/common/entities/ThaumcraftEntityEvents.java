@@ -1,5 +1,6 @@
 package thaumcraft.common.entities;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -15,7 +16,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import org.apache.logging.log4j.util.TriConsumer;
 import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
-import thaumcraft.api.damagesource.ThaumcraftDamageSources;
+import thaumcraft.api.damage.ThaumcraftDamageSources;
+import thaumcraft.api.damage.type.DamageTypeCategories;
+import thaumcraft.api.damage.type.InvulnerableTimeCategory;
 import thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
 import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifierOwnerLivingEntity;
@@ -34,8 +37,10 @@ import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
+import static thaumcraft.api.damage.type.DamageTypeCategories.InvulnerableTime.INVULNERABLE_TIME_CATEGORIES_REGISTERED;
 import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.ELDRITCH;
 import static thaumcraft.common.items.ThaumcraftItemInstances.CRYSTAL_ESSENCE;
 import static thaumcraft.common.items.ThaumcraftItems.ItemTags.UNNATURAL_HUNGER_NEEDED;
@@ -221,6 +226,35 @@ public class ThaumcraftEntityEvents {
     public static AttributeSupplier.Builder injectLivingAttributes(AttributeSupplier.Builder builder) {
         attributesToAddForLiving.forEach(builder::add);
         return builder;
+    }
+
+    //inline supplier might be faster but i want to reduce code.
+    public static  <T> T wrapMethodForModifyInvulnerableTime(
+            DamageSource damageSource, Supplier<T> wrappedMethod, LivingEntity thiz, Supplier<Object2IntMap<InvulnerableTimeCategory>> invulnerableTimeProvider) {
+        var keyOptional = damageSource.typeHolder().unwrapKey();
+        var category = DamageTypeCategories.InvulnerableTime.DEFAULT;
+        if (keyOptional.isPresent()) {
+            category = INVULNERABLE_TIME_CATEGORIES_REGISTERED.get(keyOptional.get().location());
+        }
+        if (category != DamageTypeCategories.InvulnerableTime.DEFAULT) {
+            var invTimeStored = thiz.invulnerableTime;//store default state
+            //load state
+            var invTimeForCategory = invulnerableTimeProvider.get().getInt(category);
+            thiz.invulnerableTime = invTimeForCategory;
+            //end load state
+            var result = wrappedMethod.get();
+            //save state for category
+            int subtractedTime = (thiz.invulnerableTime - invTimeForCategory);
+            if (subtractedTime > 0){
+                invTimeForCategory = (int) (invTimeForCategory + (subtractedTime * category.timeChangeScale));
+            }
+            invulnerableTimeProvider.get().put(category, invTimeForCategory);
+            //end save state for category
+            thiz.invulnerableTime = invTimeStored;//recover default state
+            return result;
+        }
+
+        return wrappedMethod.get();
     }
 
     public static void onHandlingUnnaturalHungerForEating(LivingEntity living,ItemStack itemStack) {

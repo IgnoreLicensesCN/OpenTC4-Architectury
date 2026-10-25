@@ -1,6 +1,8 @@
 
 package thaumcraft.common.entities.golems.typedgolems;
 
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,7 +36,7 @@ public class ThaumiumGolemEntity extends BaseGolemEntity {
     }
 
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
-            new GolemBasicAbilityProperties.Builder()
+            GolemBasicAbilityProperties.builder()
                     .basicUpgradeSize(2)
                     .carryPower(32)
                     .regenDelay(100)
@@ -44,5 +46,13 @@ public class ThaumiumGolemEntity extends BaseGolemEntity {
     @Override
     public GolemBasicAbilityProperties getBasicAbilityProperties() {
         return ABILITY_PROPERTIES;
+    }
+
+    @Override
+    protected float getDamageAfterMagicAbsorb(DamageSource damageSource, float f) {
+        if (damageSource.is(DamageTypes.MAGIC) && !Float.isNaN(f)){
+            f /= 2;
+        }
+        return super.getDamageAfterMagicAbsorb(damageSource, f);
     }
 }

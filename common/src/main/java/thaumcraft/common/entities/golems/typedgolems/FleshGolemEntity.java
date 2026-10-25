@@ -33,7 +33,7 @@ public class FleshGolemEntity extends BaseGolemEntity {
     }
 
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
-            new GolemBasicAbilityProperties.Builder()
+            GolemBasicAbilityProperties.builder()
                     .basicUpgradeSize(2)
                     .carryPower(4)
                     .regenDelay(40)

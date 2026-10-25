@@ -34,7 +34,7 @@ public class IronGolemEntity extends BaseGolemEntity {
     }
 
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
-            new GolemBasicAbilityProperties.Builder()
+            GolemBasicAbilityProperties.builder()
                     .basicUpgradeSize(1)
                     .carryPower(32)
                     .regenDelay(125)

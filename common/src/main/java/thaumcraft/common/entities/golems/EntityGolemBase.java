@@ -1166,8 +1166,12 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
             par2 *= 0.5F;
          }
 
-         if (ds.getSourceOfDamage() != null && this.getUpgradeAmount(5) > 0 && ds.getSourceOfDamage().getEntityId() != this.getEntityId()) {
-            ds.getSourceOfDamage().attackEntityFrom(DamageSource.causeThornsDamage(this), (float)(this.getUpgradeAmount(5) * 2 + this.rand.nextInt(2 * this.getUpgradeAmount(5))));
+         if (ds.getSourceOfDamage() != null
+                 && this.getUpgradeAmount(5) > 0
+                 && ds.getSourceOfDamage().getEntityId() != this.getEntityId()) {
+            ds.getSourceOfDamage().attackEntityFrom(
+                    DamageSource.causeThornsDamage(this),
+                    (float)(this.getUpgradeAmount(5) * 2 + this.rand.nextInt(2 * this.getUpgradeAmount(5))));
             ds.getSourceOfDamage().playSound("damage.thorns", 0.5F, 1.0F);
          }
 
@@ -1182,25 +1186,49 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
    public boolean isValidTarget(Entity target) {
       if (!target.isEntityAlive()) {
          return false;
-      } else if (target instanceof Player && target.getCommandSenderName().equals(this.getOwnerName())) {
+      } else if (
+              target instanceof Player
+                      && target.getCommandSenderName().equals(this.getOwnerName())
+      ) {
          return false;
-      } else if (!this.isWithinHomeDistance(MathHelper.floor_double(target.posX), MathHelper.floor_double(target.posY), MathHelper.floor_double(target.posZ))) {
+      } else if (
+              !this.isWithinHomeDistance(
+                      MathHelper.floor_double(target.posX),
+                      MathHelper.floor_double(target.posY),
+                      MathHelper.floor_double(target.posZ)
+              )
+      ) {
          return false;
       } else {
          if (this.getCore() == 9) {
-            if ((target instanceof IAnimals) && !(target instanceof IMob) && (!(target instanceof EntityTameable) || !((EntityTameable)target).isTamed()) && !(target instanceof EntityGolem)) {
+            if ((target instanceof IAnimals) && !(target instanceof IMob)
+                    && (!(target instanceof EntityTameable) || !((EntityTameable)target).isTamed())
+                    && !(target instanceof EntityGolem)
+            ) {
                 return !(target instanceof EntityAnimal) || !((EntityAnimal) target).isChild();
             }
          } else {
-            if (this.canAttackCreepers() && this.getUpgradeAmount(4) > 0 && target instanceof EntityCreeper) {
+            if (this.canAttackCreepers()
+                    && this.getUpgradeAmount(4) > 0
+                    && target instanceof EntityCreeper
+            ) {
                return true;
             }
 
-            if (this.canAttackHostiles() && (target instanceof IMob) && !(target instanceof EntityCreeper)) {
+            if (this.canAttackHostiles()
+                    && (target instanceof IMob)
+                    && !(target instanceof EntityCreeper)
+            ) {
                return true;
             }
 
-            if (this.canAttackAnimals() && this.getUpgradeAmount(4) > 0 && (target instanceof IAnimals) && !(target instanceof IMob) && (!(target instanceof EntityTameable) || !((EntityTameable)target).isTamed()) && !(target instanceof EntityGolem)) {
+            if (this.canAttackAnimals()
+                    && this.getUpgradeAmount(4) > 0
+                    && (target instanceof IAnimals)
+                    && !(target instanceof IMob)
+                    && (!(target instanceof EntityTameable) || !((EntityTameable)target).isTamed())
+                    && !(target instanceof EntityGolem)
+            ) {
                return true;
             }
 

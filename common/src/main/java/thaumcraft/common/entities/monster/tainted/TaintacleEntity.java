@@ -22,7 +22,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.damagesource.ThaumcraftDamageSources;
+import thaumcraft.api.damage.ThaumcraftDamageSources;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;

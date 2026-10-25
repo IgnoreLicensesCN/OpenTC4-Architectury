@@ -2,7 +2,11 @@ package com.linearity.opentc4.mixin;
 
 import com.linearity.opentc4.mixinaccessors.InMilkContextAccessor;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.Local;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -19,8 +23,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import thaumcraft.api.damage.type.InvulnerableTimeCategory;
 import thaumcraft.common.entities.ThaumcraftEntityEvents;
-import thaumcraft.common.entities.championmod.ChampionModifierManager;
 import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifierOwnerLivingEntity;
 import thaumcraft.common.lib.utils.EntityUtils;
 
@@ -28,11 +32,33 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiPredicate;
+import java.util.function.Supplier;
 
+import static thaumcraft.common.entities.ThaumcraftEntityEvents.wrapMethodForModifyInvulnerableTime;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.*;
 
 @Mixin(value=LivingEntity.class,priority = 214748)
 public abstract class LivingEntityMixin implements IChampionModifierOwnerLivingEntity, InMilkContextAccessor {
+    @Unique
+    private final Object2IntMap<InvulnerableTimeCategory> opentc4$specialInvulnerableTimes = new Object2IntOpenHashMap<>();
+    @Unique
+    private final Supplier<Object2IntMap<InvulnerableTimeCategory>> opentc4$specialInvulnerableTimesProvider = () -> opentc4$specialInvulnerableTimes;
+
+    @WrapMethod(
+            method = "hurt"
+    )
+    public boolean opentc4$wrapHurt(DamageSource damageSource, float f, Operation<Boolean> original){
+        var thiz = (LivingEntity)(Object)this;
+        return wrapMethodForModifyInvulnerableTime(damageSource, () -> original.call(damageSource,f), thiz,opentc4$specialInvulnerableTimesProvider);
+    }
+
+    @WrapMethod(
+            method = "handleDamageEvent"
+    )
+    public void opentc4$handleDamageEvent(DamageSource damageSource, Operation<Void> original) {
+        var thiz = (LivingEntity)(Object)this;
+        wrapMethodForModifyInvulnerableTime(damageSource, () -> original.call(damageSource), thiz,opentc4$specialInvulnerableTimesProvider);
+    }
 
 
     @ModifyReturnValue(
@@ -148,6 +174,8 @@ public abstract class LivingEntityMixin implements IChampionModifierOwnerLivingE
     @Shadow
     public abstract RandomSource getRandom();
 
+    @Shadow @Final public int invulnerableDuration;
+
     @Inject(
             method = "dropAllDeathLoot",
             at = @At("RETURN")
@@ -157,18 +185,13 @@ public abstract class LivingEntityMixin implements IChampionModifierOwnerLivingE
     }
 
     @Unique
-    private final Map<Class<?>, Map<Class<? extends BiPredicate<LivingEntity, ?>>, Set<?>>>
-            opentc4$championModifiers =
-            new ConcurrentHashMap<>();
+    @Override
+    public <ModifierClass> void opentc4$refreshChampionModifierCheckedState(BiPredicate<LivingEntity, ModifierClass> checker, Class<ModifierClass> modifierClass) {
+        opentc4$championModifiers.remove(checker,modifierClass);
+    }
 
     @Unique
-    @Override
-    public void opentc4$refreshChampionModifierCheckedState(BiPredicate<LivingEntity, ?> checker, Class<?> modifierClass) {
-        var mapOrNull = opentc4$championModifiers.get(modifierClass);
-        if (mapOrNull != null) {
-            mapOrNull.remove(checker.getClass());
-        }
-    }
+    private final ChampionModifierMultiMap opentc4$championModifiers = new ChampionModifierMultiMap();
 
     @Unique
     @Override
@@ -178,28 +201,7 @@ public abstract class LivingEntityMixin implements IChampionModifierOwnerLivingE
             Class<ModifierClass> championModifierClass
     ) {
         var thiz = (LivingEntity) (Object) this;
-        return (
-                (Map<Class<BiPredicate<LivingEntity, ModifierClass>>, Set<ModifierClass>>)
-                        (Map<?, ?>) opentc4$championModifiers.computeIfAbsent(
-                                championModifierClass, _ignored -> new ConcurrentHashMap<>()
-                        ))
-                .computeIfAbsent(
-                        (Class<BiPredicate<LivingEntity, ModifierClass>>) checker.getClass(),
-                        checkerClass -> {
-                    Set<ModifierClass> result = ConcurrentHashMap.newKeySet();
-                    ChampionModifierManager.forEachChampionModifierOnEntity(
-                            thiz
-                            , modifier -> {
-                                if (championModifierClass.isInstance(modifier)) {
-                                    var modifierCasted = (ModifierClass) modifier;
-                                    if (checker.test(thiz, modifierCasted)) {
-                                        result.add(modifierCasted);
-                                    }
-                                }
-                            }
-                    );
-                    return result;
-                });
+        return opentc4$championModifiers.get(checker,championModifierClass,thiz);
     }
 
     @Inject(

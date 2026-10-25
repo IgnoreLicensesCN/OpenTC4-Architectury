@@ -2,6 +2,7 @@ package thaumcraft.common.items.golem.golems.advanced;
 
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.common.entities.golems.typedgolems.advanced.AdvancedStrawGolemEntity;
 import thaumcraft.common.items.golem.golems.BaseGolemPlacerItem;
 
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.ADVANCED_STRAW_GOLEM;

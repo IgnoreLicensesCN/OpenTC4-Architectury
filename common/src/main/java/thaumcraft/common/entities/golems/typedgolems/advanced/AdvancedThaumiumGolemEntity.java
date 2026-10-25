@@ -1,5 +1,7 @@
 package thaumcraft.common.entities.golems.typedgolems.advanced;
 
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -41,4 +43,11 @@ public class AdvancedThaumiumGolemEntity extends AdvancedGolemEntity {
         return ABILITY_PROPERTIES;
     }
 
+    @Override
+    protected float getDamageAfterMagicAbsorb(DamageSource damageSource, float f) {
+        if (damageSource.is(DamageTypes.MAGIC) && !Float.isNaN(f)){
+            f /= 2;
+        }
+        return super.getDamageAfterMagicAbsorb(damageSource, f);
+    }
 }

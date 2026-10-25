@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import thaumcraft.api.damagesource.ThaumcraftDamageSources;
+import thaumcraft.api.damage.ThaumcraftDamageSources;
 import thaumcraft.common.entities.ThaumcraftEntities;
 
 public class EmberEntity extends ThrowableProjectile {

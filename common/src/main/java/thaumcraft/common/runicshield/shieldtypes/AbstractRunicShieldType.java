@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static thaumcraft.api.damagesource.ThaumcraftDamageSources.Tags.BYPASS_RUNIC_SHIELD;
+import static thaumcraft.api.damage.ThaumcraftDamageSources.Tags.BYPASS_RUNIC_SHIELD;
 import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CONSUMPTION_RECHARGE_RUNIC_SHIELD;
 
 //TODO:[maybe wont finished] Attribute to calculate but maybe not so fine?maybe we dont need this kind

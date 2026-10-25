@@ -85,6 +85,7 @@ public class RunicShieldHandler {
         if (!player.level().isClientSide){
             var shieldInfo = RunicShieldInfo.getFromLiving(player);
             if (shieldInfo != null){
+                boolean damageBeforePositive = damage > 0;
                 for (var shieldType:shieldInfo.shieldCapacity.keySet()){
                     damage = shieldType.beforeActuallyHurt(player, damageSource, damage,shieldInfo);
                 }
@@ -92,6 +93,9 @@ public class RunicShieldHandler {
                     shieldInfo.syncChargeSendPacket(serverPlayer);
                 }
                 shieldInfo.shouldSyncCharge = false;
+                if (damageBeforePositive && damage <= 0){
+                    damage = 10E-4f;
+                }
                 return damage;
             }
         }

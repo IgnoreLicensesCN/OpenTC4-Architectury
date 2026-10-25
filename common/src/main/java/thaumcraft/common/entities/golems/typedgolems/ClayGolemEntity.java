@@ -33,7 +33,7 @@ public class ClayGolemEntity extends BaseGolemEntity {
     }
 
     public static final GolemBasicAbilityProperties ABILITY_PROPERTIES =
-            new GolemBasicAbilityProperties.Builder()
+            GolemBasicAbilityProperties.builder()
                     .basicUpgradeSize(1)
                     .carryPower(8)
                     .regenDelay(100)

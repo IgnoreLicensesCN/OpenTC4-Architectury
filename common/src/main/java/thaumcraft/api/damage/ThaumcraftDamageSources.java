@@ -1,4 +1,4 @@
-package thaumcraft.api.damagesource;
+package thaumcraft.api.damage;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
