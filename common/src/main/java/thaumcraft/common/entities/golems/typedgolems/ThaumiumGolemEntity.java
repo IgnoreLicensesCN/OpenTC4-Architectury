@@ -4,6 +4,7 @@ package thaumcraft.common.entities.golems.typedgolems;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
@@ -54,5 +55,14 @@ public class ThaumiumGolemEntity extends BaseGolemEntity {
             f /= 2;
         }
         return super.getDamageAfterMagicAbsorb(damageSource, f);
+    }
+
+    @Override
+    public double getAttributeValue(Attribute attribute) {
+        var result = super.getAttributeValue(attribute);
+        if (this.isInWater()){
+            result *= 2;
+        }
+        return result;
     }
 }

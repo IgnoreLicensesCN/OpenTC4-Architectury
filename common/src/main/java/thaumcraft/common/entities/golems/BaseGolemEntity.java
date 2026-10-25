@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.golems;
 
+import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
 import com.linearity.opentc4.mixinaccessors.InteractionOverrideMob;
 import com.linearity.opentc4.mixinaccessors.cliententity.BaseGolemEntityClientAccessor;
@@ -17,12 +18,14 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -135,7 +138,7 @@ public abstract class BaseGolemEntity
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemAbilityModifierItem.class, 500));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemAdditionalDataProviderItem.class, 600));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemReceivedDamageModifierItem.class,700));
-        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemDamageListenerItem.class, 800));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemDamagedListenerItem.class, 800));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemCollapseToItemStackListenerItem.class, 900));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemPlayerInteractionListenerItem.class, 1000));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemHomeRangeModifierItem.class, 1100));
@@ -442,6 +445,7 @@ public abstract class BaseGolemEntity
         if (item instanceof IGolemUpgradeInstalledListenerItem listener) {
             listener.onUpgradeInstalled(this, usingUpgradeStack);
         }
+        this.playSound(ThaumcraftSounds.CAMERA_CLACK,1.0F, 1.0F);
     }
 
     public static AttributeSupplier.Builder createGolemAttributes() {
@@ -562,7 +566,7 @@ public abstract class BaseGolemEntity
 
         boolean result = super.hurt(damageSource, f);
         if (result){
-            for (var damageListenerPair:golemUpgradesCacheView.get(IGolemDamageListenerItem.class)) {
+            for (var damageListenerPair:golemUpgradesCacheView.get(IGolemDamagedListenerItem.class)) {
                 damageListenerPair.a().onDamaged(this,damageListenerPair.b(),damageSource,f);
             }
         }
@@ -654,6 +658,9 @@ public abstract class BaseGolemEntity
             return InteractionResult.PASS;
         }
         var usingStack = player.getItemInHand(interactionHand);
+        if (tryFeedStack(player, interactionHand, usingStack)){
+            return InteractionResult.SUCCESS;
+        }
         if (usingStack.getItem() instanceof GolemBellItem golemBell){
             golemBell.onInteractGolem(player,interactionHand,usingStack,this);
         }else {
@@ -662,5 +669,86 @@ public abstract class BaseGolemEntity
             }
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        var result = super.doHurtTarget(entity);
+        {
+            int addFireTicks = (int)abilitiesData.attackFireTicks;
+            if (addFireTicks > 0 && !entity.fireImmune()) {
+                entity.setRemainingFireTicks(addFireTicks + entity.getRemainingFireTicks());
+            }
+        }
+        for (var listenerPair:golemUpgradesCacheView.get(IGolemDoHurtTargetListenerItem.class)) {
+            listenerPair.a().onDoHurtTarget(this,listenerPair.b(),entity);
+        }
+        return result;
+    }
+
+    @Override
+    protected boolean tryFeedStack(
+            Player player,
+            InteractionHand interactionHand,
+            ItemStack usingStack) {
+        var result = super.tryFeedStack(player,interactionHand,usingStack);
+        if (result){
+            for (var upgradePair:golemUpgradesCacheView.get(IGolemOnFeedListener.class)) {
+                upgradePair.a().onGolemFed(this,upgradePair.b(), usingStack, player, interactionHand);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public @NotNull ItemStack eat(Level level, ItemStack itemStack) {
+        var foodProps = itemStack.getItem().getFoodProperties();
+        if (foodProps == null){
+            return super.eat(level, itemStack);
+        }
+        int itemCountPre = itemStack.getCount();
+        int healAmountPerConsumption = foodProps.getNutrition();
+        var result = super.eat(level, itemStack);
+        int itemCountConsumed = itemCountPre - result.getCount();
+        if (itemCountConsumed > 0){
+            this.heal(healAmountPerConsumption * itemCountConsumed);
+            if (this.getHealth() == this.getMaxHealth()){
+                this.playSound(SoundEvents.PLAYER_BURP,0.5F, this.random.nextFloat()*0.5F + 0.5F);
+            }else {
+                this.playSound(SoundEvents.GENERIC_EAT,0.5F, this.random.nextFloat()*0.5F + 0.5F);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(DamageSource damageSource, int i, boolean bl) {
+        super.dropCustomDeathLoot(damageSource, i, bl);
+        Containers.dropContents(level(),blockPosition(),inventory);
+        inventory.clear();
+        for (var pair:upgradesCacheView){
+            spawnAtLocation(pair.b(),0.5F);
+        }
+        setUpgradeStacks(List.of());
+    }
+
+    @Override
+    protected float getSoundVolume() {
+        return 0.1F;
+    }
+
+    @Override
+    public boolean requiresCustomPersistence() {
+        return true;
+    }
+
+    @Override
+    protected int decreaseAirSupply(int i) {
+        return i;
+    }
+
+    @Override
+    public int getAirSupply() {
+        return getMaxAirSupply();
     }
 }

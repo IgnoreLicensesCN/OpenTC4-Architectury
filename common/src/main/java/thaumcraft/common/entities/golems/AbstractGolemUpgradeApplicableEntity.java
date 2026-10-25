@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.golems;
 
+import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
 import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
@@ -10,16 +11,21 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.IGolemOnFeedListener;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -194,5 +200,41 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
     public void tick() {
         super.tick();
         itemCooldowns.tick();
+    }
+
+    protected boolean canStackFeedGolem(ItemStack usingStack) {
+        return usingStack.getItem() == Items.COOKIE;
+    }
+
+    protected boolean tryFeedStack(
+            Player player,
+            InteractionHand interactionHand,
+            ItemStack usingStack
+    ){
+        if (!canStackFeedGolem(usingStack)) {
+            return false;
+        }
+        var item = usingStack.getItem();
+        var cooldowns = this.opentc4$getItemCooldowns();
+        if (cooldowns.isOnCooldown(item)) {
+            return false;
+        }
+        var foodProperties = item.getFoodProperties();
+        if (foodProperties != null){
+            //may works fine for eternal beef(or some bad food?whatever)
+            //Trunk-And-Eternal-beef army?You and what army?
+            item.finishUsingItem(usingStack,this.level(),this);
+            ItemCooldownOwnerEntity.cooldownForNotCoolingDown(usingStack,this,cooldowns);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
+        OpenTC4.LOGGER.info(
+                "[Thaumcraft] {} was killed by {} ( {} ) at {}",this,damageSource.getEntity(),damageSource.type(),this.position()
+        );
     }
 }

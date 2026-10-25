@@ -1,176 +1,175 @@
 package thaumcraft.common.entities.golems;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import fromhodgepodge.mixins.hooks.ThaumcraftMixinMethods;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityGolem;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.*;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.world.damagesource.DamageSource;
-import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+//import cpw.mods.fml.common.FMLCommonHandler;
+//import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+//import cpw.mods.fml.relauncher.Side;
+//import cpw.mods.fml.relauncher.SideOnly;
+//import fromhodgepodge.mixins.hooks.ThaumcraftMixinMethods;
+//import io.netty.buffer.ByteBuf;
+//import net.minecraft.world.item.enchantment.EnchantmentHelper;
+//import net.minecraft.world.entity.Entity;
+//import net.minecraft.entity.EntityLivingBase;
+//import net.minecraft.entity.SharedMonsterAttributes;
+//import net.minecraft.entity.ai.EntityAILookIdle;
+//import net.minecraft.entity.ai.EntityAIWatchClosest;
+//import net.minecraft.entity.monster.EntityCreeper;
+//import net.minecraft.entity.monster.EntityGolem;
+//import net.minecraft.entity.monster.IMob;
+//import net.minecraft.entity.passive.*;
+//import net.minecraft.world.entity.player.Player;
+//import net.minecraft.world.item.Items;
+//import net.minecraft.world.item.Item;
+//import net.minecraft.world.item.ItemStack;
+//import net.minecraft.nbt.NBTTagCompound;
+//import net.minecraft.nbt.NBTTagList;
+//import net.minecraft.potion.Potion;
+//import net.minecraft.potion.PotionEffect;
+//import net.minecraft.world.damagesource.DamageSource;
+//import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+//
+//import net.minecraft.world.level.Level;
+//import net.minecraftforge.fluids.FluidStack;
+//import thaumcraft.api.aspects.Aspect;
+//import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
+//import thaumcraft.common.Thaumcraft;
+//import thaumcraft.common.config.ConfigBlocks;
+//import thaumcraft.common.config.ConfigItems;
+//import thaumcraft.common.entities.InventoryMob;
+//import thaumcraft.common.entities.ai.combat.*;
+//import thaumcraft.common.entities.ai.fluid.*;
+//import thaumcraft.common.entities.ai.interact.AIFish;
+//import thaumcraft.common.entities.ai.interact.AIHarvestCrops;
+//import thaumcraft.common.entities.ai.interact.AIHarvestLogs;
+//import thaumcraft.common.entities.ai.interact.AIUseItem;
+//import thaumcraft.common.entities.ai.inventory.*;
+//import thaumcraft.common.entities.ai.misc.AIOpenDoor;
+//import thaumcraft.common.entities.ai.misc.AIReturnHome;
+//import thaumcraft.common.entities.projectile.EntityDart;
+//import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
+//import thaumcraft.common.lib.utils.EntityUtils;
+//import thaumcraft.common.lib.utils.InventoryUtils;
+//import thaumcraft.common.lib.utils.Utils;
+//
+//import java.util.ArrayList;
+//import java.util.Arrays;
 
-import net.minecraft.world.level.Level;
-import net.minecraftforge.fluids.FluidStack;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.aspectlists.baseimpl.LinkedHashAspectList;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.entities.InventoryMob;
-import thaumcraft.common.entities.ai.combat.*;
-import thaumcraft.common.entities.ai.fluid.*;
-import thaumcraft.common.entities.ai.interact.AIFish;
-import thaumcraft.common.entities.ai.interact.AIHarvestCrops;
-import thaumcraft.common.entities.ai.interact.AIHarvestLogs;
-import thaumcraft.common.entities.ai.interact.AIUseItem;
-import thaumcraft.common.entities.ai.inventory.*;
-import thaumcraft.common.entities.ai.misc.AIOpenDoor;
-import thaumcraft.common.entities.ai.misc.AIReturnHome;
-import thaumcraft.common.entities.projectile.EntityDart;
-import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
-import thaumcraft.common.lib.utils.EntityUtils;
-import thaumcraft.common.lib.utils.InventoryUtils;
-import thaumcraft.common.lib.utils.Utils;
+public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalSpawnData*/ {
+//   public InventoryMob inventory;
+//   public ItemStack itemCarried;
+//   public FluidStack fluidCarried;
+//   public ItemStack itemWatched;
+//   public Aspect essentia;
+//   public int essentiaAmount;
+//   public boolean advanced;
+//   public int homeFacing;
+//   public boolean paused;
+//   public boolean inactive;
+//   public boolean flag;
+//   public byte[] colors;
+//   public byte[] upgrades;
+//   public String decoration;
+//   public float bootup;
+//   public EnumGolemType golemType;
+//   public int regenTimer;
+//   protected ArrayList<Marker> markers;
+//   boolean pdw;
+//   public int action;
+//   public int leftArm;
+//   public int rightArm;
+//   public int healing;
+//
+//   public EntityGolemBase(Level par1World) {
+//      super(par1World);
+//      this.inventory = new InventoryMob(this, 1);
+//      this.itemWatched = null;
+//      this.advanced = false;
+//      this.homeFacing = 0;
+//      this.paused = false;
+//      this.inactive = false;
+//      this.flag = false;
+//      this.colors = null;
+//      this.upgrades = null;
+//      this.decoration = "";
+//      this.bootup = -1.0F;
+//      this.golemType = EnumGolemType.WOOD;
+//      this.regenTimer = 0;
+//      this.markers = new ArrayList<>();
+//      this.pdw = false;
+//      this.action = 0;
+//      this.leftArm = 0;
+//      this.rightArm = 0;
+//      this.healing = 0;
+//      this.dataWatcher.addObject(30, (byte)((int)this.getMaxHealth()));
+//      this.stepHeight = 1.0F;
+//      this.colors = new byte[]{-1};
+//      this.upgrades = new byte[]{-1};
+//      this.setSize(0.4F, 0.95F);
+//      this.getNavigator().setBreakDoors(true);
+//      this.getNavigator().setEnterDoors(true);
+//      this.getNavigator().setCanSwim(true);
+//      this.func_110163_bv();
+//   }
+//
+//   protected void applyEntityAttributes() {
+//      super.applyEntityAttributes();
+//      this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0F);
+//      this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
+//      this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0F);
+//      this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6);
+//      this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(32.0F);
+//   }
+//
+//   public EntityGolemBase(World par0World, EnumGolemType type, boolean adv) {
+//      this(par0World);
+//      this.golemType = type;
+//      this.advanced = adv;
+//      this.upgrades = new byte[this.golemType.upgrades + (this.advanced ? 1 : 0)];
+//
+//       Arrays.fill(this.upgrades, (byte) -1);
+//
+//   }
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-//TODO:impl OwnableEntity
-public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpawnData {
-   public InventoryMob inventory;
-   public ItemStack itemCarried;
-   public FluidStack fluidCarried;
-   public ItemStack itemWatched;
-   public Aspect essentia;
-   public int essentiaAmount;
-   public boolean advanced;
-   public int homeFacing;
-   public boolean paused;
-   public boolean inactive;
-   public boolean flag;
-   public byte[] colors;
-   public byte[] upgrades;
-   public String decoration;
-   public float bootup;
-   public EnumGolemType golemType;
-   public int regenTimer;
-   protected ArrayList<Marker> markers;
-   boolean pdw;
-   public int action;
-   public int leftArm;
-   public int rightArm;
-   public int healing;
-
-   public EntityGolemBase(Level par1World) {
-      super(par1World);
-      this.inventory = new InventoryMob(this, 1);
-      this.itemWatched = null;
-      this.advanced = false;
-      this.homeFacing = 0;
-      this.paused = false;
-      this.inactive = false;
-      this.flag = false;
-      this.colors = null;
-      this.upgrades = null;
-      this.decoration = "";
-      this.bootup = -1.0F;
-      this.golemType = EnumGolemType.WOOD;
-      this.regenTimer = 0;
-      this.markers = new ArrayList<>();
-      this.pdw = false;
-      this.action = 0;
-      this.leftArm = 0;
-      this.rightArm = 0;
-      this.healing = 0;
-      this.dataWatcher.addObject(30, (byte)((int)this.getMaxHealth()));
-      this.stepHeight = 1.0F;
-      this.colors = new byte[]{-1};
-      this.upgrades = new byte[]{-1};
-      this.setSize(0.4F, 0.95F);
-      this.getNavigator().setBreakDoors(true);
-      this.getNavigator().setEnterDoors(true);
-      this.getNavigator().setCanSwim(true);
-      this.func_110163_bv();
-   }
-
-   protected void applyEntityAttributes() {
-      super.applyEntityAttributes();
-      this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0F);
-      this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-      this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0F);
-      this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.6);
-      this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(32.0F);
-   }
-
-   public EntityGolemBase(World par0World, EnumGolemType type, boolean adv) {
-      this(par0World);
-      this.golemType = type;
-      this.advanced = adv;
-      this.upgrades = new byte[this.golemType.upgrades + (this.advanced ? 1 : 0)];
-
-       Arrays.fill(this.upgrades, (byte) -1);
-
-   }
-
-   public boolean setupGolemInventory() {
-      ItemStack core = null;
-      if (!ItemGolemCore.hasInventory(this.getCore())) {
-         return false;
-      } else {
-         if (this.getCore() > -1) {
-            int invSize = 0;
-            switch (this.getCore()) {
-               case 3:
-               case 4:
-               case 6:
-                  break;
-               case 5:
-                  invSize = 1;
-                  invSize += this.getUpgradeAmount(2);
-                  break;
-               default:
-                  invSize = 6;
-                  invSize += this.getUpgradeAmount(2) * 6;
-            }
-
-            InventoryMob inventory2 = new InventoryMob(this, invSize);
-
-             System.arraycopy(this.inventory.inventory, 0, inventory2.inventory, 0, this.inventory.inventory.length);
-
-            this.inventory = inventory2;
-         }
-
-         byte[] oldcolors = this.colors;
-         this.colors = new byte[this.inventory.slotCount];
-
-         for(int a = 0; a < this.inventory.slotCount; ++a) {
-            this.colors[a] = -1;
-            if (a < oldcolors.length) {
-               this.colors[a] = oldcolors[a];
-            }
-         }
-
-         return true;
-      }
-   }
+//   public boolean setupGolemInventory() {
+//      ItemStack core = null;
+//      if (!ItemGolemCore.hasInventory(this.getCore())) {
+//         return false;
+//      } else {
+//         if (this.getCore() > -1) {
+//            int invSize = 0;
+//            switch (this.getCore()) {
+//               case 3:
+//               case 4:
+//               case 6:
+//                  break;
+//               case 5:
+//                  invSize = 1;
+//                  invSize += this.getUpgradeAmount(2);
+//                  break;
+//               default:
+//                  invSize = 6;
+//                  invSize += this.getUpgradeAmount(2) * 6;
+//            }
+//
+//            InventoryMob inventory2 = new InventoryMob(this, invSize);
+//
+//             System.arraycopy(this.inventory.inventory, 0, inventory2.inventory, 0, this.inventory.inventory.length);
+//
+//            this.inventory = inventory2;
+//         }
+//
+//         byte[] oldcolors = this.colors;
+//         this.colors = new byte[this.inventory.slotCount];
+//
+//         for(int a = 0; a < this.inventory.slotCount; ++a) {
+//            this.colors[a] = -1;
+//            if (a < oldcolors.length) {
+//               this.colors[a] = oldcolors[a];
+//            }
+//         }
+//
+//         return true;
+//      }
+//   }
 
    public boolean setupGolem() {
       if (Platform.getEnvironment() != Env.CLIENT) {
@@ -284,185 +283,185 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
       return true;
    }
 
-   public int getCarryLimit() {
-      int base = this.golemType.carry;
-      if ((Platform.getEnvironment() == Env.CLIENT)) {
-         base = this.getGolemType().carry;
-      }
-
-      base += Math.min(16, Math.max(4, base)) * this.getUpgradeAmount(1);
-      return base;
-   }
+//   public int getCarryLimit() {
+//      int base = this.golemType.carry;
+//      if ((Platform.getEnvironment() == Env.CLIENT)) {
+//         base = this.getGolemType().carry;
+//      }
+//
+//      base += Math.min(16, Math.max(4, base)) * this.getUpgradeAmount(1);
+//      return base;
+//   }
 
    public int getFluidCarryLimit() {
       return MathHelper.floor_double(Math.sqrt(this.getCarryLimit())) * 1000;
    }
 
-   public float getAIMoveSpeed() {
-      if (!this.paused && !this.inactive) {
-         float speed = this.golemType.speed * (this.decoration.contains("B") ? 1.1F : 1.0F);
-         if (this.decoration.contains("P")) {
-            speed *= 0.88F;
-         }
+//   public float getAIMoveSpeed() {
+//      if (!this.paused && !this.inactive) {
+//         float speed = this.golemType.speed * (this.decoration.contains("B") ? 1.1F : 1.0F);
+//         if (this.decoration.contains("P")) {
+//            speed *= 0.88F;
+//         }
+//
+//         speed *= 1.0F + (float)this.getUpgradeAmount(0) * 0.15F;
+//
+//         if (this.isInWater() && (this.getGolemType() == EnumGolemType.STONE || this.getGolemType() == EnumGolemType.IRON || this.getGolemType() == EnumGolemType.THAUMIUM)) {
+//            speed *= 2.0F;
+//         }
+//
+//         if (this.advanced) {
+//            speed *= 1.1F;
+//         }
+//
+//         return speed;
+//      } else {
+//         return 0.0F;
+//      }
+//   }
 
-         speed *= 1.0F + (float)this.getUpgradeAmount(0) * 0.15F;
+//   public void setup(int side) {
+//      this.homeFacing = side;
+//      this.setupGolem();
+//      this.setupGolemInventory();
+//   }
 
-         if (this.isInWater() && (this.getGolemType() == EnumGolemType.STONE || this.getGolemType() == EnumGolemType.IRON || this.getGolemType() == EnumGolemType.THAUMIUM)) {
-            speed *= 2.0F;
-         }
+//   protected void entityInit() {
+//      super.entityInit();
+//      this.getDataWatcher().addObjectByDataType(16, 5);
+//      this.dataWatcher.addObject(17, "");
+//      this.dataWatcher.addObject(18, (byte)0);
+//      this.dataWatcher.addObject(19, (byte)0);
+//      this.dataWatcher.addObject(20, "");
+//      this.dataWatcher.addObject(21, -1);
+//      this.dataWatcher.addObject(22, "");//colors(hex) for slot("h" -> invalid color)
+//      this.dataWatcher.addObject(23, "");
+//   }
+//
+//   public boolean isAIEnabled() {
+//      return !this.paused && !this.inactive;
+//   }
 
-         if (this.advanced) {
-            speed *= 1.1F;
-         }
+//   public void onLivingUpdate() {
+//      super.onLivingUpdate();
+//      if (this.action > 0) {
+//         --this.action;
+//      }
+//
+//      if (this.leftArm > 0) {
+//         --this.leftArm;
+//      }
+//
+//      if (this.rightArm > 0) {
+//         --this.rightArm;
+//      }
+//
+//      if (this.healing > 0) {
+//         --this.healing;
+//      }
+//
+//      int xx = MathHelper.floor_double(this.posX);
+//      int yy = MathHelper.floor_double(this.posY);
+//      int zz = MathHelper.floor_double(this.posZ);
+//       this.inactive = yy > 0
+//               && this.level().getBlock(xx, yy - 1, zz) == ConfigBlocks.blockCosmeticSolid
+//               && this.level().getBlockMetadata(xx, yy - 1, zz) == 10;//charged golem fetter(however charged and not charged versions are merged via blockStateProperty)
+//
+//      if (Platform.getEnvironment() != Env.CLIENT) {
+//         if (this.regenTimer > 0) {
+//            --this.regenTimer;
+//         } else {
+//            this.regenTimer = this.golemType.regenDelay;
+//            if (this.decoration.contains("F")) {
+//               this.regenTimer = (int)((float)this.regenTimer * 0.66F);
+//            }
+//
+//            if (Platform.getEnvironment() != Env.CLIENT && this.getHealth() < this.getMaxHealth()) {
+//               this.level().setEntityState(this, (byte)5);
+//               this.heal(1.0F);
+//            }
+//         }
+//
+//         if (this.getDistanceSq(this.getHomePosition().posX, this.getHomePosition().posY, this.getHomePosition().posZ) >= (double)2304.0F
+//                 || this.isEntityInsideOpaqueBlock()) {
+//            int var1 = MathHelper.floor_double(this.getHomePosition().posX);
+//            int var2 = MathHelper.floor_double(this.getHomePosition().posZ);
+//            int var3 = MathHelper.floor_double(this.getHomePosition().posY);
+//
+//            for(int var0 = 1; var0 >= -1; --var0) {
+//               for(int var4 = -1; var4 <= 1; ++var4) {
+//                  for(int var5 = -1; var5 <= 1; ++var5) {
+//                     World var10000 = this.level();
+//                     if (World.doesBlockHaveSolidTopSurface(this.level(), var1 + var4, var3 - 1 + var0, var2 + var5) && !this.level().isBlockNormalCubeDefault(var1 + var4, var3 + var0, var2 + var5, false)) {
+//                        this.setLocationAndAngles((float)(var1 + var4) + 0.5F, (double)var3 + (double)var0, (float)(var2 + var5) + 0.5F, this.rotationYaw, this.rotationPitch);
+//                        this.getNavigator().clearPathEntity();
+//                        return;
+//                     }
+//                  }
+//               }
+//            }
+//         }
+//      } else if (this.bootup > 0.0F && this.getCore() > -1) {
+//         this.bootup *= this.bootup / 33.1F;
+//         this.level().playSound(this.posX, this.posY, this.posZ, "thaumcraft:cameraticks", this.bootup * 0.2F, this.bootup, false);
+//      }
+//
+//   }
 
-         return speed;
-      } else {
-         return 0.0F;
-      }
-   }
+//   public float getRange() {
+//      float dmod = (float)(16 + this.getUpgradeAmount(3) * 4);
+//      if (this.decoration.contains("G")) {
+//         dmod += Math.max(dmod * 0.1F, 1.0F);
+//      }
+//
+//      if (this.advanced) {
+//         dmod += Math.max(dmod * 0.2F, 2.0F);
+//      }
+//
+//      return dmod;
+//   }
+//
+//   public boolean isWithinHomeDistance(int par1, int par2, int par3) {
+//      float dmod = this.getRange();
+//      return this.getHomePosition().getDistanceSquared(par1, par2, par3) < dmod * dmod;
+//   }
 
-   public void setup(int side) {
-      this.homeFacing = side;
-      this.setupGolem();
-      this.setupGolemInventory();
-   }
+//   protected void updateEntityActionState() {
+//      ++this.entityAge;
+//      this.despawnEntity();
+//      boolean vara = this.isInWater();
+//      boolean varb = this.handleLavaMovement();
+//      if (vara || varb) {
+//         this.isJumping = this.rand.nextFloat() < 0.8F;
+//      }
+//
+//   }
 
-   protected void entityInit() {
-      super.entityInit();
-      this.getDataWatcher().addObjectByDataType(16, 5);
-      this.dataWatcher.addObject(17, "");
-      this.dataWatcher.addObject(18, (byte)0);
-      this.dataWatcher.addObject(19, (byte)0);
-      this.dataWatcher.addObject(20, "");
-      this.dataWatcher.addObject(21, -1);
-      this.dataWatcher.addObject(22, "");//colors(hex) for slot("h" -> invalid color)
-      this.dataWatcher.addObject(23, "");
-   }
+//   public void onDeath(DamageSource ds) {
+//      if (Platform.getEnvironment() != Env.CLIENT) {
+//         FMLCommonHandler.instance().getFMLLogger().log(Level.INFO, "[Thaumcraft] {} was killed by {} ( {} )",this,ds.getSourceOfDamage(),ds.getDamageType());
+//      }
+//
+//      super.onDeath(ds);
+//   }
 
-   public boolean isAIEnabled() {
-      return !this.paused && !this.inactive;
-   }
+//   public void setFire(int par1) {
+//      if (!this.golemType.fireResist) {
+//         super.setFire(par1);
+//      }
+//
+//   }
 
-   public void onLivingUpdate() {
-      super.onLivingUpdate();
-      if (this.action > 0) {
-         --this.action;
-      }
+//   protected boolean canDespawn() {
+//       return super.canDespawn();
+//   }
 
-      if (this.leftArm > 0) {
-         --this.leftArm;
-      }
+//   protected void despawnEntity() {
+//   }
 
-      if (this.rightArm > 0) {
-         --this.rightArm;
-      }
-
-      if (this.healing > 0) {
-         --this.healing;
-      }
-
-      int xx = MathHelper.floor_double(this.posX);
-      int yy = MathHelper.floor_double(this.posY);
-      int zz = MathHelper.floor_double(this.posZ);
-       this.inactive = yy > 0
-               && this.level().getBlock(xx, yy - 1, zz) == ConfigBlocks.blockCosmeticSolid
-               && this.level().getBlockMetadata(xx, yy - 1, zz) == 10;//charged golem fetter(however charged and not charged versions are merged via blockStateProperty)
-
-      if (Platform.getEnvironment() != Env.CLIENT) {
-         if (this.regenTimer > 0) {
-            --this.regenTimer;
-         } else {
-            this.regenTimer = this.golemType.regenDelay;
-            if (this.decoration.contains("F")) {
-               this.regenTimer = (int)((float)this.regenTimer * 0.66F);
-            }
-
-            if (Platform.getEnvironment() != Env.CLIENT && this.getHealth() < this.getMaxHealth()) {
-               this.level().setEntityState(this, (byte)5);
-               this.heal(1.0F);
-            }
-         }
-
-         if (this.getDistanceSq(this.getHomePosition().posX, this.getHomePosition().posY, this.getHomePosition().posZ) >= (double)2304.0F
-                 || this.isEntityInsideOpaqueBlock()) {
-            int var1 = MathHelper.floor_double(this.getHomePosition().posX);
-            int var2 = MathHelper.floor_double(this.getHomePosition().posZ);
-            int var3 = MathHelper.floor_double(this.getHomePosition().posY);
-
-            for(int var0 = 1; var0 >= -1; --var0) {
-               for(int var4 = -1; var4 <= 1; ++var4) {
-                  for(int var5 = -1; var5 <= 1; ++var5) {
-                     World var10000 = this.level();
-                     if (World.doesBlockHaveSolidTopSurface(this.level(), var1 + var4, var3 - 1 + var0, var2 + var5) && !this.level().isBlockNormalCubeDefault(var1 + var4, var3 + var0, var2 + var5, false)) {
-                        this.setLocationAndAngles((float)(var1 + var4) + 0.5F, (double)var3 + (double)var0, (float)(var2 + var5) + 0.5F, this.rotationYaw, this.rotationPitch);
-                        this.getNavigator().clearPathEntity();
-                        return;
-                     }
-                  }
-               }
-            }
-         }
-      } else if (this.bootup > 0.0F && this.getCore() > -1) {
-         this.bootup *= this.bootup / 33.1F;
-         this.level().playSound(this.posX, this.posY, this.posZ, "thaumcraft:cameraticks", this.bootup * 0.2F, this.bootup, false);
-      }
-
-   }
-
-   public float getRange() {
-      float dmod = (float)(16 + this.getUpgradeAmount(3) * 4);
-      if (this.decoration.contains("G")) {
-         dmod += Math.max(dmod * 0.1F, 1.0F);
-      }
-
-      if (this.advanced) {
-         dmod += Math.max(dmod * 0.2F, 2.0F);
-      }
-
-      return dmod;
-   }
-
-   public boolean isWithinHomeDistance(int par1, int par2, int par3) {
-      float dmod = this.getRange();
-      return this.getHomePosition().getDistanceSquared(par1, par2, par3) < dmod * dmod;
-   }
-
-   protected void updateEntityActionState() {
-      ++this.entityAge;
-      this.despawnEntity();
-      boolean vara = this.isInWater();
-      boolean varb = this.handleLavaMovement();
-      if (vara || varb) {
-         this.isJumping = this.rand.nextFloat() < 0.8F;
-      }
-
-   }
-
-   public void onDeath(DamageSource ds) {
-      if (Platform.getEnvironment() != Env.CLIENT) {
-         FMLCommonHandler.instance().getFMLLogger().log(Level.INFO, "[Thaumcraft] {} was killed by {} ( {} )",this,ds.getSourceOfDamage(),ds.getDamageType());
-      }
-
-      super.onDeath(ds);
-   }
-
-   public void setFire(int par1) {
-      if (!this.golemType.fireResist) {
-         super.setFire(par1);
-      }
-
-   }
-
-   protected boolean canDespawn() {
-       return super.canDespawn();
-   }
-
-   protected void despawnEntity() {
-   }
-
-   public int decreaseAirSupply(int par1) {
-      return par1;
-   }
+//   public int decreaseAirSupply(int par1) {
+//      return par1;
+//   }
 
    public short getColors(int slot) {
       char[] chars = this.dataWatcher.getWatchableObjectString(22).toCharArray();
@@ -546,235 +545,235 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
       return l;
    }
 
-   public void writeEntityToNBT(NBTTagCompound nbt) {
-      super.writeEntityToNBT(nbt);
-      nbt.setInteger("HomeX", this.getHomePosition().posX);
-      nbt.setInteger("HomeY", this.getHomePosition().posY);
-      nbt.setInteger("HomeZ", this.getHomePosition().posZ);
-      nbt.setByte("HomeFacing", (byte)this.homeFacing);
-      nbt.setByte("GolemType", (byte)this.golemType.ordinal());
-      nbt.setByte("Core", this.getCore());
-      nbt.setString("Decoration", this.decoration);
-      nbt.setByte("toggles", this.getTogglesValue());
-      nbt.setBoolean("advanced", this.advanced);
-      nbt.setByteArray("colors", this.colors);
-      nbt.setByteArray("upgrades", this.upgrades);
-      if (this.getCore() == 5 && this.fluidCarried != null) {
-         this.fluidCarried.writeToNBT(nbt);
-      }
+//   public void writeEntityToNBT(NBTTagCompound nbt) {
+//      super.writeEntityToNBT(nbt);
+//      nbt.setInteger("HomeX", this.getHomePosition().posX);
+//      nbt.setInteger("HomeY", this.getHomePosition().posY);
+//      nbt.setInteger("HomeZ", this.getHomePosition().posZ);
+//      nbt.setByte("HomeFacing", (byte)this.homeFacing);
+//      nbt.setByte("GolemType", (byte)this.golemType.ordinal());
+//      nbt.setByte("Core", this.getCore());
+//      nbt.setString("Decoration", this.decoration);
+//      nbt.setByte("toggles", this.getTogglesValue());
+//      nbt.setBoolean("advanced", this.advanced);
+//      nbt.setByteArray("colors", this.colors);
+//      nbt.setByteArray("upgrades", this.upgrades);
+//      if (this.getCore() == 5 && this.fluidCarried != null) {
+//         this.fluidCarried.writeToNBT(nbt);
+//      }
+//
+//      if (this.getCore() == 6 && this.essentia != null && this.essentiaAmount > 0) {
+//         nbt.setString("essentia", this.essentia.getAspectKey());
+//         nbt.setByte("essentiaAmount", (byte)this.essentiaAmount);
+//      }
+//
+//      NBTTagCompound var4 = new NBTTagCompound();
+//      if (this.itemCarried != null) {
+//         this.itemCarried.writeToNBT(var4);
+//      }
+//
+//      nbt.setTag("ItemCarried", var4);
+//      if (this.getOwnerName() == null) {
+//         nbt.setString("Owner", "");
+//      } else {
+//         nbt.setString("Owner", this.getOwnerName());
+//      }
+//
+//      NBTTagList tl = new NBTTagList();
+//
+//      for(Marker l : this.markers) {
+//         NBTTagCompound nbtc = new NBTTagCompound();
+//         nbtc.setInteger("x", l.x);
+//         nbtc.setInteger("y", l.y);
+//         nbtc.setInteger("z", l.z);
+//         nbtc.setInteger("dim", l.dim);
+//         nbtc.setByte("side", l.side);
+//         nbtc.setByte("color", l.color);
+//         tl.appendTag(nbtc);
+//      }
+//
+//      nbt.setTag("Markers", tl);
+//      nbt.setTag("Inventory", this.inventory.writeToNBT(new NBTTagList()));
+//   }
+//
+//   public void readEntityFromNBT(NBTTagCompound nbt) {
+//      super.readEntityFromNBT(nbt);
+//      int hx = nbt.getInteger("HomeX");
+//      int hy = nbt.getInteger("HomeY");
+//      int hz = nbt.getInteger("HomeZ");
+//      this.homeFacing = nbt.getByte("HomeFacing");
+//      this.setHomeArea(hx, hy, hz, 32);
+//      this.advanced = nbt.getBoolean("advanced");
+//      this.golemType = EnumGolemType.getType(nbt.getByte("GolemType"));
+//      this.setCore(nbt.getByte("Core"));
+//      if (this.getCore() == 5) {
+//         this.fluidCarried = FluidStack.loadFluidStackFromNBT(nbt);
+//      }
+//
+//      if (this.getCore() == 6) {
+//         String s = nbt.getString("essentia");
+//         if (s != null) {
+//            this.essentia = Aspect.getAspect(s);
+//            if (this.essentia != null) {
+//               this.essentiaAmount = nbt.getByte("essentiaAmount");
+//            }
+//         }
+//      }
+//
+//      this.setTogglesValue(nbt.getByte("toggles"));
+//      NBTTagCompound var4 = nbt.getCompoundTag("ItemCarried");
+//      this.itemCarried = ItemStack.loadItemStackFromNBT(var4);
+//      this.updateCarried();
+//      this.decoration = nbt.getString("Decoration");
+//      this.setGolemDecoration(this.decoration);
+//      String var2 = nbt.getString("Owner");
+//      if (!var2.isEmpty()) {
+//         this.setOwner(var2);
+//      }
+//
+//      this.dataWatcher.updateObject(30, (byte)((int)this.getHealth()));
+//      NBTTagList nbttaglist = nbt.getTagList("Markers", 10);
+//
+//      for(int i = 0; i < nbttaglist.tagCount(); ++i) {
+//         NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
+//         int x = nbttagcompound1.getInteger("x");
+//         int y = nbttagcompound1.getInteger("y");
+//         int z = nbttagcompound1.getInteger("z");
+//         int dim = nbttagcompound1.getInteger("dim");
+//         byte s = nbttagcompound1.getByte("side");
+//         byte c = nbttagcompound1.getByte("color");
+//         this.markers.add(new Marker(x, y, z, (byte)dim, s, c));
+//      }
+//
+//      this.upgrades = new byte[this.golemType.upgrades + (this.advanced ? 1 : 0)];
+//      int ul = this.upgrades.length;
+//      this.upgrades = nbt.getByteArray("upgrades");
+//      if (ul != this.upgrades.length) {
+//         byte[] tt = new byte[ul];
+//
+//          Arrays.fill(tt, (byte) -1);
+//
+//         for(int a = 0; a < this.upgrades.length; ++a) {
+//            if (a < ul) {
+//               tt[a] = this.upgrades[a];
+//            }
+//         }
+//
+//         this.upgrades = tt;
+//      }
+//
+//      StringBuilder st = new StringBuilder();
+//
+//      for(byte c : this.upgrades) {
+//         st.append(Integer.toHexString(c));
+//      }
+//
+//      this.dataWatcher.updateObject(23, st.toString());
+//      this.setupGolem();
+//      this.setupGolemInventory();
+//      NBTTagList nbttaglist2 = nbt.getTagList("Inventory", 10);
+//      this.inventory.readFromNBT(nbttaglist2);
+//      this.colors = nbt.getByteArray("colors");
+//      byte[] oldcolors = this.colors;
+//      this.colors = new byte[this.inventory.slotCount];
+//
+//      for(int a = 0; a < this.inventory.slotCount; ++a) {
+//         this.colors[a] = -1;
+//         if (a < oldcolors.length) {
+//            this.colors[a] = oldcolors[a];
+//         }
+//      }
+//
+//      st = new StringBuilder();
+//
+//      for(byte c : this.colors) {
+//         if (c == -1) {
+//            st.append("h");
+//         } else {
+//            st.append(Integer.toHexString(c));
+//         }
+//      }
+//
+//      this.dataWatcher.updateObject(22, st.toString());
+//
+//      NBTTagList nbtTagList = nbt.getTagList("markers", 10);
+//      ThaumcraftMixinMethods.overwriteMarkersDimID(nbtTagList, this.markers);
+//   }
 
-      if (this.getCore() == 6 && this.essentia != null && this.essentiaAmount > 0) {
-         nbt.setString("essentia", this.essentia.getAspectKey());
-         nbt.setByte("essentiaAmount", (byte)this.essentiaAmount);
-      }
+//   public String getOwnerName() {
+//      return this.dataWatcher.getWatchableObjectString(17);
+//   }
 
-      NBTTagCompound var4 = new NBTTagCompound();
-      if (this.itemCarried != null) {
-         this.itemCarried.writeToNBT(var4);
-      }
+//   public void setOwner(String par1Str) {
+//      this.dataWatcher.updateObject(17, par1Str);
+//   }
 
-      nbt.setTag("ItemCarried", var4);
-      if (this.getOwnerName() == null) {
-         nbt.setString("Owner", "");
-      } else {
-         nbt.setString("Owner", this.getOwnerName());
-      }
+//   public void setMarkers(ArrayList markers) {
+//      this.markers = markers;
+//   }
 
-      NBTTagList tl = new NBTTagList();
+//   public ArrayList<Marker> getMarkers() {
+//      this.validateMarkers();
+//      return this.markers;
+//   }
+//
+//   protected void validateMarkers() {
+//      ArrayList<Marker> newMarkers = new ArrayList<>();
+//
+//      for(Marker marker : this.markers) {
+//         if (marker.dim == this.level().dimension()) {
+//            newMarkers.add(marker);
+//         }
+//      }
+//
+//      this.markers = newMarkers;
+//   }
 
-      for(Marker l : this.markers) {
-         NBTTagCompound nbtc = new NBTTagCompound();
-         nbtc.setInteger("x", l.x);
-         nbtc.setInteger("y", l.y);
-         nbtc.setInteger("z", l.z);
-         nbtc.setInteger("dim", l.dim);
-         nbtc.setByte("side", l.side);
-         nbtc.setByte("color", l.color);
-         tl.appendTag(nbtc);
-      }
+//   public EntityLivingBase getOwner() {
+//      return this.level().getPlayerEntityByName(this.getOwnerName());
+//   }
 
-      nbt.setTag("Markers", tl);
-      nbt.setTag("Inventory", this.inventory.writeToNBT(new NBTTagList()));
-   }
+//   protected void damageEntity(DamageSource ds, float par2) {
+//      if (!ds.isFireDamage() || !this.golemType.fireResist) {
+//         if (ds == DamageSource.inWall || ds == DamageSource.outOfWorld) {
+//            this.setLocationAndAngles((double)this.getHomePosition().posX + (double)0.5F, (double)this.getHomePosition().posY + (double)0.5F, (double)this.getHomePosition().posZ + (double)0.5F, 0.0F, 0.0F);
+//         }
+//
+//         super.damageEntity(ds, par2);
+//         if (Platform.getEnvironment() != Env.CLIENT) {
+//            this.dataWatcher.updateObject(30, (byte)((int)this.getHealth()));
+//         }
+//
+//      }
+//   }
 
-   public void readEntityFromNBT(NBTTagCompound nbt) {
-      super.readEntityFromNBT(nbt);
-      int hx = nbt.getInteger("HomeX");
-      int hy = nbt.getInteger("HomeY");
-      int hz = nbt.getInteger("HomeZ");
-      this.homeFacing = nbt.getByte("HomeFacing");
-      this.setHomeArea(hx, hy, hz, 32);
-      this.advanced = nbt.getBoolean("advanced");
-      this.golemType = EnumGolemType.getType(nbt.getByte("GolemType"));
-      this.setCore(nbt.getByte("Core"));
-      if (this.getCore() == 5) {
-         this.fluidCarried = FluidStack.loadFluidStackFromNBT(nbt);
-      }
+//   public void heal(float par1) {
+//      super.heal(par1);
+//
+//      try {
+//         if (Platform.getEnvironment() != Env.CLIENT) {
+//            this.dataWatcher.updateObject(30, (byte)((int)this.getHealth()));
+//         }
+//      } catch (Exception ignored) {
+//      }
+//
+//   }
+//
+//   public void setHealth(float par1) {
+//      super.setHealth(par1);
+//
+//      try {
+//         if (Platform.getEnvironment() != Env.CLIENT) {
+//            this.dataWatcher.updateObject(30, (byte)((int)this.getHealth()));
+//         }
+//      } catch (Exception ignored) {
+//      }
+//
+//   }
 
-      if (this.getCore() == 6) {
-         String s = nbt.getString("essentia");
-         if (s != null) {
-            this.essentia = Aspect.getAspect(s);
-            if (this.essentia != null) {
-               this.essentiaAmount = nbt.getByte("essentiaAmount");
-            }
-         }
-      }
-
-      this.setTogglesValue(nbt.getByte("toggles"));
-      NBTTagCompound var4 = nbt.getCompoundTag("ItemCarried");
-      this.itemCarried = ItemStack.loadItemStackFromNBT(var4);
-      this.updateCarried();
-      this.decoration = nbt.getString("Decoration");
-      this.setGolemDecoration(this.decoration);
-      String var2 = nbt.getString("Owner");
-      if (!var2.isEmpty()) {
-         this.setOwner(var2);
-      }
-
-      this.dataWatcher.updateObject(30, (byte)((int)this.getHealth()));
-      NBTTagList nbttaglist = nbt.getTagList("Markers", 10);
-
-      for(int i = 0; i < nbttaglist.tagCount(); ++i) {
-         NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-         int x = nbttagcompound1.getInteger("x");
-         int y = nbttagcompound1.getInteger("y");
-         int z = nbttagcompound1.getInteger("z");
-         int dim = nbttagcompound1.getInteger("dim");
-         byte s = nbttagcompound1.getByte("side");
-         byte c = nbttagcompound1.getByte("color");
-         this.markers.add(new Marker(x, y, z, (byte)dim, s, c));
-      }
-
-      this.upgrades = new byte[this.golemType.upgrades + (this.advanced ? 1 : 0)];
-      int ul = this.upgrades.length;
-      this.upgrades = nbt.getByteArray("upgrades");
-      if (ul != this.upgrades.length) {
-         byte[] tt = new byte[ul];
-
-          Arrays.fill(tt, (byte) -1);
-
-         for(int a = 0; a < this.upgrades.length; ++a) {
-            if (a < ul) {
-               tt[a] = this.upgrades[a];
-            }
-         }
-
-         this.upgrades = tt;
-      }
-
-      StringBuilder st = new StringBuilder();
-
-      for(byte c : this.upgrades) {
-         st.append(Integer.toHexString(c));
-      }
-
-      this.dataWatcher.updateObject(23, st.toString());
-      this.setupGolem();
-      this.setupGolemInventory();
-      NBTTagList nbttaglist2 = nbt.getTagList("Inventory", 10);
-      this.inventory.readFromNBT(nbttaglist2);
-      this.colors = nbt.getByteArray("colors");
-      byte[] oldcolors = this.colors;
-      this.colors = new byte[this.inventory.slotCount];
-
-      for(int a = 0; a < this.inventory.slotCount; ++a) {
-         this.colors[a] = -1;
-         if (a < oldcolors.length) {
-            this.colors[a] = oldcolors[a];
-         }
-      }
-
-      st = new StringBuilder();
-
-      for(byte c : this.colors) {
-         if (c == -1) {
-            st.append("h");
-         } else {
-            st.append(Integer.toHexString(c));
-         }
-      }
-
-      this.dataWatcher.updateObject(22, st.toString());
-
-      NBTTagList nbtTagList = nbt.getTagList("markers", 10);
-      ThaumcraftMixinMethods.overwriteMarkersDimID(nbtTagList, this.markers);
-   }
-
-   public String getOwnerName() {
-      return this.dataWatcher.getWatchableObjectString(17);
-   }
-
-   public void setOwner(String par1Str) {
-      this.dataWatcher.updateObject(17, par1Str);
-   }
-
-   public void setMarkers(ArrayList markers) {
-      this.markers = markers;
-   }
-
-   public ArrayList<Marker> getMarkers() {
-      this.validateMarkers();
-      return this.markers;
-   }
-
-   protected void validateMarkers() {
-      ArrayList<Marker> newMarkers = new ArrayList<>();
-
-      for(Marker marker : this.markers) {
-         if (marker.dim == this.level().dimension()) {
-            newMarkers.add(marker);
-         }
-      }
-
-      this.markers = newMarkers;
-   }
-
-   public EntityLivingBase getOwner() {
-      return this.level().getPlayerEntityByName(this.getOwnerName());
-   }
-
-   protected void damageEntity(DamageSource ds, float par2) {
-      if (!ds.isFireDamage() || !this.golemType.fireResist) {
-         if (ds == DamageSource.inWall || ds == DamageSource.outOfWorld) {
-            this.setLocationAndAngles((double)this.getHomePosition().posX + (double)0.5F, (double)this.getHomePosition().posY + (double)0.5F, (double)this.getHomePosition().posZ + (double)0.5F, 0.0F, 0.0F);
-         }
-
-         super.damageEntity(ds, par2);
-         if (Platform.getEnvironment() != Env.CLIENT) {
-            this.dataWatcher.updateObject(30, (byte)((int)this.getHealth()));
-         }
-
-      }
-   }
-
-   public void heal(float par1) {
-      super.heal(par1);
-
-      try {
-         if (Platform.getEnvironment() != Env.CLIENT) {
-            this.dataWatcher.updateObject(30, (byte)((int)this.getHealth()));
-         }
-      } catch (Exception ignored) {
-      }
-
-   }
-
-   public void setHealth(float par1) {
-      super.setHealth(par1);
-
-      try {
-         if (Platform.getEnvironment() != Env.CLIENT) {
-            this.dataWatcher.updateObject(30, (byte)((int)this.getHealth()));
-         }
-      } catch (Exception ignored) {
-      }
-
-   }
-
-   public float getHealthPercentage() {
-      return (float)this.dataWatcher.getWatchableObjectByte(30) / this.getMaxHealth();
-   }
+//   public float getHealthPercentage() {
+//      return (float)this.dataWatcher.getWatchableObjectByte(30) / this.getMaxHealth();
+//   }
 
    public void setCarried(ItemStack stack) {
       this.itemCarried = stack;
@@ -794,7 +793,12 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
    }
 
    public int getCarrySpace() {
-      return this.itemCarried == null ? this.getCarryLimit() : Math.min(this.getCarryLimit() - this.itemCarried.stackSize, this.itemCarried.getMaxStackSize() - this.itemCarried.stackSize);
+      return this.itemCarried == null
+              ? this.getCarryLimit()
+              : Math.min(
+                      this.getCarryLimit() - this.itemCarried.stackSize,
+              this.itemCarried.getMaxStackSize() - this.itemCarried.stackSize
+      );
    }
 
    public boolean[] getToggles() {
@@ -843,33 +847,33 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
       return this.getToggles()[7];
    }
 
-   public EnumGolemType getGolemType() {
-      return EnumGolemType.getType(this.dataWatcher.getWatchableObjectByte(19));
-   }
-
-   public int getGolemStrength() {
-      return this.getGolemType().strength + this.getUpgradeAmount(1);
-   }
-
-   public void setCore(byte core) {
-      this.dataWatcher.updateObject(21, core);
-   }
-
-   public byte getCore() {
-      try {
-         return this.dataWatcher.getWatchableObjectByte(21);
-      }catch (ClassCastException cce) {//idk why
-         return (byte) this.dataWatcher.getWatchableObjectInt(21);
-      }
-   }
-
-   public String getGolemDecoration() {
-      return this.dataWatcher.getWatchableObjectString(20);
-   }
-
-   public void setGolemDecoration(String string) {
-      this.dataWatcher.updateObject(20, String.valueOf(this.decoration));
-   }
+//   public EnumGolemType getGolemType() {
+//      return EnumGolemType.getType(this.dataWatcher.getWatchableObjectByte(19));
+//   }
+//
+//   public int getGolemStrength() {
+//      return this.getGolemType().strength + this.getUpgradeAmount(1);
+//   }
+//
+//   public void setCore(byte core) {
+//      this.dataWatcher.updateObject(21, core);
+//   }
+//
+//   public byte getCore() {
+//      try {
+//         return this.dataWatcher.getWatchableObjectByte(21);
+//      }catch (ClassCastException cce) {//idk why
+//         return (byte) this.dataWatcher.getWatchableObjectInt(21);
+//      }
+//   }
+//
+//   public String getGolemDecoration() {
+//      return this.dataWatcher.getWatchableObjectString(20);
+//   }
+//
+//   public void setGolemDecoration(String string) {
+//      this.dataWatcher.updateObject(20, String.valueOf(this.decoration));
+//   }
 
    public ItemStack getCarriedForDisplay() {
       return this.dataWatcher.getWatchableObjectItemStack(16) != null ? this.dataWatcher.getWatchableObjectItemStack(16) : null;
@@ -898,181 +902,181 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
 
    }
 
-   protected float getSoundVolume() {
-      return 0.1F;
-   }
+//   protected float getSoundVolume() {
+//      return 0.1F;
+//   }
 
-   protected void dropFewItems(boolean par1, int par2) {
-      this.dropStuff();
-   }
+//   protected void dropFewItems(boolean par1, int par2) {
+//      this.dropStuff();
+//   }
+//
+//   public void dropStuff() {
+//      if (Platform.getEnvironment() != Env.CLIENT && this.itemCarried != null) {
+//         this.entityDropItem(this.itemCarried, 0.5F);
+//      }
+//
+//   }
 
-   public void dropStuff() {
-      if (Platform.getEnvironment() != Env.CLIENT && this.itemCarried != null) {
-         this.entityDropItem(this.itemCarried, 0.5F);
-      }
+//   protected boolean addDecoration(String type, ItemStack itemStack) {
+//      if (this.decoration.contains(type)) {
+//         return false;
+//      } else if (!type.equals("F") && !type.equals("H") || !this.decoration.contains("F") && !this.decoration.contains("H")) {
+//         if (!type.equals("G") && !type.equals("V") || !this.decoration.contains("G") && !this.decoration.contains("V")) {
+//            if (!type.equals("B") && !type.equals("P") || !this.decoration.contains("P") && !this.decoration.contains("B")) {
+//               this.decoration = this.decoration + type;
+//               if (Platform.getEnvironment() != Env.CLIENT) {
+//                  this.setGolemDecoration(this.decoration);
+//                  --itemStack.stackSize;
+//                  this.level().playSoundAtEntity(this, "thaumcraft:cameraclack", 1.0F, 1.0F);
+//               }
+//
+//               this.setupGolem();
+//               return true;
+//            } else {
+//               return false;
+//            }
+//         } else {
+//            return false;
+//         }
+//      } else {
+//         return false;
+//      }
+//   }
 
-   }
+//   public boolean customInteraction(Player player) {
+//      if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == ConfigItems.itemGolemBell) {
+//         return false;
+//      } else if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == ConfigItems.itemGolemDecoration) {
+//         this.addDecoration(ItemGolemDecoration.getDecoChar(player.inventory.getCurrentItem().getItemDamage()), player.inventory.getCurrentItem());
+//         player.swingItem();
+//         return false;
+//      } else if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == Items.cookie) {
+//         player.inventory.consumeInventoryItem(Items.cookie);
+//         player.swingItem();
+//
+//         for(int var3 = 0; var3 < 3; ++var3) {
+//            double var4 = this.rand.nextGaussian() * 0.02;
+//            double var6 = this.rand.nextGaussian() * 0.02;
+//            double var8 = this.rand.nextGaussian() * 0.02;
+//            this.level().spawnParticle("heart", this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)0.5F + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, var4, var6, var8);
+//            this.level().playSoundAtEntity(this, "random.eat", 0.3F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+//            int duration = 600;
+//            if ((Platform.getEnvironment() == Env.CLIENT)) {
+//               if (this.getActivePotionEffect(Potion.moveSpeed) != null && this.getActivePotionEffect(Potion.moveSpeed).getDuration() < 2400) {
+//                  duration += this.getActivePotionEffect(Potion.moveSpeed).getDuration();
+//               }
+//
+//               this.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, duration, 0));
+//            }
+//         }
+//
+//         this.heal(5.0F);
+//         return false;
+//      } else if (this.getCore() > -1 && ItemGolemCore.hasGUI(this.getCore()) && (player.inventory.getCurrentItem() == null || !(player.inventory.getCurrentItem().getItem() instanceof WandCastingItem)) && Platform.getEnvironment() != Env.CLIENT) {
+//         player.openGui(Thaumcraft.instance, 0, this.level(), this.getEntityId(), 0, 0);
+//         return false;
+//      } else {
+//         return false;
+//      }
+//   }
 
-   protected boolean addDecoration(String type, ItemStack itemStack) {
-      if (this.decoration.contains(type)) {
-         return false;
-      } else if (!type.equals("F") && !type.equals("H") || !this.decoration.contains("F") && !this.decoration.contains("H")) {
-         if (!type.equals("G") && !type.equals("V") || !this.decoration.contains("G") && !this.decoration.contains("V")) {
-            if (!type.equals("B") && !type.equals("P") || !this.decoration.contains("P") && !this.decoration.contains("B")) {
-               this.decoration = this.decoration + type;
-               if (Platform.getEnvironment() != Env.CLIENT) {
-                  this.setGolemDecoration(this.decoration);
-                  --itemStack.stackSize;
-                  this.level().playSoundAtEntity(this, "thaumcraft:cameraclack", 1.0F, 1.0F);
-               }
+//   public boolean interact(Player player) {
+//      if (player.isSneaking()) {
+//         return false;
+//      } else {
+//         ItemStack itemstack = player.inventory.getCurrentItem();
+//         if (this.getCore() > -1 && itemstack != null && itemstack.getItem() == ConfigItems.itemGolemBell) {
+//            return false;
+//         } else if (this.getCore() == -1 && itemstack != null && itemstack.getItem() == ConfigItems.itemGolemCore && itemstack.getItemDamage() != 100) {
+//            this.setCore((byte)itemstack.getItemDamage());
+//            this.setupGolem();
+//            this.setupGolemInventory();
+//            --itemstack.stackSize;
+//            if (itemstack.stackSize <= 0) {
+//               player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+//            }
+//
+//            this.level().playSoundAtEntity(this, "thaumcraft:upgrade", 0.5F, 1.0F);
+//            player.swingItem();
+//            this.level().setEntityState(this, (byte)7);
+//            return true;
+//         } else if (itemstack != null && itemstack.getItem() == ConfigItems.itemGolemUpgrade) {
+//            for(int a = 0; a < this.upgrades.length; ++a) {
+//               if (this.getUpgrade(a) == -1 && this.getUpgradeAmount(itemstack.getItemDamage()) < 2) {
+//                  this.setUpgrade(a, (byte)itemstack.getItemDamage());
+//                  this.setupGolem();
+//                  this.setupGolemInventory();
+//                  --itemstack.stackSize;
+//                  if (itemstack.stackSize <= 0) {
+//                     player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+//                  }
+//
+//                  this.level().playSoundAtEntity(this, "thaumcraft:upgrade", 0.5F, 1.0F);
+//                  player.swingItem();
+//                  return true;
+//               }
+//            }
+//
+//            return false;
+//         } else {
+//            return this.customInteraction(player);
+//         }
+//      }
+//   }
 
-               this.setupGolem();
-               return true;
-            } else {
-               return false;
-            }
-         } else {
-            return false;
-         }
-      } else {
-         return false;
-      }
-   }
+//   public int getActionTimer() {
+//      return 3 - Math.abs(this.action - 3);
+//   }
 
-   public boolean customInteraction(Player player) {
-      if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == ConfigItems.itemGolemBell) {
-         return false;
-      } else if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == ConfigItems.itemGolemDecoration) {
-         this.addDecoration(ItemGolemDecoration.getDecoChar(player.inventory.getCurrentItem().getItemDamage()), player.inventory.getCurrentItem());
-         player.swingItem();
-         return false;
-      } else if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == Items.cookie) {
-         player.inventory.consumeInventoryItem(Items.cookie);
-         player.swingItem();
-
-         for(int var3 = 0; var3 < 3; ++var3) {
-            double var4 = this.rand.nextGaussian() * 0.02;
-            double var6 = this.rand.nextGaussian() * 0.02;
-            double var8 = this.rand.nextGaussian() * 0.02;
-            this.level().spawnParticle("heart", this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)0.5F + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, var4, var6, var8);
-            this.level().playSoundAtEntity(this, "random.eat", 0.3F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-            int duration = 600;
-            if ((Platform.getEnvironment() == Env.CLIENT)) {
-               if (this.getActivePotionEffect(Potion.moveSpeed) != null && this.getActivePotionEffect(Potion.moveSpeed).getDuration() < 2400) {
-                  duration += this.getActivePotionEffect(Potion.moveSpeed).getDuration();
-               }
-
-               this.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, duration, 0));
-            }
-         }
-
-         this.heal(5.0F);
-         return false;
-      } else if (this.getCore() > -1 && ItemGolemCore.hasGUI(this.getCore()) && (player.inventory.getCurrentItem() == null || !(player.inventory.getCurrentItem().getItem() instanceof WandCastingItem)) && Platform.getEnvironment() != Env.CLIENT) {
-         player.openGui(Thaumcraft.instance, 0, this.level(), this.getEntityId(), 0, 0);
-         return false;
-      } else {
-         return false;
-      }
-   }
-
-   public boolean interact(Player player) {
-      if (player.isSneaking()) {
-         return false;
-      } else {
-         ItemStack itemstack = player.inventory.getCurrentItem();
-         if (this.getCore() > -1 && itemstack != null && itemstack.getItem() == ConfigItems.itemGolemBell) {
-            return false;
-         } else if (this.getCore() == -1 && itemstack != null && itemstack.getItem() == ConfigItems.itemGolemCore && itemstack.getItemDamage() != 100) {
-            this.setCore((byte)itemstack.getItemDamage());
-            this.setupGolem();
-            this.setupGolemInventory();
-            --itemstack.stackSize;
-            if (itemstack.stackSize <= 0) {
-               player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-            }
-
-            this.level().playSoundAtEntity(this, "thaumcraft:upgrade", 0.5F, 1.0F);
-            player.swingItem();
-            this.level().setEntityState(this, (byte)7);
-            return true;
-         } else if (itemstack != null && itemstack.getItem() == ConfigItems.itemGolemUpgrade) {
-            for(int a = 0; a < this.upgrades.length; ++a) {
-               if (this.getUpgrade(a) == -1 && this.getUpgradeAmount(itemstack.getItemDamage()) < 2) {
-                  this.setUpgrade(a, (byte)itemstack.getItemDamage());
-                  this.setupGolem();
-                  this.setupGolemInventory();
-                  --itemstack.stackSize;
-                  if (itemstack.stackSize <= 0) {
-                     player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                  }
-
-                  this.level().playSoundAtEntity(this, "thaumcraft:upgrade", 0.5F, 1.0F);
-                  player.swingItem();
-                  return true;
-               }
-            }
-
-            return false;
-         } else {
-            return this.customInteraction(player);
-         }
-      }
-   }
-
-   public int getActionTimer() {
-      return 3 - Math.abs(this.action - 3);
-   }
-
-   public void startActionTimer() {
-      if (this.action == 0) {
-         this.action = 6;
-         this.level().setEntityState(this, (byte)4);
-      }
-
-   }
-
-   public void startLeftArmTimer() {
-      if (this.leftArm == 0) {
-         this.leftArm = 5;
-         this.level().setEntityState(this, (byte)6);
-      }
-
-   }
-
-   public void startRightArmTimer() {
-      if (this.rightArm == 0) {
-         this.rightArm = 5;
-         this.level().setEntityState(this, (byte)8);
-      }
-
-   }
-
-   @SideOnly(Side.CLIENT)
-   public void handleHealthUpdate(byte par1) {
-      if (par1 == 4) {
-         this.action = 6;
-      } else if (par1 == 5) {
-         this.healing = 5;
-         int bonus = 0;
-
-         try {
-            bonus = this.getGolemDecoration().contains("H") ? 5 : 0;
-         } catch (Exception ignored) {
-         }
-
-         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getGolemType().health + bonus);
-      } else if (par1 == 6) {
-         this.leftArm = 5;
-      } else if (par1 == 8) {
-         this.rightArm = 5;
-      } else if (par1 == 7) {
-         this.bootup = 33.0F;
-      } else {
-         super.handleHealthUpdate(par1);
-      }
-
-   }
+//   public void startActionTimer() {
+//      if (this.action == 0) {
+//         this.action = 6;
+//         this.level().setEntityState(this, (byte)4);
+//      }
+//
+//   }
+//
+//   public void startLeftArmTimer() {
+//      if (this.leftArm == 0) {
+//         this.leftArm = 5;
+//         this.level().setEntityState(this, (byte)6);
+//      }
+//
+//   }
+//
+//   public void startRightArmTimer() {
+//      if (this.rightArm == 0) {
+//         this.rightArm = 5;
+//         this.level().setEntityState(this, (byte)8);
+//      }
+//
+//   }
+//
+//   @SideOnly(Side.CLIENT)
+//   public void handleHealthUpdate(byte par1) {
+//      if (par1 == 4) {
+//         this.action = 6;
+//      } else if (par1 == 5) {
+//         this.healing = 5;
+//         int bonus = 0;
+//
+//         try {
+//            bonus = this.getGolemDecoration().contains("H") ? 5 : 0;
+//         } catch (Exception ignored) {
+//         }
+//
+//         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getGolemType().health + bonus);
+//      } else if (par1 == 6) {
+//         this.leftArm = 5;
+//      } else if (par1 == 8) {
+//         this.rightArm = 5;
+//      } else if (par1 == 7) {
+//         this.bootup = 33.0F;
+//      } else {
+//         super.handleHealthUpdate(par1);
+//      }
+//
+//   }
 
 //   protected void updateFallState(double par1, boolean par3) {
 //      if (par3 && this.fallDistance > 0.0F) {
@@ -1105,79 +1109,79 @@ public class EntityGolemBase extends EntityGolem implements IEntityAdditionalSpa
 //      return e;
 //   }
 
-   public int getTotalArmorValue() {
-      int var1 = super.getTotalArmorValue() + this.golemType.armor;
-      if (this.decoration.contains("V")) {
-         ++var1;
-      }
+//   public int getTotalArmorValue() {
+//      int var1 = super.getTotalArmorValue() + this.golemType.armor;
+//      if (this.decoration.contains("V")) {
+//         ++var1;
+//      }
+//
+//      if (this.decoration.contains("P")) {
+//         var1 += 4;
+//      }
+//
+//      if (var1 > 20) {
+//         var1 = 20;
+//      }
+//
+//      return var1;
+//   }
 
-      if (this.decoration.contains("P")) {
-         var1 += 4;
-      }
+//   public boolean attackEntityAsMob(Entity par1Entity) {
+//      float f = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
+//      int i = 0;
+//      if (par1Entity instanceof EntityLivingBase) {
+//         f += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)par1Entity);
+//         i += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)par1Entity);
+//      }
+//
+//      boolean flag = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+//      if (flag) {
+//         if (this.decoration.contains("V")) {
+//            EntityUtils.setRecentlyHit((EntityLivingBase)par1Entity, 100);
+//         }
+//
+//         if (i > 0) {
+//            par1Entity.addVelocity(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F, 0.1, MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F);
+//            this.motionX *= 0.6;
+//            this.motionZ *= 0.6;
+//         }
+//
+//         int j = EnchantmentHelper.getFireAspectModifier(this) + this.getUpgradeAmount(2);
+//         if (j > 0) {
+//            par1Entity.setFire(j * 4);
+//         }
+//
+//         if (par1Entity instanceof EntityLivingBase) {
+//            EnchantmentHelper.func_151384_a((EntityLivingBase)par1Entity, this);
+//         }
+//
+//         EnchantmentHelper.func_151385_b(this, par1Entity);
+//      }
+//
+//      return flag;
+//   }
 
-      if (var1 > 20) {
-         var1 = 20;
-      }
-
-      return var1;
-   }
-
-   public boolean attackEntityAsMob(Entity par1Entity) {
-      float f = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
-      int i = 0;
-      if (par1Entity instanceof EntityLivingBase) {
-         f += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase)par1Entity);
-         i += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase)par1Entity);
-      }
-
-      boolean flag = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), f);
-      if (flag) {
-         if (this.decoration.contains("V")) {
-            EntityUtils.setRecentlyHit((EntityLivingBase)par1Entity, 100);
-         }
-
-         if (i > 0) {
-            par1Entity.addVelocity(-MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F, 0.1, MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F);
-            this.motionX *= 0.6;
-            this.motionZ *= 0.6;
-         }
-
-         int j = EnchantmentHelper.getFireAspectModifier(this) + this.getUpgradeAmount(2);
-         if (j > 0) {
-            par1Entity.setFire(j * 4);
-         }
-
-         if (par1Entity instanceof EntityLivingBase) {
-            EnchantmentHelper.func_151384_a((EntityLivingBase)par1Entity, this);
-         }
-
-         EnchantmentHelper.func_151385_b(this, par1Entity);
-      }
-
-      return flag;
-   }
-
-   public boolean attackEntityFrom(DamageSource ds, float par2) {
-      this.paused = false;
-      if (ds == DamageSource.cactus) {
-         return false;
-      } else {
-         if (this.getGolemType() == EnumGolemType.THAUMIUM && ds == DamageSource.magic) {
-            par2 *= 0.5F;
-         }
-
-         if (ds.getSourceOfDamage() != null
-                 && this.getUpgradeAmount(5) > 0
-                 && ds.getSourceOfDamage().getEntityId() != this.getEntityId()) {
-            ds.getSourceOfDamage().attackEntityFrom(
-                    DamageSource.causeThornsDamage(this),
-                    (float)(this.getUpgradeAmount(5) * 2 + this.rand.nextInt(2 * this.getUpgradeAmount(5))));
-            ds.getSourceOfDamage().playSound("damage.thorns", 0.5F, 1.0F);
-         }
-
-         return super.attackEntityFrom(ds, par2);
-      }
-   }
+//   public boolean attackEntityFrom(DamageSource ds, float par2) {
+//      this.paused = false;
+//      if (ds == DamageSource.cactus) {
+//         return false;
+//      } else {
+//         if (this.getGolemType() == EnumGolemType.THAUMIUM && ds == DamageSource.magic) {
+//            par2 *= 0.5F;
+//         }
+//
+//         if (ds.getSourceOfDamage() != null
+//                 && this.getUpgradeAmount(5) > 0
+//                 && ds.getSourceOfDamage().getEntityId() != this.getEntityId()) {
+//            ds.getSourceOfDamage().attackEntityFrom(
+//                    DamageSource.causeThornsDamage(this),
+//                    (float)(this.getUpgradeAmount(5) * 2 + this.rand.nextInt(2 * this.getUpgradeAmount(5))));
+//            ds.getSourceOfDamage().playSound("damage.thorns", 0.5F, 1.0F);
+//         }
+//
+//         return super.attackEntityFrom(ds, par2);
+//      }
+//   }
 
    public boolean canAttackClass(Class par1Class) {
       return EntityVillager.class != par1Class && EntityGolemBase.class != par1Class && EntityBat.class != par1Class;

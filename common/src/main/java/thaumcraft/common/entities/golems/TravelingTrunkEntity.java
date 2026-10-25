@@ -29,7 +29,6 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -41,6 +40,7 @@ import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.StayableOwnableEntity;
 import thaumcraft.common.entities.ai.goals.CrossDimensionFollowingOwnerGoal;
 import thaumcraft.common.items.ThaumcraftItemInstances;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.IGolemOnFeedListener;
 
 import java.util.EnumSet;
 
@@ -287,27 +287,23 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
         return InteractionResult.SUCCESS;
     }
 
+    @Override
+    protected boolean canStackFeedGolem(ItemStack usingStack) {
+        return true;
+    }
+
     protected boolean tryFeedStack(
             Player player,
             InteractionHand interactionHand,
             ItemStack usingStack) {
-        var item = usingStack.getItem();
-        var cooldowns = this.opentc4$getItemCooldowns();
-        if (cooldowns.isOnCooldown(item)) {
-            return false;
+
+        var result = super.tryFeedStack(player,interactionHand,usingStack);
+        if (result){
+            for (var upgradePair:upgradesCacheView){
+                upgradePair.a().travelingTrunkUpgrade$onFed(this,upgradePair.b(), usingStack, player, interactionHand);
+            }
         }
-        var foodProperties = item.getFoodProperties();
-        if (foodProperties != null){
-            //may works fine for eternal beef(or some bad food?whatever)
-            //Trunk-And-Eternal-beef army?You and what army?
-            upgradesCacheView.forEach(upgradePair ->
-                    upgradePair.a().travelingTrunkUpgrade$onFeed(this,upgradePair.b(), usingStack, player, interactionHand)
-            );
-            item.finishUsingItem(usingStack,this.level(),this);
-            ItemCooldownOwnerEntity.cooldownForNotCoolingDown(usingStack,this,cooldowns);
-            return true;
-        }
-        return false;
+        return result;
     }
 
     @Override
@@ -577,7 +573,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
 
         }
 
-        default void travelingTrunkUpgrade$onFeed(TravelingTrunkEntity trunk,ItemStack upgradeStack,ItemStack usingStack,Player player,InteractionHand interactionHand) {
+        default void travelingTrunkUpgrade$onFed(TravelingTrunkEntity trunk, ItemStack upgradeStack, ItemStack usingStack, Player player, InteractionHand interactionHand) {
 
         }
 

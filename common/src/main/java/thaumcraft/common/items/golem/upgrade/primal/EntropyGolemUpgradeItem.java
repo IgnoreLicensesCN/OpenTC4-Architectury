@@ -12,7 +12,7 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.IGolemDamageListenerItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.IGolemDamagedListenerItem;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.List;
@@ -22,7 +22,7 @@ import static com.linearity.opentc4.utils.consts.EntityTypeTests.ITEM_ENTITY_TES
 //GolemUpgrade:5
 public class EntropyGolemUpgradeItem extends Item
         implements TravelingTrunkEntity.ITravelingTrunkUpgradeItem,
-        IGolemDamageListenerItem {
+        IGolemDamagedListenerItem {
     public EntropyGolemUpgradeItem(Properties properties) {
         super(properties);
     }

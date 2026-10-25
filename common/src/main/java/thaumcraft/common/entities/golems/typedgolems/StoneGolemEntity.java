@@ -1,6 +1,7 @@
 package thaumcraft.common.entities.golems.typedgolems;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
@@ -43,5 +44,14 @@ public class StoneGolemEntity extends BaseGolemEntity {
     @Override
     public GolemBasicAbilityProperties getBasicAbilityProperties() {
         return ABILITY_PROPERTIES;
+    }
+
+    @Override
+    public double getAttributeValue(Attribute attribute) {
+        var result = super.getAttributeValue(attribute);
+        if (this.isInWater()){
+            result *= 2;
+        }
+        return result;
     }
 }

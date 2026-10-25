@@ -1,6 +1,7 @@
 package thaumcraft.common.entities.golems.typedgolems.advanced;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
@@ -41,4 +42,12 @@ public class AdvancedIronGolemEntity extends AdvancedGolemEntity {
         return ABILITY_PROPERTIES;
     }
 
+    @Override
+    public double getAttributeValue(Attribute attribute) {
+        var result = super.getAttributeValue(attribute);
+        if (this.isInWater()){
+            result *= 2;
+        }
+        return result;
+    }
 }
