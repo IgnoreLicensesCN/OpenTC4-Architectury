@@ -3,6 +3,7 @@ package thaumcraft.api.listeners.aspects.item.basic;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
@@ -25,6 +26,7 @@ public class ItemBasicAspectRegistration {
     public static final Set<Item> ITEMS_WITH_REGISTERED_BASIC_ASPECTS = Collections.unmodifiableSet(ITEMS_WITH_REGISTERED_BASIC_ASPECT_INTERNAL);
 
     @NotNull("null -> empty")
+    @ApiStatus.Internal
     static UnmodifiableAspectList<Aspect> getCalculatedRegisteredBasicAspect(@NotNull Item item) {
         return BASIC_ASPECTS_CALCULATED_WITH_ADDITIONAL_COMPLETELY_FROM_REGISTERED_CACHE.computeIfAbsent(
                 item,i -> {

@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.championmod;
 
+import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.world.entity.LivingEntity;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.championmod.impl.*;
@@ -118,7 +119,8 @@ public class ChampionModifierManager {
         REGISTERED_MODIFIERS.put(modifier.uuid, modifier);
     }
 
-    //should inline
+    @Deprecated(forRemoval = true,since = "should inline")
+    @UtilityLikeAbstraction
     public static void forEachChampionModifierOnEntity(LivingEntity living, Consumer<ChampionModifier> consumer) {
         var attributeInstance = living.getAttribute(CHAMPION_MOD());
         if (attributeInstance != null) {

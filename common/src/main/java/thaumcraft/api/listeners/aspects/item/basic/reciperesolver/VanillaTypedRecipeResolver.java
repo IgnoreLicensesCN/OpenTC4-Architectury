@@ -64,7 +64,7 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
             }
 
             @Override
-            public UnmodifiableAspectList<Aspect> getAlreadyCalculatedAspectForItem(Item item) {
+            public @Nullable UnmodifiableAspectList<Aspect> getAlreadyCalculatedAspectForItem(Item item) {
                 return context.getAlreadyCalculatedAspectForItem(item);
             }
 
@@ -163,7 +163,7 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
         Collection<Recipe> getResolvedRecipes();
         Collection<Recipe> getItemsCraftedFromRecipes(Item item);
         Collection<Recipe> getRecipesWhereItemIsInIngredient(Item item);
-        UnmodifiableAspectList<Aspect> getAlreadyCalculatedAspectForItem(Item item);
+        @Nullable UnmodifiableAspectList<Aspect> getAlreadyCalculatedAspectForItem(Item item);
         //first index:slot,second index:possible itemstack
         List<List<ItemStack>> getIngredientItems(Recipe recipe);
         /* only call get(i) get(j) */
@@ -238,7 +238,7 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
         );
     }
 
-    private static boolean addCalculatedAspects(Function<Item, UnmodifiableAspectList<Aspect>> alreadyCalculatedAspectGetter, List<List<ItemStack>> ingredientItems, List<List<Function<ItemStack, ItemStack>>> remainingItemList, AspectList<Aspect> remainingItemAspects, AspectList<Aspect> allAdded) {
+    private static boolean addCalculatedAspects(Function<Item,@Nullable UnmodifiableAspectList<Aspect>> alreadyCalculatedAspectGetter, List<List<ItemStack>> ingredientItems, List<List<Function<ItemStack, ItemStack>>> remainingItemList, AspectList<Aspect> remainingItemAspects, AspectList<Aspect> allAdded) {
         for (var possibleItemsIndex = 0; possibleItemsIndex< ingredientItems.size(); possibleItemsIndex++) {
             var possibleItems = ingredientItems.get(possibleItemsIndex);
             if (possibleItems == null || possibleItems.isEmpty()){
@@ -263,7 +263,7 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
     }
 
     private static @Nullable("if cant find") AspectList<Aspect> getMinimizedAspectsForItems(
-            Function<Item, UnmodifiableAspectList<Aspect>> alreadyCalculatedAspectGetter, List<ItemStack> possibleItems,
+            Function<Item,@Nullable UnmodifiableAspectList<Aspect>> alreadyCalculatedAspectGetter, List<ItemStack> possibleItems,
             List<List<Function<ItemStack, ItemStack>>> remainingItemList,
             int possibleItemsIndex,
             AspectList<Aspect> remainingItemAspects
@@ -336,7 +336,7 @@ public abstract class VanillaTypedRecipeResolver<T extends Recipe<C>,C extends C
     }
 
     private static <Recipe> boolean checkResultCalculated(
-            Function<Item, UnmodifiableAspectList<Aspect>> alreadyCalculatedAspectGetter,
+            Function<Item,@Nullable UnmodifiableAspectList<Aspect>> alreadyCalculatedAspectGetter,
             Recipe recipe,
             ItemStack resultStack,
             Collection<Recipe> resolvedRecipes,

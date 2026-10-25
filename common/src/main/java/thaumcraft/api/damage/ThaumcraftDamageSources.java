@@ -58,6 +58,8 @@ public class ThaumcraftDamageSources
                 TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID , "bypass_runic_shield"));
         public static final TagKey<DamageType> DROPS_CRYSTAL_ESSENCE =
                 TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID , "drops_crystal_essence"));
+        public static final TagKey<DamageType> NO_ASPECT_ORB_DROP =
+                TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(Thaumcraft.MOD_ID , "no_aspect_orb_drop"));
     }
 
 //    public static DamageSource tentacle(Level level, Entity attacker) {

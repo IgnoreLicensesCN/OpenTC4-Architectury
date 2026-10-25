@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableAspectList;
@@ -103,7 +104,7 @@ public class IAspectCalculableRecipeResolver extends AbstractRecipeResolver {
             }
 
             @Override
-            public UnmodifiableAspectList<Aspect> getAlreadyCalculatedAspectForItem(Item item) {
+            public @Nullable UnmodifiableAspectList<Aspect> getAlreadyCalculatedAspectForItem(Item item) {
                 return context.getAlreadyCalculatedAspectForItem(item);
             }
 

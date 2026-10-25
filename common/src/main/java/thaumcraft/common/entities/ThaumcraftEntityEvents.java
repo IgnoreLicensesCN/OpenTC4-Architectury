@@ -16,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import org.apache.logging.log4j.util.TriConsumer;
 import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
-import thaumcraft.api.damage.ThaumcraftDamageSources;
 import thaumcraft.api.damage.type.DamageTypeCategories;
 import thaumcraft.api.damage.type.InvulnerableTimeCategory;
 import thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters;
@@ -40,6 +39,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBauble;
+import static thaumcraft.api.damage.ThaumcraftDamageSources.Tags.DROPS_CRYSTAL_ESSENCE;
+import static thaumcraft.api.damage.ThaumcraftDamageSources.Tags.NO_ASPECT_ORB_DROP;
 import static thaumcraft.api.damage.type.DamageTypeCategories.InvulnerableTime.INVULNERABLE_TIME_CATEGORIES_REGISTERED;
 import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.ELDRITCH;
 import static thaumcraft.common.items.ThaumcraftItemInstances.CRYSTAL_ESSENCE;
@@ -75,7 +76,7 @@ public class ThaumcraftEntityEvents {
 
         public static void onDropCrystalEssence(LivingEntity living, DamageSource damageSource) {
             if (damageSource.is(
-                    ThaumcraftDamageSources.Tags.DROPS_CRYSTAL_ESSENCE
+                    DROPS_CRYSTAL_ESSENCE
             )) {
                 var aspectOwning = EntityBasicAspectGetters.getBasicAspectsForEntityType(living.getType());
                 if (!aspectOwning.isEmpty()) {
@@ -98,13 +99,16 @@ public class ThaumcraftEntityEvents {
         }
 
         public static void onDropVisOrb(LivingEntity living, DamageSource damageSource) {
+            if (damageSource.is(NO_ASPECT_ORB_DROP)){
+                return;
+            }
             var aspectOwning = EntityBasicAspectGetters.getBasicAspectsForEntityType(living.getType());
             if (!aspectOwning.isEmpty()){
-                IAspectReducibleToPrimal.reduceToPrimalsAndCast(aspectOwning).forEach(
-                        (aspect,amount) -> {
-                            //TODO:Drop vis(primal) orb.
-                        }
-                );
+                var level = living.level();
+                var pos = living.position();
+                var aspects = IAspectReducibleToPrimal.reduceToPrimalsAndCast(aspectOwning);
+                var orb = new AspectOrbEntity(level,pos.x,pos.y,pos.z,aspects);
+                level.addFreshEntity(orb);
             }
         }
     }

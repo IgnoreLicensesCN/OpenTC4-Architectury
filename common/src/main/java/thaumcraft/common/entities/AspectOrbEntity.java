@@ -1,6 +1,7 @@
 package thaumcraft.common.entities;
 
 import com.linearity.opentc4.Color;
+import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -32,6 +33,7 @@ public class AspectOrbEntity extends Entity {
     protected int orbHealth = 5;
     protected Player closestPlayer;
     protected static final EntityDataAccessor<Integer> DATA_ID_COLOR = SynchedEntityData.defineId(AspectOrbEntity.class, EntityDataSerializers.INT);
+    @Getter
     protected final AspectList<Aspect> owningAspect = new HashAspectList<>();
 
     public AspectOrbEntity(Level worldIn) {
@@ -47,6 +49,17 @@ public class AspectOrbEntity extends Entity {
                 random.nextFloat()*0.4F-0.2F
         );
         this.addOwningAspect(aspect, par8);
+    }
+    public AspectOrbEntity(Level worldIn, double par2, double par4, double par6, AspectList<Aspect> aspects) {
+        this(worldIn);
+        this.setPos(par2, par4, par6);
+        this.setYRot(random.nextFloat() * 360.0F);
+        this.setDeltaMovement(
+                random.nextFloat()*0.4F-0.2F,
+                random.nextFloat()*0.4F,
+                random.nextFloat()*0.4F-0.2F
+        );
+        this.setOwningAspect(aspects);
     }
     public AspectOrbEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -113,9 +126,11 @@ public class AspectOrbEntity extends Entity {
         this.entityData.set(DATA_ID_COLOR,new Color(rgb[0],rgb[1],rgb[2]).getRGB());
     }
 
-    public AspectList<Aspect> getOwningAspect() {
-        return this.owningAspect;
+    public void setOwningAspect(AspectList<Aspect> aspect){
+        owningAspect.addAll(aspect);
+        refreshColor();
     }
+
     public int getColor() {
         return this.entityData.get(DATA_ID_COLOR);
     }

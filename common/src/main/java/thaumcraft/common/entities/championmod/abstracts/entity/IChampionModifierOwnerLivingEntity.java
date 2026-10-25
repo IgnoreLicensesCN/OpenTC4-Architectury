@@ -47,7 +47,6 @@ public interface IChampionModifierOwnerLivingEntity {
                         return result;
                     }
                     );
-
         }
         public <ModifierClass> void remove(BiPredicate<LivingEntity, ModifierClass> checker,Class<ModifierClass> modifierClass){
             var mapOrNull = internalMap.get(modifierClass);

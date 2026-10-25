@@ -43,7 +43,7 @@ public class RecipeResolveContext {
         adderCache.clear();
         return true;
     }
-    public UnmodifiableAspectList<Aspect> getAlreadyCalculatedAspectForItem(Item item){
+    public @Nullable UnmodifiableAspectList<Aspect> getAlreadyCalculatedAspectForItem(Item item){
         return resolvedAspectGetter.getAlreadyCalculatedAspectForItem(item);
     }
     public void addResolvedAspectForItem(Item item, UnmodifiableAspectList<Aspect> aspects){
