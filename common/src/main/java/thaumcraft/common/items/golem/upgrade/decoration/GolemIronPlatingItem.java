@@ -51,7 +51,7 @@ public class GolemIronPlatingItem extends Item implements IGolemDecorationItem, 
     }
 
     @Override
-    public float modifySpeedMultiplier(BaseGolemEntity golem, ItemStack upgradeStack, float speedMultiplier) {
+    public float modifySpeedMultiplier(BaseGolemEntity golem, ItemStack upgradeStack, float speedMultiplier, float baseSpeedMultiplier) {
         return speedMultiplier-0.12F;
     }
 }

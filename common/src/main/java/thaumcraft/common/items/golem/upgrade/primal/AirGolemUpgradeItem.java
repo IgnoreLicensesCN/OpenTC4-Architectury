@@ -12,8 +12,7 @@ import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedatt
 import java.util.List;
 
 //GolemUpgrade:0
-public class AirGolemUpgradeItem extends Item implements
-        TravelingTrunkEntity.ITravelingTrunkUpgradeItem,
+public class AirGolemUpgradeItem extends GolemBasicUpgradeItem implements
         IGolemShootCooldownModifierItem,
         IGolemSpeedMultiplierModifierItem
 {
@@ -32,7 +31,7 @@ public class AirGolemUpgradeItem extends Item implements
 
     @Override
     public double travelingTrunkUpgrade$wantedMovementMultiplier(TravelingTrunkEntity trunk, ItemStack upgradeStack) {
-        return TravelingTrunkEntity.ITravelingTrunkUpgradeItem.super.travelingTrunkUpgrade$wantedMovementMultiplier(trunk, upgradeStack) * 4 / 3;
+        return super.travelingTrunkUpgrade$wantedMovementMultiplier(trunk, upgradeStack) * 4 / 3;
     }
 
     @Override

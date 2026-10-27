@@ -5,7 +5,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
@@ -19,9 +18,8 @@ import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedatt
 import java.util.List;
 
 //GolemUpgrade:3
-public class WaterGolemUpgradeItem extends Item
+public class WaterGolemUpgradeItem extends GolemBasicUpgradeItem
         implements
-        TravelingTrunkEntity.ITravelingTrunkUpgradeItem,
         IGolemShootAccuracyModifierItem,
         IGolemHomeRangeModifierItem
 {
@@ -55,7 +53,7 @@ public class WaterGolemUpgradeItem extends Item
         if (trunk.isOwnedBy(player.getUUID())) {
             return InteractionResult.PASS;
         }
-        return TravelingTrunkEntity.ITravelingTrunkUpgradeItem.super.travelingTrunkUpgrade$modifyInteraction(trunk, upgradeStack, player, interactionHand);
+        return super.travelingTrunkUpgrade$modifyInteraction(trunk, upgradeStack, player, interactionHand);
     }
 
     @Override

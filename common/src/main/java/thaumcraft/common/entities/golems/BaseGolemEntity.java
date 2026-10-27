@@ -45,13 +45,10 @@ import thaumcraft.common.entities.golems.properties.GolemBasicAbilityProperties;
 import thaumcraft.common.items.golem.GolemBellItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.*;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemHomeRangeModifierItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.IGolemTargetControlItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.*;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.*;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.IGolemRangedAttackPerformerItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.IGolemShootCooldownModifierItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.IGolemShootAccuracyModifierItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.*;
 import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLocation;
 
 import java.util.*;

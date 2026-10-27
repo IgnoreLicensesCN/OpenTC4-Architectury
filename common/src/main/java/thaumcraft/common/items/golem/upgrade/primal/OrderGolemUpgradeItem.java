@@ -7,13 +7,11 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.entities.golems.AbstractGolemUpgradeApplicableEntity;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemBasicUpgradeItem;
@@ -24,8 +22,7 @@ import java.util.List;
 import static thaumcraft.common.entities.golems.BaseGolemEntity.*;
 
 //GolemUpgrade:4
-public class OrderGolemUpgradeItem extends Item implements
-        TravelingTrunkEntity.ITravelingTrunkUpgradeItem,
+public class OrderGolemUpgradeItem extends GolemBasicUpgradeItem implements
         IGolemTargetControlItem,
         IGolemBasicUpgradeItem {
     public OrderGolemUpgradeItem(Properties properties) {
@@ -68,13 +65,5 @@ public class OrderGolemUpgradeItem extends Item implements
             }
         }
         return false;
-    }
-
-    @Override
-    public boolean golemUpgrade$isApplicableTo(ItemStack stack, AbstractGolemUpgradeApplicableEntity<?> couldBeTravelingTrunk) {
-        if (couldBeTravelingTrunk instanceof TravelingTrunkEntity){
-            return TravelingTrunkEntity.ITravelingTrunkUpgradeItem.super.golemUpgrade$isApplicableTo(stack, couldBeTravelingTrunk);
-        }
-        return IGolemBasicUpgradeItem.super.golemUpgrade$isApplicableTo(stack, couldBeTravelingTrunk);
     }
 }

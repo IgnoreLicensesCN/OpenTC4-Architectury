@@ -28,7 +28,7 @@ public class GolemBowtieItem extends Item implements IGolemDecorationItem, IGole
     }
 
     @Override
-    public float modifySpeedMultiplier(BaseGolemEntity golem, ItemStack upgradeStack, float speedMultiplier) {
+    public float modifySpeedMultiplier(BaseGolemEntity golem, ItemStack upgradeStack, float speedMultiplier, float baseSpeedMultiplier) {
         return speedMultiplier + 0.1F;
     }
 }

@@ -3,7 +3,6 @@ package thaumcraft.common.items.golem.upgrade.primal;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
@@ -20,7 +19,7 @@ import java.util.List;
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.ITEM_ENTITY_TEST;
 
 //GolemUpgrade:5
-public class EntropyGolemUpgradeItem extends Item
+public class EntropyGolemUpgradeItem extends GolemBasicUpgradeItem
         implements TravelingTrunkEntity.ITravelingTrunkUpgradeItem,
         IGolemDamagedListenerItem {
     public EntropyGolemUpgradeItem(Properties properties) {

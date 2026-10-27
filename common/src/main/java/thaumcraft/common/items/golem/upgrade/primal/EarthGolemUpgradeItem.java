@@ -7,7 +7,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
@@ -16,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemAbilitiesData;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
+import thaumcraft.common.items.golem.upgrade.abstracts.IGolemBasicUpgradeItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemCarryItemPowerProviderItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemStrengthModifierItem;
 
@@ -23,11 +23,11 @@ import java.util.*;
 import java.util.function.Supplier;
 
 //GolemUpgrade:1
-public class EarthGolemUpgradeItem extends Item
+public class EarthGolemUpgradeItem extends GolemBasicUpgradeItem
         implements
-        TravelingTrunkEntity.ITravelingTrunkUpgradeItem,
         IGolemStrengthModifierItem,
-        IGolemCarryItemPowerProviderItem
+        IGolemCarryItemPowerProviderItem,
+        IGolemBasicUpgradeItem
 {
     public EarthGolemUpgradeItem(Properties properties) {
         super(properties);

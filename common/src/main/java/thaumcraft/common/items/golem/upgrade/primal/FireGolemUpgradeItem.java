@@ -7,7 +7,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
@@ -23,7 +22,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 //GolemUpgrade:2
-public class FireGolemUpgradeItem extends Item
+public class FireGolemUpgradeItem extends GolemBasicUpgradeItem
         implements
         TravelingTrunkEntity.ITravelingTrunkUpgradeItem,
         IGolemInventorySizeMultiplierItem,
