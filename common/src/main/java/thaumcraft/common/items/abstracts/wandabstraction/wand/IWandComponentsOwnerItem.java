@@ -1,6 +1,6 @@
 package thaumcraft.common.items.abstracts.wandabstraction.wand;
 
-import com.linearity.opentc4.annotations.ReturnValueUnstable;
+import com.linearity.opentc4.annotations.ModifyingFakeFieldAsResult;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.UnmodifiableView;
@@ -13,7 +13,7 @@ import static thaumcraft.common.items.ThaumcraftItems.ItemTags.NODE_HARMFUL;
 
 public interface IWandComponentsOwnerItem {
     @UnmodifiableView
-    @ReturnValueUnstable
+    @ModifyingFakeFieldAsResult
     List<ItemStack> getWandComponents(ItemStack componentOwnerStack);
     @UtilityLikeAbstraction(reason = "reducing code and 'forEachWithBreak' without stream")
     default boolean wandComponentsAnyMatch(ItemStack componentOwnerStack,Predicate<ItemStack>/*ToBooleanFunction*/ matcher){

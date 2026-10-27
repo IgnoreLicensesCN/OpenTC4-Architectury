@@ -7,7 +7,8 @@ import java.util.function.Supplier;
 
 /**
  * now look at this code
- * <pre>{@code
+ * <pre>
+ *     {@code
  * public class WandCastingItem extends Item
  * //ignores impls which should be here plz
  * {
@@ -37,7 +38,8 @@ import java.util.function.Supplier;
  *     }
  *     //...
  *  }
- *  }</pre>
+ *  }
+ *  </pre>
  *  <p>we have "new ArrayList" here,which is not so fine.</p>
  *  <p>if we have some way like
  *  object pool(but when to recycle object?)
@@ -45,19 +47,22 @@ import java.util.function.Supplier;
  *  we may reduce "new"</p>
  *  <p>luckily it's totally unmodifiable,so we can just put</p>
  *  <pre>{@code
- *  @Override
- * @ReturnValueUnstable
- *     public List<ItemStack> getWandComponents(@NotNull ItemStack componentOwnerStack) {
  *
- *         var cacheableItemStack = (IObjectCacheableItemStack)(Object)componentOwnerStack;
- *         var cached = cacheableItemStack.opentc4$getCachedObjectFromItemStack(WandCastingItemCachedObjectsForItemStack.class);
- *         if (cached == null){
- *             int initCapacity = 2;
- *             if (this.canApplyFocus()){
- *                 initCapacity += 1;
- *             }
- *             cached = new WandCastingItemCachedObjectsForItemStack(new ArrayList<>(initCapacity));
- *         }
+ *  @Override
+ *     public
+ *     @UnmodifiableView
+ *     @ModifyingFakeFieldAsResult
+ *     List<ItemStack> getWandComponents(
+ *             @NotNull
+ *             @ReturnValueFakeFieldOf
+ *             ItemStack componentOwnerStack
+ *     ) {
+ *
+ *         var cached = opentc4$getOrCreateCachedObjectFromItemStack(
+ *                 componentOwnerStack,
+ *                 WandCastingItemCachedObjectsForItemStack.class,
+ *                 WandCastingItemCachedObjectsForItemStack.SUPPLIER
+ *         );
  *
  *         var items = cached.components;
  *         items.clear();
@@ -77,7 +82,8 @@ import java.util.function.Supplier;
  *         }
  *         return cached.componentsView;
  *     }
- *  }</pre>
+ * }
+ * </pre>
  *  with zero "new"
  */
 //TODO:[maybe wont finished]cut "new" with this
