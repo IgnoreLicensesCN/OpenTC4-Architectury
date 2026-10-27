@@ -6,7 +6,7 @@ import java.util.List;
 //so it maybe just a AutoSortThreadSafeList
 //but if you add listener during game i still want to kick your ass
 public class ListenerManager<T extends Comparable<T>> {
-    private final List<T> listeners = new AutoSortThreadSafeList<>();
+    private final List<T> listeners = AutoSortThreadSafeList.ofComparable();
     public ListenerManager() {
 
     }

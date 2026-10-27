@@ -13,8 +13,10 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.entities.golems.AbstractGolemUpgradeApplicableEntity;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
+import thaumcraft.common.items.golem.upgrade.abstracts.IGolemBasicUpgradeItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.IGolemTargetControlItem;
 
 import java.util.List;
@@ -22,7 +24,10 @@ import java.util.List;
 import static thaumcraft.common.entities.golems.BaseGolemEntity.*;
 
 //GolemUpgrade:4
-public class OrderGolemUpgradeItem extends Item implements TravelingTrunkEntity.ITravelingTrunkUpgradeItem, IGolemTargetControlItem {
+public class OrderGolemUpgradeItem extends Item implements
+        TravelingTrunkEntity.ITravelingTrunkUpgradeItem,
+        IGolemTargetControlItem,
+        IGolemBasicUpgradeItem {
     public OrderGolemUpgradeItem(Properties properties) {
         super(properties);
     }
@@ -63,5 +68,13 @@ public class OrderGolemUpgradeItem extends Item implements TravelingTrunkEntity.
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean golemUpgrade$isApplicableTo(ItemStack stack, AbstractGolemUpgradeApplicableEntity<?> couldBeTravelingTrunk) {
+        if (couldBeTravelingTrunk instanceof TravelingTrunkEntity){
+            return TravelingTrunkEntity.ITravelingTrunkUpgradeItem.super.golemUpgrade$isApplicableTo(stack, couldBeTravelingTrunk);
+        }
+        return IGolemBasicUpgradeItem.super.golemUpgrade$isApplicableTo(stack, couldBeTravelingTrunk);
     }
 }

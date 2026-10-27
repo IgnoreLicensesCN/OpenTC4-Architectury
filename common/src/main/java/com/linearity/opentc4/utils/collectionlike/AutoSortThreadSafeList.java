@@ -9,8 +9,17 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
-public class AutoSortThreadSafeList<T extends Comparable<T>> implements List<T> {
+public class AutoSortThreadSafeList<T/* extends Comparable<T>*/> implements List<T> {
     private final List<T> wrapped = new CopyOnWriteArrayList<>();
+    private final Comparator<T> comparator;
+
+    public AutoSortThreadSafeList(Comparator<T> comparator) {
+        this.comparator = comparator;
+    }
+    public static <T extends Comparable<T>> AutoSortThreadSafeList<T> ofComparable() {
+        return new AutoSortThreadSafeList<>(Comparable::compareTo);
+    }
+
 
     @Override
     public boolean removeIf(@NotNull Predicate<? super T> filter) {
@@ -45,20 +54,20 @@ public class AutoSortThreadSafeList<T extends Comparable<T>> implements List<T> 
 
     @NotNull
     @Override
-    public Object[] toArray() {
+    public Object @NotNull [] toArray() {
         return wrapped.toArray();
     }
 
     @NotNull
     @Override
-    public <T1> T1[] toArray(@NotNull T1[] a) {
+    public <T1> T1 @NotNull [] toArray(@NotNull T1 @NotNull [] a) {
         return wrapped.toArray(a);
     }
 
     @Override
     public boolean add(T t) {
         boolean added = wrapped.add(t);
-        Collections.sort(wrapped);
+        wrapped.sort(comparator);
         return added;
     }
 
@@ -76,14 +85,14 @@ public class AutoSortThreadSafeList<T extends Comparable<T>> implements List<T> 
     @Override
     public boolean addAll(@NotNull Collection<? extends T> c) {
         boolean changed = wrapped.addAll(c);
-        Collections.sort(wrapped);
+        wrapped.sort(comparator);
         return changed;
     }
 
     @Override
     public boolean addAll(int index, @NotNull Collection<? extends T> c) {
         boolean changed = wrapped.addAll(index, c);
-        Collections.sort(wrapped);
+        wrapped.sort(comparator);
         return changed;
     }
 
@@ -95,14 +104,14 @@ public class AutoSortThreadSafeList<T extends Comparable<T>> implements List<T> 
     @Override
     public boolean retainAll(@NotNull Collection<?> c) {
         boolean changed = wrapped.retainAll(c);
-        Collections.sort(wrapped);
+        wrapped.sort(comparator);
         return changed;
     }
 
     @Override
     public void replaceAll(@NotNull UnaryOperator<T> operator) {
         wrapped.replaceAll(operator);
-        Collections.sort(wrapped);
+        wrapped.sort(comparator);
     }
 
     @Override
@@ -123,14 +132,14 @@ public class AutoSortThreadSafeList<T extends Comparable<T>> implements List<T> 
     @Override
     public T set(int index, T element) {
         T old = wrapped.set(index, element);
-        Collections.sort(wrapped);
+        wrapped.sort(comparator);
         return old;
     }
 
     @Override
     public void add(int index, T element) {
         wrapped.add(index, element);
-        Collections.sort(wrapped);
+        wrapped.sort(comparator);
     }
 
     @Override

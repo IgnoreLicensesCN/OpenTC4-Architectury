@@ -1,35 +1,37 @@
 package com.linearity.opentc4.utils;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import com.linearity.opentc4.utils.collectionlike.SimplePair;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import com.linearity.opentc4.utils.collectionlike.UpgradePair;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.IdentityHashMap;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 public class ClassToItemStackPairMap {
-    private final ListMultimap<Class<?>, SimplePair<?, ItemStack>> delegate = ArrayListMultimap.create();
+    private final Multimap<Class<?>, UpgradePair<?>> delegate = Multimaps.newMultimap(new IdentityHashMap<>(),() -> new PriorityQueue<>(UpgradePair::compare));
 
-    public void checkAndPut(Class<?> clz, Item item, ItemStack stack) {
+    public void checkAndPut(Class<?> clz, Item item, ItemStack stack,int weight) {
         if (clz.isInstance(item)){
-            delegate.put(clz,new SimplePair<>(clz.cast(item),stack));
+            delegate.put(clz,new UpgradePair<>(clz.cast(item),stack,weight));
         }
     }
 
-    public <T> void put(Class<T> type, SimplePair<T, ItemStack> instance) {
+    public <T> void put(Class<T> type, UpgradePair<T> instance) {
         delegate.put(type, instance);
     }
 
-    public <T> void putAll(Class<T> type, Iterable<SimplePair<T, ItemStack>> instances) {
+    public <T> void putAll(Class<T> type, Iterable<UpgradePair<T>> instances) {
         delegate.putAll(type, instances);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> List<SimplePair<T, ItemStack>> get(Class<T> type) {
-        return (List<SimplePair<T, ItemStack>>) (Object) delegate.get(type);
+    public <T> Collection<UpgradePair<T>> get(Class<T> type) {
+        return (Collection<UpgradePair<T>>) (Object) delegate.get(type);
     }
 
     public Set<Class<?>> getKeys(){
@@ -45,7 +47,7 @@ public class ClassToItemStackPairMap {
         public View(ClassToItemStackPairMap delegate) {
             this.delegate = delegate;
         }
-        public @UnmodifiableView <T> List<SimplePair<T, ItemStack>> get(Class<T> type) {
+        public @UnmodifiableView <T> Collection<UpgradePair<T>> get(Class<T> type) {
             return delegate.get(type);
         }
 

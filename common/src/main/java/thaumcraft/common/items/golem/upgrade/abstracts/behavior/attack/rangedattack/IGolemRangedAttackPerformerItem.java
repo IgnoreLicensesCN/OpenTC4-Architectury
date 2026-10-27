@@ -2,9 +2,9 @@ package thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedat
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.common.items.golem.upgrade.abstracts.IGolemModifierItem;
+import thaumcraft.common.entities.golems.BaseGolemEntity;
 
-public interface IGolemRangedAttackPerformerItem extends IGolemModifierItem {
+public interface IGolemRangedAttackPerformerItem extends BaseGolemEntity.IGolemUpgradeItem {
     boolean canPerformRangedAttackForGolem( /*seldom but could be not golem?*/ LivingEntity shooter, ItemStack upgradeStack, LivingEntity target, float f);
     void performRangedAttackForGolem( /*seldom but could be not golem?*/ LivingEntity shooter, ItemStack upgradeStack, LivingEntity target, float f);
     default void performRangedAttackForGolemIfCan( /*seldom but could be not golem?*/ LivingEntity shooter, ItemStack upgradeStack, LivingEntity target, float f){

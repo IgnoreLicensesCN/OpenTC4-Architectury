@@ -67,7 +67,7 @@ public class GolemDartLauncherItem extends Item
         float divergence = DEFAULT_DIVERGENCE;
         if (shooter instanceof BaseGolemEntity baseGolem){
             for (var modifierPair:baseGolem.golemUpgradesCacheView.get(IGolemShootAccuracyModifierItem.class)){
-                divergence = modifierPair.a().modifyShootDivergence(baseGolem, modifierPair.b(), divergence, DEFAULT_DIVERGENCE);
+                divergence = modifierPair.getUpgradeType().modifyShootDivergence(baseGolem, modifierPair.getUpgradeStack(), divergence, DEFAULT_DIVERGENCE);
             }
         }
         divergence = Math.max(0,divergence);
@@ -93,7 +93,7 @@ public class GolemDartLauncherItem extends Item
         float cooldown = DEFAULT_COOLDOWN;
         if (livingEntity instanceof BaseGolemEntity baseGolem){
             for (var modifierPair:baseGolem.golemUpgradesCacheView.get(IGolemShootCooldownModifierItem.class)){
-                cooldown = modifierPair.a().modifyShootCooldown(baseGolem, modifierPair.b(), cooldown, DEFAULT_COOLDOWN);
+                cooldown = modifierPair.getUpgradeType().modifyShootCooldown(baseGolem, modifierPair.getUpgradeStack(), cooldown, DEFAULT_COOLDOWN);
             }
         }
         cooldown = Math.max(0,cooldown);

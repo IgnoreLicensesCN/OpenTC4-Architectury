@@ -152,7 +152,7 @@ public class ThaumcraftEntityEvents {
             if (entityCausedDamage != null) {
                 if (entityCausedDamage instanceof BaseGolemEntity golem) {
                     for (var listenerPair:golem.golemUpgradesCacheView.get(IGolemCauseDamageListenerItem.class)){
-                        listenerPair.a().onGolemCausedDamage(golem,listenerPair.b(),living,damageSource,damageCausedNoArmorReduce);
+                        listenerPair.getUpgradeType().onGolemCausedDamage(golem,listenerPair.getUpgradeStack(),living,damageSource,damageCausedNoArmorReduce);
                     }
                 }
                 for (var stack : entityCausedDamage.getArmorSlots()) {

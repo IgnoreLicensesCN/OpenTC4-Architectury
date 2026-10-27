@@ -109,7 +109,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
     protected void updateSlotCount() {
         int additionalSlotCount = 0;
         for (var upgradePair:upgradesCacheView){
-            additionalSlotCount += upgradePair.a().travelingTrunkUpgrade$inventorySizeAddition(this,upgradePair.b());
+            additionalSlotCount += upgradePair.getUpgradeType().travelingTrunkUpgrade$inventorySizeAddition(this,upgradePair.getUpgradeStack());
         }
         setSlotCount(BASIC_SLOT_COUNT + additionalSlotCount);
     }
@@ -165,7 +165,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
             modifiedDamage = Float.NaN;
         }
         for (var upgradePair:upgradesCacheView){
-            modifiedDamage = upgradePair.a().travelingTrunkUpgrade$modifyHurtDamage(this,upgradePair.b(),source,modifiedDamage);
+            modifiedDamage = upgradePair.getUpgradeType().travelingTrunkUpgrade$modifyHurtDamage(this,upgradePair.getUpgradeStack(),source,modifiedDamage);
         }
         if (!Float.isNaN(f) && Float.isNaN(modifiedDamage)){
             return false;
@@ -213,7 +213,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
         if (this.eatDelay > 0) {
             --this.eatDelay;
         }
-        upgradesCacheView.forEach(upgradePair->upgradePair.a().travelingTrunkUpgrade$tick(this,upgradePair.b()));
+        upgradesCacheView.forEach(upgradePair->upgradePair.getUpgradeType().travelingTrunkUpgrade$tick(this,upgradePair.getUpgradeStack()));
 
     }
 
@@ -221,7 +221,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
         if (this.moveControl instanceof TravelingTrunkMoveControl travelingTrunkMoveControl) {
             double movement = 1;
             for (var upgradePair:upgradesCacheView){
-                movement *= upgradePair.a().travelingTrunkUpgrade$wantedMovementMultiplier(this,upgradePair.b());
+                movement *= upgradePair.getUpgradeType().travelingTrunkUpgrade$wantedMovementMultiplier(this,upgradePair.getUpgradeStack());
             }
             travelingTrunkMoveControl.setWantedMovement(movement);
         }
@@ -240,9 +240,9 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
         goalSelector.addGoal(6, new CrossDimensionFollowingOwnerGoal(this, this,1.0, 10.0F, 2.0F, false));
         upgradesCacheView.forEach(
                 upgradePair ->
-                        upgradePair.a().travelingTrunkUpgrade$registerGoals(
+                        upgradePair.getUpgradeType().travelingTrunkUpgrade$registerGoals(
                                 this,
-                                upgradePair.b(),
+                                upgradePair.getUpgradeStack(),
                                 this.goalSelector,
                                 this.targetSelector
                         )
@@ -263,7 +263,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
     @Override
     public InteractionResult thaumcraft$interact(Player player, InteractionHand interactionHand) {
         for (var upgradePair : upgradesCacheView) {
-            var interactionResult = upgradePair.a().travelingTrunkUpgrade$modifyInteraction(this,upgradePair.b(),player,interactionHand);
+            var interactionResult = upgradePair.getUpgradeType().travelingTrunkUpgrade$modifyInteraction(this,upgradePair.getUpgradeStack(),player,interactionHand);
             if (interactionResult != InteractionResult.SUCCESS) {
                 return interactionResult;
             }
@@ -300,7 +300,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
         var result = super.tryFeedStack(player,interactionHand,usingStack);
         if (result){
             for (var upgradePair:upgradesCacheView){
-                upgradePair.a().travelingTrunkUpgrade$onFed(this,upgradePair.b(), usingStack, player, interactionHand);
+                upgradePair.getUpgradeType().travelingTrunkUpgrade$onFed(this,upgradePair.getUpgradeStack(), usingStack, player, interactionHand);
             }
         }
         return result;
@@ -600,7 +600,7 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
         var stack = super.collapseToItemStackWithoutSneaking();
         var level = level();
         for (var pair:upgradesCacheView){
-            stack = pair.a().travelingTrunkUpgrade$getTravelingTrunkStack(this,pair.b(),stack);
+            stack = pair.getUpgradeType().travelingTrunkUpgrade$getTravelingTrunkStack(this,pair.getUpgradeStack(),stack);
         }
         Containers.dropContents(level,blockPosition(),inventory);
         this.discard();

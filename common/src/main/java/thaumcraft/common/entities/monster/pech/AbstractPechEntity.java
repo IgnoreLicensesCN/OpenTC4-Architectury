@@ -618,7 +618,7 @@ public abstract class AbstractPechEntity extends DoorBreakingMonster
 
         public static class PechTradeOptionProviderExample extends PechTradeOptionProvider {
             public final AutoSortThreadSafeList<ObjectIntPair<List<Supplier<ItemStack>>>> TRADE_OPTIONS_BY_VALUE
-                    = new AutoSortThreadSafeList<>();
+                    = new AutoSortThreadSafeList<>(ObjectIntPair::compareTo);
 
             @Override
             public List<ItemStack> generateOutputForValue(AbstractPechEntity pech, int value) {

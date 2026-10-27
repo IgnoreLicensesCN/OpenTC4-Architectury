@@ -5,7 +5,8 @@ import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
 import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
 import com.linearity.opentc4.utils.QueuedItemCooldowns;
-import com.linearity.opentc4.utils.collectionlike.SimplePair;
+import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
+import com.linearity.opentc4.utils.collectionlike.UpgradePair;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -25,7 +26,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.IGolemOnFeedListener;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -92,13 +92,13 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
 
     public void setUpgradeStacks(List<ItemStack> stack) {
         this.entityData.set(DATA_ID_UPGRADES, stack);
-        List<SimplePair<UpgradeItem,ItemStack>> cache = new ArrayList<>(stack.size());
+        List<UpgradePair<UpgradeItem>> cache = new AutoSortThreadSafeList<>(UpgradePair::compareTo);
         var upgradeClass = getUpgradeClass();
         for (var upgradeStack:stack) {
             var item = upgradeStack.getItem();
-            if (upgradeClass.isInstance(item)) {
+            if (upgradeClass.isInstance(item) && item instanceof IAbstractGolemUpgradeItem upgradeItem) {
                 var upgrade = upgradeClass.cast(item);
-                cache.add(new SimplePair<>(upgradeClass.cast(item),upgradeStack));
+                cache.add(new UpgradePair<>(upgradeClass.cast(item),upgradeStack,upgradeItem.getUpgradePriority(this,upgradeStack,upgradeClass)));
                 var attrMap = upgrade.getAttributes(upgradeStack, this);
                 for (var attributeToApplyPair:attrMap.entrySet()){
                     var attributeToApply = attributeToApplyPair.getKey();
@@ -116,8 +116,8 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         upgradesCache = cache;
         upgradesCacheView = Collections.unmodifiableList(upgradesCache);
     }
-    private List<SimplePair<UpgradeItem,ItemStack>> upgradesCache = List.of();
-    protected List<SimplePair<UpgradeItem,ItemStack>> upgradesCacheView = Collections.unmodifiableList(upgradesCache);
+    private List<UpgradePair<UpgradeItem>> upgradesCache = List.of();
+    protected List<UpgradePair<UpgradeItem>> upgradesCacheView = Collections.unmodifiableList(upgradesCache);
 
     public interface IAbstractGolemUpgradeItem {
 
@@ -126,6 +126,9 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         default Map<Attribute, Collection<Supplier<AttributeModifier>>> getAttributes(ItemStack upgradeStack, Mob golem) {
             return Collections.emptyMap();
         }
+        default int getUpgradePriority(AbstractGolemUpgradeApplicableEntity<?> golem, ItemStack upgradeStack, Class<? extends IAbstractGolemUpgradeItem> asUpgradeClass){
+            return 0;
+        };
     }
 
     public abstract Class<UpgradeItem> getUpgradeClass();

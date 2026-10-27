@@ -108,7 +108,7 @@ public class GolemRangedAttackGoal extends Goal {
         this.golem.getLookControl().setLookAt(this.target, 30.0F, 30.0F);
         float distancePercent = (float) Mth.clamp(Math.sqrt(d / this.getAttackRadiusMax()), 0.1, 1.0);
         for (var rangedAttackPerformerPair:golem.golemUpgradesCacheView.get(IGolemRangedAttackPerformerItem.class)){
-            rangedAttackPerformerPair.a().performRangedAttackForGolemIfCan(golem,rangedAttackPerformerPair.b(),this.target,distancePercent);
+            rangedAttackPerformerPair.getUpgradeType().performRangedAttackForGolemIfCan(golem,rangedAttackPerformerPair.getUpgradeStack(),this.target,distancePercent);
         }
     }
 }

@@ -1,6 +1,5 @@
 package thaumcraft.common.entities.golems;
 
-import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
 import com.linearity.opentc4.mixinaccessors.InteractionOverrideMob;
 import com.linearity.opentc4.mixinaccessors.cliententity.BaseGolemEntityClientAccessor;
@@ -127,7 +126,7 @@ public abstract class BaseGolemEntity
 
     public abstract GolemBasicAbilityProperties getBasicAbilityProperties();
 
-    public static List<ObjectIntPair<Class<? extends IGolemModifierItem>/*int:priority(lower ones comes first)*/>> defaultGolemUpgradeItemTypes = new AutoSortThreadSafeList<>();
+    public static List<ObjectIntPair<Class<? extends IGolemUpgradeItem>/*int:priority(lower ones comes first)*/>> defaultGolemUpgradeItemTypes = new AutoSortThreadSafeList<>(ObjectIntPair::compareTo);
 
     static {
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemCoreItem.class, 0));
@@ -148,7 +147,7 @@ public abstract class BaseGolemEntity
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemTargetControlItem.class,1500));
     }
 
-    public List<ObjectIntPair<Class<? extends IGolemModifierItem>>> getAvailableGolemModifierTypes() {
+    public List<ObjectIntPair<Class<? extends BaseGolemEntity.IGolemUpgradeItem>>> getAvailableGolemModifierTypes() {
         return defaultGolemUpgradeItemTypes;
     }
 
@@ -338,7 +337,7 @@ public abstract class BaseGolemEntity
         MARKERS.readFromCompoundTagInto(tag,markers);
         homeDirection = HOME_FACE.readFromCompoundTag(tag);
         for (var additionalDataProviderPair:golemUpgradesCacheView.get(IGolemAdditionalDataProviderItem.class)) {
-            additionalDataProviderPair.a().readAdditional(this,additionalDataProviderPair.b(),tag);
+            additionalDataProviderPair.getUpgradeType().readAdditional(this,additionalDataProviderPair.getUpgradeStack(),tag);
         }
     }
 
@@ -356,14 +355,14 @@ public abstract class BaseGolemEntity
         MARKERS.writeToCompoundTag(tag, markers);
         HOME_FACE.writeToCompoundTag(tag, homeDirection);
         for (var additionalDataProviderPair:golemUpgradesCacheView.get(IGolemAdditionalDataProviderItem.class)) {
-            additionalDataProviderPair.a().writeAdditional(this,additionalDataProviderPair.b(),tag);
+            additionalDataProviderPair.getUpgradeType().writeAdditional(this,additionalDataProviderPair.getUpgradeStack(),tag);
         }
     }
 
     @Override
     public ItemStack collapseToItemStackWithoutSneaking() {
         for (var collapseListenerPair:golemUpgradesCacheView.get(IGolemCollapseToItemStackListenerItem.class)) {
-            collapseListenerPair.a().onCollapseToItemStackWithoutSneaking(this,collapseListenerPair.b());
+            collapseListenerPair.getUpgradeType().onCollapseToItemStackWithoutSneaking(this,collapseListenerPair.getUpgradeStack());
         }
         Containers.dropContents(level(),blockPosition(),inventory);
         inventory.clear();
@@ -373,7 +372,7 @@ public abstract class BaseGolemEntity
     @Override
     public ItemStack collapseToItemStackWithSneaking() {
         for (var collapseListenerPair:golemUpgradesCacheView.get(IGolemCollapseToItemStackListenerItem.class)) {
-            collapseListenerPair.a().onCollapseToItemStackWithSneaking(this,collapseListenerPair.b());
+            collapseListenerPair.getUpgradeType().onCollapseToItemStackWithSneaking(this,collapseListenerPair.getUpgradeStack());
         }
         var result = super.collapseToItemStackWithSneaking();
         var stackTag = result.getOrCreateTag();
@@ -388,7 +387,7 @@ public abstract class BaseGolemEntity
     protected void refreshAbilities() {
         abilitiesData.reset();
         for (var upgradePair : golemUpgradesCacheView.get(IGolemAbilityModifierItem.class)) {
-            upgradePair.a().modifyGolemAbility(this, upgradePair.b(), abilitiesData);
+            upgradePair.getUpgradeType().modifyGolemAbility(this, upgradePair.getUpgradeStack(), abilitiesData);
         }
         abilitiesData.safetyCheckAndFix();
         reconstructInventory();
@@ -426,15 +425,15 @@ public abstract class BaseGolemEntity
             var item = stack.getItem();
             for (var clzPair : getAvailableGolemModifierTypes()) {
                 var clz = clzPair.first();
-                if (clz.isInstance(item)) {
-                    golemUpgradesCache.checkAndPut(clz, item, stack);
+                if (clz.isInstance(item) && item instanceof IGolemUpgradeItem modifierItem) {
+                    golemUpgradesCache.checkAndPut(clz, item, stack, modifierItem.getUpgradePriority(this,stack,clz));
                 }
             }
         }
         refreshAbilities();
         decorationTypes.clear();
         for (var decorationPair:golemUpgradesCacheView.get(IGolemDecorationItem.class)){
-            decorationTypes.addAll(decorationPair.a().getOccupiedTypes(this, decorationPair.b()));
+            decorationTypes.addAll(decorationPair.getUpgradeType().getOccupiedTypes(this, decorationPair.getUpgradeStack()));
         }
     }
 
@@ -465,7 +464,7 @@ public abstract class BaseGolemEntity
         this.wrappedGoalSelector.removeAllGoals(_ignored -> true);
         this.targetSelector.removeAllGoals(_ignored -> true);
         for (var providerPair : golemUpgradesCacheView.get(IGolemAIProviderItem.class)) {
-            providerPair.a().registerGoalForGolem(this, providerPair.b(), this.wrappedGoalSelector, this.wrappedTargetSelector);
+            providerPair.getUpgradeType().registerGoalForGolem(this, providerPair.getUpgradeStack(), this.wrappedGoalSelector, this.wrappedTargetSelector);
         }
     }
 
@@ -474,7 +473,7 @@ public abstract class BaseGolemEntity
         return IGolemUpgradeItem.class;
     }
 
-    public interface IGolemUpgradeItem extends IAbstractGolemUpgradeItem, IGolemModifierItem {
+    public interface IGolemUpgradeItem extends IAbstractGolemUpgradeItem {
         @Override
         default boolean golemUpgrade$isApplicableTo(ItemStack stack, AbstractGolemUpgradeApplicableEntity<?> golem) {
             return golem instanceof BaseGolemEntity;
@@ -483,7 +482,7 @@ public abstract class BaseGolemEntity
 
     public boolean canPerformRangedAttack(LivingEntity target, float f) {
         for (var performerPair : golemUpgradesCacheView.get(IGolemRangedAttackPerformerItem.class)) {
-            if (performerPair.a().canPerformRangedAttackForGolem(this, performerPair.b(), target, f)) {
+            if (performerPair.getUpgradeType().canPerformRangedAttackForGolem(this, performerPair.getUpgradeStack(), target, f)) {
                 return true;
             }
         }
@@ -493,7 +492,7 @@ public abstract class BaseGolemEntity
     @Override
     public void performRangedAttack(LivingEntity target, float f) {
         for (var performerPair : golemUpgradesCacheView.get(IGolemRangedAttackPerformerItem.class)) {
-            performerPair.a().performRangedAttackForGolemIfCan(this, performerPair.b(), target, f);
+            performerPair.getUpgradeType().performRangedAttackForGolemIfCan(this, performerPair.getUpgradeStack(), target, f);
         }
     }
 
@@ -558,7 +557,7 @@ public abstract class BaseGolemEntity
         }
         var defaultDamage = f;
         for (var damageModifierPair:golemUpgradesCacheView.get(IGolemReceivedDamageModifierItem.class)) {
-            f = damageModifierPair.a().modifyReceivedDamage(this,damageModifierPair.b(),damageSource,f,defaultDamage);
+            f = damageModifierPair.getUpgradeType().modifyReceivedDamage(this,damageModifierPair.getUpgradeStack(),damageSource,f,defaultDamage);
         }
         if (Float.isNaN(f)) {
             return false;
@@ -567,7 +566,7 @@ public abstract class BaseGolemEntity
         boolean result = super.hurt(damageSource, f);
         if (result){
             for (var damageListenerPair:golemUpgradesCacheView.get(IGolemDamagedListenerItem.class)) {
-                damageListenerPair.a().onDamaged(this,damageListenerPair.b(),damageSource,f);
+                damageListenerPair.getUpgradeType().onDamaged(this,damageListenerPair.getUpgradeStack(),damageSource,f);
             }
         }
         return result;
@@ -665,7 +664,7 @@ public abstract class BaseGolemEntity
             golemBell.onInteractGolem(player,interactionHand,usingStack,this);
         }else {
             for (var interactionListenerPair:golemUpgradesCacheView.get(IGolemPlayerInteractionListenerItem.class)) {
-                interactionListenerPair.a().listenerOnPlayerInteract(this,interactionListenerPair.b(),player,interactionHand);
+                interactionListenerPair.getUpgradeType().listenerOnPlayerInteract(this,interactionListenerPair.getUpgradeStack(),player,interactionHand);
             }
         }
         return InteractionResult.SUCCESS;
@@ -681,7 +680,7 @@ public abstract class BaseGolemEntity
             }
         }
         for (var listenerPair:golemUpgradesCacheView.get(IGolemDoHurtTargetListenerItem.class)) {
-            listenerPair.a().onDoHurtTarget(this,listenerPair.b(),entity);
+            listenerPair.getUpgradeType().onDoHurtTarget(this,listenerPair.getUpgradeStack(),entity);
         }
         return result;
     }
@@ -694,7 +693,7 @@ public abstract class BaseGolemEntity
         var result = super.tryFeedStack(player,interactionHand,usingStack);
         if (result){
             for (var upgradePair:golemUpgradesCacheView.get(IGolemOnFeedListener.class)) {
-                upgradePair.a().onGolemFed(this,upgradePair.b(), usingStack, player, interactionHand);
+                upgradePair.getUpgradeType().onGolemFed(this,upgradePair.getUpgradeStack(), usingStack, player, interactionHand);
             }
         }
         return result;
@@ -727,7 +726,7 @@ public abstract class BaseGolemEntity
         Containers.dropContents(level(),blockPosition(),inventory);
         inventory.clear();
         for (var pair:upgradesCacheView){
-            spawnAtLocation(pair.b(),0.5F);
+            spawnAtLocation(pair.getUpgradeStack(),0.5F);
         }
         setUpgradeStacks(List.of());
     }

@@ -1,6 +1,6 @@
 package thaumcraft.common.items.golem.upgrade.abstracts.behavior;
 
-import thaumcraft.common.items.golem.upgrade.abstracts.IGolemModifierItem;
+import thaumcraft.common.entities.golems.BaseGolemEntity;
 
-public interface IGolemColorfulMarkerProviderItem extends IGolemModifierItem {
+public interface IGolemColorfulMarkerProviderItem extends BaseGolemEntity.IGolemUpgradeItem {
 }
