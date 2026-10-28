@@ -1,6 +1,7 @@
 package thaumcraft.common.entities;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -232,9 +233,15 @@ public class ThaumcraftEntityEvents {
         return builder;
     }
 
+    private static long packInt(int x, int z) {
+        return ((long) x << 32) | (z & 0xFFFFFFFFL);
+    }
+    //int x = (int)(l >> 32);
+    //int z = (int)l;
+
     //inline supplier might be faster but i want to reduce code.
     public static  <T> T wrapMethodForModifyInvulnerableTime(
-            DamageSource damageSource, Supplier<T> wrappedMethod, LivingEntity thiz, Supplier<Object2IntMap<InvulnerableTimeCategory>> invulnerableTimeProvider) {
+            DamageSource damageSource, Supplier<T> wrappedMethod, LivingEntity thiz, Supplier<Object2LongMap<InvulnerableTimeCategory>> invulnerableTimeProvider) {
         var keyOptional = damageSource.typeHolder().unwrapKey();
         var category = DamageTypeCategories.InvulnerableTime.DEFAULT;
         if (keyOptional.isPresent()) {
@@ -243,16 +250,22 @@ public class ThaumcraftEntityEvents {
         if (category != DamageTypeCategories.InvulnerableTime.DEFAULT) {
             var invTimeStored = thiz.invulnerableTime;//store default state
             //load state
-            var invTimeForCategory = invulnerableTimeProvider.get().getInt(category);
-            thiz.invulnerableTime = invTimeForCategory;
+            var invTimeAndRecordAtTickCountForCategory = invulnerableTimeProvider.get().getLong(category);
+            int recordAtTickCount = (int)(invTimeAndRecordAtTickCountForCategory >> 32);
+            int cooldownTickCountRemaining = (int)invTimeAndRecordAtTickCountForCategory;
+            int ticksPassed = thiz.tickCount - recordAtTickCount;
+            recordAtTickCount = thiz.tickCount;
+            cooldownTickCountRemaining = Math.max(0, cooldownTickCountRemaining - ticksPassed);
+
+            thiz.invulnerableTime = cooldownTickCountRemaining;
             //end load state
             var result = wrappedMethod.get();
             //save state for category
-            int subtractedTime = (thiz.invulnerableTime - invTimeForCategory);
+            int subtractedTime = (thiz.invulnerableTime - cooldownTickCountRemaining);
             if (subtractedTime > 0){
-                invTimeForCategory = (int) (invTimeForCategory + (subtractedTime * category.timeChangeScale));
+                cooldownTickCountRemaining = (int) (cooldownTickCountRemaining + (subtractedTime * category.timeChangeScale));
             }
-            invulnerableTimeProvider.get().put(category, invTimeForCategory);
+            invulnerableTimeProvider.get().put(category, packInt(recordAtTickCount, cooldownTickCountRemaining));
             //end save state for category
             thiz.invulnerableTime = invTimeStored;//recover default state
             return result;
