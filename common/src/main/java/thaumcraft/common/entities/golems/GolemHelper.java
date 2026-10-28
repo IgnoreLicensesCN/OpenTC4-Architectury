@@ -546,7 +546,7 @@ public class GolemHelper {
       return results;
    }
 
-   public static ArrayList getItemsNeeded(EntityGolemBase golem, boolean fuzzy) {
+   public static ArrayList<ItemStack> getItemsNeeded(EntityGolemBase golem, boolean fuzzy) {
       ArrayList<ItemStack> needed = null;
       switch (golem.getCore()) {
          case 1:
@@ -791,7 +791,7 @@ public class GolemHelper {
       }
    }
 
-   public static ArrayList getItemsInHomeContainer(EntityGolemBase golem) {
+   public static ArrayList<ItemStack> getItemsInHomeContainer(EntityGolemBase golem) {
       Direction facing = Direction.getOrientation(golem.homeFacing);
       ChunkCoordinates home = golem.getHomePosition();
       int cX = home.posX - facing.offsetX;

@@ -8,7 +8,8 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.entities.ai.goals.GolemMoveToRestrictionCenterGoal;
+import thaumcraft.common.entities.ai.goals.golem.GolemMoveToRestrictionCenterGoal;
+import thaumcraft.common.entities.ai.goals.golem.GolemPlaceItemStackToHomeGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemAbilitiesData;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
@@ -45,6 +46,8 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final Function<BaseGolemEntity, Goal> WATCH_CLOSEST_PLAYER_GOAL = golem -> new LookAtPlayerGoal(golem, Player.class, 6);
         public static final GoalResourceLocation IDLE = GoalResourceLocation.of(Thaumcraft.MOD_ID, "idle");
         public static final Function<BaseGolemEntity, Goal> IDLE_GOAL = RandomLookAroundGoal::new;
+        public static final GoalResourceLocation PLACE_ITEM_STACK_HOME = GoalResourceLocation.of(Thaumcraft.MOD_ID, "place_item_stack_home");
+        public static final Function<BaseGolemEntity, Goal> PLACE_ITEM_STACK_HOME_DEFAULT_GOAL = GolemPlaceItemStackToHomeGoal::new;
     }
 
     default void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GolemGoalSelector goalSelector, GolemGoalSelector targetSelector) {

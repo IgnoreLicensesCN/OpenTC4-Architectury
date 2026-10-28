@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals;
+package thaumcraft.common.entities.ai.goals.golem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.Goal;

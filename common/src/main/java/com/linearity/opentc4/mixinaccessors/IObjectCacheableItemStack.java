@@ -47,7 +47,18 @@ import java.util.function.Supplier;
  *  we may reduce "new"</p>
  *  <p>luckily it's totally unmodifiable,so we can just put</p>
  *  <pre>{@code
+ *public static class WandCastingItemCachedObjectsForItemStack {
+ *         public static final Supplier<WandCastingItemCachedObjectsForItemStack> SUPPLIER = () -> new WandCastingItemCachedObjectsForItemStack(
+ *                 new ArrayList<>(3)
+ *         );
+ *         public final @Modifiable List<ItemStack> components;
+ *         public final @UnmodifiableView List<ItemStack> componentsView;
  *
+ *         public WandCastingItemCachedObjectsForItemStack(@Modifiable List<ItemStack> components) {
+ *             this.components = components;
+ *             this.componentsView = Collections.unmodifiableList(components);
+ *         }
+ *     }
  *  @Override
  *     public
  *     @UnmodifiableView
@@ -90,6 +101,7 @@ import java.util.function.Supplier;
 public interface IObjectCacheableItemStack {
     <T> @Nullable T opentc4$getCachedObjectFromItemStack(Class<T> clazz);
     <T> void opentc4$putCachedObjectIntoItemStack(Class<T> clazz,T object);
+    void opentc4$removeCachedObjectFromItemStack(Class<?> clazz);
     default <T> T opentc4$getOrCreateCachedObjectFromItemStack(Class<T> clazz, Supplier<T> supplier){
         var cached = opentc4$getCachedObjectFromItemStack(clazz);
         if (cached == null) {
@@ -100,5 +112,11 @@ public interface IObjectCacheableItemStack {
     }
     static <T> T opentc4$getOrCreateCachedObjectFromItemStack(ItemStack stack, Class<T> clazz, Supplier<T> supplier) {
         return ((IObjectCacheableItemStack)(Object)stack).opentc4$getOrCreateCachedObjectFromItemStack(clazz, supplier);
+    }
+    static <T> @Nullable T opentc4$getCachedObjectFromItemStack(ItemStack stack, Class<T> clazz) {
+        return ((IObjectCacheableItemStack)(Object)stack).opentc4$getCachedObjectFromItemStack(clazz);
+    }
+    static void opentc4$removeCachedObjectFromItemStack(ItemStack stack,Class<?> clazz) {
+        ((IObjectCacheableItemStack)(Object)stack).opentc4$removeCachedObjectFromItemStack(clazz);
     }
 }

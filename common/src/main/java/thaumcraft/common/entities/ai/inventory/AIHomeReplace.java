@@ -13,6 +13,8 @@ import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.ArrayList;
 
+import static thaumcraft.common.config.Config.CONFIG_INSTANCE;
+
 public class AIHomeReplace extends EntityAIBase {
    private EntityGolemBase theGolem;
    private int countChest = 0;
@@ -25,11 +27,14 @@ public class AIHomeReplace extends EntityAIBase {
 
    public boolean shouldExecute() {
       ChunkCoordinates home = this.theGolem.getHomePosition();
-      if (this.theGolem.getCarried() != null && this.theGolem.ticksExisted % Config.golemDelay <= 0 && this.theGolem.getNavigator().noPath() && !(this.theGolem.getDistanceSq((float)home.posX + 0.5F, (float)home.posY + 0.5F, (float)home.posZ + 0.5F) > (double)5.0F)) {
-         Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
-         int cX = home.posX - facing.offsetX;
-         int cY = home.posY - facing.offsetY;
-         int cZ = home.posZ - facing.offsetZ;
+      if (this.theGolem.getCarried() != null
+              && this.theGolem.ticksExisted % CONFIG_INSTANCE.getGolemDelay() <= 0
+              && this.theGolem.getNavigator().noPath()
+              && !(this.theGolem.getDistanceSq(
+                      (float)home.posX + 0.5F,
+              (float)home.posY + 0.5F,
+              (float)home.posZ + 0.5F) > (double)5.0F)
+      ) {
          if (GolemHelper.isOnTimeOut(this.theGolem, this.theGolem.getCarried())) {
             return true;
          } else {
@@ -41,6 +46,10 @@ public class AIHomeReplace extends EntityAIBase {
                case 10:
                   return !GolemHelper.findSomethingSortCore(this.theGolem, this.theGolem.getCarried());
                default:
+                  Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
+                  int cX = home.posX - facing.offsetX;
+                  int cY = home.posY - facing.offsetY;
+                  int cZ = home.posZ - facing.offsetZ;
                   this.theGolem.level().getTileEntity(cX, cY, cZ);
                   ArrayList<ItemStack> neededList = GolemHelper.getItemsNeeded(this.theGolem, this.theGolem.getUpgradeAmount(5) > 0);
                   if (neededList != null && !neededList.isEmpty()) {

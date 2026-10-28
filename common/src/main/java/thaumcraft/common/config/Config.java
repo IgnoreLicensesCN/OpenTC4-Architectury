@@ -871,4 +871,11 @@ public class Config {
         fluxGoomaterial = (new MaterialTaint(MapColor.grassColor)).setNoPushMobility();
         taintMaterial = new MaterialTaint(MapColor.grassColor);
     }
+
+    private Config(){}
+    public static final Config CONFIG_INSTANCE = new Config();
+
+    public int getGolemDelay(){
+        return golemDelay;//TODO:Modify this impl?.
+    }
 }

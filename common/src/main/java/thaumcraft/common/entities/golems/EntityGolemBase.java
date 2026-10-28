@@ -172,38 +172,38 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //   }
 
    public boolean setupGolem() {
-      if (Platform.getEnvironment() != Env.CLIENT) {
-         this.dataWatcher.updateObject(19, (byte)this.golemType.ordinal());
-      }
-
-       this.getNavigator().setAvoidsWater(this.getGolemType() != EnumGolemType.STONE && this.getGolemType() != EnumGolemType.IRON && this.getGolemType() != EnumGolemType.THAUMIUM);
-
-      if (this.getGolemType().fireResist) {
-         this.isImmuneToFire = true;
-      }
-
-      int bonus = 0;
-
-      try {
-         bonus = this.getGolemDecoration().contains("H") ? 5 : 0;
-      } catch (Exception ignored) {
-      }
-
-      this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getGolemType().health + bonus);
-      int damage = 2 + this.getGolemStrength() + this.getUpgradeAmount(1);
-
-      try {
-         if (this.getGolemDecoration().contains("M")) {
-            damage += 2;
-         }
-      } catch (Exception ignored) {
-      }
-
-      this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(damage);
-      this.tasks.taskEntries.clear();
-      if (this.getCore() > -1) {
-         this.tasks.addTask(0, new AvoidCreeperGoal(this));
-      }
+//      if (Platform.getEnvironment() != Env.CLIENT) {
+//         this.dataWatcher.updateObject(19, (byte)this.golemType.ordinal());
+//      }
+//
+//       this.getNavigator().setAvoidsWater(this.getGolemType() != EnumGolemType.STONE && this.getGolemType() != EnumGolemType.IRON && this.getGolemType() != EnumGolemType.THAUMIUM);
+//
+//      if (this.getGolemType().fireResist) {
+//         this.isImmuneToFire = true;
+//      }
+//
+//      int bonus = 0;
+//
+//      try {
+//         bonus = this.getGolemDecoration().contains("H") ? 5 : 0;
+//      } catch (Exception ignored) {
+//      }
+//
+//      this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(this.getGolemType().health + bonus);
+//      int damage = 2 + this.getGolemStrength() + this.getUpgradeAmount(1);
+//
+//      try {
+//         if (this.getGolemDecoration().contains("M")) {
+//            damage += 2;
+//         }
+//      } catch (Exception ignored) {
+//      }
+//
+//      this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(damage);
+//      this.tasks.taskEntries.clear();
+//      if (this.getCore() > -1) {
+//         this.tasks.addTask(0, new AvoidCreeperGoal(this));
+//      }
 
       switch (this.getCore()) {
          case 0:

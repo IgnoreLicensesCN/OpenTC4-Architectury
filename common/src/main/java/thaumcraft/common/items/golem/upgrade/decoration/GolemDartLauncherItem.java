@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.entities.ai.goals.GolemRangedAttackGoal;
+import thaumcraft.common.entities.ai.goals.golem.GolemRangedAttackGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
 import thaumcraft.common.entities.projectile.DartEntity;

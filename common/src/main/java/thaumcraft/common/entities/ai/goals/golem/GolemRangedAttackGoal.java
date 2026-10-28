@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals;
+package thaumcraft.common.entities.ai.goals.golem;
 
 import com.linearity.opentc4.annotations.StoleFrom;
 import net.minecraft.util.Mth;

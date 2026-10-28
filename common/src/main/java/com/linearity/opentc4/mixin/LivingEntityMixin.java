@@ -5,8 +5,8 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.Local;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2LongMap;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -40,9 +40,9 @@ import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategor
 @Mixin(value=LivingEntity.class,priority = 214748)
 public abstract class LivingEntityMixin implements IChampionModifierOwnerLivingEntity, InMilkContextAccessor {
     @Unique
-    private final Object2IntMap<InvulnerableTimeCategory> opentc4$specialInvulnerableTimes = new Object2IntOpenHashMap<>();
+    private final Object2LongMap<InvulnerableTimeCategory> opentc4$specialInvulnerableTimes = new Object2LongOpenHashMap<>();
     @Unique
-    private final Supplier<Object2IntMap<InvulnerableTimeCategory>> opentc4$specialInvulnerableTimesProvider = () -> opentc4$specialInvulnerableTimes;
+    private final Supplier<Object2LongMap<InvulnerableTimeCategory>> opentc4$specialInvulnerableTimesProvider = () -> opentc4$specialInvulnerableTimes;
 
     @WrapMethod(
             method = "hurt"
