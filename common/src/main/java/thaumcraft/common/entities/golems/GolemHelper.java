@@ -1,5 +1,11 @@
 package thaumcraft.common.entities.golems;
 
+import it.unimi.dsi.fastutil.bytes.ByteArraySet;
+import it.unimi.dsi.fastutil.bytes.ByteSet;
+import it.unimi.dsi.fastutil.objects.ObjectArraySet;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -8,19 +14,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.*;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.essentiabe.IEssentiaTransportBlockEntity;
 import thaumcraft.common.config.Config;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemItemStackMatcherModifierItem;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.junkbox.TileEssentiaReservoir;
 import thaumcraft.common.tiles.junkbox.TileJarFillable;
 import thaumcraft.common.tiles.junkbox.TileJarFillableVoid;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.function.BiPredicate;
+
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class GolemHelper {
    public static final double ADJACENT_RANGE = 4.0F;
@@ -44,20 +53,98 @@ public class GolemHelper {
       return results;
    }
 
-   public static ArrayList<IInventory> getMarkedContainersAdjacentToGolem(World world, EntityGolemBase golem) {
-      ArrayList<IInventory> results = new ArrayList<>();
-
-      for(IInventory inventory : getMarkedContainers(world, golem)) {
-         TileEntity te = (TileEntity)inventory;
-         if (golem.getDistanceSq((double)te.xCoord + (double)0.5F, (double)te.yCoord + (double)0.5F, (double)te.zCoord + (double)0.5F) < (double)4.0F) {
-            results.add(inventory);
-            if (InventoryUtils.getDoubleChest(te) != null) {
-               results.add(InventoryUtils.getDoubleChest(te));
+   public static void getMarkedContainers(
+           Collection<Container> results,
+           BaseGolemEntity golem,
+           @NotNull BiPredicate<BaseGolemEntity /*the one above*/ ,BlockEntity /*impl Container*/ > containerPredicate){
+      var level = golem.level();
+      var levelResLoc = level.dimension().location();
+      for (var marker:golem.markers) {
+         if (Objects.equals(marker.dim,levelResLoc)){
+            var checkingBE = getExistingBlockEntity(level,marker.pos.relative(marker.side.getOpposite()));
+            if (checkingBE instanceof Container container) {
+               if (containerPredicate.test(golem,checkingBE)){
+                  results.add(container);
+               }
             }
          }
       }
-
+   }
+   public static void getMarkedContainersAsBlockEntity(
+           Collection<BlockEntity> results,
+           BaseGolemEntity golem,
+           @NotNull BiPredicate<BaseGolemEntity /*the one above*/ ,BlockEntity /*impl Container*/> containerPredicate){
+      var level = golem.level();
+      var levelResLoc = level.dimension().location();
+      for (var marker:golem.markers) {
+         if (Objects.equals(marker.dim,levelResLoc)){
+            var checkingBE = getExistingBlockEntity(level,marker.pos.relative(marker.side.getOpposite()));
+            if (checkingBE instanceof Container container) {
+               if (containerPredicate.test(golem,checkingBE)){
+                  results.add(checkingBE);
+               }
+            }
+         }
+      }
+   }
+   public static List<Container> getMarkedContainers(
+           BaseGolemEntity golem,
+           @NotNull BiPredicate<BaseGolemEntity /*the one above*/,BlockEntity /*impl Container*/ > containerPredicate) {
+      List<Container> results = new ArrayList<>();
+      getMarkedContainers(results,golem,containerPredicate);
       return results;
+   }
+   public static List<BlockEntity> getMarkedContainersAsBlockEntity(
+           BaseGolemEntity golem,
+           @NotNull BiPredicate<BaseGolemEntity /*the one above*/,BlockEntity /*impl Container*/ > containerPredicate) {
+      List<BlockEntity> results = new ArrayList<>();
+      getMarkedContainersAsBlockEntity(results,golem,containerPredicate);
+      return results;
+   }
+
+   public static final BiPredicate<BaseGolemEntity,BlockEntity> DEFAULT_DISTANCE_PREDICATE = (golem,be) -> golem.distanceToSqr(be.getBlockPos().getCenter()) < 4;
+   public static void getMarkedContainersWithinDefaultRange(
+           Collection<Container> results,
+           BaseGolemEntity golem){
+      getMarkedContainers(results,golem,DEFAULT_DISTANCE_PREDICATE);
+   }
+   public static void getMarkedContainersWithinDefaultRangeAsBlockEntity(
+           Collection<BlockEntity> results,
+           BaseGolemEntity golem){
+      getMarkedContainersAsBlockEntity(results,golem,DEFAULT_DISTANCE_PREDICATE);
+   }
+
+   public static ByteSet getColorsMatching(BaseGolemEntity golem,ItemStack stackMatching){
+      ByteSet result = new ByteArraySet(17);
+      getColorsMatching(result,golem,stackMatching);
+      return result;
+   }
+   public static void getColorsMatching(ByteSet colors, BaseGolemEntity golem,ItemStack stackMatching) {
+      var colorsOfGolem = golem.getInventoryColors();
+      if (colorsOfGolem.length < golem.inventory.size()){
+         return;
+      }
+      boolean allNull = true;
+
+      var matcher = golem.getItemStackMatcher();
+      var golemItemInHand = golem.getItemInHand(InteractionHand.MAIN_HAND);
+      for(int a = 0; a < golem.inventory.size(); ++a) {
+         if (!golem.inventory.get(a).isEmpty()) {
+            allNull = false;
+         }
+         if (matcher.test(golemItemInHand,stackMatching)) {
+            colors.add(colorsOfGolem[a]);
+         }
+         if (colors.size() == 17){//color limit:any color(0) and 1~16
+            break;
+         }
+      }
+
+      if (allNull) {
+         for (var colorExisting:colorsOfGolem){
+            colors.add(colorExisting);
+         }
+      }
    }
 
    public static ArrayList<ChunkCoordinates> getMarkedBlocksAdjacentToGolem(World world, EntityGolemBase golem, byte color) {
@@ -122,34 +209,42 @@ public class GolemHelper {
       return results;
    }
 
-   public static List<Integer> getMarkedSides(EntityGolemBase golem, TileEntity tile, byte color) {
-      return getMarkedSides(golem, tile.xCoord, tile.yCoord, tile.zCoord, tile.getLevel().dimension(), color);
+   public static Set<Direction> getMarkedSides(BaseGolemEntity golem, BlockEntity tile, byte color) {
+      var pos = tile.getBlockPos();
+      return getMarkedSides(golem, pos.getX(),pos.getY(),pos.getZ(), golem.level().dimension().location(), color);
    }
 
-   public static List<Integer> getMarkedSides(EntityGolemBase golem, int x, int y, int z, int dim, byte color) {
-      List<Integer> out = new ArrayList<>();
-      ArrayList<Marker> gm = golem.getMarkers();
-      if (gm != null && !gm.isEmpty()) {
-         for(int a = 0; a < 6; ++a) {
-            Marker marker = new Marker(x, y, z, dim, (byte)a, color);
-            if (contained(gm, marker)) {
-               out.add(a);
-            }
-         }
-
-      }
-       return out;
+   public static void getMarkedSides(Set<Direction> markedSides, BaseGolemEntity golem, BlockEntity tile, byte color) {
+      var pos = tile.getBlockPos();
+      getMarkedSides(markedSides,golem, pos.getX(),pos.getY(),pos.getZ(), golem.level().dimension().location(), color);
    }
-
-   public static boolean contained(ArrayList<Marker> l, Marker m) {
-      for(Marker mark : l) {
-         if (m.equalsFuzzy(mark)) {
-            return true;
+   public static void getMarkedSides(Set<Direction> markedSides, BaseGolemEntity golem, int x, int y, int z, ResourceLocation dimResLoc, byte color) {
+      for (var marker:golem.markers) {
+         if (marker.equalsFuzzy(x,y,z,dimResLoc,null,color)) {
+            markedSides.add(marker.side);
          }
       }
-
-      return false;
    }
+
+   public static Set<Direction> getMarkedSides(BaseGolemEntity golem, int x, int y, int z, ResourceLocation dimResLoc, byte color) {
+      var out = new ObjectArraySet<Direction>();
+      for (var marker:golem.markers) {
+         if (marker.equalsFuzzy(x,y,z,dimResLoc,null,color)) {
+            out.add(marker.side);
+         }
+      }
+      return out;
+   }
+
+//   public static boolean contained(ArrayList<Marker> l, Marker m) {
+//      for(Marker mark : l) {
+//         if (m.equalsFuzzy(mark)) {
+//            return true;
+//         }
+//      }
+//
+//      return false;
+//   }
 
    public static ArrayList<IInventory> getContainersWithGoods(World world, EntityGolemBase golem, ItemStack goods, byte color) {
       ArrayList<IInventory> results = new ArrayList<>();

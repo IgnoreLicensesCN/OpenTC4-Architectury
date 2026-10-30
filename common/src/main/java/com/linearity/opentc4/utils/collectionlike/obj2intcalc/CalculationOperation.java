@@ -14,7 +14,7 @@ public abstract class CalculationOperation {
             S a,
             S b
     );
-    @Contract(pure = true)
+    @Contract(mutates = "this")
     public abstract <ObjCollection,S extends CalcCacheableCollection<ObjCollection,S>> S calculateWithCache(
             S a,
             S b,

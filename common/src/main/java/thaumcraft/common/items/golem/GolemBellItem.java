@@ -20,7 +20,7 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.IItemStackCollapsibleGolem;
 import thaumcraft.common.entities.golems.Marker;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemColorfulMarkerProviderItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemColorfulMarkerProviderItem;
 
 import java.util.Objects;
 

@@ -23,7 +23,10 @@ public class AIFillTake extends EntityAIBase {
    }
 
    public boolean shouldExecute() {
-      if (this.theGolem.getCarried() == null && this.theGolem.itemWatched != null && this.theGolem.getNavigator().noPath() && this.theGolem.hasSomething()) {
+      if (this.theGolem.getCarried() == null
+              && this.theGolem.itemWatched != null
+              && this.theGolem.getNavigator().noPath()
+              && this.theGolem.hasSomething()) {
          Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
          ChunkCoordinates home = this.theGolem.getHomePosition();
          int cX = home.posX - facing.offsetX;

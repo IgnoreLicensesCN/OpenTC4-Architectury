@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import static thaumcraft.common.config.Config.CONFIG_INSTANCE;
 
+//GolemPlaceItemStackToHomeGoalWithItemStackTickMark and some special impls
 public class AIHomeReplace extends EntityAIBase {
    private EntityGolemBase theGolem;
    private int countChest = 0;

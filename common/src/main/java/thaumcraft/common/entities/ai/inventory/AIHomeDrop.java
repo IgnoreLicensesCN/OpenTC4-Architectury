@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.EntityGolemBase;
 
+//GolemDropItemStackHomeIfNoContainerGoal
 public class AIHomeDrop extends EntityAIBase {
    private EntityGolemBase theGolem;
    private int countChest = 0;
@@ -22,7 +23,11 @@ public class AIHomeDrop extends EntityAIBase {
 
    public boolean shouldExecute() {
       ChunkCoordinates home = this.theGolem.getHomePosition();
-      if (this.theGolem.getCarried() != null && this.theGolem.getNavigator().noPath() && !(this.theGolem.getDistanceSq((float)home.posX + 0.5F, (float)home.posY + 0.5F, (float)home.posZ + 0.5F) > (double)5.0F)) {
+      if (this.theGolem.getCarried() != null
+              && this.theGolem.getNavigator().noPath()
+              && !(this.theGolem.getDistanceSq((float)home.posX + 0.5F, (float)home.posY + 0.5F, (float)home.posZ + 0.5F)
+              > (double)5.0F)
+      ) {
          Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
          int cX = home.posX - facing.offsetX;
          int cY = home.posY - facing.offsetY;

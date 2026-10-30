@@ -27,13 +27,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
-import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+import java.util.function.BiPredicate;
 
 public class InventoryUtils {
    public static @NotNull("null -> empty") ItemStack placeItemStackIntoInventory(ItemStack stack, Container inventory, Direction side, boolean doit) {
@@ -117,55 +115,49 @@ public class InventoryUtils {
 
       return stack;
    }
-   @Deprecated(forRemoval = true)
-   public static boolean inventoryContains(Container inventory, ItemStack stack, Direction side, boolean useOre, boolean ignoreDamage, boolean ignoreNBT) {
-      return !extractStack(inventory, stack, side, useOre, ignoreDamage, ignoreNBT, false).isEmpty();
+
+   public static boolean inventoryContains(Container inventory, ItemStack target, Direction side, BiPredicate<ItemStack,ItemStack> itemEqualChecker/*boolean useOre, boolean ignoreDamage, boolean ignoreNBT*/) {
+      return !extractStack(inventory, target, side, itemEqualChecker, false).isEmpty();
    }
-   @Deprecated(forRemoval = true)
-   public static ItemStack extractStack(Container inventory, ItemStack target, Direction side, boolean useOre, boolean ignoreDamage, boolean ignoreNBT, boolean doit) {
+   public static ItemStack extractStack(Container inventory, ItemStack target, Direction side, BiPredicate<ItemStack,ItemStack> itemEqualChecker/*boolean useOre, boolean ignoreDamage, boolean ignoreNBT*/, boolean doit) {
       ItemStack outStack = ItemStack.EMPTY;
 
       int size = inventory.getContainerSize();
       for (int i = 0; i < size; i++) {
          if (target.isEmpty() || !outStack.isEmpty()) break;
-         // 这里你可以在 attemptExtraction 内根据 Direction 决定是否允许操作
-         outStack = attemptExtraction(inventory, target, i, side, useOre, ignoreDamage, ignoreNBT, doit);
+         outStack = attemptExtraction(inventory, target, i, side, itemEqualChecker, doit);
       }
 
       return outStack.isEmpty() ? ItemStack.EMPTY : outStack.copy();
    }
 
-   @Deprecated(forRemoval = true)
-   public static ItemStack attemptExtraction(Container container, ItemStack stack, int slot,
+   public static ItemStack attemptExtraction(Container container, ItemStack target, int slot,
                                              @Nullable Direction side,
-                                             boolean useOre, boolean ignoreDamage,
-                                             boolean ignoreNBT, boolean doExtract) {
+//                                             boolean useOre, boolean ignoreDamage,
+//                                             boolean ignoreNBT,
+                                             BiPredicate<ItemStack,ItemStack> itemEqualChecker,
+                                             boolean doExtract) {
       ItemStack slotStack = container.getItem(slot);
-      if (slotStack.isEmpty() || stack.isEmpty()) return ItemStack.EMPTY;
+      if (slotStack.isEmpty() || target.isEmpty()) return ItemStack.EMPTY;
 
       // 检查能否从容器提取
       if (!canExtractItemFromInventory(container, slotStack, slot, side)) return ItemStack.EMPTY;
 
-      // 比较物品是否相等（你可以根据需要加 Ore / ignoreDamage / ignoreNBT 逻辑）
-      if (!areItemStacksEqual(slotStack, stack, ignoreDamage, ignoreNBT)) return ItemStack.EMPTY;
+      if (!itemEqualChecker.test(slotStack, target)) return ItemStack.EMPTY;
 
-      ItemStack outStack = slotStack.copy();
-      int requested = stack.getCount();
+      int count = Math.min(target.getCount(),slotStack.getCount());
 
-      if (requested >= slotStack.getCount()) {
-         // 全部提取
-         if (doExtract) container.setItem(slot, ItemStack.EMPTY);
-         outStack.setCount(slotStack.getCount());
-      } else {
-         // 部分提取
-         if (doExtract) {
-            slotStack.shrink(requested);
-            container.setItem(slot, slotStack);
+      if (doExtract) {
+         var result = slotStack.split(count);
+         if (count >= slotStack.getCount()){
+            container.setItem(slot, ItemStack.EMPTY);
+            container.setChanged();
          }
-         outStack.setCount(requested);
+         return result;
       }
 
-      if (doExtract) container.setChanged();
+      ItemStack outStack = slotStack.copy();
+      outStack.setCount(count);
       return outStack;
    }
 
@@ -352,7 +344,6 @@ public class InventoryUtils {
    }
 
    //u know what?fortune is not used and this method is not used.
-   //fk you azanor
    public static void dropItemsWithChance(Level world, double x, double y, double z, float chance, int fortune, List<ItemStack> items) {
       if (world.isClientSide()) return; // 只在服务器执行
       if (!world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) return;

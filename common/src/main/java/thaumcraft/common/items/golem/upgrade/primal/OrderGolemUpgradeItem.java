@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemBasicUpgradeItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.IGolemTargetControlItem;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemTargetControlItem;
 
 import java.util.List;
 

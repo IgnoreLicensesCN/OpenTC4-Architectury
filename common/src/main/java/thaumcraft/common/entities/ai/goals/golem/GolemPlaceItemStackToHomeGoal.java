@@ -9,20 +9,15 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableItemStack.opentc4$getCachedObjectFromItemStack;
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableItemStack.opentc4$removeCachedObjectFromItemStack;
+import java.util.EnumSet;
+
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.config.Config.CONFIG_INSTANCE;
 
-public /*abstract*/ class GolemPlaceItemStackToHomeGoal extends Goal {
+public class GolemPlaceItemStackToHomeGoal extends Goal {
     public GolemPlaceItemStackToHomeGoal(BaseGolemEntity golem) {
         this.golem = golem;
-    }
-
-    public static class ItemStackMarkingFakeFields {
-        public int placeBeforeTickCount;
-        public ItemStackMarkingFakeFields(int placeBeforeTickCount) {
-        }
+        setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     protected final BaseGolemEntity golem;
@@ -36,31 +31,19 @@ public /*abstract*/ class GolemPlaceItemStackToHomeGoal extends Goal {
         if (this.golem.tickCount % CONFIG_INSTANCE.getGolemDelay() != 0){
             return false;
         }
-        if (golem.getRestrictCenter().distToCenterSqr(golem.position()) < maxToHomeDistanceSquaredToExecute()){
-            var mark = opentc4$getCachedObjectFromItemStack(stackInHand,ItemStackMarkingFakeFields.class);
-            if (mark != null){
-                if (golem.tickCount < mark.placeBeforeTickCount){
-                    return true;
-                }
-                opentc4$removeCachedObjectFromItemStack(stackInHand,ItemStackMarkingFakeFields.class);
-            }
-            return canUseAdditional();
+        if (golem.getRestrictCenter().distToCenterSqr(golem.position()) < maxToHomeDistanceSquaredToExecute()
+                && golem.level().dimension().location().equals(golem.homeLevelResourceLocation)){
+            return checkForExecution(stackInHand);
         }
         return false;
     }
 
-    public double maxToHomeDistanceSquaredToExecute(){
-        return 5;
+    protected boolean checkForExecution(ItemStack stackInHand) {
+        return true;
     }
 
-    public boolean canUseAdditional(){
-        //case 1:
-        //                  return !GolemHelper.findSomethingEmptyCore(this.theGolem, this.theGolem.getCarried());
-        //               case 8:
-        //                  return !GolemHelper.findSomethingUseCore(this.theGolem, this.theGolem.getCarried());
-        //               case 10:
-        //                  return !GolemHelper.findSomethingSortCore(this.theGolem, this.theGolem.getCarried());
-        return false;
+    public double maxToHomeDistanceSquaredToExecute(){
+        return 5;
     }
 
     @Override
@@ -114,6 +97,6 @@ public /*abstract*/ class GolemPlaceItemStackToHomeGoal extends Goal {
     public int cooldown = 0;
     @Override
     public boolean canContinueToUse() {
-        return this.canUse() && this.cooldown == 0;
+        return this.canUse() && this.cooldown <= 0;
     }
 }

@@ -59,5 +59,10 @@ public class EntityMixin implements IObjectCacheableEntity {
     public <T> void opentc4$putCachedObjectIntoEntity(Class<T> clazz, T object) {
         opentc4$objectCacheMap.putInstance(clazz, object);
     }
+
+    @Override
+    public void opentc4$removeCachedObjectFromEntity(Class<?> clazz) {
+        opentc4$objectCacheMap.remove(clazz);
+    }
 }
 

@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -44,11 +45,14 @@ public class Marker {
    public boolean equalsFuzzy(Object obj) {
       if (!(obj instanceof Marker marker)) {
          return false;
-      } else {
-          return Objects.equals(this.pos, marker.pos)
-                  && Objects.equals(this.dim,marker.dim)
-                  && this.side == marker.side
-                  && (this.color == marker.color || this.color == INVALID_MARKER_COLOR || marker.color == INVALID_MARKER_COLOR);
       }
+      return equalsFuzzy(marker.pos.getX(),marker.pos.getY(),marker.pos.getZ(),marker.dim,marker.side, marker.color);
+   }
+
+   public boolean equalsFuzzy(int x, int y, int z, ResourceLocation dimResLoc, @Nullable("null -> any") Direction side, byte color) {
+      return x == this.pos.getX() && y == this.pos.getY() && z == this.pos.getZ() && dimResLoc.equals(this.dim)
+              && (side == null || side == this.side)
+              && (this.color == color || this.color == INVALID_MARKER_COLOR || color == INVALID_MARKER_COLOR
+      );
    }
 }

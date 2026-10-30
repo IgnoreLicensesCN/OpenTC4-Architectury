@@ -1,4 +1,4 @@
-package thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack;
+package thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
