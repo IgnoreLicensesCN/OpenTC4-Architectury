@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.utils;
 
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -148,7 +149,7 @@ public class InventoryUtils {
       int count = Math.min(target.getCount(),slotStack.getCount());
 
       if (doExtract) {
-         var result = slotStack.split(count);
+         var result = ExtendedItemStack.split(slotStack,count);
          if (count >= slotStack.getCount()){
             container.setItem(slot, ItemStack.EMPTY);
             container.setChanged();

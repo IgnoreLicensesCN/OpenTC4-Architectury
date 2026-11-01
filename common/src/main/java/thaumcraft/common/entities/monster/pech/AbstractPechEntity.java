@@ -2,6 +2,7 @@ package thaumcraft.common.entities.monster.pech;
 
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import com.linearity.opentc4.annotations.StoleFrom;
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
@@ -661,7 +662,7 @@ public abstract class AbstractPechEntity extends DoorBreakingMonster
 
                     int pickedSlot = lootSlots.getInt(pech.random.nextInt(lootSlots.size()));
                     var pickedStack = pech.inventory.get(pickedSlot);
-                    pickedStack = pickedStack.split(pickedStack.getCount());
+                    pickedStack = ExtendedItemStack.splitAll(pickedStack);
                     result.add(pickedStack);
                     return true;
                 }

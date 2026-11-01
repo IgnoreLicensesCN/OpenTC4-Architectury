@@ -1,6 +1,7 @@
 package thaumcraft.common.entities.golems;
 
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import com.linearity.opentc4.mixinaccessors.InteractionOverrideMob;
 import com.linearity.opentc4.mixinaccessors.cliententity.BaseGolemEntityClientAccessor;
 import com.linearity.opentc4.utils.ClassToItemStackPairMap;
@@ -105,12 +106,13 @@ public abstract class BaseGolemEntity
         return super.hasRestriction();
     }
 
-    public void updateItemInHand() {
+    @Override
+    public void setItemInHand(InteractionHand interactionHand, ItemStack itemStack) {
+        super.setItemInHand(interactionHand, itemStack);
         for (var pair:golemUpgradesCacheView.get(IGolemUpdateItemInHandListenerItem.class)) {
-            pair.getUpgradeType().onUpdateItemInHand(this,pair.getUpgradeStack());
+            pair.getUpgradeType().onUpdateItemInHand(this,pair.getUpgradeStack(),interactionHand);
         }
     }
-
 
     public static class BaseGolemEntityClientEventSignals {
         public static final byte START_ACTION_TIMER = 4;
@@ -381,7 +383,7 @@ public abstract class BaseGolemEntity
         inventory.clear();
         for (var stack:getAllSlots()){
             if (!stack.isEmpty()){
-                spawnAtLocation(stack.split(stack.getCount()));
+                spawnAtLocation(ExtendedItemStack.splitAll(stack));
             }
         }
     }

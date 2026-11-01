@@ -1,11 +1,12 @@
 package thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners;
 
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 
 public interface IGolemUpdateItemInHandListenerItem extends BaseGolemEntity.IGolemUpgradeItem{
     //maybe you want to place liquid display stack here?
-    default void onUpdateItemInHand(BaseGolemEntity golem, ItemStack upgrade){
+    default void onUpdateItemInHand(BaseGolemEntity golem, ItemStack upgrade, InteractionHand hand){
 //        if (golem.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
 //            for (var stack:golem.inventory){
 //                if (!stack.isEmpty()) {

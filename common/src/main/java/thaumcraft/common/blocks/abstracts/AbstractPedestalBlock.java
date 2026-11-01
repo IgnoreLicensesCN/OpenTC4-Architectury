@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.abstracts;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -50,7 +51,7 @@ public abstract class AbstractPedestalBlock extends SuppressedWarningBlock imple
                 } else if (player != null) {
                     var usingStack = player.getItemInHand(interactionHand);
                     if (!usingStack.isEmpty() && pedestal.canPlaceItem(0,usingStack)){
-                        var stackToPut = usingStack.split(1);
+                        var stackToPut = ExtendedItemStack.split(usingStack,1);
                         pedestal.setItem(0, stackToPut);
                     }
                     playPickupSound(level,blockPos);
@@ -81,7 +82,7 @@ public abstract class AbstractPedestalBlock extends SuppressedWarningBlock imple
         double k = Math.floor(e) + level.random.nextDouble() * h;
         double l = Math.floor(f) + level.random.nextDouble() * h + i;
 
-        ItemEntity itemEntity = new ItemEntity(level, j, k, l, itemStack.split(itemStack.getCount()));
+        ItemEntity itemEntity = new ItemEntity(level, j, k, l, ExtendedItemStack.splitAll(itemStack));
         level.addFreshEntity(itemEntity);
     }
 

@@ -1,5 +1,6 @@
 package thaumcraft.common.items.consumable;
 
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -119,7 +120,7 @@ public class EssentiaPhialItem extends Item implements IEssentiaContainerItem<As
         if (aspect.isEmpty()){
             return amountCanFill;
         }
-        var newStack = itemstack.split(1);
+        var newStack = ExtendedItemStack.split(itemstack,1);
         setAspect(newStack, aspect);
         level.addFreshEntity(new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), newStack));
         return 0;

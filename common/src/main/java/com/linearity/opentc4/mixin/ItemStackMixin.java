@@ -2,16 +2,24 @@ package com.linearity.opentc4.mixin;
 
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.MutableClassToInstanceMap;
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import com.linearity.opentc4.mixinaccessors.IObjectCacheableItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 import java.util.IdentityHashMap;
 
 @Mixin(ItemStack.class)
-public class ItemStackMixin implements IObjectCacheableItemStack {
+public class ItemStackMixin implements IObjectCacheableItemStack, ExtendedItemStack {
+    @Shadow @Final @Deprecated private @Nullable Item item;
+    @Shadow private int count;
+    @Shadow private @Nullable CompoundTag tag;
     @Unique
     private final ClassToInstanceMap<Object> opentc4$objectCacheMap = MutableClassToInstanceMap.create();
 
@@ -28,6 +36,20 @@ public class ItemStackMixin implements IObjectCacheableItemStack {
     @Override
     public void opentc4$removeCachedObjectFromItemStack(Class<?> clazz) {
         opentc4$objectCacheMap.remove(clazz);
+    }
+
+    @Override
+    public ItemStack opentc4$splitAll() {
+        ItemStack newStack = new ItemStack(item == null?ItemStack.EMPTY.getItem():item,count);
+        ((ExtendedItemStack)(Object)newStack).opentc4$forceSetTag(tag);
+        this.count = 0;
+        this.tag = null;
+        return newStack;
+    }
+
+    @Override
+    public void opentc4$forceSetTag(CompoundTag compoundTag) {
+        this.tag = compoundTag;
     }
 }
 

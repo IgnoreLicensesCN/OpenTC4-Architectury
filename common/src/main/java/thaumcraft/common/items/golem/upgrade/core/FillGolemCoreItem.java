@@ -5,7 +5,6 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemAdditionalDataProviderItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemItemStackMatcherModifierItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.IGolemUpdateItemInHandListenerItem;
 
 import static thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem.DefaultGoalsAndIDs.*;
 
@@ -14,7 +13,6 @@ public class FillGolemCoreItem
         extends
         AbstractGolemCoreItemWithGui
         implements
-        IGolemUpdateItemInHandListenerItem,
         IGolemItemStackMatcherModifierItem,//TODO:Impl NBT and tag matching
         IGolemAdditionalDataProviderItem//also TODO:Impl NBT and tag matching
 {

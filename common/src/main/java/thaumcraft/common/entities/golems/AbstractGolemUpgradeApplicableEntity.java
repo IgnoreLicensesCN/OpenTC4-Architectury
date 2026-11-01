@@ -3,6 +3,7 @@ package thaumcraft.common.entities.golems;
 import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
 import com.linearity.opentc4.utils.QueuedItemCooldowns;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
@@ -148,7 +149,7 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         if (canInstallUpgrade(stack) && upgradeClass.isInstance(item)) {
             var itemCasted = upgradeClass.cast(item);
             if (itemCasted.golemUpgrade$isApplicableTo(stack,this)) {
-                stack = stack.split(1);
+                stack = ExtendedItemStack.split(stack,1);
                 installUpgrade(upgradeClass.cast(item),stack);
             }
             return true;

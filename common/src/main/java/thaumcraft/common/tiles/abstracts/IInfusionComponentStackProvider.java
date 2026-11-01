@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.abstracts;
 
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ public interface IInfusionComponentStackProvider extends Container, ICubeChunkBa
             }
             if (ItemStack.isSameItemSameTags(stack, inSlot)){
                 int spaceRemaining = inSlot.getMaxStackSize() - inSlot.getCount();
-                var toStore = stack.split(spaceRemaining);
+                var toStore = ExtendedItemStack.split(stack,spaceRemaining);
                 inSlot.setCount(inSlot.getCount() + toStore.getCount());
                 setItem(i, inSlot);
             }

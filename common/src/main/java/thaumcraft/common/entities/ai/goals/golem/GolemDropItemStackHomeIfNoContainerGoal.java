@@ -1,9 +1,11 @@
 package thaumcraft.common.entities.ai.goals.golem;
 
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 
 import java.util.EnumSet;
@@ -53,7 +55,7 @@ public class GolemDropItemStackHomeIfNoContainerGoal extends Goal {
         var facing = golem.homeDirection;
         var pos = homePos.relative(facing.getOpposite()).getCenter();
         var stackToDrop = golem.getItemInHand(InteractionHand.MAIN_HAND);
-        var item = new ItemEntity(golem.level(),pos.x,pos.y,pos.z,stackToDrop.split(stackToDrop.getCount()));
+        var item = new ItemEntity(golem.level(),pos.x,pos.y,pos.z, ExtendedItemStack.splitAll(stackToDrop));
         var golemPos = golem.position();
         double distance = golemPos.distanceTo(pos);
 
@@ -72,7 +74,7 @@ public class GolemDropItemStackHomeIfNoContainerGoal extends Goal {
         item.setPickUpDelay(10);
         this.golem.level().addFreshEntity(item);
         this.golem.level().broadcastEntityEvent(golem, START_ACTION_TIMER);
-        this.golem.updateItemInHand();
+        this.golem.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
     }
 
 

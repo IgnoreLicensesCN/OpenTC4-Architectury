@@ -5,6 +5,7 @@ import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import com.linearity.opentc4.mixinaccessors.clientbe.InfusionMatrixBlockEntityClientAccessor;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
@@ -233,8 +234,8 @@ public class InfusionMatrixBlockEntity
                             return true;
                         } else if (this.drainItemTimes-- <= 1) {
                             int maxConsumeAmount = Math.min(consumingStack.getCount(),providingStack.getCount());
-                            providingStack.split(maxConsumeAmount);
-                            consumingStack.split(maxConsumeAmount);
+                            ExtendedItemStack.split(providingStack,maxConsumeAmount);
+                            ExtendedItemStack.split(consumingStack,maxConsumeAmount);
                             provider.setChanged();
                             this.markDirtyAndUpdateSelf();
                             consumed = true;

@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.ai.goals.golem;
 
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
@@ -108,7 +109,7 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
 //                        }
 
                         if (result != null) {
-                            this.golem.setItemInHand(InteractionHand.MAIN_HAND,result.split(result.getCount()));
+                            this.golem.setItemInHand(InteractionHand.MAIN_HAND, ExtendedItemStack.splitAll(result));
 
 //                            try {
 //                                if (Config.golemChestInteract) {

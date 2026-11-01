@@ -4,6 +4,7 @@ import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.annotations.ModifiableCopy;
 import com.linearity.opentc4.annotations.StoleFrom;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
@@ -86,7 +87,7 @@ public interface IBundleLikeItem {
             }
         }
         if (!stackToInsert.isEmpty() && sizeRemaining > 0) {
-            stacks.add(stackToInsert.split(sizeRemaining));//extract as many as possible so sizeRemaining
+            stacks.add(ExtendedItemStack.split(stackToInsert,sizeRemaining));//extract as many as possible so sizeRemaining
         }
         setStacksInsideBundle(bundleStack, stacks);
     }
