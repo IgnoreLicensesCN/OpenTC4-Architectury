@@ -23,6 +23,7 @@ import java.util.Set;
 
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableEntity.opentc4$getCachedObjectFromEntity;
 import static thaumcraft.common.entities.golems.GolemHelper.*;
+import static thaumcraft.common.items.golem.upgrade.core.FillGolemCoreItem.AMOUNT_CONFIG_KEY;
 
 public class GolemTakeItemStackFromContainerGoal extends Goal {
     public static class GolemTakeItemStackFromContainerWatchingItemFakeFields {
@@ -48,7 +49,7 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
         if (fakeFields.watchedItem.isEmpty()) {
             return false;
         }
-        if (golem.inventory.stream().allMatch(ItemStack::isEmpty)) {
+        if (!golem.hasSomethingInInventoryOrHand()) {
             return false;
         }
         return golem.getNavigation().isDone();
@@ -86,6 +87,11 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
             return;
         }
         getMarkedContainersWithinDefaultRangeAsBlockEntity(containersTempList,golem);
+        boolean countLimited = false;
+        var configProvider = golem.configurationProviders.get(AMOUNT_CONFIG_KEY);
+        if (configProvider != null){
+            countLimited = configProvider.getBooleanFrom(golem);
+        }
         for (var containerBE : this.containersTempList) {
             if (!(containerBE instanceof Container container)) {
                 continue;
@@ -97,7 +103,10 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
                     getMarkedSides(sidesTemp,golem,containerBE,color);
                     for (var side:sidesTemp){
                         ItemStack target = watchedItem.copy();
-                        target.setCount(Math.min(target.getCount(), Math.min(this.golem.getCarryPower(),target.getMaxStackSize())));// = this.theGolem.getToggles()[0] ? this.theGolem.getCarrySpace() : Math.min(target.stackSize, this.theGolem.getCarrySpace());
+                        target.setCount(Math.min(target.getCount(),
+                                countLimited
+                                        ?Math.min(this.golem.getCarryPower(),target.getMaxStackSize())
+                                        :this.golem.getCarryPower()));
                         ItemStack result = InventoryUtils.extractStack(
                                 container,
                                 target,

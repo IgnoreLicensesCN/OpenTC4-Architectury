@@ -42,11 +42,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.crafted.GolemFetterBlock;
+import thaumcraft.common.entities.golems.configuration.GolemConfigurationProviderMap;
 import thaumcraft.common.entities.golems.properties.GolemBasicAbilityProperties;
 import thaumcraft.common.items.golem.GolemBellItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.*;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.configruable.IGolemConfigurationProviderFillerItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemColorfulMarkerProviderItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemItemStackMatcherModifierItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemTargetControlItem;
@@ -155,6 +157,7 @@ public abstract class BaseGolemEntity
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemTargetControlItem.class,1500));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemUpdateItemInHandListenerItem.class,1600));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemItemStackMatcherModifierItem.class,1700));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemConfigurationProviderFillerItem.class,1800));
     }
 
     public List<ObjectIntPair<Class<? extends BaseGolemEntity.IGolemUpgradeItem>>> getAvailableGolemModifierTypes() {
@@ -784,4 +787,19 @@ public abstract class BaseGolemEntity
         }
         return itemStackMatcherWhenUpgraded;
     }
+
+    public boolean hasSomethingInInventoryOrHand(){
+        for (var stack:inventory){
+            if (!stack.isEmpty()){
+                return true;
+            }
+        }
+        if (!getMainHandItem().isEmpty()){
+            return true;
+        }
+        return !getOffhandItem().isEmpty();
+    }
+
+    private final GolemConfigurationProviderMap configurationProviderMap = new GolemConfigurationProviderMap();
+    public final GolemConfigurationProviderMap.View configurationProviders = new GolemConfigurationProviderMap.View(configurationProviderMap);
 }

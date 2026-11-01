@@ -13,11 +13,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.util.IdentityHashMap;
+import static net.minecraft.world.item.ItemStack.EMPTY;
 
 @Mixin(ItemStack.class)
 public class ItemStackMixin implements IObjectCacheableItemStack, ExtendedItemStack {
-    @Shadow @Final @Deprecated private @Nullable Item item;
+    @Shadow @Final /*@Deprecated*/ private @Nullable Item item;
     @Shadow private int count;
     @Shadow private @Nullable CompoundTag tag;
     @Unique
@@ -40,11 +40,46 @@ public class ItemStackMixin implements IObjectCacheableItemStack, ExtendedItemSt
 
     @Override
     public ItemStack opentc4$splitAll() {
-        ItemStack newStack = new ItemStack(item == null?ItemStack.EMPTY.getItem():item,count);
+        ItemStack newStack = new ItemStack(item == null? EMPTY.getItem():item,count);
         ((ExtendedItemStack)(Object)newStack).opentc4$forceSetTag(tag);
         this.count = 0;
         this.tag = null;
         return newStack;
+    }
+
+    @Override
+    public ItemStack opentc4$splitAndShareTag(int amount) {
+        var thiz = (ItemStack)(Object)this;
+        int j = Math.min(amount, thiz.getCount());
+        ItemStack itemStack = thiz.copyWithCount(j);
+        thiz.shrink(j);
+        return itemStack;
+    }
+    public ItemStack opentc4$copyAndShareTagWithCount(int i) {
+        var thiz = (ItemStack)(Object)this;
+        if (thiz.isEmpty()) {
+            return EMPTY;
+        }
+        ItemStack itemStack = this.opentc4$copyAndShareTag();
+        itemStack.setCount(i);
+        return itemStack;
+
+    }
+
+    @Override
+    public ItemStack opentc4$copyAndShareTag() {
+        var thiz = (ItemStack)(Object)this;
+        if (thiz.isEmpty()) {
+            return EMPTY;
+        }
+        ItemStack itemStack = new ItemStack(item, this.count);
+        itemStack.setPopTime(thiz.getPopTime());
+        if (this.tag != null) {
+            ((ExtendedItemStack)(Object)itemStack).opentc4$forceSetTag(this.tag);
+        }
+
+        return itemStack;
+
     }
 
     @Override

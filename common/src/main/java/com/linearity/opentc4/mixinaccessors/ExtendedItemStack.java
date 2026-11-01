@@ -6,6 +6,9 @@ import org.jetbrains.annotations.ApiStatus;
 
 public interface ExtendedItemStack {
     ItemStack opentc4$splitAll();
+    ItemStack opentc4$splitAndShareTag(int amount);
+    ItemStack opentc4$copyAndShareTagWithCount(int amount);
+    ItemStack opentc4$copyAndShareTag();
 
     @ApiStatus.Internal
     void opentc4$forceSetTag(CompoundTag compoundTag);
@@ -19,5 +22,9 @@ public interface ExtendedItemStack {
             return splitAll(stack);
         }
         return stack.split(amount);
+    }
+
+    static ItemStack splitAndShareTag(ItemStack stack, int amount) {
+        return ((ExtendedItemStack)(Object)stack).opentc4$splitAndShareTag(amount);
     }
 }

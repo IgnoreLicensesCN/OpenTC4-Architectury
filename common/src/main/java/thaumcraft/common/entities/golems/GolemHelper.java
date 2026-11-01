@@ -269,7 +269,7 @@ public class GolemHelper {
       return results;
    }
 
-   public static ArrayList getMissingItems(EntityGolemBase golem) {
+   public static List<ItemStack> getMissingItems(EntityGolemBase golem) {
       Direction facing = Direction.getOrientation(golem.homeFacing);
       ChunkCoordinates home = golem.getHomePosition();
       int cX = home.posX - facing.offsetX;
@@ -277,7 +277,7 @@ public class GolemHelper {
       int cZ = home.posZ - facing.offsetZ;
       int slotCount = golem.inventory.slotCount;
       if (golem.getToggles()[0]) {
-         ArrayList<ItemStack> qr = new ArrayList<>();
+         List<ItemStack> qr = new ArrayList<>();
 
          for(int q = 0; q < slotCount; ++q) {
             ItemStack toCheck = golem.inventory.inventory[q];
