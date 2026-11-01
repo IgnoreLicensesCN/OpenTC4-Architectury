@@ -7,6 +7,7 @@ import com.linearity.opentc4.mixinaccessors.cliententity.BaseGolemEntityClientAc
 import com.linearity.opentc4.utils.ClassToItemStackPairMap;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
+import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessorImpl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -54,6 +55,7 @@ import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemIt
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemTargetControlItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.*;
+import thaumcraft.common.lib.network.toserveraction.PacketSetGolemConfigC2S;
 import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLocation;
 
 import java.util.*;
@@ -334,6 +336,7 @@ public abstract class BaseGolemEntity
         this.entityData.set(DATA_ID_INVENTORY_COLORS, colors);
     }
 
+    public static final CompoundTagAccessorImpl CONFIGURATION_ACCESSOR = new CompoundTagAccessorImpl("golem_configurations");
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         this.abilitiesData.inventorySize = INVENTORY_SIZE.readIntFromCompoundTag(tag);
@@ -352,6 +355,22 @@ public abstract class BaseGolemEntity
         for (var additionalDataProviderPair:golemUpgradesCacheView.get(IGolemAdditionalDataProviderItem.class)) {
             additionalDataProviderPair.getUpgradeType().readAdditional(this,additionalDataProviderPair.getUpgradeStack(),tag);
         }
+        readConfigFromTag(tag);
+    }
+
+    public void readConfigFromTag(CompoundTag tag) {
+        var configInnerTag = CONFIGURATION_ACCESSOR.readFromCompoundTag(tag);
+        for (var configFillerPair:golemUpgradesCacheView.get(IGolemConfigurationProviderFillerItem.class)) {
+            configFillerPair.getUpgradeType().readAdditionalConfig(this,configFillerPair.getUpgradeStack(),configInnerTag);
+        }
+    }
+
+    public @NotNull CompoundTag getConfigWrapperTag() {
+        var configWrapperTag = new CompoundTag();
+        for (var configFillerPair:golemUpgradesCacheView.get(IGolemConfigurationProviderFillerItem.class)) {
+            configFillerPair.getUpgradeType().writeAdditionalConfig(this,configFillerPair.getUpgradeStack(),configWrapperTag);
+        }
+        return configWrapperTag;
     }
 
     public int getDefaultRestrictionSize(){
@@ -370,6 +389,8 @@ public abstract class BaseGolemEntity
         for (var additionalDataProviderPair:golemUpgradesCacheView.get(IGolemAdditionalDataProviderItem.class)) {
             additionalDataProviderPair.getUpgradeType().writeAdditional(this,additionalDataProviderPair.getUpgradeStack(),tag);
         }
+        var configWrapperTag = getConfigWrapperTag();
+        CONFIGURATION_ACCESSOR.writeToCompoundTag(tag,configWrapperTag);
     }
 
     @Override
@@ -443,6 +464,10 @@ public abstract class BaseGolemEntity
     @Override
     public void setUpgradeStacks(List<ItemStack> stacks) {
         super.setUpgradeStacks(stacks);
+        configurationProviderMap.clear();
+        for (var fillerPair:golemUpgradesCacheView.get(IGolemConfigurationProviderFillerItem.class)) {
+            fillerPair.getUpgradeType().fillGolemConfigurationProviders(this, fillerPair.getUpgradeStack(), configurationProviderMap);
+        }
         for (var stack : stacks) {
             var item = stack.getItem();
             for (var clzPair : getAvailableGolemModifierTypes()) {
@@ -802,4 +827,10 @@ public abstract class BaseGolemEntity
 
     private final GolemConfigurationProviderMap configurationProviderMap = new GolemConfigurationProviderMap();
     public final GolemConfigurationProviderMap.View configurationProviders = new GolemConfigurationProviderMap.View(configurationProviderMap);
+
+    public void syncConfigToServer(){
+        var tag = new CompoundTag();
+        CONFIGURATION_ACCESSOR.writeToCompoundTag(tag,getConfigWrapperTag());
+        new PacketSetGolemConfigC2S(this.getId(),tag).sendToServer();
+    }
 }

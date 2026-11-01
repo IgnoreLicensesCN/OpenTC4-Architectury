@@ -8,13 +8,20 @@ import thaumcraft.common.entities.golems.configuration.providerimpl.GolemConfigu
 import thaumcraft.common.entities.golems.configuration.providerimpl.basic.GolemConfigurationProviderBooleanImpl;
 import thaumcraft.common.lib.resourcelocations.GolemConfigurationResourceLocation;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class GolemConfigurationKey<ProviderClass extends GolemConfigurationProvider<?>>{
+    private static final Map<GolemConfigurationResourceLocation,GolemConfigurationKey<?>> configurationID2Key = new HashMap<>();
+    public static final Map<GolemConfigurationResourceLocation,GolemConfigurationKey<?>> CONFIGURATION_ID_TO_KEY_VIEW = Collections.unmodifiableMap(configurationID2Key);
     public final GolemConfigurationResourceLocation key;
     public final ProviderClass provider;
 
     public GolemConfigurationKey(GolemConfigurationResourceLocation key, ProviderClass provider) {
         this.key = key;
         this.provider = provider;
+        configurationID2Key.put(key, this);
     }
 
     public static class Default{
@@ -29,7 +36,7 @@ public class GolemConfigurationKey<ProviderClass extends GolemConfigurationProvi
                         GolemConfigurationResourceLocation.of(Thaumcraft.MOD_ID,"match_tag_config"),
                         new GolemConfigurationProviderImpl<>(
                                 new ResourceLocationTagAccessor("match_tag_config"),
-                                () -> ResourceLocation.tryBuild(Thaumcraft.MOD_ID,"empty")
+                                () -> ResourceLocation.tryBuild("","empty")
                         )
                 );
     }

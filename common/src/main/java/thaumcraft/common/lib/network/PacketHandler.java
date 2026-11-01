@@ -9,6 +9,7 @@ import thaumcraft.common.lib.network.gamedata.PacketRequestSyncItemAspectsC2S;
 import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsS2C;
 import thaumcraft.common.lib.network.misc.*;
 import thaumcraft.common.lib.network.playerdata.updatedata.*;
+import thaumcraft.common.lib.network.toserveraction.*;
 import thaumcraft.common.lib.network.toserveraction.scan.PacketScannedBlockPosC2S;
 import thaumcraft.common.lib.network.toserveraction.scan.PacketScannedEntityC2S;
 import thaumcraft.common.lib.network.toserveraction.scan.PacketScannedItemStackC2S;
@@ -17,10 +18,6 @@ import thaumcraft.common.lib.network.playerdata.syncdata.scan.PacketSyncAllScann
 import thaumcraft.common.lib.network.playerdata.syncdata.scan.PacketSyncScannedEntitiesS2C;
 import thaumcraft.common.lib.network.playerdata.syncdata.scan.PacketSyncScannedItemsS2C;
 import thaumcraft.common.lib.network.playerdata.syncdata.scan.PacketSyncScannedVisNodeS2C;
-import thaumcraft.common.lib.network.toserveraction.PacketAspectCombinationC2S;
-import thaumcraft.common.lib.network.toserveraction.PacketAspectPlaceC2S;
-import thaumcraft.common.lib.network.toserveraction.PacketPlayerCompleteResearchWithAspectC2S;
-import thaumcraft.common.lib.network.toserveraction.PacketPlayerCreateResearchNoteC2S;
 
 public class PacketHandler {
     public static final SimpleNetworkManager INSTANCE = SimpleNetworkManager.create(Thaumcraft.MOD_ID + "main_net_manager");
@@ -82,6 +79,7 @@ public class PacketHandler {
         PacketSyncItemAspectsS2C.messageType = INSTANCE.registerS2C(PacketSyncItemAspectsS2C.ID,PacketSyncItemAspectsS2C::decode);
         PacketAddItemAspectsS2C.messageType = INSTANCE.registerS2C(PacketAddItemAspectsS2C.ID, PacketAddItemAspectsS2C::decode);
         PacketRequestSyncItemAspectsC2S.messageType = INSTANCE.registerC2S(PacketRequestSyncItemAspectsC2S.ID, PacketRequestSyncItemAspectsC2S::decode);
+        PacketSetGolemConfigC2S.messageType = INSTANCE.registerC2S(PacketSetGolemConfigC2S.ID, PacketSetGolemConfigC2S::decode);
 
 //        int idx = 0;
 //      INSTANCE.registerMessage(PacketBiomeChange.class, PacketBiomeChange.class, idx++, Side.CLIENT);
