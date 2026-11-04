@@ -1,6 +1,5 @@
 package thaumcraft.common.items.golem.upgrade.core;
 
-import com.linearity.opentc4.recipeclean.itemmatch.TagItemMatcher;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.BooleanTagAccessor;
 import lombok.AllArgsConstructor;
 import net.minecraft.core.registries.Registries;
@@ -12,7 +11,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
 import thaumcraft.common.entities.golems.configuration.GolemConfigurationKey;
-import thaumcraft.common.entities.golems.configuration.GolemConfigurationProviderMap;
+import thaumcraft.common.entities.golems.configuration.GolemConfigurationProvider;
 import thaumcraft.common.entities.golems.configuration.providerimpl.basic.GolemConfigurationProviderBooleanImpl;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.configruable.IGolemConfigurationProviderFillerItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemItemStackMatcherModifierItem;
@@ -26,6 +25,7 @@ import static thaumcraft.common.entities.golems.configuration.GolemConfiguration
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_TAG_CONFIG_KEY;
 import static thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem.DefaultGoalsAndIDs.*;
 //toggle 0:Precise amount/Any amount
+//(false/true)
 
 //ItemGolemCore:0
 public class FillGolemCoreItem
@@ -56,7 +56,7 @@ public class FillGolemCoreItem
     }
 
     @Override
-    public void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, GolemConfigurationProviderMap configurationProviders) {
+    public void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, GolemConfigurationProvider<?> configurationProviders) {
         configurationProviders.put(AMOUNT_CONFIG_KEY);
         configurationProviders.put(MATCH_NBT_CONFIG_KEY);
         configurationProviders.put(MATCH_TAG_CONFIG_KEY);

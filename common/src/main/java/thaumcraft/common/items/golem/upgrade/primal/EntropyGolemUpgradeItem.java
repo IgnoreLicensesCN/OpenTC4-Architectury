@@ -11,17 +11,22 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
+import thaumcraft.common.entities.golems.configuration.GolemConfigurationProvider;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.configruable.IGolemConfigurationProviderFillerItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.IGolemDamagedListenerItem;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.ITEM_ENTITY_TEST;
+import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY;
 
 //GolemUpgrade:5
 public class EntropyGolemUpgradeItem extends GolemBasicUpgradeItem
         implements TravelingTrunkEntity.ITravelingTrunkUpgradeItem,
-        IGolemDamagedListenerItem {
+        IGolemDamagedListenerItem,
+        IGolemConfigurationProviderFillerItem {
     public EntropyGolemUpgradeItem(Properties properties) {
         super(properties);
     }
@@ -94,5 +99,10 @@ public class EntropyGolemUpgradeItem extends GolemBasicUpgradeItem
             causingEntity.hurt(golem.damageSources().thorns(golem), 1 + golem.getRandom().nextInt(2));
             causingEntity.playSound(SoundEvents.THORNS_HIT,0.5F,1);
         }
+    }
+
+    @Override
+    public void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, Set<GolemConfigurationProvider<?>> configurationProviders) {
+        configurationProviders.put(MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY);
     }
 }

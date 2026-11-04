@@ -1,5 +1,7 @@
 package thaumcraft.common.entities.golems;
 
+import com.google.common.collect.Sets;
+import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import com.linearity.opentc4.mixinaccessors.InteractionOverrideMob;
@@ -43,7 +45,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.crafted.GolemFetterBlock;
-import thaumcraft.common.entities.golems.configuration.GolemConfigurationProviderMap;
+import thaumcraft.common.entities.golems.configuration.GolemConfigurationKey;
 import thaumcraft.common.entities.golems.properties.GolemBasicAbilityProperties;
 import thaumcraft.common.items.golem.GolemBellItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.*;
@@ -825,10 +827,14 @@ public abstract class BaseGolemEntity
         return !getOffhandItem().isEmpty();
     }
 
-    private final GolemConfigurationProviderMap configurationProviderMap = new GolemConfigurationProviderMap();
-    public final GolemConfigurationProviderMap.View configurationProviders = new GolemConfigurationProviderMap.View(configurationProviderMap);
+    private final Set<GolemConfigurationKey<?>> configurationProviderMap = Sets.newIdentityHashSet();
+    public final Set<GolemConfigurationKey<?>> configurationProviders = Collections.unmodifiableSet(configurationProviderMap);
 
+    @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.CLIENT)
     public void syncConfigToServer(){
+        if (!this.level().isClientSide){
+            return;
+        }
         var tag = new CompoundTag();
         CONFIGURATION_ACCESSOR.writeToCompoundTag(tag,getConfigWrapperTag());
         new PacketSetGolemConfigC2S(this.getId(),tag).sendToServer();

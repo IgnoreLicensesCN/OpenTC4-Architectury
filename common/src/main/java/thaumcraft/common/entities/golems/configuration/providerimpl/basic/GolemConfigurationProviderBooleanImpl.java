@@ -15,6 +15,9 @@ public class GolemConfigurationProviderBooleanImpl extends GolemConfigurationPro
     public GolemConfigurationProviderBooleanImpl(BooleanTagAccessor compoundTagAccessor) {
         this.compoundTagAccessor = compoundTagAccessor;
     }
+    public GolemConfigurationProviderBooleanImpl(String accessorName) {
+        this(new BooleanTagAccessor(accessorName));
+    }
 
     public static class ProviderImplToValueMap {
         private final Object2BooleanMap<GolemConfigurationProviderBooleanImpl> internalMap = new Object2BooleanOpenHashMap<>();

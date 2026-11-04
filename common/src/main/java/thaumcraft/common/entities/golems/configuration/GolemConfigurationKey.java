@@ -39,5 +39,10 @@ public class GolemConfigurationKey<ProviderClass extends GolemConfigurationProvi
                                 () -> ResourceLocation.tryBuild("","empty")
                         )
                 );
+        public static final GolemConfigurationKey<GolemConfigurationProviderBooleanImpl> MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY =
+                new GolemConfigurationKey<>(
+                        GolemConfigurationResourceLocation.of(Thaumcraft.MOD_ID,"match_if_contain_same_tag_config"),
+                        new GolemConfigurationProviderBooleanImpl(new BooleanTagAccessor("match_if_contain_same_tag_config"))
+                );
     }
 }

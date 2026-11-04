@@ -3,9 +3,14 @@ package thaumcraft.common.entities.golems;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -19,7 +24,6 @@ import net.minecraftforge.fluids.*;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.essentiabe.IEssentiaTransportBlockEntity;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemItemStackMatcherModifierItem;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.junkbox.TileEssentiaReservoir;
 import thaumcraft.common.tiles.junkbox.TileJarFillable;
@@ -27,9 +31,13 @@ import thaumcraft.common.tiles.junkbox.TileJarFillableVoid;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY;
+import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_TAG_CONFIG_KEY;
 
 public class GolemHelper {
    public static final double ADJACENT_RANGE = 4.0F;
@@ -269,14 +277,54 @@ public class GolemHelper {
       return results;
    }
 
-   public static List<ItemStack> getMissingItems(EntityGolemBase golem) {
+   public static final Map<Item,Set<TagKey<Item>>> consideringTagsForItem = new ConcurrentHashMap<>();
+
+   public static void onDatapackReloaded(){
+      consideringTagsForItem.clear();
+   }
+
+   @SuppressWarnings("deprecation")
+   public static Set<TagKey<Item>> getConsideringTagsForItem(Item item) {
+      return consideringTagsForItem.computeIfAbsent(item, i->
+              i.builtInRegistryHolder()
+                      .tags()
+                      .filter(GolemHelper::shouldConsiderItemTag)
+                      .collect(Collectors.toUnmodifiableSet())
+      );
+   }
+
+   //probably mixin point?
+   public static boolean shouldConsiderItemTag(TagKey<Item> tag) {
+      return true;
+   }
+
+   public static int getAmountNeededSmart(NonNullList<ItemStack> inventory, ItemStack stackInSlot, boolean fuzzy) {
+      int amt = 0;
+      var tags = getConsideringTagsForItem(stackInSlot.getItem());
+
+       for (ItemStack consideringStack : inventory) {
+           var tagsForConsidering = getConsideringTagsForItem(consideringStack.getItem());
+           if (!consideringStack.isEmpty()) {
+              if (ItemStack.isSameItemSameTags(consideringStack, stackInSlot)) {
+                 amt += consideringStack.getCount();
+              } else if (fuzzy && !Collections.disjoint(tags, tagsForConsidering)){
+                 amt += consideringStack.getCount();
+              }
+           }
+       }
+
+      return amt;
+   }
+
+   public static List<ItemStack> getMissingItems(BaseGolemEntity golem) {
       Direction facing = Direction.getOrientation(golem.homeFacing);
       ChunkCoordinates home = golem.getHomePosition();
-      int cX = home.posX - facing.offsetX;
-      int cY = home.posY - facing.offsetY;
-      int cZ = home.posZ - facing.offsetZ;
+      int attachedContainerX = home.posX - facing.offsetX;
+      int attachedContainerY = home.posY - facing.offsetY;
+      int attachedContainerZ = home.posZ - facing.offsetZ;
+
       int slotCount = golem.inventory.slotCount;
-      if (golem.getToggles()[0]) {
+      if (golem.getToggles()[0]) {//Any amount
          List<ItemStack> qr = new ArrayList<>();
 
          for(int q = 0; q < slotCount; ++q) {
@@ -288,65 +336,70 @@ public class GolemHelper {
          }
 
          return qr;
-      } else {
-         TileEntity tile = golem.level().getTileEntity(cX, cY, cZ);
+      }
+      {
+//         TileEntity tile = golem.level().getTileEntity(attachedContainerX, attachedContainerY, attachedContainerZ);
+         var tile = getExistingBlockEntity(golem.level(),new BlockPos(attachedContainerX, attachedContainerY, attachedContainerZ));
          if (tile == null) {
             return null;
          } else {
-            ArrayList<ItemStack> qr = new ArrayList<>();
+            List<ItemStack> qr = new ArrayList<>();
 
-            label105:
-            for(int q = 0; q < slotCount; ++q) {
-               ItemStack toCheck = golem.inventory.inventory[q];
-               if (toCheck != null) {
+            boolean fuzzyMatch = golem.configurationProviders.contains(MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY)
+                    && MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY.provider.getBooleanFrom(golem);
+            var golemStackMatcher = golem.getItemStackMatcher();
+
+//            label105:
+            for(var toCheckInGolemInventory:golem.inventory) {
+               boolean checkNext = false;
+               if (!toCheckInGolemInventory.isEmpty()) {
                   int foundAmount = 0;
-                  boolean repeat = true;
-                  boolean didRepeat = false;
 
-                  while(repeat) {
-                     if (didRepeat) {
-                        repeat = false;
-                     }
+                     if (tile instanceof WorldlyContainer worldlyContainer /*&& facing.ordinal() > -1*/) {
+                        int[] canAccessSlots = worldlyContainer.getSlotsForFace(facing);
 
-                     if (tile instanceof ISidedInventory && facing.ordinal() > -1) {
-                        ISidedInventory isidedinventory = (ISidedInventory)tile;
-                        int[] aint = isidedinventory.getAccessibleSlotsFromSide(facing.ordinal());
-
-                         for (int i : aint) {
-                             if (InventoryUtils.areItemStacksEqual(((ISidedInventory) tile).getStackInSlot(i), toCheck, golem.checkOreDict(), golem.ignoreDamage(), golem.ignoreNBT())) {
-                                 foundAmount += ((ISidedInventory) tile).getStackInSlot(i).stackSize;
-                                 if (foundAmount >= golem.inventory.getAmountNeededSmart(((ISidedInventory) tile).getStackInSlot(i), golem.getUpgradeAmount(5) > 0)) {
-                                     continue label105;
+                         for (int i : canAccessSlots) {
+                            ItemStack consideringStack = worldlyContainer.getItem(i);
+                             if (
+                                     golem.getItemStackMatcher().test(toCheckInGolemInventory, consideringStack)
+                             ) {
+                                foundAmount += consideringStack.getCount();
+                                 if (foundAmount >= getAmountNeededSmart(
+                                         golem.inventory,
+                                         consideringStack,
+                                         fuzzyMatch)
+                                 ) {
+                                    checkNext = true;
+                                    break;
+//                                     continue label105;
                                  }
                              }
                          }
                      } else {
-                        if (!(tile instanceof IInventory)) {
+                        if (!(tile instanceof Container container)) {
                            break;
                         }
 
-                        int k = ((IInventory)tile).getSizeInventory();
+                        int containerSize = container.getContainerSize();
 
-                        for(int l = 0; l < k; ++l) {
-                           if (InventoryUtils.areItemStacksEqual(((IInventory)tile).getStackInSlot(l), toCheck, golem.checkOreDict(), golem.ignoreDamage(), golem.ignoreNBT())) {
-                              foundAmount += ((IInventory)tile).getStackInSlot(l).stackSize;
-                              if (foundAmount >= golem.inventory.getAmountNeededSmart(((IInventory)tile).getStackInSlot(l), golem.getUpgradeAmount(5) > 0)) {
-                                 continue label105;
+                        for(int l = 0; l < containerSize; ++l) {
+                           ItemStack consideringStackInContainer = container.getItem(l);
+                           if (golemStackMatcher.test(consideringStackInContainer, toCheckInGolemInventory)) {
+                              foundAmount += consideringStackInContainer.getCount();
+                              if (foundAmount >= getAmountNeededSmart(golem.inventory, consideringStackInContainer, fuzzyMatch)) {
+                                 checkNext = true;
+                                 break;
+//                                 continue label105;
                               }
                            }
                         }
                      }
-
-                     if (!didRepeat && InventoryUtils.getDoubleChest(tile) != null) {
-                        tile = InventoryUtils.getDoubleChest(tile);
-                        didRepeat = true;
-                     } else {
-                        repeat = false;
-                     }
+                  if (checkNext) {
+                     continue;
                   }
 
-                  ItemStack ret = toCheck.copy();
-                  ret.stackSize -= foundAmount;
+                  ItemStack ret = toCheckInGolemInventory.copy();
+                  ret.setCount(ret.getCount() - foundAmount);
                   qr.add(ret);
                }
             }

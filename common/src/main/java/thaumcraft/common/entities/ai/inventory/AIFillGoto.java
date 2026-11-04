@@ -22,7 +22,7 @@ public class AIFillGoto extends EntityAIBase {
     private double movePosY;
     private double movePosZ;
     private ChunkCoordinates dest = null;
-    int count = 0;
+    int tickRemaining = 0;
     int prevX = 0;
     int prevY = 0;
     int prevZ = 0;
@@ -33,7 +33,10 @@ public class AIFillGoto extends EntityAIBase {
     }
 
     public boolean shouldExecute() {
-        if (this.theGolem.getCarried() == null && this.theGolem.ticksExisted % Config.golemDelay <= 0 && this.theGolem.hasSomething()) {
+        if (this.theGolem.getCarried() == null
+                && this.theGolem.ticksExisted % Config.golemDelay <= 0
+                && this.theGolem.hasSomething()
+        ) {
             ArrayList<ItemStack> mi = GolemHelper.getMissingItems(this.theGolem);
             if ((mi == null || mi.isEmpty())){
                 return false;
@@ -116,15 +119,19 @@ public class AIFillGoto extends EntityAIBase {
     }
 
     public boolean continueExecuting() {
-        return this.count > 0 && !this.theGolem.getNavigator().noPath();
+        return this.tickRemaining > 0 && !this.theGolem.getNavigator().noPath();
     }
 
     public void updateTask() {
-        --this.count;
-        if (this.count == 0 && this.prevX == MathHelper.floor_double(this.theGolem.posX) && this.prevY == MathHelper.floor_double(this.theGolem.posY) && this.prevZ == MathHelper.floor_double(this.theGolem.posZ)) {
+        --this.tickRemaining;
+        if (this.tickRemaining == 0
+                && this.prevX == MathHelper.floor_double(this.theGolem.posX)
+                && this.prevY == MathHelper.floor_double(this.theGolem.posY)
+                && this.prevZ == MathHelper.floor_double(this.theGolem.posZ)) {
+            //back to where near home
             Vec3 var2 = RandomPositionGenerator.findRandomTarget(this.theGolem, 2, 1);
             if (var2 != null) {
-                this.count = 20;
+                this.tickRemaining = 20;
                 this.theGolem.getNavigator().tryMoveToXYZ(var2.xCoord, var2.yCoord, var2.zCoord, this.theGolem.getAIMoveSpeed());
             }
         }
@@ -134,11 +141,11 @@ public class AIFillGoto extends EntityAIBase {
 
     public void resetTask() {
         this.dest = null;
-        this.count = 0;
+        this.tickRemaining = 0;
     }
 
     public void startExecuting() {
-        this.count = 200;
+        this.tickRemaining = 200;
         this.prevX = MathHelper.floor_double(this.theGolem.posX);
         this.prevY = MathHelper.floor_double(this.theGolem.posY);
         this.prevZ = MathHelper.floor_double(this.theGolem.posZ);
