@@ -2,6 +2,7 @@ package thaumcraft.common.entities.golems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,5 +55,8 @@ public class Marker {
               && (side == null || side == this.side)
               && (this.color == color || this.color == INVALID_MARKER_COLOR || color == INVALID_MARKER_COLOR
       );
+   }
+   public boolean equalsFuzzy(Vec3i blockPos, ResourceLocation dimResLoc, @Nullable("null -> any") Direction side, byte color) {
+      return equalsFuzzy(blockPos.getX(),blockPos.getY(),blockPos.getZ(),dimResLoc,side,color);
    }
 }

@@ -4,12 +4,13 @@ import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccess
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
+import thaumcraft.common.entities.golems.configuration.GolemConfigurationKey;
 import thaumcraft.common.entities.golems.configuration.GolemConfigurationProvider;
 
 import java.util.Set;
 
 public interface IGolemConfigurationProviderFillerItem extends BaseGolemEntity.IGolemUpgradeItem {
-    void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, Set<GolemConfigurationProvider<?>> configurationProviders);
+    void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, Set<GolemConfigurationKey<?>> configurationProviders);
     CompoundTagAccessorImpl CONFIGURATION_ACCESSOR = new CompoundTagAccessorImpl("golem_configurations");
     default void readAdditionalConfig(BaseGolemEntity golem, ItemStack upgradeStack, CompoundTag tag){
         var wrappedTag = CONFIGURATION_ACCESSOR.readFromCompoundTag(tag);

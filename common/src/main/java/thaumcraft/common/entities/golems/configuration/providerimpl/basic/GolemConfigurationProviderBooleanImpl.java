@@ -5,10 +5,9 @@ import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
-import thaumcraft.common.entities.golems.configuration.GolemConfigurationKey;
 import thaumcraft.common.entities.golems.configuration.GolemConfigurationProvider;
 
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableEntity.opentc4$getOrCreateCachedObjectFromEntity;
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
 
 public class GolemConfigurationProviderBooleanImpl extends GolemConfigurationProvider<Boolean> {
     protected final BooleanTagAccessor compoundTagAccessor;
@@ -35,14 +34,14 @@ public class GolemConfigurationProviderBooleanImpl extends GolemConfigurationPro
     @Override
     @Deprecated(forRemoval = true,since = "boxing costs")
     public Boolean getFrom(BaseGolemEntity golem) {
-        var fakeField = opentc4$getOrCreateCachedObjectFromEntity(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
         return fakeField.configurationValueMap.get(this);
     }
 
     @Override
     @Deprecated(forRemoval = true,since = "boxing costs")
     public void setTo(BaseGolemEntity golem, Boolean value) {
-        var fakeField = opentc4$getOrCreateCachedObjectFromEntity(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
         fakeField.configurationValueMap.put(this,value);
     }
 
@@ -59,12 +58,12 @@ public class GolemConfigurationProviderBooleanImpl extends GolemConfigurationPro
     }
 
     public boolean getBooleanFrom(BaseGolemEntity golem) {
-        var fakeField = opentc4$getOrCreateCachedObjectFromEntity(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
         return fakeField.configurationValueMap.get(this);
     }
 
     public void setBooleanTo(BaseGolemEntity golem, boolean value) {
-        var fakeField = opentc4$getOrCreateCachedObjectFromEntity(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
         fakeField.configurationValueMap.put(this,value);
     }
 

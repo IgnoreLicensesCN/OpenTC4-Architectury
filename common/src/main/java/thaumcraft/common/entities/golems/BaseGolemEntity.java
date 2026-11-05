@@ -454,7 +454,7 @@ public abstract class BaseGolemEntity
                 if (i >= inventorySizeNext) {
                     Containers.dropItemStack(level, pos.x, pos.y, pos.z, stack);
                 } else {
-                    newInventory.add(i, stack);
+                    newInventory.set(i, stack);
                     newInventoryColors[i] = oldInventoryColors[i];
                 }
             }

@@ -11,7 +11,7 @@ import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
-import thaumcraft.common.entities.golems.configuration.GolemConfigurationProvider;
+import thaumcraft.common.entities.golems.configuration.GolemConfigurationKey;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.configruable.IGolemConfigurationProviderFillerItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.IGolemDamagedListenerItem;
 import thaumcraft.common.lib.utils.InventoryUtils;
@@ -102,7 +102,7 @@ public class EntropyGolemUpgradeItem extends GolemBasicUpgradeItem
     }
 
     @Override
-    public void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, Set<GolemConfigurationProvider<?>> configurationProviders) {
-        configurationProviders.put(MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY);
+    public void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, Set<GolemConfigurationKey<?>> configurationProviders) {
+        configurationProviders.add(MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY);
     }
 }

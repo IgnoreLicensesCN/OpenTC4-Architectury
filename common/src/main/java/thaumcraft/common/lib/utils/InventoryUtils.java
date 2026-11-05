@@ -364,6 +364,7 @@ public class InventoryUtils {
       }
    }
 
+   @Deprecated(since = "we dont consider double chest as one now.")
    public static ChestBlockEntity getDoubleChest(Level world, ChestBlockEntity chest) {
       BlockState state = chest.getBlockState();
       if (!(state.getBlock() instanceof ChestBlock)) return null;

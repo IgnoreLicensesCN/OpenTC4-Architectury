@@ -1,5 +1,6 @@
 package com.linearity.opentc4.mixinaccessors;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -98,25 +99,34 @@ import java.util.function.Supplier;
  *  with zero "new"
  */
 //TODO:[maybe wont finished]cut "new" with this
-public interface IObjectCacheableItemStack {
-    <T> @Nullable T opentc4$getCachedObjectFromItemStack(Class<T> clazz);
-    <T> void opentc4$putCachedObjectIntoItemStack(Class<T> clazz,T object);
-    void opentc4$removeCachedObjectFromItemStack(Class<?> clazz);
-    default <T> T opentc4$getOrCreateCachedObjectFromItemStack(Class<T> clazz, Supplier<T> supplier){
-        var cached = opentc4$getCachedObjectFromItemStack(clazz);
+public interface IObjectCacheableFakeFieldOwner {
+    <T> @Nullable T opentc4$getCachedObjectFrom(Class<T> clazz);
+    <T> void opentc4$putCachedObjectInto(Class<T> clazz, T object);
+    void opentc4$removeCachedObjectFrom(Class<?> clazz);
+    default <T> T opentc4$getOrCreateCachedObjectFrom(Class<T> clazz, Supplier<T> supplier){
+        var cached = opentc4$getCachedObjectFrom(clazz);
         if (cached == null) {
             cached = supplier.get();
-            opentc4$putCachedObjectIntoItemStack(clazz, cached);
+            opentc4$putCachedObjectInto(clazz, cached);
         }
         return cached;
     }
-    static <T> T opentc4$getOrCreateCachedObjectFromItemStack(ItemStack stack, Class<T> clazz, Supplier<T> supplier) {
-        return ((IObjectCacheableItemStack)(Object)stack).opentc4$getOrCreateCachedObjectFromItemStack(clazz, supplier);
+    static <T> T opentc4$getOrCreateCachedObjectFrom(ItemStack stack, Class<T> clazz, Supplier<T> supplier) {
+        return ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$getOrCreateCachedObjectFrom(clazz, supplier);
     }
-    static <T> @Nullable T opentc4$getCachedObjectFromItemStack(ItemStack stack, Class<T> clazz) {
-        return ((IObjectCacheableItemStack)(Object)stack).opentc4$getCachedObjectFromItemStack(clazz);
+    static <T> @Nullable T opentc4$getCachedObjectFrom(ItemStack stack, Class<T> clazz) {
+        return ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$getCachedObjectFrom(clazz);
     }
-    static void opentc4$removeCachedObjectFromItemStack(ItemStack stack,Class<?> clazz) {
-        ((IObjectCacheableItemStack)(Object)stack).opentc4$removeCachedObjectFromItemStack(clazz);
+    static void opentc4$removeCachedObjectFrom(ItemStack stack, Class<?> clazz) {
+        ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$removeCachedObjectFrom(clazz);
+    }
+    static <T> T opentc4$getOrCreateCachedObjectFrom(Entity entity, Class<T> clazz, Supplier<T> supplier) {
+        return ((IObjectCacheableFakeFieldOwner)entity).opentc4$getOrCreateCachedObjectFrom(clazz, supplier);
+    }
+    static <T> @Nullable T opentc4$getCachedObjectFrom(Entity entity, Class<T> clazz) {
+        return ((IObjectCacheableFakeFieldOwner)(Object)entity).opentc4$getCachedObjectFrom(clazz);
+    }
+    static void opentc4$removeCachedObjectFrom(Entity entity,Class<?> clazz) {
+        ((IObjectCacheableFakeFieldOwner)(Object)entity).opentc4$removeCachedObjectFrom(clazz);
     }
 }

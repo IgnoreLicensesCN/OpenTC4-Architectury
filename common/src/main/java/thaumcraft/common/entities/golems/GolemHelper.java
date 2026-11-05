@@ -1,6 +1,9 @@
 package thaumcraft.common.entities.golems;
 
+import com.linearity.opentc4.annotations.ReturnValueFakeFieldOf;
+import com.linearity.opentc4.annotations.ReturnValueFieldOfSelf;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
+import it.unimi.dsi.fastutil.bytes.ByteIterator;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.core.BlockPos;
@@ -22,6 +25,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.essentiabe.IEssentiaTransportBlockEntity;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.lib.utils.InventoryUtils;
@@ -37,7 +41,6 @@ import java.util.stream.Collectors;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY;
-import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_TAG_CONFIG_KEY;
 
 public class GolemHelper {
    public static final double ADJACENT_RANGE = 4.0F;
@@ -59,6 +62,141 @@ public class GolemHelper {
       }
 
       return results;
+   }
+
+   public static interface Resettable {
+      public void reset();
+   }
+   public static class MarkedContainerAndMarkerIterator implements Iterator<MarkedContainerAndMarkerIterator.ResultWrapperField>,Resettable {
+      //usage like fake field
+      public static class ResultWrapperField {
+         public Container container;
+         public BlockEntity blockEntity;
+         public Marker marker;
+      }
+      protected BaseGolemEntity golem;
+      protected @Nullable Iterator<Marker> markers;
+      protected @NotNull ResultWrapperField resultCache = new ResultWrapperField();
+      public @NotNull BiPredicate<BaseGolemEntity /*the one above*/ ,BlockEntity /*impl Container*/ > containerPredicate;
+      public MarkedContainerAndMarkerIterator(
+              BaseGolemEntity golem,
+              @NotNull BiPredicate<BaseGolemEntity /*the one above*/ ,
+                      BlockEntity /*impl Container*/ > containerPredicate
+      ) {
+         this.golem = golem;
+         this.containerPredicate = containerPredicate;
+         reset();
+      }
+
+      @Override
+      public void reset() {
+         markers = null;
+         resultCache.container = null;
+         resultCache.blockEntity = null;
+         resultCache.marker = null;
+      }
+
+      protected void initMarkersIfNull() {
+         if (this.markers == null) {
+            this.markers = golem.markers.iterator();
+         }
+      }
+
+      @Override
+      public boolean hasNext() {
+         if (resultCache.container != null) {
+            return true;
+         }
+         var level = golem.level();
+         var levelResLoc = level.dimension().location();
+         initMarkersIfNull();
+         assert markers != null;
+         while (this.markers.hasNext()) {
+            var marker = this.markers.next();
+            if (Objects.equals(marker.dim,levelResLoc)){
+               var checkingBE = getExistingBlockEntity(level,marker.pos.relative(marker.side.getOpposite()));
+               if (checkingBE instanceof Container container) {
+                  if (containerPredicate.test(golem,checkingBE)){
+                     resultCache.container = container;
+                     resultCache.blockEntity = checkingBE;
+                     resultCache.marker = marker;
+                     return true;
+                  }
+               }
+            }
+         }
+         return false;
+      }
+
+      @Override
+      @ReturnValueFieldOfSelf
+      public ResultWrapperField next() {
+         if (resultCache.container == null && !hasNext()) {
+            throw new IllegalStateException("No more containers!call hasNext() first!");
+         }
+         var result = resultCache;
+         resultCache.container = null;
+         resultCache.blockEntity = null;
+         resultCache.marker = null;
+         return result;
+      }
+   }
+
+   public static class MarkedContainerIterator implements Iterator<Container>,Resettable {
+      protected BaseGolemEntity golem;
+      protected @Nullable Iterator<Marker> markers;
+      protected Container nextContainerCache;
+      public @NotNull BiPredicate<BaseGolemEntity /*the one above*/ ,BlockEntity /*impl Container*/ > containerPredicate;
+      public MarkedContainerIterator(BaseGolemEntity golem, @NotNull BiPredicate<BaseGolemEntity /*the one above*/ ,BlockEntity /*impl Container*/ > containerPredicate) {
+         this.golem = golem;
+         this.containerPredicate = containerPredicate;
+         reset();
+      }
+
+      @Override
+      public void reset() {
+         markers = null;
+      }
+
+      protected void initMarkersIfNull() {
+         if (this.markers == null) {
+            this.markers = golem.markers.iterator();
+         }
+      }
+
+      @Override
+      public boolean hasNext() {
+         if (nextContainerCache != null) {
+            return true;
+         }
+         var level = golem.level();
+         var levelResLoc = level.dimension().location();
+         initMarkersIfNull();
+         assert markers != null;
+         while (this.markers.hasNext()) {
+            var marker = this.markers.next();
+            if (Objects.equals(marker.dim,levelResLoc)){
+               var checkingBE = getExistingBlockEntity(level,marker.pos.relative(marker.side.getOpposite()));
+               if (checkingBE instanceof Container container) {
+                  if (containerPredicate.test(golem,checkingBE)){
+                     nextContainerCache = container;
+                     return true;
+                  }
+               }
+            }
+         }
+         return false;
+      }
+
+      @Override
+      public Container next() {
+         if (nextContainerCache == null && !hasNext()) {
+            throw new IllegalStateException("No more containers!call hasNext() first!");
+         }
+         var result = nextContainerCache;
+         nextContainerCache = null;
+         return result;
+      }
    }
 
    public static void getMarkedContainers(
@@ -132,13 +270,13 @@ public class GolemHelper {
       if (colorsOfGolem.length < golem.inventory.size()){
          return;
       }
-      boolean allNull = true;
+      boolean allEmpty = true;
 
       var matcher = golem.getItemStackMatcher();
       var golemItemInHand = golem.getItemInHand(InteractionHand.MAIN_HAND);
       for(int a = 0; a < golem.inventory.size(); ++a) {
          if (!golem.inventory.get(a).isEmpty()) {
-            allNull = false;
+            allEmpty = false;
          }
          if (matcher.test(golemItemInHand,stackMatching)) {
             colors.add(colorsOfGolem[a]);
@@ -148,7 +286,7 @@ public class GolemHelper {
          }
       }
 
-      if (allNull) {
+      if (allEmpty) {
          for (var colorExisting:colorsOfGolem){
             colors.add(colorExisting);
          }
@@ -226,6 +364,7 @@ public class GolemHelper {
       var pos = tile.getBlockPos();
       getMarkedSides(markedSides,golem, pos.getX(),pos.getY(),pos.getZ(), golem.level().dimension().location(), color);
    }
+
    public static void getMarkedSides(Set<Direction> markedSides, BaseGolemEntity golem, int x, int y, int z, ResourceLocation dimResLoc, byte color) {
       for (var marker:golem.markers) {
          if (marker.equalsFuzzy(x,y,z,dimResLoc,null,color)) {
@@ -265,10 +404,11 @@ public class GolemHelper {
                   break;
                }
 
-               if (InventoryUtils.getDoubleChest((TileEntity)inventory) != null && InventoryUtils.extractStack(InventoryUtils.getDoubleChest((TileEntity)inventory), goods, side, golem.checkOreDict(), golem.ignoreDamage(), golem.ignoreNBT(), false) != null) {
-                  results.add(InventoryUtils.getDoubleChest((TileEntity)inventory));
-                  break;
-               }
+//               if (InventoryUtils.getDoubleChest((TileEntity)inventory) != null
+//                       && InventoryUtils.extractStack(InventoryUtils.getDoubleChest((TileEntity)inventory), goods, side, golem.checkOreDict(), golem.ignoreDamage(), golem.ignoreNBT(), false) != null) {
+//                  results.add(InventoryUtils.getDoubleChest((TileEntity)inventory));
+//                  break;
+//               }
             }
          } catch (Exception ignored) {
          }
@@ -338,9 +478,9 @@ public class GolemHelper {
          return qr;
       }
       {
-//         TileEntity tile = golem.level().getTileEntity(attachedContainerX, attachedContainerY, attachedContainerZ);
-         var tile = getExistingBlockEntity(golem.level(),new BlockPos(attachedContainerX, attachedContainerY, attachedContainerZ));
-         if (tile == null) {
+//         TileEntity homeBlockEntity = golem.level().getTileEntity(attachedContainerX, attachedContainerY, attachedContainerZ);
+         var homeBlockEntity = getExistingBlockEntity(golem.level(),new BlockPos(attachedContainerX, attachedContainerY, attachedContainerZ));
+         if (homeBlockEntity == null) {
             return null;
          } else {
             List<ItemStack> qr = new ArrayList<>();
@@ -355,7 +495,7 @@ public class GolemHelper {
                if (!toCheckInGolemInventory.isEmpty()) {
                   int foundAmount = 0;
 
-                     if (tile instanceof WorldlyContainer worldlyContainer /*&& facing.ordinal() > -1*/) {
+                     if (homeBlockEntity instanceof WorldlyContainer worldlyContainer /*&& facing.ordinal() > -1*/) {
                         int[] canAccessSlots = worldlyContainer.getSlotsForFace(facing);
 
                          for (int i : canAccessSlots) {
@@ -376,7 +516,7 @@ public class GolemHelper {
                              }
                          }
                      } else {
-                        if (!(tile instanceof Container container)) {
+                        if (!(homeBlockEntity instanceof Container container)) {
                            break;
                         }
 

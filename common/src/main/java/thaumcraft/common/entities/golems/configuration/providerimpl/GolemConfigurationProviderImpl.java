@@ -10,7 +10,7 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableEntity.opentc4$getOrCreateCachedObjectFromEntity;
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
 
 public class GolemConfigurationProviderImpl<T> extends GolemConfigurationProvider<T> {
     protected final CompoundTagAccessor<T> compoundTagAccessor;
@@ -40,13 +40,13 @@ public class GolemConfigurationProviderImpl<T> extends GolemConfigurationProvide
 
     @Override
     public T getFrom(BaseGolemEntity golem) {
-        var fakeField = opentc4$getOrCreateCachedObjectFromEntity(golem,GolemConfigurationsFakeFields.class,GolemConfigurationsFakeFields::new);
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class,GolemConfigurationsFakeFields::new);
         return fakeField.configurationValueMap.get(this);
     }
 
     @Override
     public void setTo(BaseGolemEntity golem, T value) {
-        var fakeField = opentc4$getOrCreateCachedObjectFromEntity(golem,GolemConfigurationsFakeFields.class,GolemConfigurationsFakeFields::new);
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class,GolemConfigurationsFakeFields::new);
         fakeField.configurationValueMap.put(this,value);
     }
 

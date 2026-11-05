@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableItemStack.opentc4$getCachedObjectFromItemStack;
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableItemStack.opentc4$removeCachedObjectFromItemStack;
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getCachedObjectFrom;
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$removeCachedObjectFrom;
 
 public class GolemPlaceItemStackToHomeGoalWithItemStackTickMark extends GolemPlaceItemStackToHomeGoal {
 
@@ -21,12 +21,12 @@ public class GolemPlaceItemStackToHomeGoalWithItemStackTickMark extends GolemPla
     }
     @Override
     protected boolean checkForExecution(ItemStack stackInHand) {
-        var mark = opentc4$getCachedObjectFromItemStack(stackInHand, ItemStackPlaceToHomeTickMarkFakeFields.class);
+        var mark = opentc4$getCachedObjectFrom(stackInHand, ItemStackPlaceToHomeTickMarkFakeFields.class);
         if (mark != null){
             if (golem.tickCount < mark.placeBeforeTickCount && golem.getId() == mark.golemID){
                 return true;
             }
-            opentc4$removeCachedObjectFromItemStack(stackInHand, ItemStackPlaceToHomeTickMarkFakeFields.class);
+            opentc4$removeCachedObjectFrom(stackInHand, ItemStackPlaceToHomeTickMarkFakeFields.class);
         }
         return canUseAdditional();
     }

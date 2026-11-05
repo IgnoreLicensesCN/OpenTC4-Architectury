@@ -8,6 +8,7 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.Thaumcraft;
+import thaumcraft.common.entities.ai.goals.golem.GolemGotoContainerForFillingGoal;
 import thaumcraft.common.entities.ai.goals.golem.GolemMoveToRestrictionCenterGoal;
 import thaumcraft.common.entities.ai.goals.golem.GolemPlaceItemStackToHomeGoal;
 import thaumcraft.common.entities.ai.goals.golem.GolemTakeItemStackFromContainerGoal;
@@ -53,6 +54,8 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final Function<BaseGolemEntity, Goal> DROP_ITEM_STACK_HOME_IF_NO_CONTAINER_GOAL_PROVIDER = GolemPlaceItemStackToHomeGoal::new;
         public static final GoalResourceLocation TAKE_ITEM_STACK_FROM_CONTAINER = GoalResourceLocation.of("take_item_stack_from_container");
         public static final Function<BaseGolemEntity,Goal> TAKE_ITEM_STACK_FROM_CONTAINER_GOAL_PROVIDER = GolemTakeItemStackFromContainerGoal::new;
+        public static final GoalResourceLocation GOTO_CONTAINER_FOR_FILLING = GoalResourceLocation.of("goto_container_for_filling");
+        public static final Function<BaseGolemEntity,Goal> GOTO_CONTAINER_FOR_FILLING_GOAL_PROVIDER = GolemGotoContainerForFillingGoal::new;
     }
 
     default void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GolemGoalSelector goalSelector, GolemGoalSelector targetSelector) {

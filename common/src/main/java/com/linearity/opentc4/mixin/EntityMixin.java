@@ -2,7 +2,7 @@ package com.linearity.opentc4.mixin;
 
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.MutableClassToInstanceMap;
-import com.linearity.opentc4.mixinaccessors.IObjectCacheableEntity;
+import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.BlockPos;
@@ -12,7 +12,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,7 +19,7 @@ import thaumcraft.api.blockapi.IEntityInLavaBlock;
 import thaumcraft.common.entities.ThaumcraftEntityEvents;
 
 @Mixin(Entity.class)
-public class EntityMixin implements IObjectCacheableEntity {
+public class EntityMixin implements IObjectCacheableFakeFieldOwner {
     @WrapOperation(
             method = "updateFluidHeightAndDoFluidPushing",
             at = @At(
@@ -51,17 +50,17 @@ public class EntityMixin implements IObjectCacheableEntity {
     private final ClassToInstanceMap<Object> opentc4$objectCacheMap = MutableClassToInstanceMap.create();
 
     @Override
-    public <T> @Nullable T opentc4$getCachedObjectFromEntity(Class<T> clazz) {
+    public <T> @Nullable T opentc4$getCachedObjectFrom(Class<T> clazz) {
         return opentc4$objectCacheMap.getInstance(clazz);
     }
 
     @Override
-    public <T> void opentc4$putCachedObjectIntoEntity(Class<T> clazz, T object) {
+    public <T> void opentc4$putCachedObjectInto(Class<T> clazz, T object) {
         opentc4$objectCacheMap.putInstance(clazz, object);
     }
 
     @Override
-    public void opentc4$removeCachedObjectFromEntity(Class<?> clazz) {
+    public void opentc4$removeCachedObjectFrom(Class<?> clazz) {
         opentc4$objectCacheMap.remove(clazz);
     }
 }

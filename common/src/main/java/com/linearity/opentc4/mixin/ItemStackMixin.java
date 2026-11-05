@@ -3,7 +3,7 @@ package com.linearity.opentc4.mixin;
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.MutableClassToInstanceMap;
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
-import com.linearity.opentc4.mixinaccessors.IObjectCacheableItemStack;
+import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.Unique;
 import static net.minecraft.world.item.ItemStack.EMPTY;
 
 @Mixin(ItemStack.class)
-public class ItemStackMixin implements IObjectCacheableItemStack, ExtendedItemStack {
+public class ItemStackMixin implements IObjectCacheableFakeFieldOwner, ExtendedItemStack {
     @Shadow @Final /*@Deprecated*/ private @Nullable Item item;
     @Shadow private int count;
     @Shadow private @Nullable CompoundTag tag;
@@ -24,17 +24,17 @@ public class ItemStackMixin implements IObjectCacheableItemStack, ExtendedItemSt
     private final ClassToInstanceMap<Object> opentc4$objectCacheMap = MutableClassToInstanceMap.create();
 
     @Override
-    public <T> @Nullable T opentc4$getCachedObjectFromItemStack(Class<T> clazz) {
+    public <T> @Nullable T opentc4$getCachedObjectFrom(Class<T> clazz) {
         return opentc4$objectCacheMap.getInstance(clazz);
     }
 
     @Override
-    public <T> void opentc4$putCachedObjectIntoItemStack(Class<T> clazz, T object) {
+    public <T> void opentc4$putCachedObjectInto(Class<T> clazz, T object) {
         opentc4$objectCacheMap.putInstance(clazz, object);
     }
 
     @Override
-    public void opentc4$removeCachedObjectFromItemStack(Class<?> clazz) {
+    public void opentc4$removeCachedObjectFrom(Class<?> clazz) {
         opentc4$objectCacheMap.remove(clazz);
     }
 

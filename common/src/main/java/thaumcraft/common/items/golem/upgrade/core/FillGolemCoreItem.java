@@ -18,6 +18,7 @@ import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemIt
 import thaumcraft.common.lib.resourcelocations.GolemConfigurationResourceLocation;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiPredicate;
 
@@ -53,24 +54,25 @@ public class FillGolemCoreItem
         goalSelector.addGoalIfNotExist(0,PLACE_ITEM_STACK_HOME, PLACE_ITEM_STACK_HOME_DEFAULT_GOAL_PROVIDER,golem);
         goalSelector.addGoalIfNotExist(1,DROP_ITEM_STACK_HOME_IF_NO_CONTAINER,DROP_ITEM_STACK_HOME_IF_NO_CONTAINER_GOAL_PROVIDER,golem);
         goalSelector.addGoalIfNotExist(2,TAKE_ITEM_STACK_FROM_CONTAINER,TAKE_ITEM_STACK_FROM_CONTAINER_GOAL_PROVIDER,golem);
+        goalSelector.addGoalIfNotExist(3,GOTO_CONTAINER_FOR_FILLING,GOTO_CONTAINER_FOR_FILLING_GOAL_PROVIDER,golem);
     }
 
     @Override
-    public void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, GolemConfigurationProvider<?> configurationProviders) {
-        configurationProviders.put(AMOUNT_CONFIG_KEY);
-        configurationProviders.put(MATCH_NBT_CONFIG_KEY);
-        configurationProviders.put(MATCH_TAG_CONFIG_KEY);
+    public void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, Set<GolemConfigurationKey<?>> configurationProviders) {
+        configurationProviders.add(AMOUNT_CONFIG_KEY);
+        configurationProviders.add(MATCH_NBT_CONFIG_KEY);
+        configurationProviders.add(MATCH_TAG_CONFIG_KEY);
     }
 
 
 
     @Override
     public BiPredicate<ItemStack, ItemStack> modifyItemStackMatching(BaseGolemEntity golem, ItemStack upgradeStack) {
-        var matchNBT = golem.configurationProviders.get(MATCH_NBT_CONFIG_KEY);
+        var matchNBT = golem.configurationProviders.contains(MATCH_NBT_CONFIG_KEY)?MATCH_NBT_CONFIG_KEY.provider:null;
         if (matchNBT != null && matchNBT.getBooleanFrom(golem)) {
             return ItemStack::isSameItemSameTags;
         }
-        var matchTag = golem.configurationProviders.get(MATCH_TAG_CONFIG_KEY);
+        var matchTag = golem.configurationProviders.contains(MATCH_TAG_CONFIG_KEY)?MATCH_TAG_CONFIG_KEY.provider:null;
         if (matchTag != null){
             var tagMatching = matchTag.getFrom(golem);
             if (!tagMatching.getNamespace().isEmpty() && !tagMatching.getPath().isEmpty()) {

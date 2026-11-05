@@ -38,7 +38,7 @@ import java.util.function.Supplier;
 
 import static com.linearity.opentc4.Consts.WandCastingCompoundTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableItemStack.opentc4$getOrCreateCachedObjectFromItemStack;
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
 import static thaumcraft.api.wands.WandUtils.appendWandHoverText;
 
 //maybe just an example,you can also make you own one.
@@ -118,7 +118,7 @@ public class WandCastingItem extends Item
             ItemStack componentOwnerStack
     ) {
 
-        var cached = opentc4$getOrCreateCachedObjectFromItemStack(
+        var cached = opentc4$getOrCreateCachedObjectFrom(
                 componentOwnerStack,
                 WandCastingItemCachedObjectsForItemStack.class,
                 WandCastingItemCachedObjectsForItemStack.SUPPLIER

@@ -7,7 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.configuration.GolemConfigurationProvider;
 
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableEntity.opentc4$getOrCreateCachedObjectFromEntity;
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
 
 public class GolemConfigurationProviderFloatImpl extends GolemConfigurationProvider<Float> {
     protected final FloatTagAccessor compoundTagAccessor;
@@ -32,14 +32,14 @@ public class GolemConfigurationProviderFloatImpl extends GolemConfigurationProvi
     @Override
     @Deprecated(forRemoval = true,since = "boxing costs")
     public Float getFrom(BaseGolemEntity golem) {
-        var fakeField = opentc4$getOrCreateCachedObjectFromEntity(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
         return fakeField.configurationValueMap.get(this);
     }
 
     @Override
     @Deprecated(forRemoval = true,since = "boxing costs")
     public void setTo(BaseGolemEntity golem, Float value) {
-        var fakeField = opentc4$getOrCreateCachedObjectFromEntity(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
         fakeField.configurationValueMap.put(this,value);
     }
 
@@ -56,12 +56,12 @@ public class GolemConfigurationProviderFloatImpl extends GolemConfigurationProvi
     }
 
     public float getFloatFrom(BaseGolemEntity golem) {
-        var fakeField = opentc4$getOrCreateCachedObjectFromEntity(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
         return fakeField.configurationValueMap.get(this);
     }
 
     public void setFloatTo(BaseGolemEntity golem, float value) {
-        var fakeField = opentc4$getOrCreateCachedObjectFromEntity(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, GolemConfigurationsFakeFields::new);
         fakeField.configurationValueMap.put(this,value);
     }
 
