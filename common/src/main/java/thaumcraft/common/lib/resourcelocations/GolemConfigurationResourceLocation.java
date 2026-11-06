@@ -62,7 +62,8 @@ public class GolemConfigurationResourceLocation extends VariedResourceLocation<O
     @Nullable
     public static GolemConfigurationResourceLocation tryParse(String string) {
         try {
-            return new GolemConfigurationResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return GolemConfigurationResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

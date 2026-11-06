@@ -3,6 +3,7 @@ package thaumcraft.common.tiles.crafted.essentiabe;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.mixinaccessors.clientbe.EssentiaReservoirBlockEntityClientAccessor;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,8 +32,7 @@ import java.util.Set;
 
 import static com.linearity.opentc4.Consts.EssentiaReservoirBlockEntityTagAccessors.ASPECTS_OWNING;
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
-import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.registerToRemoteDrainables;
-import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.unregisterFromRemoteDrainables;
+
 
 public class EssentiaReservoirBlockEntity extends TileThaumcraft
         implements
@@ -397,20 +397,12 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
 
     @Override
     public void setLevel(Level level) {
-        if (this.level != level && this.level != null) {
-            unregisterFromRemoteDrainables(this.level,getBlockPos(),this);
-        }
+        registerToCubeLookup(level,this.level);
         super.setLevel(level);
-        if (this.level != null) {
-            registerToRemoteDrainables(this.level,getBlockPos(),this);
-        }
     }
-
     @Override
     public void setRemoved() {
-        if (this.level != null) {
-            unregisterFromRemoteDrainables(this.level,getBlockPos(),this);
-        }
+        unregisterFromWeakLookup(this.level);
         super.setRemoved();
     }
 }

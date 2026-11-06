@@ -5,6 +5,7 @@ import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import com.linearity.opentc4.mixinaccessors.clientbe.InfusionMatrixBlockEntityClientAccessor;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
@@ -55,14 +56,12 @@ import thaumcraft.common.tiles.abstracts.IInfusionCenterItemStackProvider;
 import thaumcraft.common.tiles.abstracts.IInfusionComponentStackProvider;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static com.linearity.opentc4.Consts.InfusionMatrixBlockEntityTagAccessors.*;
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.crafting.infusion.InfusionRecipe.*;
 import static thaumcraft.common.blocks.crafted.infusion.InfusionMatrixBlock.LIT;
-import static thaumcraft.common.tiles.crafted.infusion.ArcanePedestalBlockEntity.INFUSION_COMPONENT_PROVIDERS;
+import static thaumcraft.common.tiles.crafted.infusion.ArcanePedestalBlockEntity.COORD_LOOKUP_KEY_FOR_INFUSION_COMPONENT_PROVIDER;
 
 public class InfusionMatrixBlockEntity
         extends TileThaumcraft
@@ -613,59 +612,61 @@ public class InfusionMatrixBlockEntity
             if (level == null) {
                 return new ObjectIntPair<>(infusionComponentStackProviderPositionOffsets,0);
             }
-            var componentProviderLookup = INFUSION_COMPONENT_PROVIDERS.get(level);
-            if (componentProviderLookup == null) {
+            var componentProviderLookups = ((CoordLookupOwnerLevel)level).opentc4$getCoordLookupsForType(COORD_LOOKUP_KEY_FOR_INFUSION_COMPONENT_PROVIDER);
+            if (componentProviderLookups.isEmpty()) {
                 return new ObjectIntPair<>(infusionComponentStackProviderPositionOffsets,0);
             }
-            AtomicInteger componentProviderInstability = new AtomicInteger();
-            componentProviderLookup.forItemsNearPosWithRange(matrixPos,componentProvider -> {
-                var posOffset = getComponentProviderOffsetToSelf(componentProvider,matrixPos);
-                if (posOffset != null && posOffset.getY() != 0){
-                    if (infusionComponentStackProviderPositionOffsets.contains(posOffset)) {
-                        return;
-                    }
-                    infusionComponentStackProviderPositionOffsets.add(posOffset);
+            int[] componentProviderInstability = new int[]{0};
+            for (var componentProviderLookup : componentProviderLookups) {
+                componentProviderLookup.forItemsNearPosWithRange(matrixPos,componentProvider -> {
+                    var posOffset = getComponentProviderOffsetToSelf(componentProvider,matrixPos);
+                    if (posOffset != null && posOffset.getY() != 0){
+                        if (infusionComponentStackProviderPositionOffsets.contains(posOffset)) {
+                            return;
+                        }
+                        infusionComponentStackProviderPositionOffsets.add(posOffset);
 
-                    var posOffsetTransformed = new BlockPos(-posOffset.getX(), posOffset.getY(), -posOffset.getZ());
-                    var beInTransformedPos = LevelBlockEntityAccessing.getExistingBlockEntity(level, posOffsetTransformed.offset(matrixPos));
+                        var posOffsetTransformed = new BlockPos(-posOffset.getX(), posOffset.getY(), -posOffset.getZ());
+                        var beInTransformedPos = LevelBlockEntityAccessing.getExistingBlockEntity(level, posOffsetTransformed.offset(matrixPos));
 
-                    int instabilityChange = 20;
+                        int instabilityChange = 20;
 
-                    if (!componentProvider.isEmpty()){
-                        boolean empty = true;
-                        for (int i=0;i<componentProvider.getContainerSize();i++){
-                            var stackInProvider = componentProvider.getItem(i);
-                            if (!stackInProvider.isEmpty()){
-                                empty = false;
+                        if (!componentProvider.isEmpty()){
+                            boolean empty = true;
+                            for (int i=0;i<componentProvider.getContainerSize();i++){
+                                var stackInProvider = componentProvider.getItem(i);
+                                if (!stackInProvider.isEmpty()){
+                                    empty = false;
+                                }
+                                forStackInContainer.accept(stackInProvider);
                             }
-                            forStackInContainer.accept(stackInProvider);
-                        }
-                        if (empty){
-                            instabilityChange += 10;
-                        }
-                    }
-
-                    if (beInTransformedPos instanceof IInfusionComponentStackProvider componentProviderInTransformedPos){
-                        infusionComponentStackProviderPositionOffsets.add(posOffsetTransformed);
-                        instabilityChange -= 20;
-                        boolean empty = true;
-                        for (int i=0;i<componentProviderInTransformedPos.getContainerSize();i++){
-                            var stackInProvider = componentProviderInTransformedPos.getItem(i);
-                            if (!stackInProvider.isEmpty()){
-                                empty = false;
+                            if (empty){
+                                instabilityChange += 10;
                             }
-                            forStackInContainer.accept(stackInProvider);
                         }
-                        if (empty){
-                            instabilityChange -= 10;
+
+                        if (beInTransformedPos instanceof IInfusionComponentStackProvider componentProviderInTransformedPos){
+                            infusionComponentStackProviderPositionOffsets.add(posOffsetTransformed);
+                            instabilityChange -= 20;
+                            boolean empty = true;
+                            for (int i=0;i<componentProviderInTransformedPos.getContainerSize();i++){
+                                var stackInProvider = componentProviderInTransformedPos.getItem(i);
+                                if (!stackInProvider.isEmpty()){
+                                    empty = false;
+                                }
+                                forStackInContainer.accept(stackInProvider);
+                            }
+                            if (empty){
+                                instabilityChange -= 10;
+                            }
                         }
+
+                        componentProviderInstability[0] += (Math.abs(instabilityChange));
+
                     }
-
-                    componentProviderInstability.addAndGet(Math.abs(instabilityChange));
-
-                }
-            },25);
-            return new ObjectIntPair<>(infusionComponentStackProviderPositionOffsets,componentProviderInstability.get());
+                },25);
+            }
+            return new ObjectIntPair<>(infusionComponentStackProviderPositionOffsets,componentProviderInstability[0]);
         }
 
 

@@ -1,9 +1,9 @@
 package thaumcraft.api.aspects.essentiabe;
 
 
-import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
+import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
+import com.linearity.opentc4.utils.collectionlike.coordlookups.CoordLookup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -11,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.lib.network.fx.PacketFXEssentiaSourceS2C;
+import thaumcraft.common.tiles.abstracts.ICoordLookupOwnerBlockEntity;
 
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -24,20 +24,21 @@ import java.util.Set;
  * <p>yes i renamed from IAspectSource --IgnoreLicensesCN </p>
  */
 public interface IRemoteDrainableEssentiaSourceBlockEntity
-        /*extends IAspectContainerBlockEntity<Asp>*/ {
-    Map<Level, CubeChunkedWeakLookups<IRemoteDrainableEssentiaSourceBlockEntity>> levelledRemoteDrainables
-            = new MapMaker().weakKeys().makeMap();
+        /*extends IAspectContainerBlockEntity<Asp>*/ extends ICoordLookupOwnerBlockEntity<IRemoteDrainableEssentiaSourceBlockEntity> {
+//    Map<Level, CoordLookup<IRemoteDrainableEssentiaSourceBlockEntity>> levelledRemoteDrainables
+//            = new MapMaker().weakKeys().makeMap();
+    CoordLookupOwnerLevel.CoordLookupTypeKey<IRemoteDrainableEssentiaSourceBlockEntity> COORD_LOOKUP_KEY_FOR_REMOTE_DRAINABLE = new CoordLookupOwnerLevel.CoordLookupTypeKey<>();
 
-    static void registerToRemoteDrainables(@NotNull Level level, BlockPos pos, IRemoteDrainableEssentiaSourceBlockEntity drainable) {
-               levelledRemoteDrainables.computeIfAbsent(level,_ignored -> new CubeChunkedWeakLookups<>((byte)4)).store(pos,drainable);
-            }
+    @Override
+    default @NotNull CoordLookup<IRemoteDrainableEssentiaSourceBlockEntity> getSelfLookupInLevel(Level level){
+        for (var lookup:((CoordLookupOwnerLevel)level).opentc4$getCoordLookupsForType(COORD_LOOKUP_KEY_FOR_REMOTE_DRAINABLE)){
+            return lookup;
+        }
+        throw new IllegalStateException("Where is my lookup?this should not happen!");
+    };
 
-    static void unregisterFromRemoteDrainables(@NotNull Level level, BlockPos pos, IRemoteDrainableEssentiaSourceBlockEntity drainable) {
-               var levelled = levelledRemoteDrainables.get(level);
-               if (levelled != null) {
-                  levelled.remove(pos, drainable);
-               }
-            }
+    @Override
+    default @NotNull IRemoteDrainableEssentiaSourceBlockEntity getStoreItemForLookup(){return this;};
 
     //check with method above first.
     //@return false if drain failed

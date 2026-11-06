@@ -16,7 +16,7 @@ import java.util.EnumSet;
 
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getCachedObjectFrom;
 import static thaumcraft.common.entities.golems.GolemHelper.*;
-import static thaumcraft.common.items.golem.upgrade.core.FillGolemCoreItem.AMOUNT_CONFIG_KEY;
+import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.PRECISE_OR_ANY_AMOUNT_CONFIG_KEY;
 
 public class GolemTakeItemStackFromContainerGoal extends Goal {
     public static class GolemTakeItemStackFromContainerWatchingItemFakeFields {
@@ -85,7 +85,7 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
 //        getMarkedContainersWithinDefaultRangeAsBlockEntity(containersTempList,golem);
 
         boolean countLimited = false;
-        var configProvider = golem.configurationProviders.contains(AMOUNT_CONFIG_KEY) ? AMOUNT_CONFIG_KEY.provider : null;
+        var configProvider = golem.configurationProviders.contains(PRECISE_OR_ANY_AMOUNT_CONFIG_KEY) ? PRECISE_OR_ANY_AMOUNT_CONFIG_KEY.provider : null;
         if (configProvider != null) {
             countLimited = configProvider.getBooleanFrom(golem);
         }

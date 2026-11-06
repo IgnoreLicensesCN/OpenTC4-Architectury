@@ -63,7 +63,8 @@ public class ResearchItemResourceLocation extends VariedResourceLocation<Researc
     @Nullable
     public static ResearchItemResourceLocation tryParse(String string) {
         try {
-            return new ResearchItemResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return ResearchItemResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

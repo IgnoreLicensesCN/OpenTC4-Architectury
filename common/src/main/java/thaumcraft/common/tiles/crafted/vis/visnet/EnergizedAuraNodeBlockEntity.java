@@ -120,7 +120,7 @@ public class EnergizedAuraNodeBlockEntity extends VisNetNodeBlockEntity {
     }
 
     @Override
-    public VisNetNodeTypeResourceLocation getVisNetNodeType() {
+    public VisNetNodeType getVisNetNodeType() {
         return SOURCE;
     }
 

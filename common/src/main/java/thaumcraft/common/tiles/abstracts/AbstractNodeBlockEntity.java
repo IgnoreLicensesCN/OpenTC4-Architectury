@@ -1,9 +1,9 @@
 package thaumcraft.common.tiles.abstracts;
 
-import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
-import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.collectionlike.coordlookups.CoordLookup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -56,8 +56,9 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
         implements
         INodeBlockEntity,
         IWandInteractableBlockOrBlockEntity,
-        ICubeChunkBasedWeakLookupOwner<AbstractNodeBlockEntity> {
-    public static final Map<Level, CubeChunkedWeakLookups<AbstractNodeBlockEntity>> ALL_NODES = new MapMaker().weakKeys().makeMap();
+        ICoordLookupOwnerBlockEntity<AbstractNodeBlockEntity> {
+//    public static final Map<Level, CoordLookup<AbstractNodeBlockEntity>> ALL_NODES = new MapMaker().weakKeys().makeMap();
+    public static final CoordLookupOwnerLevel.CoordLookupTypeKey<AbstractNodeBlockEntity> COORD_LOOKUP_KEY_FOR_NODE = new CoordLookupOwnerLevel.CoordLookupTypeKey<>();
 
     long lastActiveMillis = 0L;
     protected AspectList<Aspect> aspects = new LinkedHashAspectList<>();
@@ -669,8 +670,9 @@ public abstract class AbstractNodeBlockEntity extends TileThaumcraft
     }
 
     @Override
-    public @Nullable Map<Level, CubeChunkedWeakLookups<AbstractNodeBlockEntity>> getSelfLookupMap() {
-        return ALL_NODES;
+    public @NotNull CoordLookup<AbstractNodeBlockEntity> getSelfLookupInLevel(Level level) {
+        for (var result: ((CoordLookupOwnerLevel)level).opentc4$getCoordLookupsForType(COORD_LOOKUP_KEY_FOR_NODE)){return result;}
+        throw new IllegalStateException("Where is my lookup?this should not happen!");
     }
 
     @Override

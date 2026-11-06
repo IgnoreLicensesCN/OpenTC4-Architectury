@@ -63,7 +63,8 @@ public class NodeTypeResourceLocation extends VariedResourceLocation<NodeType, N
     @Nullable
     public static NodeTypeResourceLocation tryParse(String string) {
         try {
-            return new NodeTypeResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return NodeTypeResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

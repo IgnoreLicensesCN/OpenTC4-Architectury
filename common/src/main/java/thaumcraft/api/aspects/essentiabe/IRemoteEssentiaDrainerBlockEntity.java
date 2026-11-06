@@ -1,6 +1,7 @@
 package thaumcraft.api.aspects.essentiabe;
 
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -12,8 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
-import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.levelledRemoteDrainables;
+import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.COORD_LOOKUP_KEY_FOR_REMOTE_DRAINABLE;
 
 //Infusion Matrix/Overchanting Table/Essentia Mirror
 
@@ -88,21 +88,23 @@ public interface IRemoteEssentiaDrainerBlockEntity {
     ) {
         var level = this.getLevel();
         if (level == null) return 0;
-        var lookup = levelledRemoteDrainables.get(level);
-        if (lookup == null) return 0;
-        var drainerPos = this.getBlockPos();
-        AtomicInteger toDrain = new AtomicInteger(amount);
+        for (var lookup:((CoordLookupOwnerLevel)level).opentc4$getCoordLookupsForType(COORD_LOOKUP_KEY_FOR_REMOTE_DRAINABLE)){
 
-        drainerMet.add(this);
+            var drainerPos = this.getBlockPos();
+            AtomicInteger toDrain = new AtomicInteger(amount);
 
-        lookup.forItemsNearPosWithBreakWithRange(
-                drainerPos,
-                drainable -> {
-                    int drained = this.drainEssentia(drainable, aspect, toDrain.get(), drainerMet);
-                    return toDrain.addAndGet(-drained) <= 0;
-                },
-                range
-        );
-        return amount - toDrain.get();
+            drainerMet.add(this);
+
+            lookup.forItemsNearPosWithBreakWithRange(
+                    drainerPos,
+                    drainable -> {
+                        int drained = this.drainEssentia(drainable, aspect, toDrain.get(), drainerMet);
+                        return toDrain.addAndGet(-drained) <= 0;
+                    },
+                    range
+            );
+            return amount - toDrain.get();
+        }
+        return 0;
     }
 }

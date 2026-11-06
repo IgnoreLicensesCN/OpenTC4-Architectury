@@ -25,9 +25,7 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.Set;
 
 import static com.linearity.opentc4.Consts.EssentiaJarBlockEntityTagAccessors.*;
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
-import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.registerToRemoteDrainables;
-import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.unregisterFromRemoteDrainables;
+
 
 //maybe i should make an AbstractEssentiaJarBlockEntity
 public class EssentiaJarBlockEntity extends TileThaumcraft
@@ -60,20 +58,13 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
 
     @Override
     public void setLevel(Level level) {
-        if (this.level != level && this.level != null) {
-            unregisterFromRemoteDrainables(this.level,getBlockPos(),this);
-        }
+        registerToCubeLookup(level,this.level);
         super.setLevel(level);
-        if (this.level != null) {
-            registerToRemoteDrainables(this.level,getBlockPos(),this);
-        }
     }
 
     @Override
     public void setRemoved() {
-        if (this.level != null) {
-            unregisterFromRemoteDrainables(this.level,getBlockPos(),this);
-        }
+        unregisterFromWeakLookup(this.level);
         super.setRemoved();
     }
 

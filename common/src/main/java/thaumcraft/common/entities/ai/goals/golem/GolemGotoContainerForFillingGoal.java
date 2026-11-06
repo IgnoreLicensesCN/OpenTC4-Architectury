@@ -26,7 +26,7 @@ import static thaumcraft.common.config.Config.CONFIG_INSTANCE;
 import static thaumcraft.common.entities.golems.GolemHelper.getAmountNeededSmart;
 import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY;
-import static thaumcraft.common.items.golem.upgrade.core.FillGolemCoreItem.AMOUNT_CONFIG_KEY;
+import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.PRECISE_OR_ANY_AMOUNT_CONFIG_KEY;
 
 public class GolemGotoContainerForFillingGoal extends Goal {
     protected final BaseGolemEntity golem;
@@ -226,8 +226,8 @@ public class GolemGotoContainerForFillingGoal extends Goal {
 
     protected MissingItemsIterator getMissingItemsIterator() {
         if (/*golem.getToggles()[0]*/
-                golem.configurationProviders.contains(AMOUNT_CONFIG_KEY)
-                        && AMOUNT_CONFIG_KEY.provider.getBooleanFrom(golem)
+                golem.configurationProviders.contains(PRECISE_OR_ANY_AMOUNT_CONFIG_KEY)
+                        && PRECISE_OR_ANY_AMOUNT_CONFIG_KEY.provider.getBooleanFrom(golem)
         ) {//Any amount
             return missingItemsIteratorForAnyAmount;
         }

@@ -62,7 +62,8 @@ public class WandConsumptionTypeResourceLocation extends VariedResourceLocation<
     @Nullable
     public static WandConsumptionTypeResourceLocation tryParse(String string) {
         try {
-            return new WandConsumptionTypeResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return WandConsumptionTypeResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

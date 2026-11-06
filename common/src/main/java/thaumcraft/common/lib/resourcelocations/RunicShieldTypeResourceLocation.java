@@ -63,7 +63,8 @@ public class RunicShieldTypeResourceLocation extends VariedResourceLocation<Abst
     @Nullable
     public static RunicShieldTypeResourceLocation tryParse(String string) {
         try {
-            return new RunicShieldTypeResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return RunicShieldTypeResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

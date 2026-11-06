@@ -1,20 +1,16 @@
 package thaumcraft.common.items.golem.upgrade.core;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.BooleanTagAccessor;
 import lombok.AllArgsConstructor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
 import thaumcraft.common.entities.golems.configuration.GolemConfigurationKey;
-import thaumcraft.common.entities.golems.configuration.providerimpl.basic.GolemConfigurationProviderBooleanImpl;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.configruable.IGolemConfigurationProviderFillerItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemItemStackMatcherModifierItem;
-import thaumcraft.common.lib.resourcelocations.GolemConfigurationResourceLocation;
 
 import java.util.Map;
 import java.util.Set;
@@ -33,13 +29,8 @@ public class FillGolemCoreItem
         AbstractGolemCoreItemWithGui
         implements
         IGolemItemStackMatcherModifierItem,
-        IGolemConfigurationProviderFillerItem//TODO:Impl NBT and tag matching and other options
+        IGolemConfigurationProviderFillerItem
 {
-    public static final GolemConfigurationKey<GolemConfigurationProviderBooleanImpl> AMOUNT_CONFIG_KEY =
-            new GolemConfigurationKey<>(
-                    GolemConfigurationResourceLocation.of(Thaumcraft.MOD_ID,"amount_config"),
-                    new GolemConfigurationProviderBooleanImpl(new BooleanTagAccessor("amount_config"))
-            );
     public FillGolemCoreItem() {
         super();
     }
@@ -58,7 +49,7 @@ public class FillGolemCoreItem
 
     @Override
     public void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, Set<GolemConfigurationKey<?>> configurationProviders) {
-        configurationProviders.add(AMOUNT_CONFIG_KEY);
+        configurationProviders.add(GolemConfigurationKey.Default.PRECISE_OR_ANY_AMOUNT_CONFIG_KEY);
         configurationProviders.add(MATCH_NBT_CONFIG_KEY);
         configurationProviders.add(MATCH_TAG_CONFIG_KEY);
     }

@@ -63,7 +63,8 @@ public class GoalResourceLocation extends VariedResourceLocation<Goal, GoalResou
     @Nullable
     public static GoalResourceLocation tryParse(String string) {
         try {
-            return new GoalResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return GoalResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

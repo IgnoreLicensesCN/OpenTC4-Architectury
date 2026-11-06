@@ -6,7 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 //oh even more AE2 tricks can be performed like "provide all items needed in a container"
-public interface IInfusionComponentStackProvider extends Container, ICubeChunkBasedWeakLookupOwner<IInfusionComponentStackProvider> {
+public interface IInfusionComponentStackProvider extends Container, ICoordLookupOwnerBlockEntity<IInfusionComponentStackProvider> {
     default @NotNull ItemStack storeReturningStack(@NotNull ItemStack stack){
         for (int i=0;i<getContainerSize();i++){
             if (stack.isEmpty()){

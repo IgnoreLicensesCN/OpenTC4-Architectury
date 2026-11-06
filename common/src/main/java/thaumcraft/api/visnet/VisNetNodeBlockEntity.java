@@ -1,8 +1,8 @@
 package thaumcraft.api.visnet;
 
-import com.google.common.collect.MapMaker;
+import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
-import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
+import com.linearity.opentc4.utils.collectionlike.coordlookups.CoordLookup;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor;
 import net.minecraft.core.BlockPos;
@@ -15,25 +15,18 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.lib.resourcelocations.VisNetNodeTypeResourceLocation;
-import thaumcraft.common.tiles.abstracts.ICubeChunkBasedWeakLookupOwner;
+import thaumcraft.common.tiles.abstracts.ICoordLookupOwnerBlockEntity;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static com.linearity.opentc4.Consts.TileVisNodeCompoundTagAccessors.PARENT_POS_ACCESSOR;
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
-import static thaumcraft.api.visnet.VisNetHandler.visNetNodeLookups;
 
-public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements ICubeChunkBasedWeakLookupOwner<VisNetNodeBlockEntity> {
+public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements ICoordLookupOwnerBlockEntity<VisNetNodeBlockEntity> {
     public static final int DEFAULT_RANGE = 8;
-    public static final Map<VisNetNodeTypeResourceLocation, Map<Level,CubeChunkedWeakLookups<VisNetNodeBlockEntity>>> DEFAULT_VIS_NET_NODE_LOOKUPS = new MapMaker().weakKeys().makeMap();
-    static {
-        visNetNodeLookups.add(DEFAULT_VIS_NET_NODE_LOOKUPS);
-    }
-    protected Map<VisNetNodeTypeResourceLocation, Map<Level,CubeChunkedWeakLookups<VisNetNodeBlockEntity>>> getVisNetNodeLookups() {
-        return DEFAULT_VIS_NET_NODE_LOOKUPS;
-    }
+
     public VisNetNodeBlockEntity(BlockEntityType<? extends VisNetNodeBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
@@ -192,22 +185,15 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements IC
             }
         };
         var selfPos = getBlockPos();
-        for (var lookupLevelledMap : visNetNodeLookups) {
-            if (lookupLevelledMap == null) continue;
-            var lookupTypedMap = getVisNetNodeLookups().get(SOURCE);
-            if (lookupTypedMap == null) continue;
-            var sourceLookup = lookupTypedMap.get(level);
-            if (sourceLookup != null) {
-                sourceLookup.forItemsNearPosWithRange(selfPos,chooseNodeInLoop,getRange());
-            }
-            if (probablyBestParent.get() == null){
-                var relayLookupLevelled = getVisNetNodeLookups().get(RELAY);
-                if (relayLookupLevelled != null) {
-                    var relayLookup = relayLookupLevelled.get(level);
-                    if (relayLookup != null) {
-                        relayLookup.forItemsNearPosWithRange(selfPos, chooseNodeInLoop, getRange());
-                    }
-                }
+        assert level != null;
+        for(var sourceLookup:((CoordLookupOwnerLevel)level).opentc4$getCoordLookupsForType(SOURCE)){
+            sourceLookup.forItemsNearPosWithRange(selfPos,chooseNodeInLoop,getRange());
+            break;
+        }
+        if (probablyBestParent.get() == null){
+            for (var relayLookup:((CoordLookupOwnerLevel)level).opentc4$getCoordLookupsForType(RELAY)){
+                relayLookup.forItemsNearPosWithRange(selfPos, chooseNodeInLoop, getRange());
+                break;
             }
         }
         this.parentPos = probablyBestParent.get().left().parentPos;
@@ -234,12 +220,20 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements IC
                 || anotherNode.getAttunement() == this.getAttunement();
     }
 
-    public abstract VisNetNodeTypeResourceLocation getVisNetNodeType();
+    public abstract VisNetNodeType getVisNetNodeType();
 
-    public static final VisNetNodeTypeResourceLocation SOURCE =
-            VisNetNodeTypeResourceLocation.of("thaumcraft","source");
-    public static final VisNetNodeTypeResourceLocation RELAY =
-            VisNetNodeTypeResourceLocation.of("thaumcraft","relay");
+    public static class VisNetNodeType extends CoordLookupOwnerLevel.CoordLookupTypeKey<VisNetNodeBlockEntity /*with VisNetNodeType*/ >{
+        public final VisNetNodeTypeResourceLocation id;
+        public VisNetNodeType(VisNetNodeTypeResourceLocation id) {
+            this.id = id;
+            ALL_VIS_NET_NODE_TYPES.add(this);
+        }
+        public static final Collection<VisNetNodeType> ALL_VIS_NET_NODE_TYPES = new CopyOnWriteArrayList<>();
+    }
+    public static final VisNetNodeType SOURCE =
+            new VisNetNodeType(VisNetNodeTypeResourceLocation.of("thaumcraft","source"));
+    public static final VisNetNodeType RELAY =
+            new VisNetNodeType(VisNetNodeTypeResourceLocation.of("thaumcraft","relay"));
 
     @Override
     public void setRemoved() {
@@ -259,12 +253,11 @@ public abstract class VisNetNodeBlockEntity extends TileThaumcraft implements IC
     }
 
     @Override
-    public @Nullable Map<Level, CubeChunkedWeakLookups<VisNetNodeBlockEntity>> getSelfLookupMap() {
-        return getVisNetNodeLookups()
-                .computeIfAbsent(
-                        getVisNetNodeType(),
-                        _ignored -> new MapMaker().weakKeys().makeMap()
-                );
+    public @NotNull CoordLookup<VisNetNodeBlockEntity> getSelfLookupInLevel(Level level) {
+        for (var result:((CoordLookupOwnerLevel)level).opentc4$getCoordLookupsForType(getVisNetNodeType())){
+            return result;
+        }
+        throw new IllegalStateException("Cannot get self lookup for type " + getVisNetNodeType().id + " in level " + level + " ,maybe you need to register a default one");
     }
 
     @Override

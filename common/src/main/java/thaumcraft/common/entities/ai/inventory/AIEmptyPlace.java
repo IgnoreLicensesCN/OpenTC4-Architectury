@@ -47,17 +47,17 @@ public class AIEmptyPlace extends EntityAIBase {
                      }
                   }
 
-                  if (InventoryUtils.getDoubleChest(tile) != null) {
-                     for(Integer side : GolemHelper.getMarkedSides(this.theGolem, tile, color)) {
-                        ItemStack is = InventoryUtils.placeItemStackIntoInventory(this.theGolem.itemCarried, InventoryUtils.getDoubleChest(tile), side, false);
-                        if (ItemStack.areItemStacksEqual(is, this.theGolem.itemCarried)) {
-                           this.xx = tile.xCoord;
-                           this.yy = tile.yCoord;
-                           this.zz = tile.zCoord;
-                           return true;
-                        }
-                     }
-                  }
+//                  if (InventoryUtils.getDoubleChest(tile) != null) {
+//                     for(Integer side : GolemHelper.getMarkedSides(this.theGolem, tile, color)) {
+//                        ItemStack is = InventoryUtils.placeItemStackIntoInventory(this.theGolem.itemCarried, InventoryUtils.getDoubleChest(tile), side, false);
+//                        if (ItemStack.areItemStacksEqual(is, this.theGolem.itemCarried)) {
+//                           this.xx = tile.xCoord;
+//                           this.yy = tile.yCoord;
+//                           this.zz = tile.zCoord;
+//                           return true;
+//                        }
+//                     }
+//                  }
                }
             }
          }

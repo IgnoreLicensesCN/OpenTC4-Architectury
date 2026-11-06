@@ -62,7 +62,8 @@ public class WandSpellEventTypeResourceLocation extends VariedResourceLocation<S
     @Nullable
     public static WandSpellEventTypeResourceLocation tryParse(String string) {
         try {
-            return new WandSpellEventTypeResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return WandSpellEventTypeResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

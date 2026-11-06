@@ -63,7 +63,8 @@ public class AspectResourceLocation extends VariedResourceLocation<Aspect, Aspec
     @Nullable
     public static AspectResourceLocation tryParse(String string) {
         try {
-            return new AspectResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return AspectResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

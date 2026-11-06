@@ -44,5 +44,10 @@ public class GolemConfigurationKey<ProviderClass extends GolemConfigurationProvi
                         GolemConfigurationResourceLocation.of(Thaumcraft.MOD_ID,"match_if_contain_same_tag_config"),
                         new GolemConfigurationProviderBooleanImpl(new BooleanTagAccessor("match_if_contain_same_tag_config"))
                 );
+        public static final GolemConfigurationKey<GolemConfigurationProviderBooleanImpl> PRECISE_OR_ANY_AMOUNT_CONFIG_KEY =
+                new GolemConfigurationKey<>(
+                        GolemConfigurationResourceLocation.of(Thaumcraft.MOD_ID,"precise_or_any_amount_config"),
+                        new GolemConfigurationProviderBooleanImpl(new BooleanTagAccessor("precise_or_any_amount_config"))
+                );
     }
 }

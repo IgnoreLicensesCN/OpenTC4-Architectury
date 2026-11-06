@@ -1,29 +1,20 @@
 package thaumcraft.common.items.golem.upgrade.core;
 
-import com.linearity.opentc4.utils.compoundtag.accessors.basic.BooleanTagAccessor;
-import lombok.AllArgsConstructor;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
 import thaumcraft.common.entities.golems.configuration.GolemConfigurationKey;
-import thaumcraft.common.entities.golems.configuration.providerimpl.basic.GolemConfigurationProviderBooleanImpl;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.configruable.IGolemConfigurationProviderFillerItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemItemStackMatcherModifierItem;
-import thaumcraft.common.lib.resourcelocations.GolemConfigurationResourceLocation;
+import thaumcraft.common.items.golem.upgrade.core.FillGolemCoreItem.TagBiItemMatcher;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiPredicate;
 
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_NBT_CONFIG_KEY;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_TAG_CONFIG_KEY;
 import static thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem.DefaultGoalsAndIDs.*;
+import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.PRECISE_OR_ANY_AMOUNT_CONFIG_KEY;
 //toggle 0:Precise amount/Any amount
 //(false/true)
 
@@ -33,13 +24,8 @@ public class EmptyGolemCoreItem
         AbstractGolemCoreItemWithGui
         implements
         IGolemItemStackMatcherModifierItem,
-        IGolemConfigurationProviderFillerItem//TODO:Impl NBT and tag matching and other options
+        IGolemConfigurationProviderFillerItem
 {
-    public static final GolemConfigurationKey<GolemConfigurationProviderBooleanImpl> AMOUNT_CONFIG_KEY =
-            new GolemConfigurationKey<>(
-                    GolemConfigurationResourceLocation.of(Thaumcraft.MOD_ID,"amount_config"),
-                    new GolemConfigurationProviderBooleanImpl(new BooleanTagAccessor("amount_config"))
-            );
     public EmptyGolemCoreItem() {
         super();
     }
@@ -59,7 +45,7 @@ public class EmptyGolemCoreItem
 
     @Override
     public void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, Set<GolemConfigurationKey<?>> configurationProviders) {
-        configurationProviders.add(AMOUNT_CONFIG_KEY);
+        configurationProviders.add(PRECISE_OR_ANY_AMOUNT_CONFIG_KEY);
         configurationProviders.add(MATCH_NBT_CONFIG_KEY);
         configurationProviders.add(MATCH_TAG_CONFIG_KEY);
     }
@@ -80,17 +66,5 @@ public class EmptyGolemCoreItem
             }
         }
         return (a,b) -> a.getItem() == b.getItem();
-    }
-
-    @AllArgsConstructor
-    public static class TagBiItemMatcher implements BiPredicate<ItemStack,ItemStack> {
-        public static final Map<ResourceLocation, TagBiItemMatcher> INSTANCES = new ConcurrentHashMap<>();
-        public final TagKey<Item> key;
-        public TagBiItemMatcher(ResourceLocation resLoc) {
-            this.key = TagKey.create(Registries.ITEM, resLoc);
-        }
-        public boolean test(ItemStack stackA, ItemStack stackB) {
-            return stackA.is(key) && stackB.is(key);
-        }
     }
 }

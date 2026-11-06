@@ -62,7 +62,8 @@ public class WandWaveAnimationResourceLocation extends VariedResourceLocation<St
     @Nullable
     public static WandWaveAnimationResourceLocation tryParse(String string) {
         try {
-            return new WandWaveAnimationResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return WandWaveAnimationResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

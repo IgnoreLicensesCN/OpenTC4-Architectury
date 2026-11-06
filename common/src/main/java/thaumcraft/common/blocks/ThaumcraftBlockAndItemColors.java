@@ -2,6 +2,7 @@ package thaumcraft.common.blocks;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.mixin.client.render.ModelPredicateProviderRegistryAccessor;
+import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
@@ -22,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static thaumcraft.common.items.ThaumcraftItemInstances.COMPASS_STONE;
 import static thaumcraft.common.items.ThaumcraftItemInstances.SANITY_CHECKER;
-import static thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity.ALL_NODES;
+import static thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity.COORD_LOOKUP_KEY_FOR_NODE;
 
 public class ThaumcraftBlockAndItemColors {
 
@@ -240,29 +241,33 @@ public class ThaumcraftBlockAndItemColors {
                         }
                     }
                     boolean finalHasGoggles = hasGoggles;
-                    ALL_NODES.get(clientLevel).forItemsNearPosWithBreakWithRange(
-                            livingEntity.blockPosition(),
-                            nodeBE -> {
-                                if (nodeBE.getNodeType() == NodeType.DARK){
-                                    var nodePos = nodeBE.getBlockPos();
+                    if (clientLevel != null){
+                        for (var lookup : ((CoordLookupOwnerLevel) clientLevel).opentc4$getCoordLookupsForType(COORD_LOOKUP_KEY_FOR_NODE)) {
+                            lookup.forItemsNearPosWithBreakWithRange(
+                                    livingEntity.blockPosition(),
+                                    nodeBE -> {
+                                        if (nodeBE.getNodeType() == NodeType.DARK) {
+                                            var nodePos = nodeBE.getBlockPos();
 
-                                    if (EntityUtils.isVisibleTo(
-                                            finalHasGoggles ? (float) Math.PI/2 //added to avoid players' anger
-                                            :0.66F,
-                                            livingEntity,
-                                            nodePos.getCenter(),
-                                            256.0F
-                                    )
-                                    ){
-                                        foundNode.set(true);//TODO:[maybe wont finished]"vote in democracy" to remove this "isVisible" condition needed
-                                        return true;
-                                    }
-                                }
-                                return false;
-                            },256
+                                            if (EntityUtils.isVisibleTo(
+                                                    finalHasGoggles ? (float) Math.PI / 2 //added to avoid players' anger
+                                                            : 0.66F,
+                                                    livingEntity,
+                                                    nodePos.getCenter(),
+                                                    256.0F
+                                            )
+                                            ) {
+                                                foundNode.set(true);//TODO:[maybe wont finished]"vote in democracy" to remove this "isVisible" condition needed
+                                                return true;
+                                            }
+                                        }
+                                        return false;
+                                    }, 256
                             );
-                    if (foundNode.get()) {
-                        return 1.0F;
+                            if (foundNode.get()) {
+                                return 1.0F;
+                            }
+                        }
                     }
                     return 0.0F;
                 });

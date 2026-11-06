@@ -63,7 +63,8 @@ public class NodeLockResourceLocation extends VariedResourceLocation<INodeLockBl
     @Nullable
     public static NodeLockResourceLocation tryParse(String string) {
         try {
-            return new NodeLockResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return NodeLockResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

@@ -40,7 +40,7 @@ public class VisNetRelayBlockEntity extends VisNetNodeBlockEntity implements IWa
     }
 
     @Override
-    public VisNetNodeTypeResourceLocation getVisNetNodeType() {
+    public VisNetNodeType getVisNetNodeType() {
         return RELAY;
     }
 

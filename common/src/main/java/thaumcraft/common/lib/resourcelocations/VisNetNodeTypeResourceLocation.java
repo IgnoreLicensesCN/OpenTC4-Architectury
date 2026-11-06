@@ -64,7 +64,8 @@ public class VisNetNodeTypeResourceLocation extends VariedResourceLocation<VisNe
     @Nullable
     public static VisNetNodeTypeResourceLocation tryParse(String string) {
         try {
-            return new VisNetNodeTypeResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return VisNetNodeTypeResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

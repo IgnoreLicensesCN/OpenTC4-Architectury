@@ -65,7 +65,8 @@ public class ScannedTypeResourceLocation extends VariedResourceLocation<String, 
     @Nullable
     public static ScannedTypeResourceLocation tryParse(String string) {
         try {
-            return new ScannedTypeResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return ScannedTypeResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

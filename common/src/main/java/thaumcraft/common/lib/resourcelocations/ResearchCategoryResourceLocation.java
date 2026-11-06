@@ -63,7 +63,8 @@ public class ResearchCategoryResourceLocation extends VariedResourceLocation<Res
     @Nullable
     public static ResearchCategoryResourceLocation tryParse(String string) {
         try {
-            return new ResearchCategoryResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return ResearchCategoryResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

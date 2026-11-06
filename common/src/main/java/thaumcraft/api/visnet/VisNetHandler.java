@@ -1,33 +1,30 @@
 package thaumcraft.api.visnet;
 
 import com.linearity.opentc4.annotations.forvalue.CentiVisAmount;
-import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
+import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.common.lib.resourcelocations.VisNetNodeTypeResourceLocation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static thaumcraft.api.visnet.VisNetNodeBlockEntity.VisNetNodeType.ALL_VIS_NET_NODE_TYPES;
 import static thaumcraft.common.lib.utils.Utils.generateVisEffect;
 
 public class VisNetHandler {
-    public static final Collection<
-            Map<
-                    VisNetNodeTypeResourceLocation,
-                    Map<
-                            Level,
-                            CubeChunkedWeakLookups<VisNetNodeBlockEntity>
-                            >
-                    >
-            > visNetNodeLookups
-            = new ArrayList<>();
+//    public static final Collection<
+//            Map<
+//                    VisNetNodeTypeResourceLocation,
+//                    Map<
+//                            Level,
+//                            CoordLookup<VisNetNodeBlockEntity>
+//                            >
+//                    >
+//            > visNetNodeLookups
+//            = new ArrayList<>();
 
     // NODE DRAINING
 
@@ -44,31 +41,28 @@ public class VisNetHandler {
      */
     public static @CentiVisAmount int drainCentiVis(Level world, BlockPos pos, Aspect aspect, int amount) {
         var drainedAmount = new AtomicInteger(0);
-        for (var typeAndMap : visNetNodeLookups) {
-            for (var entry : typeAndMap.entrySet()) {
-                var map = entry.getValue();
-                var lookup = map.get(world);
-                if (lookup != null) {
-                    lookup.forItemsNearPosWithBreak(
-                            pos, netNode -> {
+        for (var type : ALL_VIS_NET_NODE_TYPES) {
+            for (var lookup : ((CoordLookupOwnerLevel)world).opentc4$getCoordLookupsForType(type)) {
 
-                                var range = netNode.getRange();
-                                var nodePos = netNode.getBlockPos();
-                                if (range * range >= nodePos.distSqr(pos)) {
-                                    int requiredAmount = amount - drainedAmount.get();
-                                    int a = netNode.consumeCentiVis(aspect, requiredAmount);
-                                    requiredAmount = amount - drainedAmount.get();
-                                    drainedAmount.addAndGet(a);
-                                    if (a > 0) {
-                                        int color = aspect.color;
-                                        generateVisEffect(world, pos, nodePos, color);
-                                    }
-                                    return requiredAmount <= 0;
+                lookup.forItemsNearPosWithBreak(
+                        pos, netNode -> {
+
+                            var range = netNode.getRange();
+                            var nodePos = netNode.getBlockPos();
+                            if (range * range >= nodePos.distSqr(pos)) {
+                                int requiredAmount = amount - drainedAmount.get();
+                                int a = netNode.consumeCentiVis(aspect, requiredAmount);
+                                requiredAmount = amount - drainedAmount.get();
+                                drainedAmount.addAndGet(a);
+                                if (a > 0) {
+                                    int color = aspect.color;
+                                    generateVisEffect(world, pos, nodePos, color);
                                 }
-                                return false;
+                                return requiredAmount <= 0;
                             }
-                    );
-                }
+                            return false;
+                        }
+                );
             }
         }
         return drainedAmount.get();

@@ -63,7 +63,8 @@ public class DecorationOccupiedTypeResourceLocation extends VariedResourceLocati
     @Nullable
     public static DecorationOccupiedTypeResourceLocation tryParse(String string) {
         try {
-            return new DecorationOccupiedTypeResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return DecorationOccupiedTypeResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

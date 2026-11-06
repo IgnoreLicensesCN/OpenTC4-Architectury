@@ -1,4 +1,4 @@
-package com.linearity.opentc4.utils.collectionlike;
+package com.linearity.opentc4.utils.collectionlike.coordlookups;
 
 import com.google.common.collect.MapMaker;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 // i need to get some base station(for phone calling/positioning) from a database--
 // i need to lookup which is near the location i've pickup but i dont want to "forEach" all of them
 // so i want to separate them into parts and find in parts not all.
-public class CubeChunkedWeakLookups<StoreItem> {
+public class CubeChunkedWeakLookups<StoreItem> implements CoordLookup<StoreItem> {
     private final byte chunkSizeBits;
     private final int chunkSize;
     private final Long2ObjectMap<Int2ObjectMap<Collection<StoreItem>>> itemsContaining
@@ -35,6 +35,7 @@ public class CubeChunkedWeakLookups<StoreItem> {
         this.chunkSize = 1 << chunkSizeBits;
     }
 
+    @Override
     public void store(Vec3i pos, StoreItem value) {
         var xzKey = packInt(
                 compressIntIntoChunk(pos.getX()),
@@ -50,6 +51,7 @@ public class CubeChunkedWeakLookups<StoreItem> {
                 .add(value);
     }
 
+    @Override
     public void remove(Vec3i pos, StoreItem value) {
         var xzKey = packInt(
                 compressIntIntoChunk(pos.getX()),
@@ -80,10 +82,12 @@ public class CubeChunkedWeakLookups<StoreItem> {
     }
 
     //should i hope JIT optimizing instead of expanding?
+    @Override
     public void forItemsNearPos(Vec3i pos, Consumer<StoreItem> action) {
         forItemsNearPosWithRange(pos, action, chunkSize);
     }
 
+    @Override
     public void forItemsNearPosWithRange(Vec3i cubeCenterPos, Consumer<StoreItem> action, int halfLengthOfCube) {
         var posMin = cubeCenterPos.offset(-halfLengthOfCube, -halfLengthOfCube, -halfLengthOfCube);
         var posMax = cubeCenterPos.offset(halfLengthOfCube, halfLengthOfCube, halfLengthOfCube);
@@ -101,11 +105,13 @@ public class CubeChunkedWeakLookups<StoreItem> {
     }
 
     //true if broken(function returned true,you can consider this as calling break in for loop)
+    @Override
     @SuppressWarnings("UnusedReturnValue")
     public boolean forItemsNearPosWithBreak(Vec3i cubeCenterPos, Predicate<StoreItem> action) {
         return forItemsNearPosWithBreakWithRange(cubeCenterPos, action, chunkSize);
     }
 
+    @Override
     public boolean forItemsNearPosWithBreakWithRange(Vec3i cubeCenterPos, Predicate<StoreItem> action, int rangeManhattan) {
 
         var posMin = cubeCenterPos.offset(-rangeManhattan, -rangeManhattan, -rangeManhattan);
@@ -157,6 +163,4 @@ public class CubeChunkedWeakLookups<StoreItem> {
         }
         return false;
     }
-
-
 }

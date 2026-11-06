@@ -65,7 +65,8 @@ public class ClueResourceLocation extends VariedResourceLocation<String, ClueRes
     @Nullable
     public static ClueResourceLocation tryParse(String string) {
         try {
-            return new ClueResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return ClueResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

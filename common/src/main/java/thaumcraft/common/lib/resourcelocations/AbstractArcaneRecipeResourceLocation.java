@@ -63,7 +63,8 @@ public class AbstractArcaneRecipeResourceLocation extends VariedResourceLocation
     @Nullable
     public static AbstractArcaneRecipeResourceLocation tryParse(String string) {
         try {
-            return new AbstractArcaneRecipeResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return AbstractArcaneRecipeResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

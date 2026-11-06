@@ -1,7 +1,9 @@
 package thaumcraft.common.tiles.crafted;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.utils.collectionlike.CubeChunkedWeakLookups;
+import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
+import com.linearity.opentc4.utils.collectionlike.coordlookups.CoordLookup;
+import com.linearity.opentc4.utils.collectionlike.coordlookups.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -9,42 +11,40 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.ArcaneEarBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+import thaumcraft.common.tiles.abstracts.ICoordLookupOwnerBlockEntity;
+import thaumcraft.common.tiles.abstracts.IInfusionComponentStackProvider;
 
 import java.util.Map;
 
 import static com.linearity.opentc4.Consts.ArcaneEarTagAccessors.SHOULD_TICK_MASKS;
 
-public class ArcaneEarBlockEntity extends TileThaumcraft {
+public class ArcaneEarBlockEntity extends TileThaumcraft implements ICoordLookupOwnerBlockEntity<ArcaneEarBlockEntity> {
 
     public static final int TRIGGER_RANGE = 64;
     public static final int TRIGGER_RANGE_SQUARED = TRIGGER_RANGE * TRIGGER_RANGE;
-    public static final Map<Level, CubeChunkedWeakLookups<ArcaneEarBlockEntity>> earsForTriggerEvent = new MapMaker().weakKeys()
-            .makeMap();
+//    public static final Map<Level, CoordLookup<ArcaneEarBlockEntity>> earsForTriggerEvent = new MapMaker().weakKeys()
+//            .makeMap();
+public static final CoordLookupOwnerLevel.CoordLookupTypeKey<ArcaneEarBlockEntity> COORD_LOOKUP_KEY_FOR_ARCANE_EAR = new CoordLookupOwnerLevel.CoordLookupTypeKey<>();
 
     public ArcaneEarBlockEntity(BlockEntityType<? extends ArcaneEarBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
 
-    protected void storeToLookup(Level level) {
-        if (level != this.level) {
-            var pos = getBlockPos();
-            if (this.level != null) {
-                var lookup = earsForTriggerEvent.get(this.level);
-                if (lookup != null) {
-                    lookup.remove(pos, this);
-                }
-            }
-            if (level != null) {
-                earsForTriggerEvent.computeIfAbsent(
-                                level,
-                                _ignored -> new CubeChunkedWeakLookups<>((byte) 6)
-                        )
-                        .store(pos, this);
-            }
+    @Override
+    public @NotNull CoordLookup<ArcaneEarBlockEntity> getSelfLookupInLevel(Level level) {
+        for (var lookup:((CoordLookupOwnerLevel)level).opentc4$getCoordLookupsForType(COORD_LOOKUP_KEY_FOR_ARCANE_EAR)){
+            return lookup;
         }
+        throw new IllegalStateException("Where is my lookup?this should not happen!");
+    }
+
+    @Override
+    public @NotNull ArcaneEarBlockEntity getStoreItemForLookup() {
+        return this;
     }
 
     public ArcaneEarBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -53,21 +53,15 @@ public class ArcaneEarBlockEntity extends TileThaumcraft {
 
     @Override
     public void setLevel(Level level) {
-        storeToLookup(level);
+        registerToCubeLookup(level,this.level);
         super.setLevel(level);
     }
 
     @Override
     public void setRemoved() {
+        unregisterFromWeakLookup(this.level);
         super.setRemoved();
-        if (this.level != null) {
-            var lookup = earsForTriggerEvent.get(this.level);
-            if (lookup != null) {
-                lookup.remove(getBlockPos(), this);
-            }
-        }
     }
-
     public static final int TICK_DELAY = 10;
     public static final int TICK_DELAY_EVENT_MASK = 1 << TICK_DELAY;
     public static final int TICK_MASK = (1 << (TICK_DELAY + 1)) - 1;

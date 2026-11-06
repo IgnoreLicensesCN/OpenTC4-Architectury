@@ -64,7 +64,8 @@ public class InfusionRecipeResourceLocation extends AbstractRecipeResourceLocati
     @Nullable
     public static InfusionRecipeResourceLocation tryParse(String string) {
         try {
-            return new InfusionRecipeResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return InfusionRecipeResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

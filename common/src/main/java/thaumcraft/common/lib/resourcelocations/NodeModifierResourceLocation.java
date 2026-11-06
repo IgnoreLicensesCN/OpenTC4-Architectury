@@ -64,7 +64,8 @@ public class NodeModifierResourceLocation extends VariedResourceLocation<NodeMod
     @Nullable
     public static NodeModifierResourceLocation tryParse(String string) {
         try {
-            return new NodeModifierResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return NodeModifierResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

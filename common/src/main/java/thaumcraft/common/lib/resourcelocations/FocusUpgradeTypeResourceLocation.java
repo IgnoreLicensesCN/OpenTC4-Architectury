@@ -63,7 +63,8 @@ public class FocusUpgradeTypeResourceLocation extends VariedResourceLocation<Foc
     @Nullable
     public static FocusUpgradeTypeResourceLocation tryParse(String string) {
         try {
-            return new FocusUpgradeTypeResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return FocusUpgradeTypeResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }

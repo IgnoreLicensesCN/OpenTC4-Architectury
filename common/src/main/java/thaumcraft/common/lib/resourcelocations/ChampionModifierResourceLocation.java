@@ -67,7 +67,8 @@ public class ChampionModifierResourceLocation extends VariedResourceLocation<Cha
     @Nullable
     public static ChampionModifierResourceLocation tryParse(String string) {
         try {
-            return new ChampionModifierResourceLocation(string);
+            var decomposed = decompose(string, ':');
+            return ChampionModifierResourceLocation.of(decomposed[0],decomposed[1]);
         } catch (ResourceLocationException var2) {
             return null;
         }
