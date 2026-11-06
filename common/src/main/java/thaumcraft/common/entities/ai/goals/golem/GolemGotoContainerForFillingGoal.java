@@ -23,7 +23,8 @@ import java.util.function.BiPredicate;
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.config.Config.CONFIG_INSTANCE;
-import static thaumcraft.common.entities.golems.GolemHelper.*;
+import static thaumcraft.common.entities.golems.GolemHelper.getAmountNeededSmart;
+import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY;
 import static thaumcraft.common.items.golem.upgrade.core.FillGolemCoreItem.AMOUNT_CONFIG_KEY;
 
@@ -32,14 +33,14 @@ public class GolemGotoContainerForFillingGoal extends Goal {
     protected @NotNull ContainersWithGoodsIterator containersWithGoodsIterator;
     protected int tickRemaining = 0;
     protected BlockPos dest;
-    
+
     protected final ByteSet colorsTemp = new ByteArraySet(17);
 
     public GolemGotoContainerForFillingGoal(BaseGolemEntity golem) {
         this.golem = golem;
         this.containersWithGoodsIterator = new ContainersWithGoodsIterator(golem);
-        this.missingItemsIterableForPreciseAmount = new MissingItemsIterableForPreciseAmount(golem);
-        this.missingItemsIterableForAnyAmount = new MissingItemsIterableForAnyAmount(golem);
+        this.missingItemsIteratorForPreciseAmount = new MissingItemsIteratorForPreciseAmount(golem);
+        this.missingItemsIteratorForAnyAmount = new MissingItemsIteratorForAnyAmount(golem);
     }
 
 
@@ -97,6 +98,7 @@ public class GolemGotoContainerForFillingGoal extends Goal {
                 && this.golem.hasSomethingInInventoryOrHand()) {
             var iter = getMissingItemsIterator();
             iter.reset();
+
             while (iter.hasNext()) {
                 var itemMissing = iter.next();
                 {
@@ -106,17 +108,17 @@ public class GolemGotoContainerForFillingGoal extends Goal {
                             GolemTakeItemStackFromContainerGoal.GolemTakeItemStackFromContainerWatchingItemFakeFields::new
                     );
                     fakeFields.watchedItem = itemMissing;
-                    
+
                 }
                 colorsTemp.clear();
-                getColorsMatching(colorsTemp,golem, itemMissing);
+                getColorsMatching(colorsTemp, golem, itemMissing);
                 for (byte color : colorsTemp) {
                     containersWithGoodsIterator.resetWith(color);
                     double rangeMin = Double.MAX_VALUE;
                     BlockPos closestContainerPos = null;
                     while (containersWithGoodsIterator.hasNext()) {
                         var container = containersWithGoodsIterator.next();
-                        if (!(container instanceof BlockEntity blockEntity)){
+                        if (!(container instanceof BlockEntity blockEntity)) {
                             continue;
                         }
                         {
@@ -127,7 +129,7 @@ public class GolemGotoContainerForFillingGoal extends Goal {
                             BlockPos containerPos = blockEntity.getBlockPos();
                             double distanceSqr = containerPos.distToCenterSqr(this.golem.position());
                             if (distanceSqr < rangeMin
-                                    && distanceSqr <=  (dmod * dmod)
+                                    && distanceSqr <= (dmod * dmod)
                                     && !containerPos.equals(homeBEPos)
                             ) {
                                 rangeMin = distanceSqr;
@@ -135,6 +137,7 @@ public class GolemGotoContainerForFillingGoal extends Goal {
                             }
                         }
                     }
+                    containersWithGoodsIterator.reset();
 
 
                     if (closestContainerPos != null) {
@@ -146,11 +149,18 @@ public class GolemGotoContainerForFillingGoal extends Goal {
                                 dest.getZ() + 0.5,
                                 moveControl.getSpeedModifier()
                         );
-                        return true;
+                        {
+                            iter.reset();
+                            return true;
+                        }
                     }
-                    return false;
+                    {
+                        iter.reset();
+                        return false;
+                    }
                 }
             }
+            iter.reset();
             return false;
         }
         return false;
@@ -161,13 +171,16 @@ public class GolemGotoContainerForFillingGoal extends Goal {
         protected GolemHelper.MarkedContainerAndMarkerIterator markedIterator;
         protected @Nullable Container nextContainer = null;
         public byte color = 0;
+
         public ContainersWithGoodsIterator(BaseGolemEntity golem) {
             this.golem = golem;
-            this.markedIterator = new GolemHelper.MarkedContainerAndMarkerIterator(golem,(what,ever) -> true);
+            this.markedIterator = new GolemHelper.MarkedContainerAndMarkerIterator(golem, (what, ever) -> true);
         }
+
         public void reset() {
             this.markedIterator.reset();
         }
+
         public void resetWith(byte color) {
             reset();
             this.color = color;
@@ -175,17 +188,22 @@ public class GolemGotoContainerForFillingGoal extends Goal {
 
         @Override
         public boolean hasNext() {
-            if (nextContainer != null){
+            if (nextContainer != null) {
                 return true;
             }
             var golemStackMatcher = golem.getItemStackMatcher();
-            while (markedIterator.hasNext()){
+            while (markedIterator.hasNext()) {
                 var markedContainerInfo = markedIterator.next();
-                var markedContainer = markedContainerInfo.container;
+                var markedContainer = markedContainerInfo.container == null ? null : markedContainerInfo.container.get();
+                if (markedContainer == null) {
+                    continue;
+                }
                 var marker = markedContainerInfo.marker;
                 var side = marker.side.getOpposite();
-                for (var stackInGolem:golem.inventory){
-                    if (stackInGolem.isEmpty()){continue;}
+                for (var stackInGolem : golem.inventory) {
+                    if (stackInGolem.isEmpty()) {
+                        continue;
+                    }
                     if (InventoryUtils.extractStack(markedContainer, stackInGolem, side, golemStackMatcher, false) != null) {
                         nextContainer = markedContainer;
                         return true;
@@ -211,22 +229,22 @@ public class GolemGotoContainerForFillingGoal extends Goal {
                 golem.configurationProviders.contains(AMOUNT_CONFIG_KEY)
                         && AMOUNT_CONFIG_KEY.provider.getBooleanFrom(golem)
         ) {//Any amount
-            return missingItemsIterableForAnyAmount;
+            return missingItemsIteratorForAnyAmount;
         }
-        return missingItemsIterableForPreciseAmount;
+        return missingItemsIteratorForPreciseAmount;
     }
 
-    protected @NotNull MissingItemsIterableForPreciseAmount missingItemsIterableForPreciseAmount;
-    protected @NotNull MissingItemsIterableForAnyAmount missingItemsIterableForAnyAmount;
-    
+    protected @NotNull MissingItemsIteratorForPreciseAmount missingItemsIteratorForPreciseAmount;
+    protected @NotNull MissingItemsIteratorForAnyAmount missingItemsIteratorForAnyAmount;
+
     public static abstract class MissingItemsIterator implements Iterator<ItemStack>, GolemHelper.Resettable {
     }
 
-    public static class MissingItemsIterableForPreciseAmount extends MissingItemsIterator {
+    public static class MissingItemsIteratorForPreciseAmount extends MissingItemsIterator {
         protected BaseGolemEntity golem;
         protected int inventoryIndex;
 
-        public MissingItemsIterableForPreciseAmount(BaseGolemEntity golem) {
+        public MissingItemsIteratorForPreciseAmount(BaseGolemEntity golem) {
             this.golem = golem;
             reset();
         }
@@ -241,7 +259,7 @@ public class GolemGotoContainerForFillingGoal extends Goal {
             if (containerAtHome == null) {
                 return false;
             }
-            
+
             boolean fuzzyMatch = fuzzyMatch();
             var golemStackMatcher = golem.getItemStackMatcher();
             for (int i = inventoryIndex; i < golem.inventory.size(); i++) {
@@ -290,7 +308,7 @@ public class GolemGotoContainerForFillingGoal extends Goal {
                         continue;
                     }
                     inventoryIndex = i + 1;
-                    ItemStack ret = ((ExtendedItemStack)(Object)toCheckInGolemInventory).opentc4$copyAndShareTag();
+                    ItemStack ret = ((ExtendedItemStack) (Object) toCheckInGolemInventory).opentc4$copyAndShareTag();
                     ret.setCount(ret.getCount() - foundAmount);
                     return ret;
 //                        ItemStack ret = toCheckInGolemInventory.copy();
@@ -360,11 +378,11 @@ public class GolemGotoContainerForFillingGoal extends Goal {
         }
     }
 
-    public static class MissingItemsIterableForAnyAmount extends MissingItemsIterator {
+    public static class MissingItemsIteratorForAnyAmount extends MissingItemsIterator {
         protected BaseGolemEntity golem;
         protected int inventoryIndex;
 
-        public MissingItemsIterableForAnyAmount(BaseGolemEntity golem) {
+        public MissingItemsIteratorForAnyAmount(BaseGolemEntity golem) {
             this.golem = golem;
             reset();
         }
@@ -391,7 +409,7 @@ public class GolemGotoContainerForFillingGoal extends Goal {
                 ItemStack toCheck = golem.inventory.get(i);
                 if (!toCheck.isEmpty()) {
                     inventoryIndex = i + 1;//skip this since extracted
-                    return ((ExtendedItemStack)(Object)golem.inventory.get(i)).opentc4$copyAndShareTag();
+                    return ((ExtendedItemStack) (Object) golem.inventory.get(i)).opentc4$copyAndShareTag();
                 }
             }
             throw new IllegalStateException("No more missing items,call hasNext() first");

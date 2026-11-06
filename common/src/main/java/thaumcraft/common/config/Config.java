@@ -115,6 +115,12 @@ public class Config {
     public static int aspectTotalCap = 100;
     public static int golemDelay = 5;
     public static int golemIgnoreDelay = 10000;
+    public static int GOLEM_IGNORE_DELAY_TICKS = 200;
+
+    public int getGolemIgnoreDelayTicks() {
+        return GOLEM_IGNORE_DELAY_TICKS;
+    }
+
     public static int golemLinkQuality = 16;
     public static boolean CwardedStone = true;
     public static boolean CallowCheatSheet = true;

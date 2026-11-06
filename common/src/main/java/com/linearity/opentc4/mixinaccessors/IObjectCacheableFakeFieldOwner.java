@@ -124,9 +124,16 @@ public interface IObjectCacheableFakeFieldOwner {
         return ((IObjectCacheableFakeFieldOwner)entity).opentc4$getOrCreateCachedObjectFrom(clazz, supplier);
     }
     static <T> @Nullable T opentc4$getCachedObjectFrom(Entity entity, Class<T> clazz) {
-        return ((IObjectCacheableFakeFieldOwner)(Object)entity).opentc4$getCachedObjectFrom(clazz);
+        return ((IObjectCacheableFakeFieldOwner)entity).opentc4$getCachedObjectFrom(clazz);
     }
     static void opentc4$removeCachedObjectFrom(Entity entity,Class<?> clazz) {
-        ((IObjectCacheableFakeFieldOwner)(Object)entity).opentc4$removeCachedObjectFrom(clazz);
+        ((IObjectCacheableFakeFieldOwner)entity).opentc4$removeCachedObjectFrom(clazz);
+    }
+
+    static <T> void opentc4$putCachedObjectTo(ItemStack stack, Class<T> clazz,T instance) {
+        ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$putCachedObjectInto(clazz,instance);
+    }
+    static<T> void opentc4$putCachedObjectTo(Entity entity,Class<T> clazz,T instance) {
+        ((IObjectCacheableFakeFieldOwner)entity).opentc4$putCachedObjectInto(clazz,instance);
     }
 }

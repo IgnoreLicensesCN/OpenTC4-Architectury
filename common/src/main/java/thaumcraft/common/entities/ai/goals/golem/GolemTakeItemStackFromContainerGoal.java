@@ -3,9 +3,7 @@ package thaumcraft.common.entities.ai.goals.golem;
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
-import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +13,6 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.EnumSet;
-import java.util.Set;
 
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getCachedObjectFrom;
 import static thaumcraft.common.entities.golems.GolemHelper.*;
@@ -28,9 +25,10 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
 
     protected int cooldown = 0;
     protected final BaseGolemEntity golem;
-    public GolemTakeItemStackFromContainerGoal(BaseGolemEntity golem){
+
+    public GolemTakeItemStackFromContainerGoal(BaseGolemEntity golem) {
         this.golem = golem;
-        this.containerIterator = new MarkedContainerAndMarkerIterator(golem,DEFAULT_DISTANCE_PREDICATE);
+        this.containerIterator = new MarkedContainerAndMarkerIterator(golem, DEFAULT_DISTANCE_PREDICATE);
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
@@ -57,15 +55,15 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
         return cooldown > 0;
     }
 
-//    private final List<BlockEntity> containersTempList = new ArrayList<>();
+    //    private final List<BlockEntity> containersTempList = new ArrayList<>();
     protected @NotNull MarkedContainerAndMarkerIterator containerIterator;
     private final ByteSet colorsTemp = new ByteArraySet(17);
-    private final Set<Direction> sidesTemp = new ObjectArraySet<>(6);
+//    private final Set<Direction> sidesTemp = new ObjectArraySet<>(6);
 
-    private void clearCachesForStarting(){
+    private void clearCachesForStarting() {
 //        containersTempList.clear();
         colorsTemp.clear();
-        sidesTemp.clear();
+//        sidesTemp.clear();
     }
 
     @Override
@@ -87,31 +85,36 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
 //        getMarkedContainersWithinDefaultRangeAsBlockEntity(containersTempList,golem);
 
         boolean countLimited = false;
-        var configProvider = golem.configurationProviders.contains(AMOUNT_CONFIG_KEY)?AMOUNT_CONFIG_KEY.provider:null;
+        var configProvider = golem.configurationProviders.contains(AMOUNT_CONFIG_KEY) ? AMOUNT_CONFIG_KEY.provider : null;
         if (configProvider != null) {
             countLimited = configProvider.getBooleanFrom(golem);
         }
         containerIterator.reset();
+
         while (containerIterator.hasNext()) {
             var containerInfo = containerIterator.next();
-            var container = containerInfo.container;
-            var containerBE = containerInfo.blockEntity;
+            var container = containerInfo.container == null ? null : containerInfo.container.get();
+            var containerBE = containerInfo.blockEntity == null ? null : containerInfo.blockEntity.get();
+            if (containerBE == null || container == null) {
+                continue;
+            }
+
             var marker = containerInfo.marker;
             var side = marker.side.getOpposite();
 
             BlockPos containerPos = containerBE.getBlockPos();
             if (!containerPos.equals(homeAttachedBlockPos)) {
-                getColorsMatching(colorsTemp,golem, watchedItem);
-                for (var color:colorsTemp) {
-                    if (!marker.equalsFuzzy(containerBE.getBlockPos(),containerBE.getLevel().dimension().location(),null,color)){
+                getColorsMatching(colorsTemp, golem, watchedItem);
+                for (var color : colorsTemp) {
+                    if (!marker.equalsFuzzy(containerBE.getBlockPos(), containerBE.getLevel().dimension().location(), null, color)) {
                         continue;
                     }
 
                     ItemStack target = watchedItem.copy();
                     target.setCount(Math.min(target.getCount(),
                             countLimited
-                                    ?Math.min(this.golem.getCarryPower(),target.getMaxStackSize())
-                                    :this.golem.getCarryPower()));
+                                    ? Math.min(this.golem.getCarryPower(), target.getMaxStackSize())
+                                    : this.golem.getCarryPower()));
                     ItemStack result = InventoryUtils.extractStack(
                             container,
                             target,
@@ -137,11 +140,16 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
 //                            this.countChest = 5;
                         this.cooldown = 200;
                         fakeFields.watchedItem = ItemStack.EMPTY;
-                        return;
+                        {
+                            containerIterator.reset();
+                            return;
+                        }
                     }
                 }
             }
         }
+
+        containerIterator.reset();
     }
 
     @Override

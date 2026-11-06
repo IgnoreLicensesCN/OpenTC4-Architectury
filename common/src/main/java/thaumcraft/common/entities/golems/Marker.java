@@ -59,4 +59,7 @@ public class Marker {
    public boolean equalsFuzzy(Vec3i blockPos, ResourceLocation dimResLoc, @Nullable("null -> any") Direction side, byte color) {
       return equalsFuzzy(blockPos.getX(),blockPos.getY(),blockPos.getZ(),dimResLoc,side,color);
    }
+   public boolean colorEqualsFuzzy(byte color) {
+      return this.color == color || this.color == INVALID_MARKER_COLOR || color == INVALID_MARKER_COLOR;
+   }
 }
