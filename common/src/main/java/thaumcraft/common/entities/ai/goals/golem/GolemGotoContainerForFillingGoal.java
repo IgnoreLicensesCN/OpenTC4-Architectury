@@ -7,12 +7,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.WorldlyContainer;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.GolemTakeItemStackFromContainerGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.lib.utils.InventoryUtils;
@@ -28,19 +28,15 @@ import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.PRECISE_OR_ANY_AMOUNT_CONFIG_KEY;
 
-public class GolemGotoContainerForFillingGoal extends Goal {
-    protected final BaseGolemEntity golem;
-    protected @NotNull ContainersWithGoodsIterator containersWithGoodsIterator;
+public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
+    protected @NotNull ContainersWithGoodsIterator containersWithGoodsIterator = new ContainersWithGoodsIterator(golem);
     protected int tickRemaining = 0;
     protected BlockPos dest;
 
     protected final ByteSet colorsTemp = new ByteArraySet(17);
 
     public GolemGotoContainerForFillingGoal(BaseGolemEntity golem) {
-        this.golem = golem;
-        this.containersWithGoodsIterator = new ContainersWithGoodsIterator(golem);
-        this.missingItemsIteratorForPreciseAmount = new MissingItemsIteratorForPreciseAmount(golem);
-        this.missingItemsIteratorForAnyAmount = new MissingItemsIteratorForAnyAmount(golem);
+        super(golem);
     }
 
 
@@ -122,9 +118,7 @@ public class GolemGotoContainerForFillingGoal extends Goal {
                             continue;
                         }
                         {
-                            var homePos = this.golem.getRestrictCenter();
-                            var facing = golem.homeDirection;
-                            var homeBEPos = homePos.relative(facing.getOpposite());
+                            var homeBEPos = golem.getHomeAttachedBlockPos();
                             float dmod = this.golem.getHomeRange();
                             BlockPos containerPos = blockEntity.getBlockPos();
                             double distanceSqr = containerPos.distToCenterSqr(this.golem.position());
@@ -167,7 +161,7 @@ public class GolemGotoContainerForFillingGoal extends Goal {
     }
 
     public static class ContainersWithGoodsIterator implements Iterator<Container>, GolemHelper.Resettable {
-        protected BaseGolemEntity golem;
+        protected final BaseGolemEntity golem;
         protected GolemHelper.MarkedContainerAndMarkerIterator markedIterator;
         protected @Nullable Container nextContainer = null;
         public byte color = 0;
@@ -234,14 +228,14 @@ public class GolemGotoContainerForFillingGoal extends Goal {
         return missingItemsIteratorForPreciseAmount;
     }
 
-    protected @NotNull MissingItemsIteratorForPreciseAmount missingItemsIteratorForPreciseAmount;
-    protected @NotNull MissingItemsIteratorForAnyAmount missingItemsIteratorForAnyAmount;
+    protected @NotNull MissingItemsIteratorForPreciseAmount missingItemsIteratorForPreciseAmount = new MissingItemsIteratorForPreciseAmount(golem);
+    protected @NotNull MissingItemsIteratorForAnyAmount missingItemsIteratorForAnyAmount = new MissingItemsIteratorForAnyAmount(golem);
 
     public static abstract class MissingItemsIterator implements Iterator<ItemStack>, GolemHelper.Resettable {
     }
 
     public static class MissingItemsIteratorForPreciseAmount extends MissingItemsIterator {
-        protected BaseGolemEntity golem;
+        protected final BaseGolemEntity golem;
         protected int inventoryIndex;
 
         public MissingItemsIteratorForPreciseAmount(BaseGolemEntity golem) {
@@ -328,7 +322,7 @@ public class GolemGotoContainerForFillingGoal extends Goal {
                 BiPredicate<ItemStack, ItemStack> golemStackMatcher
         ) {
             if (containerAtHome instanceof WorldlyContainer worldlyContainer /*&& facing.ordinal() > -1*/) {
-                int[] canAccessSlots = worldlyContainer.getSlotsForFace(golem.homeDirection);
+                int[] canAccessSlots = worldlyContainer.getSlotsForFace(golem.homeDirection.getOpposite());
 
                 for (int canAccessSlotIndex : canAccessSlots) {
                     ItemStack consideringStack = worldlyContainer.getItem(canAccessSlotIndex);
@@ -367,9 +361,7 @@ public class GolemGotoContainerForFillingGoal extends Goal {
         }
 
         protected @Nullable Container getHomeContainer() {
-            var homePos = this.golem.getRestrictCenter();
-            var facing = golem.homeDirection;
-            var bePos = homePos.relative(facing.getOpposite());
+            var bePos = golem.getHomeAttachedBlockPos();
             var be = getExistingBlockEntity(golem.level(), bePos);
             if (be instanceof Container container) {
                 return container;
@@ -379,7 +371,7 @@ public class GolemGotoContainerForFillingGoal extends Goal {
     }
 
     public static class MissingItemsIteratorForAnyAmount extends MissingItemsIterator {
-        protected BaseGolemEntity golem;
+        protected final BaseGolemEntity golem;
         protected int inventoryIndex;
 
         public MissingItemsIteratorForAnyAmount(BaseGolemEntity golem) {

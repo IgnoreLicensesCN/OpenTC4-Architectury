@@ -12,6 +12,7 @@ package thaumcraft.common.entities.ai.inventory;
 //import thaumcraft.common.lib.utils.InventoryUtils;
 
 //GolemTakeItemStackFromContainerGoal
+@Deprecated(forRemoval = true)
 public class AIFillTake /*extends EntityAIBase*/ {
 //   private EntityGolemBase theGolem;
 //   private int countChest = 0;

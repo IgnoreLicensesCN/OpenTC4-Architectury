@@ -214,8 +214,8 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //            this.tasks.addTask(4, new AIFillGoto(this));
             break;
          case 1:
-            this.tasks.addTask(0, new AIHomeReplace(this));
-            this.tasks.addTask(1, new AIEmptyPlace(this));
+//            this.tasks.addTask(0, new AIHomeReplace(this));
+//            this.tasks.addTask(1, new AIEmptyPlace(this));
             this.tasks.addTask(2, new AIEmptyDrop(this));
             this.tasks.addTask(3, new AIEmptyGoto(this));
             this.tasks.addTask(4, new AIHomeTake(this));

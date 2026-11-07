@@ -111,29 +111,32 @@ public interface IObjectCacheableFakeFieldOwner {
         }
         return cached;
     }
-    static <T> T opentc4$getOrCreateCachedObjectFrom(ItemStack stack, Class<T> clazz, Supplier<T> supplier) {
+    static <T extends FakeFieldAttachable<ItemStack>> T opentc4$getOrCreateCachedObjectFrom(ItemStack stack, Class<T> clazz, Supplier<T> supplier) {
         return ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$getOrCreateCachedObjectFrom(clazz, supplier);
     }
-    static <T> @Nullable T opentc4$getCachedObjectFrom(ItemStack stack, Class<T> clazz) {
+    static <T extends FakeFieldAttachable<ItemStack>> @Nullable T opentc4$getCachedObjectFrom(ItemStack stack, Class<T> clazz) {
         return ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$getCachedObjectFrom(clazz);
+    }
+
+    static <T extends FakeFieldAttachable<ItemStack>> void opentc4$putCachedObjectTo(ItemStack stack, Class<T> clazz,T instance) {
+        ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$putCachedObjectInto(clazz,instance);
     }
     static void opentc4$removeCachedObjectFrom(ItemStack stack, Class<?> clazz) {
         ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$removeCachedObjectFrom(clazz);
     }
-    static <T> T opentc4$getOrCreateCachedObjectFrom(Entity entity, Class<T> clazz, Supplier<T> supplier) {
+
+    static <T extends FakeFieldAttachable<E>,E extends Entity> T opentc4$getOrCreateCachedObjectFrom(E entity, Class<T> clazz, Supplier<T> supplier) {
         return ((IObjectCacheableFakeFieldOwner)entity).opentc4$getOrCreateCachedObjectFrom(clazz, supplier);
     }
-    static <T> @Nullable T opentc4$getCachedObjectFrom(Entity entity, Class<T> clazz) {
+    static <T extends FakeFieldAttachable<E>,E extends Entity> @Nullable T opentc4$getCachedObjectFrom(E entity, Class<T> clazz) {
         return ((IObjectCacheableFakeFieldOwner)entity).opentc4$getCachedObjectFrom(clazz);
     }
     static void opentc4$removeCachedObjectFrom(Entity entity,Class<?> clazz) {
         ((IObjectCacheableFakeFieldOwner)entity).opentc4$removeCachedObjectFrom(clazz);
     }
-
-    static <T> void opentc4$putCachedObjectTo(ItemStack stack, Class<T> clazz,T instance) {
-        ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$putCachedObjectInto(clazz,instance);
-    }
-    static<T> void opentc4$putCachedObjectTo(Entity entity,Class<T> clazz,T instance) {
+    static<T extends FakeFieldAttachable<E>,E extends Entity> void opentc4$putCachedObjectTo(E entity,Class<T> clazz,T instance) {
         ((IObjectCacheableFakeFieldOwner)entity).opentc4$putCachedObjectInto(clazz,instance);
     }
+
+    interface FakeFieldAttachable<C>{}
 }

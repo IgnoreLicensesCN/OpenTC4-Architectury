@@ -1,35 +1,31 @@
-package thaumcraft.common.entities.ai.goals.golem;
+package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction;
 
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
+import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.common.entities.ai.goals.golem.AbstractGolemGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.lib.utils.InventoryUtils;
-
-import java.util.EnumSet;
 
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getCachedObjectFrom;
 import static thaumcraft.common.entities.golems.GolemHelper.*;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.PRECISE_OR_ANY_AMOUNT_CONFIG_KEY;
 
-public class GolemTakeItemStackFromContainerGoal extends Goal {
-    public static class GolemTakeItemStackFromContainerWatchingItemFakeFields {
+public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
+    public static class GolemTakeItemStackFromContainerWatchingItemFakeFields implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<BaseGolemEntity> {
         public @NotNull ItemStack watchedItem = ItemStack.EMPTY;
     }
 
     protected int cooldown = 0;
-    protected final BaseGolemEntity golem;
 
     public GolemTakeItemStackFromContainerGoal(BaseGolemEntity golem) {
-        this.golem = golem;
-        this.containerIterator = new MarkedContainerAndMarkerIterator(golem, DEFAULT_DISTANCE_PREDICATE);
-        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        super(golem);
     }
 
     @Override
@@ -56,7 +52,7 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
     }
 
     //    private final List<BlockEntity> containersTempList = new ArrayList<>();
-    protected @NotNull MarkedContainerAndMarkerIterator containerIterator;
+    protected @NotNull MarkedContainerAndMarkerIterator containerIterator = new MarkedContainerAndMarkerIterator(golem, DEFAULT_DISTANCE_PREDICATE);
     private final ByteSet colorsTemp = new ByteArraySet(17);
 //    private final Set<Direction> sidesTemp = new ObjectArraySet<>(6);
 
@@ -69,10 +65,7 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
     @Override
     public void start() {
         super.start();
-
-        var homePos = this.golem.getRestrictCenter();
-        var facing = golem.homeDirection;
-        var homeAttachedBlockPos = homePos.relative(facing.getOpposite());
+        var homeAttachedBlockPos = golem.getHomeAttachedBlockPos();
         clearCachesForStarting();
         var fakeFields = opentc4$getCachedObjectFrom(golem, GolemTakeItemStackFromContainerWatchingItemFakeFields.class);
         if (fakeFields == null) {
@@ -106,7 +99,7 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
             if (!containerPos.equals(homeAttachedBlockPos)) {
                 getColorsMatching(colorsTemp, golem, watchedItem);
                 for (var color : colorsTemp) {
-                    if (!marker.equalsFuzzy(containerBE.getBlockPos(), containerBE.getLevel().dimension().location(), null, color)) {
+                    if (!marker.equalsFuzzy(containerBE.getBlockPos(), golem.level().dimension().location(), null, color)) {
                         continue;
                     }
 
@@ -121,9 +114,6 @@ public class GolemTakeItemStackFromContainerGoal extends Goal {
                             side,
                             golem.getItemStackMatcher(),
                             true);
-//                        if (result == null && InventoryUtils.getDoubleChest(tile) != null) {
-//                            result = InventoryUtils.extractStack(InventoryUtils.getDoubleChest(tile), target, side, this.theGolem.checkOreDict(), this.theGolem.ignoreDamage(), this.theGolem.ignoreNBT(), true);
-//                        }
 
                     if (result != null) {
                         this.golem.setItemInHand(InteractionHand.MAIN_HAND, ExtendedItemStack.splitAll(result));

@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.golems.configuration.providerimpl.basic;
 
+import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.FloatTagAccessor;
 import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
@@ -25,7 +26,7 @@ public class GolemConfigurationProviderFloatImpl extends GolemConfigurationProvi
             internalMap.put(provider,value);
         }
     }
-    public static class GolemConfigurationsFakeFields {
+    public static class GolemConfigurationsFakeFields implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<BaseGolemEntity> {
         public ProviderImplToValueMap configurationValueMap = new ProviderImplToValueMap();
     }
 

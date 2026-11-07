@@ -14,9 +14,6 @@ import java.util.function.BiPredicate;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_NBT_CONFIG_KEY;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_TAG_CONFIG_KEY;
 import static thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem.DefaultGoalsAndIDs.*;
-import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.PRECISE_OR_ANY_AMOUNT_CONFIG_KEY;
-//toggle 0:Precise amount/Any amount
-//(false/true)
 
 //ItemGolemCore:0
 public class EmptyGolemCoreItem
@@ -37,7 +34,7 @@ public class EmptyGolemCoreItem
     public void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GolemGoalSelector goalSelector, GolemGoalSelector targetSelector) {
         super.registerGoalForGolem(golem, upgradeStack, goalSelector, targetSelector);
         goalSelector.addGoalIfNotExist(0,EMPTY_CORE_PLACE_ITEM_STACK_HOME,EMPTY_CORE_PLACE_ITEM_STACK_HOME_GOAL_PROVIDER,golem);
-        //AIEmptyPlace
+        goalSelector.addGoalIfNotExist(1,PLACE_ITEM_STACK_TO_MARKED_CONTAINER,PLACE_ITEM_STACK_TO_MARKED_CONTAINER_GOAL_PROVIDER,golem);
         //AIEmptyDrop
         //AIEmptyGoto
         //AIHomeTake
@@ -45,7 +42,6 @@ public class EmptyGolemCoreItem
 
     @Override
     public void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, Set<GolemConfigurationKey<?>> configurationProviders) {
-        configurationProviders.add(PRECISE_OR_ANY_AMOUNT_CONFIG_KEY);
         configurationProviders.add(MATCH_NBT_CONFIG_KEY);
         configurationProviders.add(MATCH_TAG_CONFIG_KEY);
     }

@@ -1,5 +1,6 @@
-package thaumcraft.common.entities.ai.goals.golem;
+package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction;
 
+import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import net.minecraft.core.BlockPos;
@@ -13,16 +14,15 @@ import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;
 
 public class GolemEmptyCorePlaceItemStackToHomeGoal extends GolemPlaceItemStackToHomeGoalWithItemStackTickMark {
 
-    protected GolemHelper.ContainersWithRoomIterator containersWithRoomIterator;
+    protected GolemHelper.ContainersWithRoomIterator containersWithRoomIterator = new GolemHelper.ContainersWithRoomIterator(golem);
     public GolemEmptyCorePlaceItemStackToHomeGoal(BaseGolemEntity golem) {
         super(golem);
-        this.containersWithRoomIterator = new GolemHelper.ContainersWithRoomIterator(golem);
     }
     protected boolean canUseAdditional(){
       return !findSomethingEmptyCore(this.golem, this.golem.getMainHandItem(),containersWithRoomIterator);
     }
 
-    public static class FindSomethingEmptyCoreFakeField {
+    public static class FindSomethingEmptyCoreFakeField implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<BaseGolemEntity> {
         public final ByteSet colorsTemp = new ByteArraySet(17);
     }
     public static boolean findSomethingEmptyCore(
@@ -35,9 +35,9 @@ public class GolemEmptyCorePlaceItemStackToHomeGoal extends GolemPlaceItemStackT
 
         double golemRangeSq = golem.getHomeRange();
         golemRangeSq *= golemRangeSq;
-        var golemHomeBEPos = golem.getRestrictCenter().relative(golem.homeDirection.getOpposite());
-        for(byte color : fakeField.colorsTemp) {
-            containersWithRoomIterator.resetWith(itemToMatch,color);
+        var golemHomeBEPos = golem.getHomeAttachedBlockPos();
+//        for(byte color : fakeField.colorsTemp) {
+            containersWithRoomIterator.resetWith(itemToMatch/*,color*/);
             while (containersWithRoomIterator.hasNext()){
                 var containerInfo = containersWithRoomIterator.next();
                 var container = containerInfo.container == null ? null : containerInfo.container.get();
@@ -46,7 +46,7 @@ public class GolemEmptyCorePlaceItemStackToHomeGoal extends GolemPlaceItemStackT
                     continue;
                 }
                 var marker = containerInfo.marker;
-                if (!marker.colorEqualsFuzzy(color)) {
+                if (!marker.colorEqualsFuzzy(/*color*/fakeField.colorsTemp)) {
                     continue;
                 }
                 BlockPos containerBEPos = containerBE.getBlockPos();
@@ -57,14 +57,14 @@ public class GolemEmptyCorePlaceItemStackToHomeGoal extends GolemPlaceItemStackT
                 }
             }
             containersWithRoomIterator.reset();
-        }
+//        }
         var fakeFieldToSetTickDelay = opentc4$getCachedObjectFrom(itemToMatch, ItemStackPlaceToHomeTickMarkFakeFields.class);
         if (fakeFieldToSetTickDelay == null){
             fakeFieldToSetTickDelay =  new ItemStackPlaceToHomeTickMarkFakeFields(
                     golem.getId(),
                     golem.tickCount + Config.CONFIG_INSTANCE.getGolemIgnoreDelayTicks()
             );
-            opentc4$putCachedObjectTo(golem,ItemStackPlaceToHomeTickMarkFakeFields.class,fakeFieldToSetTickDelay);
+            opentc4$putCachedObjectTo(itemToMatch,ItemStackPlaceToHomeTickMarkFakeFields.class,fakeFieldToSetTickDelay);
         }
         return false;
     }

@@ -1,5 +1,6 @@
-package thaumcraft.common.entities.ai.goals.golem;
+package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction;
 
+import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
 import lombok.AllArgsConstructor;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
@@ -15,7 +16,7 @@ public class GolemPlaceItemStackToHomeGoalWithItemStackTickMark extends GolemPla
 
 
     @AllArgsConstructor
-    public static class ItemStackPlaceToHomeTickMarkFakeFields {
+    public static class ItemStackPlaceToHomeTickMarkFakeFields implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<ItemStack> {
         public int golemID;
         public int placeBeforeTickCount;
     }

@@ -78,7 +78,7 @@ public class WorldGenHilltopStones extends WorldGenerator {
                            ChestGenHooks info1 = ChestGenHooks.getInfo("dungeonChest");
                            ChestGenHooks info2 = ChestGenHooks.getInfo("dungeonChest");
                            world.setBlock(x, j + y + 1, z, Blocks.chest, 0, 3);
-                           BlockEntityChest chest = (BlockEntityChest)world.getBlockEntity(x, j + y + 1, z);
+                           BlockEntityChest chest = (BlockEntityChest)getExistingBlockEntity(world,x, j + y + 1, z);
                            if (chest != null) {
                               WeightedRandomChestContent.generateChestContents(rand, info1.getItems(rand), chest, info1.getCount(rand));
                               WeightedRandomChestContent.generateChestContents(rand, info2.getItems(rand), chest, info2.getCount(rand));

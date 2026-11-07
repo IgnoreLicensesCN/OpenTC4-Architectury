@@ -3,16 +3,12 @@ package thaumcraft.common.entities.ai.goals.golem;
 import com.linearity.opentc4.annotations.StoleFrom;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.goal.Goal;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.IGolemRangedAttackPerformerItem;
 
-import java.util.EnumSet;
-
 @StoleFrom("net.minecraft.world.entity.ai.goal.RangedAttackGoal")
-public class GolemRangedAttackGoal extends Goal {
-    protected final BaseGolemEntity golem;
+public class GolemRangedAttackGoal extends AbstractGolemGoal {
     @Nullable
     protected LivingEntity target;
     protected final double speedModifier;
@@ -32,7 +28,7 @@ public class GolemRangedAttackGoal extends Goal {
         this(golem, speedModifier,3,seeTimeRequired);
     }
     public GolemRangedAttackGoal(BaseGolemEntity golem, double speedModifier, float attackRadiusMin/*, float attackRadiusMax*/, int seeTimeRequired) {
-        this.golem = golem;
+        super(golem);
         this.speedModifier = speedModifier;
         this.attackRadiusMin = attackRadiusMin;
         this.attackRadiusMinSqr = this.attackRadiusMin * this.attackRadiusMin;
@@ -41,7 +37,6 @@ public class GolemRangedAttackGoal extends Goal {
 
 //        this.attackRadiusMid = (this.attackRadiusMax + this.attackRadiusMin) / 2F;
         this.seeTimeRequired = seeTimeRequired;
-        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     protected float getAttackRadiusMax(){

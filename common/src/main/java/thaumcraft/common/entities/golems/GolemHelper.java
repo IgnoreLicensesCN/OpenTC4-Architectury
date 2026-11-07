@@ -85,7 +85,7 @@ public class GolemHelper {
 //            return true;
 //         }
       }
-      protected BaseGolemEntity golem;
+      protected final BaseGolemEntity golem;
       protected @Nullable Iterator<Marker> markers;
       protected @NotNull ResultWrapperField resultCache = new ResultWrapperField();
       public @NotNull BiPredicate<BaseGolemEntity /*the one above*/ ,BlockEntity /*impl Container*/ > containerPredicate;
@@ -158,7 +158,7 @@ public class GolemHelper {
    }
 
    public static class MarkedContainerIterator implements Iterator<Container>,Resettable {
-      protected BaseGolemEntity golem;
+      protected final BaseGolemEntity golem;
       protected @Nullable Iterator<Marker> markers;
       protected Container nextContainerCache;
       public @NotNull BiPredicate<BaseGolemEntity /*the one above*/ ,BlockEntity /*impl Container*/ > containerPredicate;
@@ -323,10 +323,10 @@ public class GolemHelper {
    public static class ContainersWithRoomIterator implements Iterator<ContainersWithRoomIterator.ResultWrapperField>,Resettable {
       public static class ResultWrapperField extends MarkedContainerAndMarkerIterator.ResultWrapperField {
       }
-      protected BaseGolemEntity golem;
+      protected final BaseGolemEntity golem;
       protected MarkedContainerAndMarkerIterator markedContainerIterator;
       protected ResultWrapperField cache = new ResultWrapperField();
-      protected byte matchingColor = INVALID_MARKER_COLOR;
+//      protected byte matchingColor = INVALID_MARKER_COLOR;
       protected WeakReference<ItemStack> matchingStackRef = new WeakReference<>(ItemStack.EMPTY);
       public ContainersWithRoomIterator(BaseGolemEntity golem) {
          this.golem = golem;
@@ -336,22 +336,22 @@ public class GolemHelper {
       public void reset() {
          markedContainerIterator.reset();
          matchingStackRef = null;
-         matchingColor = 0;
+//         matchingColor = 0;
          cache.container = null;
          cache.blockEntity = null;
          cache.marker = null;
       }
 
-      public void resetWith(byte color){
-         markedContainerIterator.reset();
-         matchingStackRef = null;
-         matchingColor = color;
-      }
+//      public void resetWith(byte color){
+//         markedContainerIterator.reset();
+//         matchingStackRef = null;
+//         matchingColor = color;
+//      }
 
-      public void resetWith(ItemStack stackToMatch,byte color){
+      public void resetWith(ItemStack stackToMatch/*,byte color*/){
          markedContainerIterator.reset();
          matchingStackRef = new WeakReference<>(stackToMatch);
-         matchingColor = color;
+//         matchingColor = color;
       }
 
       @Override
@@ -371,9 +371,9 @@ public class GolemHelper {
                continue;
             }
             var marker = containerInfo.marker;
-            if (!marker.colorEqualsFuzzy(matchingColor)){
-               continue;
-            }
+//            if (!marker.colorEqualsFuzzy(matchingColor)){
+//               continue;
+//            }
             var matchingStack = matchingStackRef == null ? null : matchingStackRef.get();
             if (matchingStack == null) {
                matchingStack = golem.getMainHandItem();

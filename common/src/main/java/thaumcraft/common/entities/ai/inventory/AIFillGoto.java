@@ -18,6 +18,7 @@ package thaumcraft.common.entities.ai.inventory;
 //import java.util.List;
 
 //GolemGotoContainerForFillingGoal
+@Deprecated(forRemoval = true)
 public class AIFillGoto /*extends EntityAIBase*/ {
 //    private EntityGolemBase theGolem;
 //    private double movePosX;

@@ -4,6 +4,7 @@ import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.annotations.ModifyingFakeFieldAsResult;
 import com.linearity.opentc4.annotations.ReturnValueFakeFieldOf;
+import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import org.jetbrains.annotations.Unmodifiable;
@@ -96,7 +97,7 @@ public class WandCastingItem extends Item
         return WAND_ROD_ACCESSOR.readFromCompoundTagWithoutCopyCache(tag);
     }
 
-    public static class WandCastingItemCachedObjectsForItemStack {
+    public static class WandCastingItemCachedObjectsForItemStack implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<ItemStack> {
         public static final Supplier<WandCastingItemCachedObjectsForItemStack> SUPPLIER = () -> new WandCastingItemCachedObjectsForItemStack(
                 new ArrayList<>(3)
         );

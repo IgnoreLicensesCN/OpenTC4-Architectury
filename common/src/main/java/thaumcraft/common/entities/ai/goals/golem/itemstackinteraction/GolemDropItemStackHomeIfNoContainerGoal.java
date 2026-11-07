@@ -1,25 +1,20 @@
-package thaumcraft.common.entities.ai.goals.golem;
+package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction;
 
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import thaumcraft.common.entities.ai.goals.golem.AbstractGolemGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
-
-import java.util.EnumSet;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.entities.golems.BaseGolemEntity.BaseGolemEntityClientEventSignals.START_ACTION_TIMER;
 
-public class GolemDropItemStackHomeIfNoContainerGoal extends Goal {
+public class GolemDropItemStackHomeIfNoContainerGoal extends AbstractGolemGoal {
     public GolemDropItemStackHomeIfNoContainerGoal(BaseGolemEntity golem) {
-        this.golem = golem;
-        setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        super(golem);
     }
-
-    protected final BaseGolemEntity golem;
 
     @Override
     public boolean canUse() {
@@ -29,9 +24,7 @@ public class GolemDropItemStackHomeIfNoContainerGoal extends Goal {
         }
         if (golem.getRestrictCenter().distToCenterSqr(golem.position()) < maxToHomeDistanceSquaredToExecute() 
                 && golem.level().dimension().location().equals(golem.homeLevelResourceLocation)){
-            var homePos = this.golem.getRestrictCenter();
-            var facing = golem.homeDirection;
-            var bePos = homePos.relative(facing.getOpposite());
+            var bePos = golem.getHomeAttachedBlockPos();
             var be = getExistingBlockEntity(golem.level(),bePos);
             return !(be instanceof Container);
         }
@@ -51,9 +44,7 @@ public class GolemDropItemStackHomeIfNoContainerGoal extends Goal {
 //        int cY = home.posY - facing.offsetY;
 //        int cZ = home.posZ - facing.offsetZ;
 
-        var homePos = this.golem.getRestrictCenter();
-        var facing = golem.homeDirection;
-        var pos = homePos.relative(facing.getOpposite()).getCenter();
+        var pos = golem.getHomeAttachedBlockPos().getCenter();
         var stackToDrop = golem.getItemInHand(InteractionHand.MAIN_HAND);
         var item = new ItemEntity(golem.level(),pos.x,pos.y,pos.z, ExtendedItemStack.splitAll(stackToDrop));
         var golemPos = golem.position();

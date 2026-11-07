@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.golems;
 
+import it.unimi.dsi.fastutil.bytes.ByteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -61,5 +62,11 @@ public class Marker {
    }
    public boolean colorEqualsFuzzy(byte color) {
       return this.color == color || this.color == INVALID_MARKER_COLOR || color == INVALID_MARKER_COLOR;
+   }
+   public boolean colorEqualsFuzzy(ByteSet colors) {
+      if (colors.contains(this.color)) {
+         return true;
+      }
+       return colors.contains(INVALID_MARKER_COLOR);
    }
 }

@@ -13,6 +13,8 @@ import thaumcraft.common.tiles.junkbox.TileEldritchAltar;
 
 import java.util.Random;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+
 @Deprecated(forRemoval = true)
 public class WorldGenEldritchRing extends WorldGenerator {
    public int chunkX;
@@ -92,7 +94,7 @@ public class WorldGenEldritchRing extends WorldGenerator {
                      world.setBlock(x, j + 1, z, ConfigBlocks.blockEldritch, 0, 3);
                      world.setBlock(x, j, z, ConfigBlocks.blockCosmeticSolid, 1, 3);
                      int r = rand.nextInt(10);
-                     BlockEntity te = world.getBlockEntity(x, j + 1, z);
+                     BlockEntity te = getExistingBlockEntity(world,x, j + 1, z);
                      if (te instanceof TileEldritchAltar) {
                         TileEldritchAltar altar = (TileEldritchAltar) te;
                         switch (r) {
@@ -106,7 +108,7 @@ public class WorldGenEldritchRing extends WorldGenerator {
                               for(int a = 2; a < 6; ++a) {
                                  Direction dir = Direction.getOrientation(a);
                                  world.setBlock(x - dir.offsetX * 3, j + 1, z + dir.offsetZ * 3, ConfigBlocks.blockWoodenDevice, 8, 3);
-                                 BlockEntity probablyBanner = world.getBlockEntity(x - dir.offsetX * 3, j + 1, z + dir.offsetZ * 3);
+                                 BlockEntity probablyBanner = getExistingBlockEntity(world,x - dir.offsetX * 3, j + 1, z + dir.offsetZ * 3);
                                  if (probablyBanner instanceof TileBanner) {
                                     TileBanner banner = (TileBanner) probablyBanner;
                                     banner.setFacing(bannerFaceFromDirection(a));

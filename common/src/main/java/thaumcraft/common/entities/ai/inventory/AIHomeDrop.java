@@ -10,6 +10,7 @@ package thaumcraft.common.entities.ai.inventory;
 //import thaumcraft.common.entities.golems.EntityGolemBase;
 
 //GolemDropItemStackHomeIfNoContainerGoal
+@Deprecated(forRemoval = true)
 public class AIHomeDrop /*extends EntityAIBase*/ {
 //   private EntityGolemBase theGolem;
 //   private int countChest = 0;

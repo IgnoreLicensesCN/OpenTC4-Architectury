@@ -296,6 +296,11 @@ public abstract class BaseGolemEntity
     public final Set<Marker> markers = new HashSet<>();
     public @NotNull Direction homeDirection = Direction.UP;
 
+    public BlockPos.MutableBlockPos attachedBlockPos = new BlockPos.MutableBlockPos();
+    public BlockPos getHomeAttachedBlockPos(){
+        return attachedBlockPos.setWithOffset(getRestrictCenter(), homeDirection.getOpposite());
+    }
+
     private final GolemAbilitiesData abilitiesData = new GolemAbilitiesData(this.wrappedGoalSelector, this.wrappedTargetSelector, getBasicAbilityProperties());
 
     public int getCarryPower() {

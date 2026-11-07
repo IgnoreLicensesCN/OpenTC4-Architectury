@@ -9,6 +9,7 @@ import java.util.EnumSet;
 import static com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor.NULL_POS_TO_WRITE;
 
 public class GolemMoveToRestrictionCenterGoal extends Goal {
+    public static final EnumSet<Goal.Flag> FLAGS = EnumSet.of(Goal.Flag.MOVE);
     private final BaseGolemEntity mob;
     private final double speedModifier;
     private final double wantedClosingRangeSqr;
@@ -19,7 +20,7 @@ public class GolemMoveToRestrictionCenterGoal extends Goal {
         this.speedModifier = speedModifier;
         this.wantedClosingRangeSqr = wantedClosingRange * wantedClosingRange;
         this.wantedTriggerRangeSqr = wantedTriggerRange * wantedTriggerRange;
-        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.setFlags(FLAGS);
     }
 
     @Override
