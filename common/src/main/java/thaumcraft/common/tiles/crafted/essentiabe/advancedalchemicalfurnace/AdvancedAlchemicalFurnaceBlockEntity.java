@@ -94,15 +94,15 @@ public class AdvancedAlchemicalFurnaceBlockEntity extends TileThaumcraft {
         var pos = getBlockPos();
         int pt = this.fuelVisAmouontFire--;
         if (this.fuelVisAmouontFire <= getFuelVisCapacity()) {
-            this.fuelVisAmouontFire += VisNetHandler.drainCentiVis(this.level, pos, Aspects.FIRE, 50);
+            this.fuelVisAmouontFire += VisNetHandler.drainCentiVis(this.level, pos, Aspects.FIRE, 50, 8);
         }
 
         if (this.fuelVisAmountEntropy <= getFuelVisCapacity()) {
-            this.fuelVisAmountEntropy += VisNetHandler.drainCentiVis(this.level, pos, Aspects.ENTROPY, 50);
+            this.fuelVisAmountEntropy += VisNetHandler.drainCentiVis(this.level, pos, Aspects.ENTROPY, 50, 8);
         }
 
         if (this.fuelVisAmountWater <= getFuelVisCapacity()) {
-            this.fuelVisAmountWater += VisNetHandler.drainCentiVis(this.level, pos, Aspects.WATER, 50);
+            this.fuelVisAmountWater += VisNetHandler.drainCentiVis(this.level, pos, Aspects.WATER, 50, 8);
         }
 
         if (pt / 50 != this.fuelVisAmouontFire / 50) {

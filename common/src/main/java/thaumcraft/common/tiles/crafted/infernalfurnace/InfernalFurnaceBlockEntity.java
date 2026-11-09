@@ -287,7 +287,7 @@ public class InfernalFurnaceBlockEntity extends TileThaumcraft {
     }
 
     public void tryConsumeCentiVis() {
-        speedyTime += VisNetHandler.drainCentiVis(this.level, this.getBlockPos(), Aspects.FIRE, 5);
+        speedyTime += VisNetHandler.drainCentiVis(this.level, this.getBlockPos(), Aspects.FIRE, 5, 8);
     }
 
     public ItemStack insertItemStack(ItemStack itemStackIn) {

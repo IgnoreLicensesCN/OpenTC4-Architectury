@@ -136,7 +136,7 @@ public class VisAmuletItem extends AccessoryItem implements
                 (aspect,capacity) -> {
                     var canFill = capacity - selfStackOwningAspect.get(aspect);
                     if (canFill > 0){
-                        int drained = VisNetHandler.drainCentiVis(level, drainPos,aspect,canFill);
+                        int drained = VisNetHandler.drainCentiVis(level, drainPos,aspect,canFill, 8);
                         if (drained > 0){
                             selfStackOwningAspect.addAll(aspect, drained);
                             selfModified[0] = true;

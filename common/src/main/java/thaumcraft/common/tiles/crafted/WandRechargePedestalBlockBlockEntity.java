@@ -76,79 +76,155 @@ public class WandRechargePedestalBlockBlockEntity extends AbstractPedestalBlockE
                     maxDrainAmount = 1;
                 }
                 for (var lookup:lookups) {
-                    boolean drained = lookup.forItemsNearPosWithBreakWithRange(
-                            selfPos,
-                            nodeBE -> {
-                                //"Oh the nodes we've cached"--here we go again(consuming nodeBE)
-                                var nodeBEPos = nodeBE.getBlockPos();
-                                if (
-                                        Math.abs(nodeBEPos.getX() - selfPos.getX()) > 8
-                                                || Math.abs(nodeBEPos.getY() - selfPos.getY()) > 8
-                                                || Math.abs(nodeBEPos.getZ() - selfPos.getZ()) > 8
-                                ) {
-                                    return false;
-                                }
-                                AspectList<Aspect> aspConsumed = new LinkedHashAspectList<>();
-                                var nodeBEAspects = nodeBE.getAspects();
-                                boolean consumedAspect = nodeBEAspects.forEachWithBreak(
-                                        (asp, amount) -> {
-                                            int canUseAmount = amount - minAmountToKeep;
-                                            if (centiVisRequiring.containsKey(asp)) {
-                                                int remainingAmount =
-                                                        addCentiVisForContainer(
+                    boolean drained = false;
+                    var iter = lookup.forItemsNearPosWithRangeIterator(selfPos,8);
+                    while (iter.hasNext()) {
+                        var nodeBEs = iter.next();
+                        for (var nodeBE : nodeBEs) {
+                            //"Oh the nodes we've cached"--here we go again(consuming nodeBE)
+                            var nodeBEPos = nodeBE.getBlockPos();
+                            if (
+                                    Math.abs(nodeBEPos.getX() - selfPos.getX()) > 8
+                                            || Math.abs(nodeBEPos.getY() - selfPos.getY()) > 8
+                                            || Math.abs(nodeBEPos.getZ() - selfPos.getZ()) > 8
+                            ) {
+                                continue;
+                            }
+                            AspectList<Aspect> aspConsumed = new LinkedHashAspectList<>();
+                            var nodeBEAspects = nodeBE.getAspects();
+                            boolean consumedAspect = nodeBEAspects.forEachWithBreak(
+                                    (asp, amount) -> {
+                                        int canUseAmount = amount - minAmountToKeep;
+                                        if (centiVisRequiring.containsKey(asp)) {
+                                            int remainingAmount =
+                                                    addCentiVisForContainer(
+                                                            asp,
+                                                            Math.min(canUseAmount, maxDrainAmount) * CENTIVIS_MULTIPLIER,
+                                                            fillingStack,
+                                                            centiVisContainerItem,
+                                                            centiVisRequiring
+                                                    );
+                                            if (upgradeBlock != null) {
+                                                remainingAmount -=
+                                                        upgradeBlock.onDrainingMeetAspectRequired(
+                                                                level,
+                                                                upgradePos,
+                                                                upgradeBlockState,
                                                                 asp,
-                                                                Math.min(canUseAmount, maxDrainAmount) * CENTIVIS_MULTIPLIER,
+                                                                remainingAmount,
                                                                 fillingStack,
                                                                 centiVisContainerItem,
-                                                                centiVisRequiring
+                                                                centiVisRequiring,
+                                                                nodeBE
                                                         );
-                                                if (upgradeBlock != null) {
-                                                    remainingAmount -=
-                                                            upgradeBlock.onDrainingMeetAspectRequired(
-                                                                    level,
-                                                                    upgradePos,
-                                                                    upgradeBlockState,
-                                                                    asp,
-                                                                    remainingAmount,
-                                                                    fillingStack,
-                                                                    centiVisContainerItem,
-                                                                    centiVisRequiring,
-                                                                    nodeBE
-                                                            );
-                                                }
-                                                int consumed = canUseAmount - remainingAmount;
-                                                if (consumed != 0) {
-                                                    drainedAspect(asp, consumed);
-                                                    aspConsumed.addAll(asp, consumed);
-                                                    return true;
-                                                }
-                                            } else if (upgradeBlock != null) {
-                                                int consumed = upgradeBlock.onDrainingMeetAspectNotRequired(
-                                                        level,
-                                                        upgradePos,
-                                                        upgradeBlockState,
-                                                        asp,
-                                                        canUseAmount,
-                                                        fillingStack,
-                                                        centiVisContainerItem,
-                                                        centiVisRequiring,
-                                                        nodeBE
-                                                );
-                                                if (consumed != 0) {
-                                                    drainedAspect(asp, consumed);
-                                                    aspConsumed.addAll(asp, consumed);
-                                                    return true;
-                                                }
                                             }
-                                            return false;
+                                            int consumed = canUseAmount - remainingAmount;
+                                            if (consumed != 0) {
+                                                drainedAspect(asp, consumed);
+                                                aspConsumed.addAll(asp, consumed);
+                                                return true;
+                                            }
+                                        } else if (upgradeBlock != null) {
+                                            int consumed = upgradeBlock.onDrainingMeetAspectNotRequired(
+                                                    level,
+                                                    upgradePos,
+                                                    upgradeBlockState,
+                                                    asp,
+                                                    canUseAmount,
+                                                    fillingStack,
+                                                    centiVisContainerItem,
+                                                    centiVisRequiring,
+                                                    nodeBE
+                                            );
+                                            if (consumed != 0) {
+                                                drainedAspect(asp, consumed);
+                                                aspConsumed.addAll(asp, consumed);
+                                                return true;
+                                            }
                                         }
-                                );
-                                aspConsumed.forEach(nodeBEAspects::reduceAndRemoveIfNotPositive);
-
-                                return consumedAspect;
-                            },
-                            8
-                    );
+                                        return false;
+                                    }
+                            );
+                            aspConsumed.forEach(nodeBEAspects::reduceAndRemoveIfNotPositive);
+                            if (consumedAspect){
+                                drained = true;
+                                break;
+                            }
+                        }
+                    }
+//                    boolean drained = lookup.forItemsNearPosWithBreakWithRange(
+//                            selfPos,
+//                            nodeBE -> {
+//                                //"Oh the nodes we've cached"--here we go again(consuming nodeBE)
+//                                var nodeBEPos = nodeBE.getBlockPos();
+//                                if (
+//                                        Math.abs(nodeBEPos.getX() - selfPos.getX()) > 8
+//                                                || Math.abs(nodeBEPos.getY() - selfPos.getY()) > 8
+//                                                || Math.abs(nodeBEPos.getZ() - selfPos.getZ()) > 8
+//                                ) {
+//                                    return false;
+//                                }
+//                                AspectList<Aspect> aspConsumed = new LinkedHashAspectList<>();
+//                                var nodeBEAspects = nodeBE.getAspects();
+//                                boolean consumedAspect = nodeBEAspects.forEachWithBreak(
+//                                        (asp, amount) -> {
+//                                            int canUseAmount = amount - minAmountToKeep;
+//                                            if (centiVisRequiring.containsKey(asp)) {
+//                                                int remainingAmount =
+//                                                        addCentiVisForContainer(
+//                                                                asp,
+//                                                                Math.min(canUseAmount, maxDrainAmount) * CENTIVIS_MULTIPLIER,
+//                                                                fillingStack,
+//                                                                centiVisContainerItem,
+//                                                                centiVisRequiring
+//                                                        );
+//                                                if (upgradeBlock != null) {
+//                                                    remainingAmount -=
+//                                                            upgradeBlock.onDrainingMeetAspectRequired(
+//                                                                    level,
+//                                                                    upgradePos,
+//                                                                    upgradeBlockState,
+//                                                                    asp,
+//                                                                    remainingAmount,
+//                                                                    fillingStack,
+//                                                                    centiVisContainerItem,
+//                                                                    centiVisRequiring,
+//                                                                    nodeBE
+//                                                            );
+//                                                }
+//                                                int consumed = canUseAmount - remainingAmount;
+//                                                if (consumed != 0) {
+//                                                    drainedAspect(asp, consumed);
+//                                                    aspConsumed.addAll(asp, consumed);
+//                                                    return true;
+//                                                }
+//                                            } else if (upgradeBlock != null) {
+//                                                int consumed = upgradeBlock.onDrainingMeetAspectNotRequired(
+//                                                        level,
+//                                                        upgradePos,
+//                                                        upgradeBlockState,
+//                                                        asp,
+//                                                        canUseAmount,
+//                                                        fillingStack,
+//                                                        centiVisContainerItem,
+//                                                        centiVisRequiring,
+//                                                        nodeBE
+//                                                );
+//                                                if (consumed != 0) {
+//                                                    drainedAspect(asp, consumed);
+//                                                    aspConsumed.addAll(asp, consumed);
+//                                                    return true;
+//                                                }
+//                                            }
+//                                            return false;
+//                                        }
+//                                );
+//                                aspConsumed.forEach(nodeBEAspects::reduceAndRemoveIfNotPositive);
+//
+//                                return consumedAspect;
+//                            },
+//                            8
+//                    );
                     if (drained) {
                         onDraining();
                     } else {

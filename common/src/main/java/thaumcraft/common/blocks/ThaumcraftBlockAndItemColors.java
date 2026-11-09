@@ -243,27 +243,27 @@ public class ThaumcraftBlockAndItemColors {
                     boolean finalHasGoggles = hasGoggles;
                     if (clientLevel != null){
                         for (var lookup : ((CoordLookupOwnerLevel) clientLevel).opentc4$getCoordLookupsForType(COORD_LOOKUP_KEY_FOR_NODE)) {
-                            lookup.forItemsNearPosWithBreakWithRange(
-                                    livingEntity.blockPosition(),
-                                    nodeBE -> {
-                                        if (nodeBE.getNodeType() == NodeType.DARK) {
-                                            var nodePos = nodeBE.getBlockPos();
+                            var iter = lookup.forItemsNearPosWithRangeIterator(livingEntity.blockPosition(),256);
+                            while (iter.hasNext()){
+                                var nodeBEs = iter.next();
+                                for (var nodeBE : nodeBEs) {
+                                    if (nodeBE.getNodeType() == NodeType.DARK) {
+                                        var nodePos = nodeBE.getBlockPos();
 
-                                            if (EntityUtils.isVisibleTo(
-                                                    finalHasGoggles ? (float) Math.PI / 2 //added to avoid players' anger
-                                                            : 0.66F,
-                                                    livingEntity,
-                                                    nodePos.getCenter(),
-                                                    256.0F
-                                            )
-                                            ) {
-                                                foundNode.set(true);//TODO:[maybe wont finished]"vote in democracy" to remove this "isVisible" condition needed
-                                                return true;
-                                            }
+                                        if (EntityUtils.isVisibleTo(
+                                                finalHasGoggles ? (float) Math.PI / 2 //added to avoid players' anger
+                                                        : 0.66F,
+                                                livingEntity,
+                                                nodePos.getCenter(),
+                                                256.0F
+                                        )
+                                        ) {
+                                            foundNode.set(true);//TODO:[maybe wont finished]"vote in democracy" to remove this "isVisible" condition needed
+                                            break;
                                         }
-                                        return false;
-                                    }, 256
-                            );
+                                    }
+                                }
+                            }
                             if (foundNode.get()) {
                                 return 1.0F;
                             }

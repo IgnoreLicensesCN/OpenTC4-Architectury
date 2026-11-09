@@ -7,6 +7,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.visnet.VisNetNodeBlockEntity;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -27,9 +29,10 @@ public interface CoordLookup<StoreItem> {
     @SuppressWarnings("UnusedReturnValue")
     boolean forItemsNearPosWithBreak(Vec3i cubeCenterPos, Predicate<StoreItem> action);
     boolean forItemsNearPosWithBreakWithRange(Vec3i cubeCenterPos, Predicate<StoreItem> action, int rangeManhattan);
-
+    Iterator<Collection<StoreItem>> forItemsNearPosWithRangeIterator(Vec3i cubeCenterPos);
+    Iterator<Collection<StoreItem>> forItemsNearPosWithRangeIterator(Vec3i cubeCenterPos,int halfLengthOfCube);
     static <StoreItem> @NotNull CoordLookup<StoreItem> withSizeBits(byte bits){
-        return new CubeChunkedWeakLookups<>(bits);//TODO:[maybe wont finished]:more impl for different size bits
+        return new CubeChunkedLookups<>(bits);//TODO:[maybe wont finished]:more impl for different size bits
     }
     class Default{
         public static <T> CoordLookup<T> getDefaultCoordLookupFor(CoordLookupOwnerLevel.CoordLookupTypeKey<T> key){

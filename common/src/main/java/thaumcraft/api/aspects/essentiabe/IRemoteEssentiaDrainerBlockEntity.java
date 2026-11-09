@@ -11,7 +11,6 @@ import thaumcraft.api.aspects.Aspect;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static thaumcraft.api.aspects.essentiabe.IRemoteDrainableEssentiaSourceBlockEntity.COORD_LOOKUP_KEY_FOR_REMOTE_DRAINABLE;
 
@@ -91,19 +90,23 @@ public interface IRemoteEssentiaDrainerBlockEntity {
         for (var lookup:((CoordLookupOwnerLevel)level).opentc4$getCoordLookupsForType(COORD_LOOKUP_KEY_FOR_REMOTE_DRAINABLE)){
 
             var drainerPos = this.getBlockPos();
-            AtomicInteger toDrain = new AtomicInteger(amount);
+//            AtomicInteger toDrain = new AtomicInteger(amount);
+            int toDrain = amount;
 
             drainerMet.add(this);
 
-            lookup.forItemsNearPosWithBreakWithRange(
-                    drainerPos,
-                    drainable -> {
-                        int drained = this.drainEssentia(drainable, aspect, toDrain.get(), drainerMet);
-                        return toDrain.addAndGet(-drained) <= 0;
-                    },
-                    range
-            );
-            return amount - toDrain.get();
+            var iter = lookup.forItemsNearPosWithRangeIterator(drainerPos,range);
+            while (iter.hasNext()){
+                var drainables = iter.next();
+                for (var drainable:drainables){
+                    int drained = this.drainEssentia(drainable, aspect, toDrain, drainerMet);
+                    toDrain -= drained;
+                    if (toDrain <= 0){
+                        break;
+                    }
+                }
+            }
+            return amount - toDrain;
         }
         return 0;
     }

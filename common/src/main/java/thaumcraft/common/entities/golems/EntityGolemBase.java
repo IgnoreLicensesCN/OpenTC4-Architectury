@@ -212,11 +212,11 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //            this.tasks.addTask(2, new AIHomeDrop(this));
 //            this.tasks.addTask(3, new AIFillTake(this));
 //            this.tasks.addTask(4, new AIFillGoto(this));
-            break;
+//            break;
          case 1:
 //            this.tasks.addTask(0, new AIHomeReplace(this));
 //            this.tasks.addTask(1, new AIEmptyPlace(this));
-            this.tasks.addTask(2, new AIEmptyDrop(this));
+//            this.tasks.addTask(2, new AIEmptyDrop(this));
             this.tasks.addTask(3, new AIEmptyGoto(this));
             this.tasks.addTask(4, new AIHomeTake(this));
             break;
@@ -273,12 +273,12 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
             this.tasks.addTask(2, new AIFish(this));
       }
 
-      if (this.getCore() > -1) {
-         this.tasks.addTask(5, new AIOpenDoor(this, true));
-         this.tasks.addTask(6, new AIReturnHome(this));
-         this.tasks.addTask(7, new EntityAIWatchClosest(this, Player.class, 6.0F));
-         this.tasks.addTask(8, new EntityAILookIdle(this));
-      }
+//      if (this.getCore() > -1) {
+//         this.tasks.addTask(5, new AIOpenDoor(this, true));
+//         this.tasks.addTask(6, new AIReturnHome(this));
+//         this.tasks.addTask(7, new EntityAIWatchClosest(this, Player.class, 6.0F));
+//         this.tasks.addTask(8, new EntityAILookIdle(this));
+//      }
 
       return true;
    }
@@ -463,87 +463,88 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //      return par1;
 //   }
 
-   public short getColors(int slot) {
-      char[] chars = this.dataWatcher.getWatchableObjectString(22).toCharArray();
-      if (slot < chars.length) {
-         return ("" + chars[slot]).equals("h") ? -1 : Short.parseShort("" + chars[slot], 16);
-      } else {
-         return -1;
-      }
-   }
+//   public short getColors(int slot) {
+//      char[] chars = this.dataWatcher.getWatchableObjectString(22).toCharArray();
+//      if (slot < chars.length) {
+//         return ("" + chars[slot]).equals("h") ? -1 : Short.parseShort("" + chars[slot], 16);
+//      } else {
+//         return -1;
+//      }
+//   }
+//
+//   public void setColors(int slot, int color) {
+//      this.colors[slot] = (byte)color;
+//      StringBuilder s = new StringBuilder();
+//
+//      for(byte c : this.colors) {
+//         if (c == -1) {
+//            s.append("h");
+//         } else {
+//            s.append(Integer.toHexString(c));
+//         }
+//      }
+//
+//      this.dataWatcher.updateObject(22, s.toString());
+//   }
+//
+//   public byte getUpgrade(int slot) {
+//      char[] chars = this.dataWatcher.getWatchableObjectString(23).toCharArray();
+//      if (slot < chars.length) {
+//         byte t = Byte.parseByte("" + chars[slot], 16);
+//         return t == 15 ? -1 : t;
+//      } else {
+//         return -1;
+//      }
+//   }
+//
+//   public int getUpgradeAmount(int type) {
+//      int a = 0;
+//
+//      for(byte b : this.upgrades) {
+//         if (type == b) {
+//            ++a;
+//         }
+//      }
+//
+//      return a;
+//   }
+//
+//   public void setUpgrade(int slot, byte upgrade) {
+//      this.upgrades[slot] = upgrade;
+//      StringBuilder s = new StringBuilder();
+//
+//      for(byte c : this.upgrades) {
+//         s.append(Integer.toHexString(c));
+//      }
+//
+//      this.dataWatcher.updateObject(23, s.toString());
+//   }
 
-   public void setColors(int slot, int color) {
-      this.colors[slot] = (byte)color;
-      StringBuilder s = new StringBuilder();
-
-      for(byte c : this.colors) {
-         if (c == -1) {
-            s.append("h");
-         } else {
-            s.append(Integer.toHexString(c));
-         }
-      }
-
-      this.dataWatcher.updateObject(22, s.toString());
-   }
-
-   public byte getUpgrade(int slot) {
-      char[] chars = this.dataWatcher.getWatchableObjectString(23).toCharArray();
-      if (slot < chars.length) {
-         byte t = Byte.parseByte("" + chars[slot], 16);
-         return t == 15 ? -1 : t;
-      } else {
-         return -1;
-      }
-   }
-
-   public int getUpgradeAmount(int type) {
-      int a = 0;
-
-      for(byte b : this.upgrades) {
-         if (type == b) {
-            ++a;
-         }
-      }
-
-      return a;
-   }
-
-   public void setUpgrade(int slot, byte upgrade) {
-      this.upgrades[slot] = upgrade;
-      StringBuilder s = new StringBuilder();
-
-      for(byte c : this.upgrades) {
-         s.append(Integer.toHexString(c));
-      }
-
-      this.dataWatcher.updateObject(23, s.toString());
-   }
-
-   public ArrayList<Byte> getColorsMatching(ItemStack match) {
-      ArrayList<Byte> l = new ArrayList<>();
-      if (this.inventory.inventory != null && this.inventory.inventory.length > 0) {
-         boolean allNull = true;
-
-         for(int a = 0; a < this.inventory.inventory.length; ++a) {
-            if (this.inventory.getStackInSlot(a) != null) {
-               allNull = false;
-            }
-
-            if (InventoryUtils.areItemStacksEqual(this.inventory.getStackInSlot(a), match, this.checkOreDict(), this.ignoreDamage(), this.ignoreNBT())) {
-               l.add(this.colors[a]);
-            }
-         }
-
-         if (allNull) {
-            for(int a = 0; a < this.inventory.inventory.length; ++a) {
-               l.add(this.colors[a]);
-            }
-         }
-      }
-
-      return l;
-   }
+   //getColorsMatching(ByteSet,golem,itemStack)
+//   public ArrayList<Byte> getColorsMatching(ItemStack match) {
+//      ArrayList<Byte> l = new ArrayList<>();
+//      if (this.inventory.inventory != null && this.inventory.inventory.length > 0) {
+//         boolean allNull = true;
+//
+//         for(int a = 0; a < this.inventory.inventory.length; ++a) {
+//            if (this.inventory.getStackInSlot(a) != null) {
+//               allNull = false;
+//            }
+//
+//            if (InventoryUtils.areItemStacksEqual(this.inventory.getStackInSlot(a), match, this.checkOreDict(), this.ignoreDamage(), this.ignoreNBT())) {
+//               l.add(this.colors[a]);
+//            }
+//         }
+//
+//         if (allNull) {
+//            for(int a = 0; a < this.inventory.inventory.length; ++a) {
+//               l.add(this.colors[a]);
+//            }
+//         }
+//      }
+//
+//      return l;
+//   }
 
 //   public void writeEntityToNBT(NBTTagCompound nbt) {
 //      super.writeEntityToNBT(nbt);

@@ -29,6 +29,9 @@ public class ItemStackTagAccessor extends CacheableCompoundTagAccessor<ItemStack
 
     @Override
     public void writeToCompoundTagWithoutCache(CompoundTag tag, ItemStack value) {
+        if (value.isEmpty()) {
+            value = ItemStack.EMPTY;
+        }
         tag.put(tagKey, value.save(new CompoundTag()));
     }
 

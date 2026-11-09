@@ -28,41 +28,48 @@ public class VisNetHandler {
 
     // NODE DRAINING
 
+    public static @CentiVisAmount int drainCentiVis(Level world, BlockPos pos, Aspect aspect, int amount){
+        return drainCentiVis(world,pos,aspect,amount,8);
+    }
     /**
      * This method drains vis from a relay or source near the passed in
      * location. The amount received can be less than the amount requested so
      * take that into account.
      *
-     * @param world  node at world
-     * @param pos    the position from the draining block or entity
-     * @param aspect what aspect to drain
-     * @param amount how much to drain
+     * @param world      node at world
+     * @param pos        the position from the draining block or entity
+     * @param aspect     what aspect to drain
+     * @param amount     how much to drain
+     * @param drainRange range to drain
      * @return how much was actually drained
      */
-    public static @CentiVisAmount int drainCentiVis(Level world, BlockPos pos, Aspect aspect, int amount) {
+    public static @CentiVisAmount int drainCentiVis(Level world, BlockPos pos, Aspect aspect, int amount, int drainRange) {
+        long drainRangeSqr = ((long) drainRange) * drainRange;
         var drainedAmount = new AtomicInteger(0);
         for (var type : ALL_VIS_NET_NODE_TYPES) {
             for (var lookup : ((CoordLookupOwnerLevel)world).opentc4$getCoordLookupsForType(type)) {
 
-                lookup.forItemsNearPosWithBreak(
-                        pos, netNode -> {
-
-                            var range = netNode.getRange();
-                            var nodePos = netNode.getBlockPos();
-                            if (range * range >= nodePos.distSqr(pos)) {
-                                int requiredAmount = amount - drainedAmount.get();
-                                int a = netNode.consumeCentiVis(aspect, requiredAmount);
-                                requiredAmount = amount - drainedAmount.get();
-                                drainedAmount.addAndGet(a);
-                                if (a > 0) {
-                                    int color = aspect.color;
-                                    generateVisEffect(world, pos, nodePos, color);
-                                }
-                                return requiredAmount <= 0;
+                var iter = lookup.forItemsNearPosWithRangeIterator(pos);
+                while (iter.hasNext()) {
+                    var netNodes = iter.next();
+                    for (var node:netNodes) {
+                        var range = node.getRange();
+                        var nodePos = node.getBlockPos();
+                        if (Math.min(drainRangeSqr,((long)range) * range) >= nodePos.distSqr(pos)) {
+                            int requiredAmount = amount - drainedAmount.get();
+                            int a = node.consumeCentiVis(aspect, requiredAmount);
+                            requiredAmount = amount - drainedAmount.get();
+                            drainedAmount.addAndGet(a);
+                            if (a > 0) {
+                                int color = aspect.color;
+                                generateVisEffect(world, pos, nodePos, color);
                             }
-                            return false;
+                            if (requiredAmount <= 0){
+                                break;
+                            }
                         }
-                );
+                    }
+                }
             }
         }
         return drainedAmount.get();

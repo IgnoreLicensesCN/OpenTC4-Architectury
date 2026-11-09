@@ -90,7 +90,11 @@ public class AIEmptyGoto extends EntityAIBase {
 
    public void updateTask() {
       --this.count;
-      if (this.count == 0 && this.prevX == MathHelper.floor_double(this.theGolem.posX) && this.prevY == MathHelper.floor_double(this.theGolem.posY) && this.prevZ == MathHelper.floor_double(this.theGolem.posZ)) {
+      if (this.count == 0
+              && this.prevX == MathHelper.floor_double(this.theGolem.posX)
+              && this.prevY == MathHelper.floor_double(this.theGolem.posY)
+              && this.prevZ == MathHelper.floor_double(this.theGolem.posZ)
+      ) {
          Vec3 var2 = RandomPositionGenerator.findRandomTarget(this.theGolem, 2, 1);
          if (var2 != null) {
             this.count = 20;

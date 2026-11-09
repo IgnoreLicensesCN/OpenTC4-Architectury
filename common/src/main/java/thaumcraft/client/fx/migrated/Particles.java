@@ -33,16 +33,16 @@ public class Particles {
 //
 //    public static class ParticleRegistrySuppliers {
 //        public static final RegistrySupplier<SimpleParticleType> BLOCK_RUNES =
-//                PARTICLES.registerNodeType("block_runes", () -> new SimpleParticleType(false){});
+//                PARTICLES.register("block_runes", () -> new SimpleParticleType(false){});
 //        public static final RegistrySupplier<SimpleParticleType> BORE_PARTICLES =
-//                PARTICLES.registerNodeType("bore_particles", () -> new SimpleParticleType(false){});
+//                PARTICLES.register("bore_particles", () -> new SimpleParticleType(false){});
 //        public static final RegistrySupplier<SimpleParticleType> BORE_SPARKLE =
-//                PARTICLES.registerNodeType("bore_sparkle", () -> new SimpleParticleType(false){});
+//                PARTICLES.register("bore_sparkle", () -> new SimpleParticleType(false){});
 //        public static final RegistrySupplier<SimpleParticleType> BREAKING =
-//                PARTICLES.registerNodeType("breaking", () -> new SimpleParticleType(false){});
+//                PARTICLES.register("breaking", () -> new SimpleParticleType(false){});
 //
 //        public static final RegistrySupplier<SimpleParticleType> SPARKLE =
-//                PARTICLES.registerNodeType("sparkle", () -> new SimpleParticleType(false){});
+//                PARTICLES.register("sparkle", () -> new SimpleParticleType(false){});
 //    }
 
 
@@ -65,8 +65,8 @@ public class Particles {
         }
     }
     public static void init() {
-        //registerNodeType?go f**k off! we new particles then just add to particleEngine.
-//        PARTICLES.registerNodeType();
+        //register?go f**k off! we new particles then just add to particleEngine.
+//        PARTICLES.register();
 
     }
 }

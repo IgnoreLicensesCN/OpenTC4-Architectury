@@ -1,9 +1,7 @@
 package thaumcraft.common.tiles.crafted;
 
-import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
 import com.linearity.opentc4.utils.collectionlike.coordlookups.CoordLookup;
-import com.linearity.opentc4.utils.collectionlike.coordlookups.CubeChunkedWeakLookups;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -16,9 +14,6 @@ import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.crafted.ArcaneEarBlock;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.abstracts.ICoordLookupOwnerBlockEntity;
-import thaumcraft.common.tiles.abstracts.IInfusionComponentStackProvider;
-
-import java.util.Map;
 
 import static com.linearity.opentc4.Consts.ArcaneEarTagAccessors.SHOULD_TICK_MASKS;
 

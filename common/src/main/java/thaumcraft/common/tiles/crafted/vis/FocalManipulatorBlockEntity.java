@@ -111,8 +111,8 @@ public class FocalManipulatorBlockEntity
                                         this.level,
                                         getBlockPos(),
                                         aspectRequiring,
-                                        Math.min(getMaxCentiVisPerDrain(),amountRequiring)
-                                );
+                                        Math.min(getMaxCentiVisPerDrain(),amountRequiring),
+                                        8);
                         if (amountDrained > 0){
                             drained.addAll(aspectRequiring,amountDrained);
                         }

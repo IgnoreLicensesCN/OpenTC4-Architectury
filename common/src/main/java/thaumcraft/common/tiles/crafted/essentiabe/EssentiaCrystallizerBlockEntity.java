@@ -31,7 +31,6 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 
 import static com.linearity.opentc4.Consts.EssentiaCrystallizerBlockEntityTagAccessors.ASPECT_CRYSTALLIZING;
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.items.ThaumcraftItemInstances.CRYSTAL_ESSENCE;
 
 public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
@@ -77,9 +76,11 @@ public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
                 this.fillReservoir();
             } else {
                 this.progressTickCount += 1 + VisNetHandler.drainCentiVis(
-                        this.level, pos.getX(),pos.getY(),pos.getZ(),
+                        this.level, pos,
                         Aspects.EARTH,
-                        Math.min(20, Math.max(1, (maxProgress - this.progressTickCount) / 2))) * 2;
+                        Math.min(20, Math.max(1, (maxProgress - this.progressTickCount) / 2)),
+                        8
+                ) * 2;
             }
         }
 

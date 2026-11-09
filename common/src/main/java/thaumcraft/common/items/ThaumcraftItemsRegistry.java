@@ -79,7 +79,7 @@ public class ThaumcraftItemsRegistry {
             "quick_silver", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> SUPPLIER_MAGIC_TALLOW = ITEMS.register(
             "magic_tallow", () -> new Item(new Item.Properties()));
-    //        public static final RegistrySupplier<Item> SUPPLIER_ZOMBIE_BRAIN_REMOVED = ITEMS.registerNodeType("zombie_brain_removed", () -> new Item(new Item.Properties()));
+    //        public static final RegistrySupplier<Item> SUPPLIER_ZOMBIE_BRAIN_REMOVED = ITEMS.register("zombie_brain_removed", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> SUPPLIER_AMBER_GEM = ITEMS.register(
             "amber_gem", () -> new Item(new Item.Properties()));
     public static final RegistrySupplier<Item> SUPPLIER_ENCHANTED_FABRIC = ITEMS.register(
@@ -939,7 +939,7 @@ public class ThaumcraftItemsRegistry {
             "goggles_of_revealing",
             GogglesOfRevealingItem::new
     );
-    //        public static final RegistrySupplier<RobeArmorItem> SUPPLIER_ROBE_HELMET = ITEMS.registerNodeType(
+    //        public static final RegistrySupplier<RobeArmorItem> SUPPLIER_ROBE_HELMET = ITEMS.register(
 //                "robe_helmet",
 //                () -> new RobeArmorItem(ArmorItem.Type.HELMET)
 //        );

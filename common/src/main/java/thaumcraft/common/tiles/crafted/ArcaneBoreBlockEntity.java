@@ -395,7 +395,7 @@ public class ArcaneBoreBlockEntity
     protected void gainSpeedyTime(){
         var selfPos = getBlockPos();
         if (this.speedyTime < 20){
-            this.speedyTime +=  Math.ceilDiv(VisNetHandler.drainCentiVis(this.level, selfPos, getRequiredAspect(), 100) , 5);
+            this.speedyTime +=  Math.ceilDiv(VisNetHandler.drainCentiVis(this.level, selfPos, getRequiredAspect(), 100, 8) , 5);
         }
         if (this.speedyTime < 20.0F) {
             drawEssentia();
@@ -431,7 +431,7 @@ public class ArcaneBoreBlockEntity
                         (aspect,requiredAmount) -> {
                             if (this.currentRepairVis.get(aspect) < requiredAmount) {
                                 this.currentRepairVis.addAll(aspect,
-                                        VisNetHandler.drainCentiVis(this.level, selfPos, aspect, requiredAmount)
+                                        VisNetHandler.drainCentiVis(this.level, selfPos, aspect, requiredAmount, 8)
                                 );
                             }
                         }

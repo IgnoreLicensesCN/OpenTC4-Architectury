@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-//guys i really have mental illness(anxiety disorder and depression due to fucking CN(rev.) education)
+//guys i really have mental illness
 //so @SuppressWarnings("deprecation") here
 @UtilityLikeAbstraction(reason = "hate for yellow lines")
 public class SuppressedWarningBlock extends Block {

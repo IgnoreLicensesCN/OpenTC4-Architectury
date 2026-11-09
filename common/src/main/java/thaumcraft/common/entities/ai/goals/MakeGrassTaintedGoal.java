@@ -22,11 +22,11 @@ public class MakeGrassTaintedGoal extends Goal {
     private final Mob mob;
     private final Level level;
     private int eatAnimationTick;
-
+    public static final EnumSet<Flag> FLAGS = EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP, Flag.TARGET);
     public MakeGrassTaintedGoal(Mob mob) {
         this.mob = mob;
         this.level = mob.level();
-        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
+        this.setFlags(FLAGS);
     }
 
     @Override

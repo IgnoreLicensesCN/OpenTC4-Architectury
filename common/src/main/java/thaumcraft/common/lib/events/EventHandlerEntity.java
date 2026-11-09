@@ -79,7 +79,7 @@ public class EventHandlerEntity {
             UnnaturalHungerShaderHandler.INSTANCE.tick(player);
          });
 
-//         EntityEvent.ADD.registerNodeType((entity, world) -> {
+//         EntityEvent.ADD.register((entity, world) -> {
 //            if (entity instanceof LivingEntity livingEntity
 //                    && !livingEntity.isDeadOrDying()
 //            ) {

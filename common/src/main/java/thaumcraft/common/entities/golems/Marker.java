@@ -52,11 +52,18 @@ public class Marker {
    }
 
    public boolean equalsFuzzy(int x, int y, int z, ResourceLocation dimResLoc, @Nullable("null -> any") Direction side, byte color) {
-      return x == this.pos.getX() && y == this.pos.getY() && z == this.pos.getZ() && dimResLoc.equals(this.dim)
-              && (side == null || side == this.side)
-              && (this.color == color || this.color == INVALID_MARKER_COLOR || color == INVALID_MARKER_COLOR
-      );
+      return x == this.pos.getX()
+              && y == this.pos.getY()
+              && z == this.pos.getZ()
+              && dimResLoc.equals(this.dim)
+              && sideEqualsFuzzy(side)
+              && colorEqualsFuzzy(color);
    }
+
+   private boolean sideEqualsFuzzy(@Nullable("null -> any") Direction side) {
+      return side == null || side == this.side;
+   }
+
    public boolean equalsFuzzy(Vec3i blockPos, ResourceLocation dimResLoc, @Nullable("null -> any") Direction side, byte color) {
       return equalsFuzzy(blockPos.getX(),blockPos.getY(),blockPos.getZ(),dimResLoc,side,color);
    }
@@ -64,6 +71,9 @@ public class Marker {
       return this.color == color || this.color == INVALID_MARKER_COLOR || color == INVALID_MARKER_COLOR;
    }
    public boolean colorEqualsFuzzy(ByteSet colors) {
+      if (this.color == INVALID_MARKER_COLOR){
+         return !colors.isEmpty();
+      }
       if (colors.contains(this.color)) {
          return true;
       }
