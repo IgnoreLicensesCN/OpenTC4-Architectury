@@ -19,7 +19,7 @@ public class GolemPlaceItemStackToHomeGoal extends AbstractGolemGoal {
 
     @Override
     public boolean canUse() {
-        var stackInHand = golem.getItemInHand(InteractionHand.MAIN_HAND);
+        var stackInHand = golem.getMainHandItem();
         if (stackInHand.isEmpty()) {
             return false;
         }
@@ -58,12 +58,12 @@ public class GolemPlaceItemStackToHomeGoal extends AbstractGolemGoal {
         var be = getExistingBlockEntity(golem.level(),bePos);
         if (be instanceof Container container) {
             ItemStack result = InventoryUtils.placeItemStackIntoInventory(
-                    this.golem.getItemInHand(InteractionHand.MAIN_HAND),
+                    this.golem.getMainHandItem(),
                     container,
                     facing.getOpposite(),
                     true
             );
-            if (!ItemStack.isSameItem(result, this.golem.getItemInHand(InteractionHand.MAIN_HAND))) {
+            if (!ItemStack.isSameItem(result, this.golem.getMainHandItem())) {
                 this.golem.setItemInHand(InteractionHand.MAIN_HAND,result);
 
 

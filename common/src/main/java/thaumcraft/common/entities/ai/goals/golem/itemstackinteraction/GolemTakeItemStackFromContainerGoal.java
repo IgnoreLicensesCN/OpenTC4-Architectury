@@ -30,7 +30,7 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
 
     @Override
     public boolean canUse() {
-        if (!golem.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+        if (!golem.getMainHandItem().isEmpty()) {
             return false;
         }
         var fakeFields = opentc4$getCachedObjectFrom(golem, GolemTakeItemStackFromContainerWatchingItemFakeFields.class);
@@ -86,8 +86,8 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
 
         while (containerIterator.hasNext()) {
             var containerInfo = containerIterator.next();
-            var container = containerInfo.container == null ? null : containerInfo.container.get();
-            var containerBE = containerInfo.blockEntity == null ? null : containerInfo.blockEntity.get();
+            var container = containerInfo.containerRef == null ? null : containerInfo.containerRef.get();
+            var containerBE = containerInfo.blockEntityRef == null ? null : containerInfo.blockEntityRef.get();
             if (containerBE == null || container == null) {
                 continue;
             }

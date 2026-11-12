@@ -47,8 +47,8 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
         markedContainerAndMarkerIterator.reset();
         while (markedContainerAndMarkerIterator.hasNext()) {
             var info = markedContainerAndMarkerIterator.next();
-            var container = info.container==null?null:info.container.get();
-            var be = info.blockEntity==null?null:info.blockEntity.get();
+            var container = info.containerRef ==null?null:info.containerRef.get();
+            var be = info.blockEntityRef ==null?null:info.blockEntityRef.get();
             if (container == null || be==null || be.isRemoved()) { continue;}
             var marker = info.marker;
             if (homeBEPos.equals(marker.pos)){continue;}

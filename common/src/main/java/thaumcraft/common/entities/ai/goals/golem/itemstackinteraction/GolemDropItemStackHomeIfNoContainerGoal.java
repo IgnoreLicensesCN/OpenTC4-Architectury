@@ -18,7 +18,7 @@ public class GolemDropItemStackHomeIfNoContainerGoal extends AbstractGolemGoal {
 
     @Override
     public boolean canUse() {
-        var stackInHand = golem.getItemInHand(InteractionHand.MAIN_HAND);
+        var stackInHand = golem.getMainHandItem();
         if (stackInHand.isEmpty()) {
             return false;
         }
@@ -45,7 +45,7 @@ public class GolemDropItemStackHomeIfNoContainerGoal extends AbstractGolemGoal {
 //        int cZ = home.posZ - facing.offsetZ;
 
         var pos = golem.getHomeAttachedBlockPos().getCenter();
-        var stackToDrop = golem.getItemInHand(InteractionHand.MAIN_HAND);
+        var stackToDrop = golem.getMainHandItem();
         var item = new ItemEntity(golem.level(),pos.x,pos.y,pos.z, ExtendedItemStack.splitAll(stackToDrop));
         var golemPos = golem.position();
         double distance = golemPos.distanceTo(pos);

@@ -25,14 +25,16 @@ public interface CoordLookup<StoreItem> {
     void store(Vec3i pos, StoreItem value);
     void remove(Vec3i pos, StoreItem value);
     void forItemsNearPos(Vec3i pos, Consumer<StoreItem> action);
+    //you may get elements more than this range,but you wont get all of them.
     void forItemsNearPosWithRange(Vec3i cubeCenterPos, Consumer<StoreItem> action, int halfLengthOfCube);
     @SuppressWarnings("UnusedReturnValue")
     boolean forItemsNearPosWithBreak(Vec3i cubeCenterPos, Predicate<StoreItem> action);
     boolean forItemsNearPosWithBreakWithRange(Vec3i cubeCenterPos, Predicate<StoreItem> action, int rangeManhattan);
     Iterator<Collection<StoreItem>> forItemsNearPosWithRangeIterator(Vec3i cubeCenterPos);
     Iterator<Collection<StoreItem>> forItemsNearPosWithRangeIterator(Vec3i cubeCenterPos,int halfLengthOfCube);
+
     static <StoreItem> @NotNull CoordLookup<StoreItem> withSizeBits(byte bits){
-        return new CubeChunkedLookups<>(bits);//TODO:[maybe wont finished]:more impl for different size bits
+        return new CubeChunkedLookups<>(bits);//TODO:[maybe wont finished]:more impl for different size bits/size
     }
     class Default{
         public static <T> CoordLookup<T> getDefaultCoordLookupFor(CoordLookupOwnerLevel.CoordLookupTypeKey<T> key){

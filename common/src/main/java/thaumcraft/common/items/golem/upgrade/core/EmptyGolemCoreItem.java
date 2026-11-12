@@ -27,7 +27,7 @@ public class EmptyGolemCoreItem
         goalSelector.addGoalIfNotExist(0,EMPTY_CORE_PLACE_ITEM_STACK_HOME,EMPTY_CORE_PLACE_ITEM_STACK_HOME_GOAL_PROVIDER,golem);
         goalSelector.addGoalIfNotExist(1,PLACE_ITEM_STACK_TO_MARKED_CONTAINER,PLACE_ITEM_STACK_TO_MARKED_CONTAINER_GOAL_PROVIDER,golem);
         goalSelector.addGoalIfNotExist(2,THROW_ITEM_STACK_TO_MARKED_CONTAINER,THROW_ITEM_STACK_TO_MARKED_CONTAINER_GOAL_PROVIDER,golem);
-        //AIEmptyGoto
+        goalSelector.addGoalIfNotExist(3,GOTO_CONTAINER_FOR_EMPTY,GOTO_CONTAINER_FOR_EMPTY_GOAL_PROVIDER,golem);
         //AIHomeTake
     }
 

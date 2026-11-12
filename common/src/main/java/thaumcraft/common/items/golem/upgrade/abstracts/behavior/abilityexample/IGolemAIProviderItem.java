@@ -10,6 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.golem.*;
 import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.*;
+import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.GolemGotoContainerForEmptyGoal;
+import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.GolemGotoContainerForFillingGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemAbilitiesData;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
@@ -60,6 +62,8 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final Function<BaseGolemEntity,Goal> PLACE_ITEM_STACK_TO_MARKED_CONTAINER_GOAL_PROVIDER = GolemPlaceItemStackToMarkedContainerGoal::new;
         public static final GoalResourceLocation THROW_ITEM_STACK_TO_MARKED_CONTAINER = GoalResourceLocation.of(Thaumcraft.MOD_ID,"throw_item_stack_to_marked_container");
         public static final Function<BaseGolemEntity,Goal> THROW_ITEM_STACK_TO_MARKED_CONTAINER_GOAL_PROVIDER = GolemThrowItemStackToMarkedContainerGoal::new;
+        public static final GoalResourceLocation GOTO_CONTAINER_FOR_EMPTY = GoalResourceLocation.of("goto_container_for_empty");
+        public static final Function<BaseGolemEntity,Goal> GOTO_CONTAINER_FOR_EMPTY_GOAL_PROVIDER = GolemGotoContainerForEmptyGoal::new;
     }
 
     default void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GolemGoalSelector goalSelector, GolemGoalSelector targetSelector) {

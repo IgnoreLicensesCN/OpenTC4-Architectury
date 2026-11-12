@@ -1,15 +1,12 @@
-package thaumcraft.common.entities.ai.goals.golem;
+package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal;
 
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.GolemTakeItemStackFromContainerGoal;
@@ -17,6 +14,7 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.function.BiPredicate;
 
@@ -28,68 +26,17 @@ import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.PRECISE_OR_ANY_AMOUNT_CONFIG_KEY;
 
-public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
+public class GolemGotoContainerForFillingGoal extends AbstractGolemGotoFurthestContainerGoal {
     protected @NotNull ContainersWithGoodsIterator containersWithGoodsIterator = new ContainersWithGoodsIterator(golem);
-    protected int tickRemaining = 0;
-    protected BlockPos dest;
-
     protected final ByteSet colorsTemp = new ByteArraySet(17);
 
     public GolemGotoContainerForFillingGoal(BaseGolemEntity golem) {
         super(golem);
     }
 
-
-    @Override
-    public boolean canContinueToUse() {
-        return this.tickRemaining > 0 && !this.golem.getMoveControl().hasWanted();
-    }
-
-    @Override
-    public void tick() {
-        --this.tickRemaining;
-        if (this.tickRemaining == 0
-                && golem.position().equals(this.prevPos)
-        ) {
-            //back to where near home
-            var homePos = golem.getRestrictCenter();//RandomPositionGenerator.findRandomTarget(this.theGolem, 2, 1);
-            this.tickRemaining = 20;
-            var moveControl = this.golem.getMoveControl();
-            moveControl.setWantedPosition(
-                    homePos.getX() + 0.5,
-                    homePos.getY() + 0.5,
-                    homePos.getZ() + 0.5,
-                    moveControl.getSpeedModifier()
-            );
-        }
-        super.tick();
-    }
-
-    @Override
-    public void stop() {
-        super.stop();
-        this.tickRemaining = 0;
-    }
-
-    @Override
-    public void start() {
-        super.start();
-        this.tickRemaining = 200;
-        this.prevPos = this.golem.position();
-        var moveControl = this.golem.getMoveControl();
-        moveControl.setWantedPosition(
-                dest.getX() + 0.5,
-                dest.getY() + 0.5,
-                dest.getZ() + 0.5,
-                moveControl.getSpeedModifier()
-        );
-    }
-
-    protected @Nullable Vec3 prevPos = null;
-
     @Override
     public boolean canUse() {
-        if (this.golem.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()
+        if (this.golem.getMainHandItem().isEmpty()
                 && this.golem.tickCount % CONFIG_INSTANCE.getGolemDelay() <= 0
                 && this.golem.hasSomethingInInventoryOrHand()) {
             var iter = getMissingItemsIterator();
@@ -97,62 +44,29 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
 
             while (iter.hasNext()) {
                 var itemMissing = iter.next();
-                {
-                    var fakeFields = opentc4$getOrCreateCachedObjectFrom(
-                            golem,
-                            GolemTakeItemStackFromContainerGoal.GolemTakeItemStackFromContainerWatchingItemFakeFields.class,
-                            GolemTakeItemStackFromContainerGoal.GolemTakeItemStackFromContainerWatchingItemFakeFields::new
-                    );
-                    fakeFields.watchedItem = itemMissing;
 
-                }
                 colorsTemp.clear();
                 getColorsMatching(colorsTemp, golem, itemMissing);
-                for (byte color : colorsTemp) {
-                    containersWithGoodsIterator.resetWith(color);
-                    double rangeMin = Double.MAX_VALUE;
-                    BlockPos closestContainerPos = null;
-                    while (containersWithGoodsIterator.hasNext()) {
-                        var container = containersWithGoodsIterator.next();
-                        if (!(container instanceof BlockEntity blockEntity)) {
-                            continue;
-                        }
-                        {
-                            var homeBEPos = golem.getHomeAttachedBlockPos();
-                            float dmod = this.golem.getHomeRange();
-                            BlockPos containerPos = blockEntity.getBlockPos();
-                            double distanceSqr = containerPos.distToCenterSqr(this.golem.position());
-                            if (distanceSqr < rangeMin
-                                    && distanceSqr <= (dmod * dmod)
-                                    && !containerPos.equals(homeBEPos)
-                            ) {
-                                rangeMin = distanceSqr;
-                                closestContainerPos = containerPos;
-                            }
-                        }
-                    }
-                    containersWithGoodsIterator.reset();
+                containersWithGoodsIterator.reset();
+                BlockPos closestContainerPos = getFurthestContainerPos(containersWithGoodsIterator,containersWithGoodsIterator,colorsTemp);
 
 
-                    if (closestContainerPos != null) {
-                        var moveControl = golem.getMoveControl();
-                        dest = closestContainerPos;
-                        golem.getMoveControl().setWantedPosition(
-                                dest.getX() + 0.5,
-                                dest.getY() + 0.5,
-                                dest.getZ() + 0.5,
-                                moveControl.getSpeedModifier()
+                if (closestContainerPos != null) {
+                    {
+                        var fakeFields = opentc4$getOrCreateCachedObjectFrom(
+                                golem,
+                                GolemTakeItemStackFromContainerGoal.GolemTakeItemStackFromContainerWatchingItemFakeFields.class,
+                                GolemTakeItemStackFromContainerGoal.GolemTakeItemStackFromContainerWatchingItemFakeFields::new
                         );
-                        {
-                            iter.reset();
-                            return true;
-                        }
+                        fakeFields.watchedItem = itemMissing;
                     }
+                    setDest(closestContainerPos);
                     {
                         iter.reset();
-                        return false;
+                        return true;
                     }
                 }
+
             }
             iter.reset();
             return false;
@@ -160,10 +74,11 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
         return false;
     }
 
-    public static class ContainersWithGoodsIterator implements Iterator<Container>, GolemHelper.Resettable {
+    public static class ContainersWithGoodsIterator implements Iterator<GolemHelper.ContainerInfo>, GolemHelper.Resettable {
         protected final BaseGolemEntity golem;
         protected GolemHelper.MarkedContainerAndMarkerIterator markedIterator;
-        protected @Nullable Container nextContainer = null;
+        protected GolemHelper.ContainerInfo resultCache = new GolemHelper.ContainerInfo();
+        protected GolemHelper.ContainerInfo resultCacheOut = new GolemHelper.ContainerInfo();
         public byte color = 0;
 
         public ContainersWithGoodsIterator(BaseGolemEntity golem) {
@@ -182,13 +97,13 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
 
         @Override
         public boolean hasNext() {
-            if (nextContainer != null) {
+            if (resultCache.verify()) {
                 return true;
             }
             var golemStackMatcher = golem.getItemStackMatcher();
             while (markedIterator.hasNext()) {
                 var markedContainerInfo = markedIterator.next();
-                var markedContainer = markedContainerInfo.container == null ? null : markedContainerInfo.container.get();
+                var markedContainer = markedContainerInfo.containerRef == null ? null : markedContainerInfo.containerRef.get();
                 if (markedContainer == null) {
                     continue;
                 }
@@ -199,7 +114,7 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
                         continue;
                     }
                     if (InventoryUtils.extractStack(markedContainer, stackInGolem, side, golemStackMatcher, false) != null) {
-                        nextContainer = markedContainer;
+                        resultCache.setTo(markedContainerInfo);
                         return true;
                     }
                 }
@@ -208,13 +123,13 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
         }
 
         @Override
-        public Container next() {
+        public GolemHelper.ContainerInfo next() {
             if (!hasNext()) {
                 throw new IllegalStateException("no next! call hasNext() first!");
             }
-            var result = nextContainer;
-            nextContainer = null;
-            return result;
+            resultCacheOut.setTo(resultCache);
+            resultCache.reset();
+            return resultCacheOut;
         }
     }
 
@@ -232,6 +147,23 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
     protected @NotNull MissingItemsIteratorForAnyAmount missingItemsIteratorForAnyAmount = new MissingItemsIteratorForAnyAmount(golem);
 
     public static abstract class MissingItemsIterator implements Iterator<ItemStack>, GolemHelper.Resettable {
+        protected @Nullable WeakReference<ItemStack> result = null;
+        public boolean alreadyHaveResult() {
+            return result != null && result.get() != null;
+        }
+
+        @Override
+        public ItemStack next() {
+            var resultStack = result == null ? null : result.get();
+            if (!hasNext() || result == null) {
+                throw new IllegalStateException("call hasNext() first");
+            }
+            result = null;
+            if (resultStack == null) {
+                throw new IllegalStateException("call hasNext() first");
+            }
+            return resultStack;
+        }
     }
 
     public static class MissingItemsIteratorForPreciseAmount extends MissingItemsIterator {
@@ -249,6 +181,9 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
 
         @Override
         public boolean hasNext() {
+            if (alreadyHaveResult()){
+                return true;
+            }
             var containerAtHome = getHomeContainer();
             if (containerAtHome == null) {
                 return false;
@@ -256,9 +191,8 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
 
             boolean fuzzyMatch = fuzzyMatch();
             var golemStackMatcher = golem.getItemStackMatcher();
-            for (int i = inventoryIndex; i < golem.inventory.size(); i++) {
-                var toCheckInGolemInventory = golem.inventory.get(i);
-                inventoryIndex = i;
+            for (; inventoryIndex < golem.inventory.size(); inventoryIndex++) {
+                var toCheckInGolemInventory = golem.inventory.get(inventoryIndex);
 
                 if (!toCheckInGolemInventory.isEmpty()) {
                     int foundAmount = 0;
@@ -271,6 +205,11 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
                     if (foundAmount > amountNeeded) {
                         continue;
                     }
+
+                    ItemStack ret = ((ExtendedItemStack) (Object) toCheckInGolemInventory).opentc4$copyAndShareTag();
+                    ret.setCount(ret.getCount() - foundAmount);
+                    inventoryIndex += 1;
+                    result = new WeakReference<>(ret);
                     return true;
                 }
 
@@ -278,42 +217,6 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
             return false;
 
         }
-
-        @Override
-        public ItemStack next() {
-            var containerAtHome = getHomeContainer();
-            if (containerAtHome == null) {
-                throw new IllegalStateException("No more missing items,call hasNext() first");
-            }
-
-            boolean fuzzyMatch = fuzzyMatch();
-            var golemStackMatcher = golem.getItemStackMatcher();
-            for (int i = inventoryIndex; i < golem.inventory.size(); i++) {
-                var toCheckInGolemInventory = golem.inventory.get(i);
-                if (!toCheckInGolemInventory.isEmpty()) {
-                    int foundAmount = 0;
-                    int amountNeeded = getAmountNeededSmart(
-                            golem.inventory,
-                            toCheckInGolemInventory,
-                            fuzzyMatch);
-
-                    foundAmount = getFoundAmount(containerAtHome, toCheckInGolemInventory, foundAmount, fuzzyMatch, golemStackMatcher);
-                    if (/*checkNext*/foundAmount > amountNeeded) {
-                        continue;
-                    }
-                    inventoryIndex = i + 1;
-                    ItemStack ret = ((ExtendedItemStack) (Object) toCheckInGolemInventory).opentc4$copyAndShareTag();
-                    ret.setCount(ret.getCount() - foundAmount);
-                    return ret;
-//                        ItemStack ret = toCheckInGolemInventory.copy();
-//                        ret.setCount(ret.getCount() - foundAmount);
-//                        qr.add(ret);
-                }
-
-            }
-            throw new IllegalStateException("No more missing items,call hasNext() first");
-        }
-
         protected int getFoundAmount(
                 Container containerAtHome,
                 ItemStack toCheckInGolemInventory,
@@ -385,26 +288,18 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGoal {
 
         @Override
         public boolean hasNext() {
-            for (var i = inventoryIndex; i < golem.inventory.size(); i++) {
-                ItemStack toCheck = golem.inventory.get(i);
-                inventoryIndex = i;
+            if (result != null && result.get() != null) {
+                return true;
+            }
+            for (;inventoryIndex < golem.inventory.size(); inventoryIndex++) {
+                ItemStack toCheck = golem.inventory.get(inventoryIndex);
                 if (!toCheck.isEmpty()) {
+                    result = new WeakReference<>(toCheck);
+                    inventoryIndex += 1;//skip this since extracted
                     return true;
                 }
             }
             return false;
-        }
-
-        @Override
-        public ItemStack next() {
-            for (var i = inventoryIndex; i < golem.inventory.size(); i++) {
-                ItemStack toCheck = golem.inventory.get(i);
-                if (!toCheck.isEmpty()) {
-                    inventoryIndex = i + 1;//skip this since extracted
-                    return ((ExtendedItemStack) (Object) golem.inventory.get(i)).opentc4$copyAndShareTag();
-                }
-            }
-            throw new IllegalStateException("No more missing items,call hasNext() first");
         }
     }
 
