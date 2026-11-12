@@ -20,7 +20,7 @@ public class GolemGotoContainerForEmptyGoal extends AbstractGolemGotoFurthestCon
     public boolean canUse() {
         var itemMissing = golem.getMainHandItem();
         if (!itemMissing.isEmpty()
-                && this.golem.tickCount % CONFIG_INSTANCE.getGolemDelay() <= 0){
+                && this.golem.tickCount % getGolemGoalDelay() <= 0){
             getColorsMatching(colorsTemp, golem, itemMissing);
             containersWithRoomIterator.resetWith(itemMissing);
             BlockPos closestContainerPos = getFurthestContainerPos(containersWithRoomIterator,containersWithRoomIterator,colorsTemp);

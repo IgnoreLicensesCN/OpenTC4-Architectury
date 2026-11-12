@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
 import thaumcraft.common.entities.golems.configuration.GolemConfigurationKey;
@@ -58,6 +59,10 @@ public class FillGolemCoreItem
 
     @Override
     public BiPredicate<ItemStack, ItemStack> modifyItemStackMatching(BaseGolemEntity golem, ItemStack upgradeStack) {
+        return getItemStackItemStackBiPredicateForNBTAndTagConfig(golem);
+    }
+
+    public static @NotNull BiPredicate<ItemStack, ItemStack> getItemStackItemStackBiPredicateForNBTAndTagConfig(BaseGolemEntity golem) {
         var matchNBT = golem.configurationProviders.contains(MATCH_NBT_CONFIG_KEY)?MATCH_NBT_CONFIG_KEY.provider:null;
         if (matchNBT != null && matchNBT.getBooleanFrom(golem)) {
             return ItemStack::isSameItemSameTags;
@@ -66,10 +71,10 @@ public class FillGolemCoreItem
         if (matchTag != null){
             var tagMatching = matchTag.getFrom(golem);
             if (!tagMatching.getNamespace().isEmpty() && !tagMatching.getPath().isEmpty()) {
-                return TagBiItemMatcher.INSTANCES.computeIfAbsent(tagMatching,TagBiItemMatcher::new);
+                return TagBiItemMatcher.INSTANCES.computeIfAbsent(tagMatching, TagBiItemMatcher::new);
             }
         }
-        return (a,b) -> a.getItem() == b.getItem();
+        return (a, b) -> a.getItem() == b.getItem();
     }
 
     @AllArgsConstructor

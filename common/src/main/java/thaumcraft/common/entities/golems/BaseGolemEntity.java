@@ -42,6 +42,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.crafted.GolemFetterBlock;
@@ -843,5 +844,22 @@ public abstract class BaseGolemEntity
         var tag = new CompoundTag();
         CONFIGURATION_ACCESSOR.writeToCompoundTag(tag,getConfigWrapperTag());
         new PacketSetGolemConfigC2S(this.getId(),tag).sendToServer();
+    }
+
+    public void throwItemStack(ItemStack stack, Vec3 toPos){
+        var golemPos = this.position();
+        var movementX = toPos.x - golemPos.x;
+        var movementY = toPos.y - golemPos.y;
+        var movementZ = toPos.z - golemPos.z;
+        var distScaled = Math.sqrt(movementX * movementX + movementY * movementY + movementZ * movementZ)/3.;
+        var itemEntity = spawnAtLocation(ExtendedItemStack.splitAll(stack),getEyeHeight());
+        if (itemEntity != null){
+            if (distScaled < 10E-4){
+                itemEntity.setDeltaMovement(Vec3.ZERO);
+            } else {
+                itemEntity.setDeltaMovement(movementX / distScaled, movementY / distScaled, movementZ / distScaled);
+            }
+            level().broadcastEntityEvent(this, START_ACTION_TIMER);
+        }
     }
 }

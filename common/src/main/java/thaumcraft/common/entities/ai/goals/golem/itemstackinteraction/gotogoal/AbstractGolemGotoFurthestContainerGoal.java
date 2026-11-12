@@ -14,11 +14,14 @@ public abstract class AbstractGolemGotoFurthestContainerGoal extends AbstractGol
         super(golem);
     }
 
-    protected @Nullable BlockPos getFurthestContainerPos(Iterator<GolemHelper.ContainerInfo> iterator, GolemHelper.Resettable iteratorResetter, ByteSet colors) {
+    protected @Nullable BlockPos getFurthestContainerPos(
+            Iterator<GolemHelper.ContainerInfo> iterator,
+            GolemHelper.Resettable iteratorResetter /* == iterator*/,
+            ByteSet colors) {
         return getFurthestContainerPos(this.golem,iterator, iteratorResetter, colors);
     }
 
-    //idk if i should make it public static or protected so this.
+    //idk if i should make it "public static" or "protected" so this.
     public static @Nullable BlockPos getFurthestContainerPos(BaseGolemEntity golem,Iterator<GolemHelper.ContainerInfo> iterator, GolemHelper.Resettable iteratorResetter, ByteSet colors) {
         double minDistanceSqr = Double.MAX_VALUE;
         BlockPos closestContainerPos = null;

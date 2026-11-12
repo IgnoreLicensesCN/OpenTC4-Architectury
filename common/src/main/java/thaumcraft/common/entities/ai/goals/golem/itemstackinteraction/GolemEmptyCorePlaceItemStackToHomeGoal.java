@@ -58,13 +58,13 @@ public class GolemEmptyCorePlaceItemStackToHomeGoal extends GolemPlaceItemStackT
             }
             containersWithRoomIterator.reset();
 //        }
-        var fakeFieldToSetTickDelay = opentc4$getCachedObjectFrom(itemToMatch, ItemStackPlaceToHomeTickMarkFakeFields.class);
+        var fakeFieldToSetTickDelay = opentc4$getCachedObjectFrom(itemToMatch, ItemStackSortingTickMarkFakeFields.class);
         if (fakeFieldToSetTickDelay == null){
-            fakeFieldToSetTickDelay =  new ItemStackPlaceToHomeTickMarkFakeFields(
+            fakeFieldToSetTickDelay =  new ItemStackSortingTickMarkFakeFields(
                     golem.getId(),
                     golem.tickCount + Config.CONFIG_INSTANCE.getGolemIgnoreDelayTicks()
             );
-            opentc4$putCachedObjectTo(itemToMatch,ItemStackPlaceToHomeTickMarkFakeFields.class,fakeFieldToSetTickDelay);
+            opentc4$putCachedObjectTo(itemToMatch, ItemStackSortingTickMarkFakeFields.class,fakeFieldToSetTickDelay);
         }
         return false;
     }

@@ -19,7 +19,7 @@ public class GolemGoalSelector {
         this.wrappedSelector = wrappedSelector;
     }
 
-    public void addGoalIfNotExist(int i, GoalResourceLocation id, Function<BaseGolemEntity, Goal> goalProvider, BaseGolemEntity golem) {
+    public void addGoalIfNotExist(int i, GoalResourceLocation id, Function<BaseGolemEntity,? extends Goal> goalProvider, BaseGolemEntity golem) {
         if (this.goals.containsKey(id)) {
             return;
         }

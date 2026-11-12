@@ -9,7 +9,7 @@ package thaumcraft.common.entities.ai.inventory;
 //import thaumcraft.common.config.Config;
 //import thaumcraft.common.entities.golems.EntityGolemBase;
 
-//GolemDropItemStackHomeIfNoContainerGoal
+//GolemThrowItemStackHomeIfNoContainerGoal
 @Deprecated(forRemoval = true)
 public class AIHomeDrop /*extends EntityAIBase*/ {
 //   private EntityGolemBase theGolem;

@@ -16,18 +16,18 @@ public class GolemPlaceItemStackToHomeGoalWithItemStackTickMark extends GolemPla
 
 
     @AllArgsConstructor
-    public static class ItemStackPlaceToHomeTickMarkFakeFields implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<ItemStack> {
+    public static class ItemStackSortingTickMarkFakeFields implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<ItemStack> {
         public int golemID;
         public int placeBeforeTickCount;
     }
     @Override
     protected boolean checkForExecution(ItemStack stackInHand) {
-        var mark = opentc4$getCachedObjectFrom(stackInHand, ItemStackPlaceToHomeTickMarkFakeFields.class);
+        var mark = opentc4$getCachedObjectFrom(stackInHand, ItemStackSortingTickMarkFakeFields.class);
         if (mark != null){
             if (golem.tickCount < mark.placeBeforeTickCount && golem.getId() == mark.golemID){
                 return true;
             }
-            opentc4$removeCachedObjectFrom(stackInHand, ItemStackPlaceToHomeTickMarkFakeFields.class);
+            opentc4$removeCachedObjectFrom(stackInHand, ItemStackSortingTickMarkFakeFields.class);
         }
         return canUseAdditional();
     }

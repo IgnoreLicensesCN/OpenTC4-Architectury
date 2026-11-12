@@ -2,6 +2,7 @@ package thaumcraft.common.entities.ai.goals.golem;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.world.entity.ai.goal.Goal;
+import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 
 import java.util.EnumSet;
@@ -14,5 +15,9 @@ public abstract class AbstractGolemGoal extends Goal {
     protected AbstractGolemGoal(BaseGolemEntity golem) {
         this.golem = golem;
         setFlags(FLAGS);
+    }
+
+    protected int getGolemGoalDelay(){
+        return Config.CONFIG_INSTANCE.getGolemDelay();
     }
 }

@@ -1,7 +1,8 @@
-package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction;
+package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.throwgoal;
 
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import net.minecraft.world.Container;
+import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.GolemDoSomethingToMarkedContainerGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 
 import static thaumcraft.common.entities.golems.BaseGolemEntity.BaseGolemEntityClientEventSignals.START_ACTION_TIMER;
@@ -28,16 +29,7 @@ public class GolemThrowItemStackToMarkedContainerGoal extends GolemDoSomethingTo
         var usingBE = usingBlockEntity.get();
         if (usingBE instanceof Container){
             var containerCenter = usingBE.getBlockPos().getCenter();
-            var golemPos = this.golem.position();
-            var movementX = containerCenter.x - golemPos.x;
-            var movementY = containerCenter.y - golemPos.y;
-            var movementZ = containerCenter.z - golemPos.z;
-            var distScaled = Math.sqrt(movementX * movementX + movementY * movementY + movementZ * movementZ)/3.;
-            var itemEntity = golem.spawnAtLocation(ExtendedItemStack.splitAll(golem.getMainHandItem()),golem.getEyeHeight());
-            if (itemEntity != null){
-                itemEntity.setDeltaMovement(movementX / distScaled, movementY / distScaled, movementZ / distScaled);
-                this.golem.level().broadcastEntityEvent(golem, START_ACTION_TIMER);
-            }
+            golem.throwItemStack(golem.getMainHandItem(),containerCenter);
         }
     }
 }

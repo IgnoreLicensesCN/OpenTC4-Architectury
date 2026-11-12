@@ -1,10 +1,13 @@
 package thaumcraft.common.entities.golems;
 
 import com.linearity.opentc4.annotations.ReturnValueFieldOfSelf;
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
+import it.unimi.dsi.fastutil.ints.IntIterator;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.inventory.IInventory;
@@ -15,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -23,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.essentiabe.IEssentiaTransportBlockEntity;
 import thaumcraft.common.config.Config;
+import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.GolemPlaceItemStackToHomeGoalWithItemStackTickMark;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.junkbox.TileEssentiaReservoir;
 import thaumcraft.common.tiles.junkbox.TileJarFillable;
@@ -32,9 +37,9 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getCachedObjectFrom;
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class GolemHelper {
@@ -556,15 +561,17 @@ public class GolemHelper {
 
     public static int getAmountNeededSmart(NonNullList<ItemStack> inventory, ItemStack stackInSlot, boolean fuzzy) {
         int amt = 0;
-        var tags = getConsideringTagsForItem(stackInSlot.getItem());
 
         for (ItemStack consideringStack : inventory) {
-            var tagsForConsidering = getConsideringTagsForItem(consideringStack.getItem());
             if (!consideringStack.isEmpty()) {
                 if (ItemStack.isSameItemSameTags(consideringStack, stackInSlot)) {
                     amt += consideringStack.getCount();
-                } else if (fuzzy && !Collections.disjoint(tags, tagsForConsidering)) {
-                    amt += consideringStack.getCount();
+                } else if (fuzzy) {
+                    var tags = getConsideringTagsForItem(stackInSlot.getItem());
+                    var tagsForConsidering = getConsideringTagsForItem(consideringStack.getItem());
+                    if (!Collections.disjoint(tags, tagsForConsidering)){
+                        amt += consideringStack.getCount();
+                    }
                 }
             }
         }
@@ -1086,22 +1093,17 @@ public class GolemHelper {
         return false;
     }
 
-    public static boolean isOnTimeOut(EntityGolemBase golem, ItemStack stack) {
-        SortingItemTimeout tos = new SortingItemTimeout(golem.getEntityId(), stack, 0L);
-        if (itemTimeout.contains(tos)) {
-            int q = itemTimeout.indexOf(tos);
-            SortingItemTimeout tos2 = itemTimeout.get(q);
-            if (System.currentTimeMillis() < tos2.time) {
-                return true;
-            }
-
-            itemTimeout.remove(q);
+    public static boolean isOnTimeOut(BaseGolemEntity golem, ItemStack stack) {
+        var fakeField = opentc4$getCachedObjectFrom(
+                stack,
+                GolemPlaceItemStackToHomeGoalWithItemStackTickMark.ItemStackSortingTickMarkFakeFields.class);
+        if (fakeField == null) {
+            return false;
         }
-
-        return false;
+        return fakeField.golemID == golem.getId() && fakeField.placeBeforeTickCount < golem.tickCount;
     }
 
-    public static boolean validTargetForItem(EntityGolemBase golem, ItemStack stack) {
+    public static boolean validTargetForItem(BaseGolemEntity golem, ItemStack stack) {
         if (isOnTimeOut(golem, stack)) {
             return false;
         } else {
@@ -1134,61 +1136,87 @@ public class GolemHelper {
         }
     }
 
-    public static ItemStack getFirstItemUsingTimeout(EntityGolemBase golem, IInventory inventory, int side, boolean doit) {
-        ItemStack stack1 = null;
-        if (inventory instanceof ISidedInventory isidedinventory && side > -1) {
-            int[] aint = isidedinventory.getAccessibleSlotsFromSide(side);
+    public static int getGolemCarrySpace(BaseGolemEntity golem, int stackCount, int maxStackCount) {
+        return Math.min(golem.getCarryPower() - stackCount,
+                maxStackCount - stackCount);
+    }
 
-            for (int i : aint) {
-                if (stack1 == null && inventory.getStackInSlot(i) != null) {
-                    if (isOnTimeOut(golem, inventory.getStackInSlot(i))) {
-                        continue;
-                    }
+    @AllArgsConstructor
+    @RequiredArgsConstructor
+    public static class IntRangeIterator implements IntIterator {
+        public int currentIndex = 0;
+        public final int maxIndex;
 
-                    stack1 = inventory.getStackInSlot(i).copy();
-                    stack1.stackSize = golem.getCarrySpace();
-                }
-
-                if (stack1 != null) {
-                    stack1 = InventoryUtils.attemptExtraction(inventory, stack1, i, side, false, false, false, doit);
-                }
-
-                if (stack1 != null) {
-                    break;
-                }
-            }
-        } else {
-            int k = inventory.getSizeInventory();
-
-            for (int l = 0; l < k; ++l) {
-                if (stack1 == null && inventory.getStackInSlot(l) != null) {
-                    if (isOnTimeOut(golem, inventory.getStackInSlot(l))) {
-                        continue;
-                    }
-
-                    stack1 = inventory.getStackInSlot(l).copy();
-                    stack1.stackSize = golem.getCarrySpace();
-                }
-
-                if (stack1 != null) {
-                    stack1 = InventoryUtils.attemptExtraction(inventory, stack1, l, side, false, false, false, doit);
-                }
-
-                if (stack1 != null) {
-                    break;
-                }
-            }
+        @Override
+        public int nextInt() {
+            currentIndex += 1;
+            return currentIndex;
         }
 
-        if (stack1 != null && stack1.stackSize != 0) {
-            return stack1.copy();
+        @Override
+        public boolean hasNext() {
+            return currentIndex < maxIndex;
+        }
+    }
+    @RequiredArgsConstructor
+    public static class IntArrayIterator implements IntIterator {
+        public int currentIndex = 0;
+        public final int[] array;
+
+        @Override
+        public int nextInt() {
+            currentIndex += 1;
+            return array[currentIndex];
+        }
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex < array.length;
+        }
+    }
+
+    public static ItemStack getFirstItemUsingTimeout(BaseGolemEntity golem, Container container, @Nullable Direction side, boolean doit) {
+        IntIterator iterator = null;
+        if (container instanceof WorldlyContainer isidedinventory && side != null) {
+            int[] aint = isidedinventory.getSlotsForFace(side);
+            iterator = new IntArrayIterator(aint);
         } else {
-            if (doit) {
-                inventory.markDirty();
+            iterator = new IntRangeIterator(container.getContainerSize());
+        }
+        while (iterator.hasNext()) {
+            int i = iterator.nextInt();
+
+            var extracted = extractStackFromContainerWithTimeout(
+                    golem,container,i,side,doit
+            );
+            if (!extracted.isEmpty()) {
+                return extracted;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public static ItemStack extractStackFromContainerWithTimeout(BaseGolemEntity golem,Container container, int slot,@Nullable Direction side,boolean doit) {
+        var consideringStack = container.getItem(slot);
+        if (!consideringStack.isEmpty()) {
+            if (isOnTimeOut(golem, consideringStack)) {
+                return ItemStack.EMPTY;
             }
 
-            return null;
+            var stack1 = ExtendedItemStack.copyAndShareTag(consideringStack);
+            stack1.setCount(getGolemCarrySpace(golem,stack1.getCount(),stack1.getMaxStackSize()));
+            var extracted = InventoryUtils.attemptExtraction(
+                    container,
+                    stack1,
+                    slot,
+                    side,
+                    golem.getItemStackMatcher(),
+                    doit);
+            if (!extracted.isEmpty()) {
+                return extracted;
+            }
         }
+        return ItemStack.EMPTY;
     }
 
     public static ArrayList<ItemStack> getItemsInHomeContainer(EntityGolemBase golem) {

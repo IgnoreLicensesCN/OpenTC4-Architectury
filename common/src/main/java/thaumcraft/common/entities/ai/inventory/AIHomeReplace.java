@@ -41,8 +41,8 @@ public class AIHomeReplace /*extends EntityAIBase*/ {
 //            return true;
 //         } else {
 //            switch (this.theGolem.getCore()) {
-////               case 1:
-////                  return !GolemHelper.findSomethingEmptyCore(this.theGolem, this.theGolem.getCarried());
+//               case 1:
+//                  return !GolemHelper.findSomethingEmptyCore(this.theGolem, this.theGolem.getCarried());
 //               case 8:
 //                  return !GolemHelper.findSomethingUseCore(this.theGolem, this.theGolem.getCarried());
 //               case 10:

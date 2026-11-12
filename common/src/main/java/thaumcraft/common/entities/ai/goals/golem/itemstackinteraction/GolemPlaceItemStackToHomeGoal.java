@@ -23,7 +23,7 @@ public class GolemPlaceItemStackToHomeGoal extends AbstractGolemGoal {
         if (stackInHand.isEmpty()) {
             return false;
         }
-        if (this.golem.tickCount % CONFIG_INSTANCE.getGolemDelay() != 0){
+        if (this.golem.tickCount % getGolemGoalDelay() != 0){
             return false;
         }
         if (golem.getRestrictCenter().distToCenterSqr(golem.position()) < maxToHomeDistanceSquaredToExecute()

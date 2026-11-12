@@ -37,7 +37,7 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGotoFurthestC
     @Override
     public boolean canUse() {
         if (this.golem.getMainHandItem().isEmpty()
-                && this.golem.tickCount % CONFIG_INSTANCE.getGolemDelay() <= 0
+                && this.golem.tickCount % getGolemGoalDelay() <= 0
                 && this.golem.hasSomethingInInventoryOrHand()) {
             var iter = getMissingItemsIterator();
             iter.reset();

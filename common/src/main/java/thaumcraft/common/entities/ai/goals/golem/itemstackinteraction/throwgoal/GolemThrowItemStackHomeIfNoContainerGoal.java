@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction;
+package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.throwgoal;
 
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import net.minecraft.world.Container;
@@ -11,8 +11,8 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.entities.golems.BaseGolemEntity.BaseGolemEntityClientEventSignals.START_ACTION_TIMER;
 
-public class GolemDropItemStackHomeIfNoContainerGoal extends AbstractGolemGoal {
-    public GolemDropItemStackHomeIfNoContainerGoal(BaseGolemEntity golem) {
+public class GolemThrowItemStackHomeIfNoContainerGoal extends AbstractGolemGoal {
+    public GolemThrowItemStackHomeIfNoContainerGoal(BaseGolemEntity golem) {
         super(golem);
     }
 
@@ -38,34 +38,8 @@ public class GolemDropItemStackHomeIfNoContainerGoal extends AbstractGolemGoal {
     public void start() {
         super.start();
         this.cooldown = 200;
-//        ChunkCoordinates home = this.golem.getHomePosition();
-//        Direction facing = Direction.getOrientation(this.golem.homeFacing);
-//        int cX = home.posX - facing.offsetX;
-//        int cY = home.posY - facing.offsetY;
-//        int cZ = home.posZ - facing.offsetZ;
-
-        var pos = golem.getHomeAttachedBlockPos().getCenter();
-        var stackToDrop = golem.getMainHandItem();
-        var item = new ItemEntity(golem.level(),pos.x,pos.y,pos.z, ExtendedItemStack.splitAll(stackToDrop));
         var golemPos = golem.position();
-        double distance = golemPos.distanceTo(pos);
-
-        var itemMovementX = pos.x;
-        var itemMovementY = pos.y;
-        var itemMovementZ = pos.z;
-        itemMovementX -= golemPos.x;
-        itemMovementY -= golemPos.y;
-        itemMovementZ -= golemPos.z;
-        var scaleSize = distance/3.F;
-        itemMovementX *= scaleSize;
-        itemMovementY *= scaleSize;
-        itemMovementZ *= scaleSize;
-
-        item.setDeltaMovement(itemMovementX,itemMovementY,itemMovementZ);
-        item.setPickUpDelay(10);
-        this.golem.level().addFreshEntity(item);
-        this.golem.level().broadcastEntityEvent(golem, START_ACTION_TIMER);
-        this.golem.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        golem.throwItemStack(golem.getMainHandItem(),golemPos);
     }
 
 

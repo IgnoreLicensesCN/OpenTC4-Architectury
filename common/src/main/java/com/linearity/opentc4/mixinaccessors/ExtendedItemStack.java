@@ -27,4 +27,8 @@ public interface ExtendedItemStack {
     static ItemStack splitAndShareTag(ItemStack stack, int amount) {
         return ((ExtendedItemStack)(Object)stack).opentc4$splitAndShareTag(amount);
     }
+
+    static ItemStack copyAndShareTag(ItemStack stack) {
+        return ((ExtendedItemStack)(Object)stack).opentc4$copyAndShareTag();
+    }
 }

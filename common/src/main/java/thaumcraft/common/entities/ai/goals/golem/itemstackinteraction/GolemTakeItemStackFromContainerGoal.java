@@ -107,7 +107,8 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
                     target.setCount(Math.min(target.getCount(),
                             countLimited
                                     ? Math.min(this.golem.getCarryPower(), target.getMaxStackSize())
-                                    : this.golem.getCarryPower()));
+                                    : this.golem.getCarryPower())
+                    );
                     ItemStack result = InventoryUtils.extractStack(
                             container,
                             target,
