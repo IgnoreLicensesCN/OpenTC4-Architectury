@@ -1,5 +1,6 @@
 package thaumcraft.common.tiles.crafted;
 
+import com.linearity.opentc4.utils.EasyLCGGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -91,36 +92,23 @@ implements IEssentiaTransportOutBlockEntity {
         return 16;
     }
 
-    protected int easyLCGState = 0;
-    protected static final int[] LCGNeededPrimesExample = {
-            3877, 6737, 7237, 62327, 39439, 53791, 53549, 16759,
-            1987, 35897, 46589, 59369, 26647, 56629, 26387, 1931,
-            43451, 4409, 823, 14947, 22907, 9533, 36343, 46601,
-            36833, 26903, 1667, 4519, 53777, 38917, 37181, 56417,
-            14923, 42989, 58481, 12577, 54151, 18691, 44927, 47591,
-            29569, 54499, 16223, 63997, 12149, 6551, 59341, 30553,
-            58909, 34883, 1759, 11093, 13873, 64621, 13367, 16741,
-            14221, 28429, 50873, 9127, 54721, 2447, 16057, 28183
-    };
-    protected int LCGStep = LCGNeededPrimesExample[Math.abs(System.identityHashCode(this)% LCGNeededPrimesExample.length)];
-//    {
-//        if (LCGStep % ((getCleanDistance()*2 + 1)*(getCleanDistance()*2 + 1)*(getCleanDistance()*2 + 1)) == 0){
-//            throw new IllegalArgumentException("illegal range for LCG");
-//        }
-//    }
+    protected EasyLCGGenerator LCGGen = new EasyLCGGenerator((getCleanDistance()*2 + 1)*(getCleanDistance()*2 + 1)*(getCleanDistance()*2 + 1));
+    protected final BlockPos.MutableBlockPos posToCheck = new BlockPos.MutableBlockPos();
     private void checkFlux() {
         if (this.level == null){
             return;
         }
         int distance = getCleanDistance();
         int distanceCube = ((distance*2 + 1)*(distance*2 + 1)*(distance*2 + 1));
-        easyLCGState = (easyLCGState + LCGStep) % distanceCube;
+        LCGGen.setStep(distanceCube);
+        int index = LCGGen.next();
         for (int i = 0; i< getMaxToCheckEachRun(); i++){
-            int x = (easyLCGState/((distance*2 + 1)*(distance*2 + 1))) ;
-            int yz = easyLCGState % ((distance*2 + 1)*(distance*2 + 1));
+            int x = (index/((distance*2 + 1)*(distance*2 + 1))) ;
+            int yz = index % ((distance*2 + 1)*(distance*2 + 1));
             int y = yz /((distance*2 + 1));
             int z = yz %((distance*2 + 1));
-            var posToCheck = new BlockPos(x,y,z).offset(getBlockPos());
+            var selfPos = getBlockPos();
+            posToCheck.set(x + selfPos.getX(), y + selfPos.getY(), z + selfPos.getZ());
             if (this.isFlux(posToCheck)) {
                 this.centiVisAmount -= 5;
 

@@ -3,6 +3,7 @@ package thaumcraft.common.items.wands.foci;
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.mixinaccessors.DropExperienceBlockAccessor;
+import com.linearity.opentc4.utils.EasyLCGGenerator;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -313,7 +314,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
         return fakeDiamondPickaxeStack;
     }
     protected @Modifiable Map<Enchantment,Integer> getEnchantmentsFromFocus(ItemStack focusStack,@Nullable ItemStack wandStack){
-        var wandUpgrades = this.getFocusUpgradesWithWandModifiers(focusStack,wandStack);
+        var wandUpgrades = this.getFocusUpgradesWithWandModifiers(focusStack,wandStack == null?ItemStack.EMPTY:wandStack);
         int fortune = wandUpgrades.getOrDefault(TREASURE, 0);
         int silk = wandUpgrades.getOrDefault(SILKTOUCH, 0);
         int dowsing = wandUpgrades.getOrDefault(DOWSING,0);
@@ -374,22 +375,9 @@ public class ExcavationFocusItem extends BasicFocusItem {
         }
     }
 
-    protected int easyLCGState = 0;
-    protected static final int[] LCGNeededPrimesExample = {
-            3877, 6737, 7237, 62327, 39439, 53791, 53549, 16759,
-            1987, 35897, 46589, 59369, 26647, 56629, 26387, 1931,
-            43451, 4409, 823, 14947, 22907, 9533, 36343, 46601,
-            36833, 26903, 1667, 4519, 53777, 38917, 37181, 56417,
-            14923, 42989, 58481, 12577, 54151, 18691, 44927, 47591,
-            29569, 54499, 16223, 63997, 12149, 6551, 59341, 30553,
-            58909, 34883, 1759, 11093, 13873, 64621, 13367, 16741,
-            14221, 28429, 50873, 9127, 54721, 2447, 16057, 28183
-    };
-    protected int LCGStep = LCGNeededPrimesExample[Math.abs(System.identityHashCode(this)% LCGNeededPrimesExample.length)];
-
+    protected EasyLCGGenerator LCGGen = new EasyLCGGenerator(720);
     protected boolean breakNeighbour(LivingEntity p, BlockPos pos, BlockState state, ItemStack usingWand) {
-        easyLCGState = (easyLCGState + LCGStep) % 720;
-        for(var dir:DIRECTIONS_SHUFFLED[easyLCGState]) {
+        for(var dir:DIRECTIONS_SHUFFLED[LCGGen.next()]) {
             if (p.level().getBlockState(pos.relative(dir)) == state && excavate(p.level(), usingWand, p, state, pos.relative(dir))
             ) {
                 return true;
