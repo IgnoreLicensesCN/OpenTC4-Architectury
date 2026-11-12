@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal;
+package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.container;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
@@ -19,12 +19,11 @@ public abstract class AbstractGolemGotoGoal extends AbstractGolemGoal {
         }
     }
     protected void setWantMoveTo(@NotNull BlockPos dest){
-        var moveControl = golem.getMoveControl();
-        golem.getMoveControl().setWantedPosition(
+        golem.getNavigation().moveTo(
                 dest.getX() + 0.5,
                 dest.getY() + 0.5,
                 dest.getZ() + 0.5,
-                moveControl.getSpeedModifier()
+                golem.getMoveControl().getSpeedModifier()
         );
     }
 

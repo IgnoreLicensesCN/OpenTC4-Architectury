@@ -15,6 +15,7 @@ import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.lang.ref.WeakReference;
 
+import static com.linearity.opentc4.Consts.getEmptyWeakRef;
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.entities.golems.GolemHelper.DEFAULT_DISTANCE_PREDICATE;
 import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;
@@ -28,7 +29,7 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
     protected GolemHelper.MarkedContainerAndMarkerIterator markedContainerAndMarkerIterator = new GolemHelper.MarkedContainerAndMarkerIterator(golem,DEFAULT_DISTANCE_PREDICATE);
     protected final ByteSet colorsCache = new ByteArraySet(17);
     protected @Nullable Marker usingMarker = null;
-    protected @NotNull WeakReference<BlockEntity> usingBlockEntity = new WeakReference<>(null);
+    protected @NotNull WeakReference<BlockEntity> usingBlockEntity = getEmptyWeakRef();
     @Override
     public boolean canUse() {
         usingMarker = null;
@@ -36,7 +37,7 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
         if (golemHoldingStack.isEmpty()) {
             return false;
         }
-        if (golem.getMoveControl().hasWanted()){
+        if (golem.getNavigation().isInProgress()){
             return false;
         }
         var homeBEPos = golem.getHomeAttachedBlockPos();
@@ -47,8 +48,8 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
         markedContainerAndMarkerIterator.reset();
         while (markedContainerAndMarkerIterator.hasNext()) {
             var info = markedContainerAndMarkerIterator.next();
-            var container = info.containerRef ==null?null:info.containerRef.get();
-            var be = info.blockEntityRef ==null?null:info.blockEntityRef.get();
+            var container = info.containerRef.get();
+            var be = info.blockEntityRef.get();
             if (container == null || be==null || be.isRemoved()) { continue;}
             var marker = info.marker;
             if (homeBEPos.equals(marker.pos)){continue;}

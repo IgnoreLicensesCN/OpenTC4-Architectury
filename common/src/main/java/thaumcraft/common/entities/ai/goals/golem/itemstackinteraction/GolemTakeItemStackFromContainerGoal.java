@@ -86,8 +86,8 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
 
         while (containerIterator.hasNext()) {
             var containerInfo = containerIterator.next();
-            var container = containerInfo.containerRef == null ? null : containerInfo.containerRef.get();
-            var containerBE = containerInfo.blockEntityRef == null ? null : containerInfo.blockEntityRef.get();
+            var container = containerInfo.containerRef.get();
+            var containerBE = containerInfo.blockEntityRef.get();
             if (containerBE == null || container == null) {
                 continue;
             }

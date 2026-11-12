@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal;
+package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.container;
 
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import net.minecraft.core.BlockPos;
@@ -27,8 +27,8 @@ public abstract class AbstractGolemGotoFurthestContainerGoal extends AbstractGol
         BlockPos closestContainerPos = null;
         while (iterator.hasNext()) {
             var containerInfo = iterator.next();
-            var container = containerInfo.containerRef == null ? null : containerInfo.containerRef.get();
-            var be = containerInfo.blockEntityRef == null ? null : containerInfo.blockEntityRef.get();
+            var container = containerInfo.containerRef.get();
+            var be = containerInfo.blockEntityRef.get();
             var marker = containerInfo.marker;
             if (marker == null || container == null || be == null || be.isRemoved()) {
                 continue;

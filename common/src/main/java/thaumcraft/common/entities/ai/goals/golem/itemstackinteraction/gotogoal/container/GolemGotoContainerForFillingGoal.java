@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal;
+package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.container;
 
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
@@ -18,9 +18,9 @@ import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.function.BiPredicate;
 
+import static com.linearity.opentc4.Consts.getEmptyWeakRef;
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
-import static thaumcraft.common.config.Config.CONFIG_INSTANCE;
 import static thaumcraft.common.entities.golems.GolemHelper.getAmountNeededSmart;
 import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY;
@@ -44,12 +44,14 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGotoFurthestC
 
             while (iter.hasNext()) {
                 var itemMissing = iter.next();
+                if (itemMissing.isEmpty()) {
+                    continue;
+                }
 
                 colorsTemp.clear();
                 getColorsMatching(colorsTemp, golem, itemMissing);
                 containersWithGoodsIterator.reset();
                 BlockPos closestContainerPos = getFurthestContainerPos(containersWithGoodsIterator,containersWithGoodsIterator,colorsTemp);
-
 
                 if (closestContainerPos != null) {
                     {
@@ -103,7 +105,7 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGotoFurthestC
             var golemStackMatcher = golem.getItemStackMatcher();
             while (markedIterator.hasNext()) {
                 var markedContainerInfo = markedIterator.next();
-                var markedContainer = markedContainerInfo.containerRef == null ? null : markedContainerInfo.containerRef.get();
+                var markedContainer = markedContainerInfo.containerRef.get();
                 if (markedContainer == null) {
                     continue;
                 }
@@ -147,20 +149,24 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGotoFurthestC
     protected @NotNull MissingItemsIteratorForAnyAmount missingItemsIteratorForAnyAmount = new MissingItemsIteratorForAnyAmount(golem);
 
     public static abstract class MissingItemsIterator implements Iterator<ItemStack>, GolemHelper.Resettable {
-        protected @Nullable WeakReference<ItemStack> result = null;
+        protected @NotNull WeakReference<ItemStack> result = getEmptyWeakRef();
         public boolean alreadyHaveResult() {
-            return result != null && result.get() != null;
+            return result.get() != null;
         }
 
         @Override
         public ItemStack next() {
-            var resultStack = result == null ? null : result.get();
-            if (!hasNext() || result == null) {
-                throw new IllegalStateException("call hasNext() first");
+            var resultStack = result.get();
+            if (resultStack == null){
+                if (!hasNext()) {
+                    throw new IllegalStateException("call hasNext() first");
+                }
+                resultStack = result.get();
             }
-            result = null;
+            result = getEmptyWeakRef();
             if (resultStack == null) {
-                throw new IllegalStateException("call hasNext() first");
+                resultStack = ItemStack.EMPTY;
+//                throw new IllegalStateException("call hasNext() first");
             }
             return resultStack;
         }
@@ -288,10 +294,11 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGotoFurthestC
 
         @Override
         public boolean hasNext() {
-            if (result != null && result.get() != null) {
+            if (result.get() != null) {
                 return true;
             }
-            for (;inventoryIndex < golem.inventory.size(); inventoryIndex++) {
+            int size = golem.inventory.size();
+            for (;inventoryIndex < size; inventoryIndex++) {
                 ItemStack toCheck = golem.inventory.get(inventoryIndex);
                 if (!toCheck.isEmpty()) {
                     result = new WeakReference<>(toCheck);

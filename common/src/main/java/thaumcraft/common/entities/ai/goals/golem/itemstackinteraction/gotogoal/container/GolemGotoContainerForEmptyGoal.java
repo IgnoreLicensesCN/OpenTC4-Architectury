@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal;
+package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.container;
 
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemHelper;
 
-import static thaumcraft.common.config.Config.CONFIG_INSTANCE;
 import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;
 
 public class GolemGotoContainerForEmptyGoal extends AbstractGolemGotoFurthestContainerGoal {

@@ -10,7 +10,6 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
-import static thaumcraft.common.config.Config.CONFIG_INSTANCE;
 
 public class GolemPlaceItemStackToHomeGoal extends AbstractGolemGoal {
     public GolemPlaceItemStackToHomeGoal(BaseGolemEntity golem) {

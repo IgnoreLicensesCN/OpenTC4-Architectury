@@ -10,8 +10,9 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.golem.*;
 import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.*;
-import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.GolemGotoContainerForEmptyGoal;
-import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.GolemGotoContainerForFillingGoal;
+import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.container.GolemGotoContainerForEmptyGoal;
+import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.container.GolemGotoContainerForFillingGoal;
+import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.pickup.GolemPickupItemGoal;
 import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.throwgoal.GolemThrowItemStackHomeIfNoContainerGoal;
 import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.throwgoal.GolemThrowItemStackToMarkedContainerGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
@@ -46,7 +47,7 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
                 2,
                 3
         );
-        public static final GoalResourceLocation WATCH_CLOSEST_PLAYER = GoalResourceLocation.of("watch_closest_player");
+        public static final GoalResourceLocation WATCH_CLOSEST_PLAYER = GoalResourceLocation.of(Thaumcraft.MOD_ID,"watch_closest_player");
         public static final Function<BaseGolemEntity, Goal> WATCH_CLOSEST_PLAYER_GOAL_PROVIDER = golem -> new LookAtPlayerGoal(golem, Player.class, 6);
         public static final GoalResourceLocation IDLE = GoalResourceLocation.of(Thaumcraft.MOD_ID, "idle");
         public static final Function<BaseGolemEntity, Goal> IDLE_GOAL_PROVIDER = RandomLookAroundGoal::new;
@@ -54,9 +55,9 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final Function<BaseGolemEntity, Goal> PLACE_ITEM_STACK_HOME_DEFAULT_GOAL_PROVIDER = GolemPlaceItemStackToHomeGoal::new;
         public static final GoalResourceLocation DROP_ITEM_STACK_HOME_IF_NO_CONTAINER = GoalResourceLocation.of(Thaumcraft.MOD_ID,"drop_item_stack_home_if_no_container");
         public static final Function<BaseGolemEntity, Goal> DROP_ITEM_STACK_HOME_IF_NO_CONTAINER_GOAL_PROVIDER = GolemThrowItemStackHomeIfNoContainerGoal::new;
-        public static final GoalResourceLocation TAKE_ITEM_STACK_FROM_CONTAINER = GoalResourceLocation.of("take_item_stack_from_container");
+        public static final GoalResourceLocation TAKE_ITEM_STACK_FROM_CONTAINER = GoalResourceLocation.of(Thaumcraft.MOD_ID,"take_item_stack_from_container");
         public static final Function<BaseGolemEntity,Goal> TAKE_ITEM_STACK_FROM_CONTAINER_GOAL_PROVIDER = GolemTakeItemStackFromContainerGoal::new;
-        public static final GoalResourceLocation GOTO_CONTAINER_FOR_FILLING = GoalResourceLocation.of("goto_container_for_filling");
+        public static final GoalResourceLocation GOTO_CONTAINER_FOR_FILLING = GoalResourceLocation.of(Thaumcraft.MOD_ID,"goto_container_for_filling");
         public static final Function<BaseGolemEntity,Goal> GOTO_CONTAINER_FOR_FILLING_GOAL_PROVIDER = GolemGotoContainerForFillingGoal::new;
         public static final GoalResourceLocation EMPTY_CORE_PLACE_ITEM_STACK_HOME = GoalResourceLocation.of(Thaumcraft.MOD_ID,"empty_core_place_item_stack_home");
         public static final Function<BaseGolemEntity,Goal> EMPTY_CORE_PLACE_ITEM_STACK_HOME_GOAL_PROVIDER = GolemEmptyCorePlaceItemStackToHomeGoal::new;
@@ -64,10 +65,12 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final Function<BaseGolemEntity,Goal> PLACE_ITEM_STACK_TO_MARKED_CONTAINER_GOAL_PROVIDER = GolemPlaceItemStackToMarkedContainerGoal::new;
         public static final GoalResourceLocation THROW_ITEM_STACK_TO_MARKED_CONTAINER = GoalResourceLocation.of(Thaumcraft.MOD_ID,"throw_item_stack_to_marked_container");
         public static final Function<BaseGolemEntity,Goal> THROW_ITEM_STACK_TO_MARKED_CONTAINER_GOAL_PROVIDER = GolemThrowItemStackToMarkedContainerGoal::new;
-        public static final GoalResourceLocation GOTO_CONTAINER_FOR_EMPTY = GoalResourceLocation.of("goto_container_for_empty");
+        public static final GoalResourceLocation GOTO_CONTAINER_FOR_EMPTY = GoalResourceLocation.of(Thaumcraft.MOD_ID,"goto_container_for_empty");
         public static final Function<BaseGolemEntity,Goal> GOTO_CONTAINER_FOR_EMPTY_GOAL_PROVIDER = GolemGotoContainerForEmptyGoal::new;
-        public static final GoalResourceLocation TAKE_ITEM_STACK_FROM_HOME = GoalResourceLocation.of("take_item_stack_from_home");
+        public static final GoalResourceLocation TAKE_ITEM_STACK_FROM_HOME = GoalResourceLocation.of(Thaumcraft.MOD_ID,"take_item_stack_from_home");
         public static final Function<BaseGolemEntity,Goal> TAKE_ITEM_STACK_FROM_HOME_GOAL_PROVIDER = GolemTakeItemStackFromHomeGoal::new;
+        public static final GoalResourceLocation PICKUP_ITEM = GoalResourceLocation.of(Thaumcraft.MOD_ID,"pickup_item");
+        public static final Function<BaseGolemEntity,Goal> PICKUP_ITEM_GOAL_PROVIDER = GolemPickupItemGoal::new;
     }
 
     default void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GolemGoalSelector goalSelector, GolemGoalSelector targetSelector) {

@@ -25,7 +25,14 @@ import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.common.entities.golems.Marker;
 import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 
+import java.lang.ref.WeakReference;
+
 public class Consts {
+    public static final WeakReference<?> EMPTY_WEAK_REF = new WeakReference<>(null);
+    @SuppressWarnings("unchecked")
+    public static <T> WeakReference<T> getEmptyWeakRef() {
+        return (WeakReference<T>) EMPTY_WEAK_REF;
+    }
     public static final int TAINT_SPREAD_DOWN_DISTANCE = -1;
     public static final int TAINT_SPREAD_UP_DISTANCE = 64;
     public static final int PURE_NODE_Y_RANGE = 8;

@@ -39,6 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
+import static com.linearity.opentc4.Consts.getEmptyWeakRef;
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getCachedObjectFrom;
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
@@ -70,13 +71,13 @@ public class GolemHelper {
 
     //usage like fake field
     public static class ContainerInfo {
-        public @Nullable WeakReference<Container> containerRef;
-        public @Nullable WeakReference<BlockEntity> blockEntityRef;
+        public @NotNull WeakReference<Container> containerRef = getEmptyWeakRef();
+        public @NotNull WeakReference<BlockEntity> blockEntityRef = getEmptyWeakRef();
         public Marker marker;
 
         public void reset() {
-            this.containerRef = null;
-            this.blockEntityRef = null;
+            this.containerRef = getEmptyWeakRef();
+            this.blockEntityRef = getEmptyWeakRef();
             this.marker = null;
         }
 
@@ -95,11 +96,11 @@ public class GolemHelper {
 //            return true;
 //         }
         public boolean verify() {
-            var containerInstance = containerRef == null ? null : containerRef.get();
+            var containerInstance = containerRef.get();
             if (containerInstance == null) {
                 return false;
             }
-            var beInstance = blockEntityRef == null ? null : blockEntityRef.get();
+            var beInstance = blockEntityRef.get();
             return beInstance != null && !beInstance.isRemoved();
         }
 
@@ -129,8 +130,8 @@ public class GolemHelper {
         @Override
         public void reset() {
             markers = null;
-            resultCache.containerRef = null;
-            resultCache.blockEntityRef = null;
+            resultCache.containerRef = getEmptyWeakRef();
+            resultCache.blockEntityRef = getEmptyWeakRef();
             resultCache.marker = null;
         }
 
@@ -384,14 +385,13 @@ public class GolemHelper {
 
         @Override
         public boolean hasNext() {
-            if (resultCache.containerRef != null
-                    && resultCache.verify()) {
+            if (resultCache.verify()) {
                 return true;
             }
             while (markedContainerIterator.hasNext()) {
                 var containerInfo = markedContainerIterator.next();
-                var container = containerInfo.containerRef == null ? null : containerInfo.containerRef.get();
-                var containerBE = containerInfo.blockEntityRef == null ? null : containerInfo.blockEntityRef.get();
+                var container = containerInfo.containerRef.get();
+                var containerBE = containerInfo.blockEntityRef.get();
                 if (container == null || containerBE == null || containerBE.isRemoved()) {
                     continue;
                 }
@@ -1213,6 +1213,9 @@ public class GolemHelper {
                     golem.getItemStackMatcher(),
                     doit);
             if (!extracted.isEmpty()) {
+                if (doit){
+                    extracted = extracted.copy();
+                }
                 return extracted;
             }
         }

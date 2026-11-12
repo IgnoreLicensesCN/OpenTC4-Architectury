@@ -40,8 +40,8 @@ public class GolemEmptyCorePlaceItemStackToHomeGoal extends GolemPlaceItemStackT
             containersWithRoomIterator.resetWith(itemToMatch/*,color*/);
             while (containersWithRoomIterator.hasNext()){
                 var containerInfo = containersWithRoomIterator.next();
-                var container = containerInfo.containerRef == null ? null : containerInfo.containerRef.get();
-                var containerBE = containerInfo.blockEntityRef == null ? null : containerInfo.blockEntityRef.get();
+                var container = containerInfo.containerRef.get();
+                var containerBE = containerInfo.blockEntityRef.get();
                 if (container == null || containerBE == null || containerBE.isRemoved()) {
                     continue;
                 }

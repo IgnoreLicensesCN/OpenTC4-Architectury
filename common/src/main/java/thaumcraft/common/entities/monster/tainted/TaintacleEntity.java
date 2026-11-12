@@ -37,6 +37,7 @@ import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 import java.lang.ref.WeakReference;
 import java.util.EnumSet;
 
+import static com.linearity.opentc4.Consts.getEmptyWeakRef;
 import static thaumcraft.common.entities.ThaumcraftEntities.taintedMobWontAttack;
 
 public class TaintacleEntity extends Monster implements IMobAttackDamageTypeReplaceable {
@@ -47,7 +48,7 @@ public class TaintacleEntity extends Monster implements IMobAttackDamageTypeRepl
         super(entityType, level);
     }
 
-    protected @NotNull WeakReference<TaintacleAttackGoal> attackGoalRef = new WeakReference<>(null);
+    protected @NotNull WeakReference<TaintacleAttackGoal> attackGoalRef = getEmptyWeakRef();
     @Override
     protected void registerGoals() {
         var attackGoal = new TaintacleAttackGoal(this);
