@@ -229,10 +229,9 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
             this.tasks.addTask(2, new AIHarvestCrops(this));
             break;
          case 4:
-            if (this.decoration.contains("R")) {
-               this.tasks.addTask(2, new AIDartAttack(this));
-            }
-
+//            if (this.decoration.contains("R")) {
+//               this.tasks.addTask(2, new AIDartAttack(this));
+//            }
             this.tasks.addTask(3, new AIGolemAttackOnCollide(this));
             this.targetTasks.addTask(1, new AIHurtByTarget(this, false));
             this.targetTasks.addTask(2, new AINearestAttackableTarget(this, 0, true));
@@ -259,7 +258,6 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //            if (this.decoration.contains("R")) {
 //               this.tasks.addTask(2, new AIDartAttack(this));
 //            }
-
             this.tasks.addTask(3, new AIGolemAttackOnCollide(this));
             this.targetTasks.addTask(1, new AINearestButcherTarget(this, 0, true));
             break;

@@ -8,5 +8,5 @@ import java.util.function.BiPredicate;
 //interaction:pickup item or something
 //maybe you want to ignore NBT or match tag or whatever here?
 public interface IGolemItemStackMatcherModifierItem extends BaseGolemEntity.IGolemUpgradeItem{
-    BiPredicate<ItemStack,ItemStack> modifyItemStackMatching(BaseGolemEntity golem, ItemStack upgradeStack/*, ItemStack interactingStack*/);
+    BaseGolemEntity.GolemItemStackMatcher modifyItemStackMatching(BaseGolemEntity golem, ItemStack upgradeStack/*, ItemStack interactingStack*/);
 }

@@ -13,6 +13,8 @@ import thaumcraft.common.entities.ai.goals.golem.AbstractGolemGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
+import java.util.function.BiPredicate;
+
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getCachedObjectFrom;
 import static thaumcraft.common.entities.golems.GolemHelper.*;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.PRECISE_OR_ANY_AMOUNT_CONFIG_KEY;

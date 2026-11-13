@@ -803,22 +803,38 @@ public abstract class BaseGolemEntity
         return getMaxAirSupply();
     }
 
-    private final BiPredicate<ItemStack,ItemStack> itemStackMatcherWhenUpgraded = (stackA,stackB) -> {
-        var matcherUpgrades = this.golemUpgradesCacheView.get(IGolemItemStackMatcherModifierItem.class);
+    public interface GolemItemStackMatcher {
+        boolean test(BaseGolemEntity golem, ItemStack a, ItemStack b);
+        GolemItemStackMatcher isSameItemSameTags =  ((golem, a, b) -> ItemStack.isSameItemSameTags(a,b));
+        GolemItemStackMatcher upgradedMatcher = BaseGolemEntity::matchItemStackWhenUpgraded;
+    }
+    public static boolean matchItemStackWhenUpgraded(BaseGolemEntity golem,ItemStack stackA,ItemStack stackB) {
+        var matcherUpgrades = golem.golemUpgradesCacheView.get(IGolemItemStackMatcherModifierItem.class);
         for (var matcherUpgradePair:matcherUpgrades) {
-            if (matcherUpgradePair.getUpgradeType().modifyItemStackMatching(this,matcherUpgradePair.getUpgradeStack()).test(stackA,stackB)) {
+            if (matcherUpgradePair.getUpgradeType()
+                    .modifyItemStackMatching(golem,matcherUpgradePair.getUpgradeStack())
+                    .test(golem,
+                            stackA,
+                            stackB
+                    )
+            ) {
                 return true;
             }
         }
         return false;
     };
 
-    public BiPredicate<ItemStack,ItemStack> getItemStackMatcher(){
+    protected final BiPredicate<ItemStack,ItemStack> itemStackMatcherOfThis = (a, b) -> getGolemItemStackMatcher().test(this,a,b);
+
+    public GolemItemStackMatcher getGolemItemStackMatcher() {
         var matcherUpgrades = this.golemUpgradesCacheView.get(IGolemItemStackMatcherModifierItem.class);
         if (matcherUpgrades.isEmpty()) {
-            return ItemStack::isSameItemSameTags;
+            return GolemItemStackMatcher.isSameItemSameTags;
         }
-        return itemStackMatcherWhenUpgraded;
+        return GolemItemStackMatcher.upgradedMatcher;
+    }
+    public BiPredicate<ItemStack,ItemStack> getItemStackMatcher(){
+        return itemStackMatcherOfThis;
     }
 
     public boolean hasSomethingInInventoryOrHand(){

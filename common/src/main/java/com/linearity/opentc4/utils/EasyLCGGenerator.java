@@ -13,7 +13,7 @@ public class EasyLCGGenerator {
     public EasyLCGGenerator(int step){
         this.step = step;
     }
-    @Setter
+    @Setter//but dont set it all the day it would be terrible for rng performance
     protected int step;
     protected int easyLCGState = 0;
     protected long LCGStep = LCGNeededPrimesExample[Math.abs(System.identityHashCode(this)% LCGNeededPrimesExample.length)];

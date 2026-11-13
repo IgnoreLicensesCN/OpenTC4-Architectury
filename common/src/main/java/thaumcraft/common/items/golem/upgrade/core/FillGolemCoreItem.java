@@ -1,25 +1,13 @@
 package thaumcraft.common.items.golem.upgrade.core;
 
-import lombok.AllArgsConstructor;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
 import thaumcraft.common.entities.golems.configuration.GolemConfigurationKey;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.configruable.IGolemConfigurationProviderFillerItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemItemStackMatcherModifierItem;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiPredicate;
 
-import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_NBT_CONFIG_KEY;
-import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_TAG_CONFIG_KEY;
 import static thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem.DefaultGoalsAndIDs.*;
 //toggle 0:Precise amount/Any amount
 //(false/true)
@@ -29,7 +17,6 @@ public class FillGolemCoreItem
         extends
         AbstractGolemCoreItemWithGui
         implements
-        IGolemItemStackMatcherModifierItem,
         IGolemConfigurationProviderFillerItem
 {
     public FillGolemCoreItem() {
@@ -51,41 +38,5 @@ public class FillGolemCoreItem
     @Override
     public void fillGolemConfigurationProviders(BaseGolemEntity golem, ItemStack upgradeStack, Set<GolemConfigurationKey<?>> configurationProviders) {
         configurationProviders.add(GolemConfigurationKey.Default.PRECISE_OR_ANY_AMOUNT_CONFIG_KEY);
-        configurationProviders.add(MATCH_NBT_CONFIG_KEY);
-        configurationProviders.add(MATCH_TAG_CONFIG_KEY);
-    }
-
-
-
-    @Override
-    public BiPredicate<ItemStack, ItemStack> modifyItemStackMatching(BaseGolemEntity golem, ItemStack upgradeStack) {
-        return getItemStackItemStackBiPredicateForNBTAndTagConfig(golem);
-    }
-
-    public static @NotNull BiPredicate<ItemStack, ItemStack> getItemStackItemStackBiPredicateForNBTAndTagConfig(BaseGolemEntity golem) {
-        var matchNBT = golem.configurationProviders.contains(MATCH_NBT_CONFIG_KEY)?MATCH_NBT_CONFIG_KEY.provider:null;
-        if (matchNBT != null && matchNBT.getBooleanFrom(golem)) {
-            return ItemStack::isSameItemSameTags;
-        }
-        var matchTag = golem.configurationProviders.contains(MATCH_TAG_CONFIG_KEY)?MATCH_TAG_CONFIG_KEY.provider:null;
-        if (matchTag != null){
-            var tagMatching = matchTag.getFrom(golem);
-            if (!tagMatching.getNamespace().isEmpty() && !tagMatching.getPath().isEmpty()) {
-                return TagBiItemMatcher.INSTANCES.computeIfAbsent(tagMatching, TagBiItemMatcher::new);
-            }
-        }
-        return (a, b) -> a.getItem() == b.getItem();
-    }
-
-    @AllArgsConstructor
-    public static class TagBiItemMatcher implements BiPredicate<ItemStack,ItemStack> {
-        public static final Map<ResourceLocation, TagBiItemMatcher> INSTANCES = new ConcurrentHashMap<>();
-        public final TagKey<Item> key;
-        public TagBiItemMatcher(ResourceLocation resLoc) {
-            this.key = TagKey.create(Registries.ITEM, resLoc);
-        }
-        public boolean test(ItemStack stackA, ItemStack stackB) {
-            return stackA.is(key) && stackB.is(key);
-        }
     }
 }
