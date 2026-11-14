@@ -4,7 +4,7 @@ import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.chatcomponent.AspectChatComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.Thaumcraft;
@@ -160,7 +160,16 @@ public abstract class Aspect {
 		return hash;
 	}
 
-	public boolean hasPlayerDiscovered(@NotNull Player player) {
-		return ResearchAndScannedInfo.getFromLiving(player).hasResearchAspect(this);
+	public boolean hasDiscoveredBy(LivingEntity living) {
+		var info = ResearchAndScannedInfo.getFromLiving(living);
+		return info != null && info.hasResearchAspect(this);
+	}
+
+	public static final Component UNKNOWN_ASPECT_COMPONENT = Component.translatable("aspect.thaumcraft.unknown");
+	public Component getNameFor(LivingEntity living){
+		if (!hasDiscoveredBy(living)) {
+			return UNKNOWN_ASPECT_COMPONENT;
+		}
+		return getName();
 	}
 }

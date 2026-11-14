@@ -58,7 +58,7 @@ public class EntropyGolemUpgradeItem extends GolemBasicUpgradeItem
         if (!trunk.isDeadOrDying() && !(trunk.getHealth() <= 0.0F)) {
             if (!level.isClientSide()) {
                 //pick
-                level.getEntities(
+                for (var itemEntity:level.getEntities(
                         ITEM_ENTITY_TEST,
                         AABB.ofSize(
                                 trunk.position(),
@@ -66,7 +66,7 @@ public class EntropyGolemUpgradeItem extends GolemBasicUpgradeItem
                                 0.5F,
                                 0.5F
                         ), itemEntity -> !itemEntity.hasPickUpDelay()
-                ).forEach(itemEntity -> {
+                )){
                     var stack = itemEntity.getItem();
                     ItemStack outstack = InventoryUtils.placeItemStackIntoInventory(stack, trunk.inventory, true);
                     if (outstack.isEmpty() || outstack.getCount() != stack.getCount()) {
@@ -78,11 +78,11 @@ public class EntropyGolemUpgradeItem extends GolemBasicUpgradeItem
                             itemEntity.discard();
                         }
                     }
-                });
+                }
             }
 
             //drag in
-            level.getEntities(
+            for (var itemEntity:level.getEntities(
                     ITEM_ENTITY_TEST,
                     AABB.ofSize(
                             trunk.position(),
@@ -90,7 +90,7 @@ public class EntropyGolemUpgradeItem extends GolemBasicUpgradeItem
                             3,
                             3
                     ), itemEntity -> !itemEntity.hasPickUpDelay()
-            ).forEach(itemEntity -> {
+            )){
                 var pos = itemEntity.position();
                 var trunkPos = trunk.position();
                 var vecToItem = pos.subtract(trunkPos);
@@ -98,8 +98,7 @@ public class EntropyGolemUpgradeItem extends GolemBasicUpgradeItem
                 if (length > 0.01){
                     itemEntity.addDeltaMovement(vecToItem.scale(-0.075 / length));
                 }
-            });
-
+            }
         }
     }
 

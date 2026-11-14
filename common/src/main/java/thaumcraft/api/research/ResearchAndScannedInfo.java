@@ -3,6 +3,7 @@ package thaumcraft.api.research;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -105,12 +106,17 @@ public class ResearchAndScannedInfo {
     }
 
 
-    public @Nullable
-    static ResearchAndScannedInfo getFromLiving(LivingEntity living){
+    public @Nullable static ResearchAndScannedInfo getFromLiving(LivingEntity living){
         if (living instanceof IResearchAndScannedInfoOwnerLivingEntity owner){
             return owner.getResearchAndScannedInfo();
         }
         return null;
+    }
+    public @Nullable static ResearchAndScannedInfo getFromLiving(Player player){
+        if (player instanceof IResearchAndScannedInfoOwnerLivingEntity owner){
+            return owner.getResearchAndScannedInfo();
+        }
+        throw new IllegalStateException("player should have ResearchAndScannedInfo instance!");
     }
     public static void setForLiving(LivingEntity living, ResearchAndScannedInfo researchAndScannedInfo){
         if (living instanceof IResearchAndScannedInfoOwnerLivingEntity owner){

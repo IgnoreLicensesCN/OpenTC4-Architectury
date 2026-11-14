@@ -9,10 +9,13 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -20,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 
 import java.util.List;
+import java.util.UUID;
 
 //a impl for fabric and one for forge
 public abstract class PlatformUniqueUtils {
@@ -44,5 +48,8 @@ public abstract class PlatformUniqueUtils {
     public abstract long decreaseFluidStackToItemStack(ItemStack itemStack,FluidStack fluidStack);
     public abstract long increaseFluidStackToItemStack(ItemStack itemStack,FluidStack fluidStack);
 
+    public abstract ServerPlayer getFakePlayer(ServerLevel level, @Nullable UUID playerUuid);
+
     public abstract void init();
+
 }

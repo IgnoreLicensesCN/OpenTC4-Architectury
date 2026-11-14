@@ -84,7 +84,7 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
 
       if (!combinationResult.isEmpty()) {
          ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromLiving(player);
-         if (!info.hasResearchAspect(combinationResult)){
+         if (!combinationResult.hasDiscoveredBy(player)){
             new PacketAspectDiscoveryS2C(combinationResult).sendTo(serverPlayer);
          }
          info.addResearchAspectAndTrySyncToPlayer(combinationResult,1,serverPlayer);

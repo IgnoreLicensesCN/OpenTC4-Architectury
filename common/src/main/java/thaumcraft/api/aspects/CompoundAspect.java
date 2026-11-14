@@ -136,7 +136,7 @@ public class CompoundAspect extends Aspect implements
     public boolean canLivingDiscover(LivingEntity living) {
         var info = ResearchAndScannedInfo.getFromLiving(living);
         if (info != null) {
-            return info.hasResearchAspect(components.aspectA()) && info.hasResearchAspect(components.aspectB());
+            return components.aspectA().hasDiscoveredBy(living) && components.aspectB().hasDiscoveredBy(living);
         }
         return false;
     }
@@ -147,10 +147,10 @@ public class CompoundAspect extends Aspect implements
         if (info == null) {
             return null;
         }
-        if (!info.hasResearchAspect(components.aspectA())){
+        if (!components.aspectA().hasDiscoveredBy(living)){
             return components.aspectA().aspectKey;
         }
-        if (!info.hasResearchAspect(components.aspectB())){
+        if (!components.aspectB().hasDiscoveredBy(living)){
             return components.aspectB().aspectKey;
         }
         return null;

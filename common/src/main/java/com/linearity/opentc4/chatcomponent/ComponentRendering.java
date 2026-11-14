@@ -89,8 +89,7 @@ public class ComponentRendering {
             assert aspect != null;
             var player = Minecraft.getInstance().player;
             if (player != null){
-                var info = ResearchAndScannedInfo.getFromLiving(player);
-                if (!info.hasResearchAspect(aspect)){
+                if (!aspect.hasDiscoveredBy(player)){
                     myTexture = UNDISCOVERED_TEXTURE;
                 }
             }

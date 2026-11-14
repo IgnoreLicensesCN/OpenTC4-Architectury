@@ -64,7 +64,10 @@ public class AIHarvestCrops extends EntityAIBase {
    }
 
    public boolean shouldExecute() {
-      if (this.delay < 0 && this.theGolem.ticksExisted % Config.golemDelay <= 0 && this.theGolem.getNavigator().noPath()) {
+      if (this.delay < 0
+              && this.theGolem.ticksExisted % Config.golemDelay <= 0
+              && this.theGolem.getNavigator().noPath()
+      ) {
          Vec3 var1 = this.findGrownCrop();
          if (var1 == null) {
             return false;

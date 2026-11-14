@@ -1630,6 +1630,15 @@ public class ThaumcraftBlocks {
         public static final TagKey<Block> TAINT_FALLABLE = TagKey.create(
                 Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "taint_fallable")
         );
+        public static final TagKey<Block> REED_LIKE_DIRECTLY_BREAK_HARVESTABLE = TagKey.create(
+                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "reed_like_directly_break_harvestable")
+        );
+        public static final TagKey<Block> DIRECTLY_BREAK_HARVESTABLE = TagKey.create(
+                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "directly_break_harvestable")
+        );
+        public static final TagKey<Block> NOT_BREAK_HARVESTABLE = TagKey.create(
+                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "not_break_harvestable")
+        );
     }
 
     //rotation:

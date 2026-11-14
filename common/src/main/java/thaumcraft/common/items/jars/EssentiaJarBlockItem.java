@@ -130,16 +130,9 @@ public class EssentiaJarBlockItem extends BlockItem implements IEssentiaFuelProv
         var filterAspect = ASPECT_FILTER.readFromCompoundTag(tag);
         var player = Minecraft.getInstance().player;
         if (!filterAspect.isEmpty()) {
-            Component filterComponent;
-            if (player != null && !filterAspect.hasPlayerDiscovered(player)) {
-                filterComponent = Component.translatable("aspect.thaumcraft.unknown")
-                        .withStyle(ChatFormatting.DARK_PURPLE);
-            } else {
-                filterComponent = filterAspect.getName()
-                        .copy()
-                        .withStyle(ChatFormatting.DARK_PURPLE);
-
-            }
+            Component filterComponent = filterAspect.getNameFor(player)
+                    .copy()
+                    .withStyle(ChatFormatting.DARK_PURPLE);
             list.add(filterComponent);
         }
 

@@ -142,11 +142,11 @@ public class ScanManager {
         }
 
         public static boolean livingHasAspect(LivingEntity living, Aspect aspect){
-            ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromLiving(living);
-            if (info == null){
-                return false;
-            }
-            return info.hasResearchAspect(aspect);
+//            ResearchAndScannedInfo info = ResearchAndScannedInfo.getFromLiving(living);
+//            if (info == null){
+//                return false;
+//            }
+            return aspect.hasDiscoveredBy(living);//info.hasResearchAspect(aspect);
         }
 
         //false if already unlocked
@@ -155,7 +155,7 @@ public class ScanManager {
             if (info == null){
                 return false;
             }
-            if (info.hasResearchAspect(aspect)){
+            if (aspect.hasDiscoveredBy(living)){
                 return false;//already unlocked
             }
             if (aspect instanceof IScanDiscoverableAspect discoverableAspect){

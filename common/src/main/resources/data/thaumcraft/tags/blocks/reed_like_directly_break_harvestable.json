@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:cactus",
+    "minecraft:bamboo",
+    "minecraft:sugar_cane"
+  ]
+}

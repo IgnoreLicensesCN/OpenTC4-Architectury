@@ -23,11 +23,11 @@ public class RecipeManagerMixin implements RecipeManagerAccessor {
     @Override
     public void opentc4$addRecipes(Collection<Recipe<?>> recipesToAdd) {
         opentc4$ensureModification();
-        recipesToAdd.forEach(recipe -> {
+        for (var recipe:recipesToAdd) {
             var type = recipe.getType();
             recipes.computeIfAbsent(type,_ignored -> new ConcurrentHashMap<>()).put(recipe.getId(), recipe);
             byName.put(recipe.getId(), recipe);
-        });
+        }
     }
 
     @Unique

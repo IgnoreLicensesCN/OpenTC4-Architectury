@@ -317,8 +317,8 @@ public class ResearchNoteData {
                         .aspect();
                 Aspect aspect2 = note.hexGrid.get(target)
                         .aspect();
-                if (aspect1.hasPlayerDiscovered(player)
-                        && aspect2.hasPlayerDiscovered(player)
+                if (aspect1.hasDiscoveredBy(player)
+                        && aspect2.hasDiscoveredBy(player)
                         && IResearchConnectableToOtherAspect.canAspectConnectToEachOther(aspect1, aspect2)) {
                     remains.add(target);
                     if (note.hexGrid.get(target)

@@ -99,8 +99,8 @@ implements IEssentiaTransportOutBlockEntity {
             return;
         }
         int distance = getCleanDistance();
-        int distanceCube = ((distance*2 + 1)*(distance*2 + 1)*(distance*2 + 1));
-        LCGGen.setStep(distanceCube);
+//        int distanceCube = ((distance*2 + 1)*(distance*2 + 1)*(distance*2 + 1));
+//        LCGGen.setStep(distanceCube);
         int index = LCGGen.next();
         for (int i = 0; i< getMaxToCheckEachRun(); i++){
             int x = (index/((distance*2 + 1)*(distance*2 + 1))) ;

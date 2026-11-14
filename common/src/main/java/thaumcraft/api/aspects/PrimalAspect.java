@@ -1,8 +1,9 @@
 package thaumcraft.api.aspects;
 
 import com.linearity.colorannotation.annotation.RGBColor;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.aspect.IAspectReducibleToPrimal;
 import thaumcraft.api.aspects.aspectlists.AspectList;
@@ -69,7 +70,7 @@ public class PrimalAspect extends Aspect implements IAspectReducibleToPrimal {
     }
 
     @Override
-    public boolean hasPlayerDiscovered(@NotNull Player player) {
+    public boolean hasDiscoveredBy(LivingEntity living) {
         return true;
     }
 

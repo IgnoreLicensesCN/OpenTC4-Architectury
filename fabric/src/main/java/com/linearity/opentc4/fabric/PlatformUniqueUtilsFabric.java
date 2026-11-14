@@ -1,5 +1,11 @@
 package com.linearity.opentc4.fabric;
 
+import com.linearity.opentc4.annotations.StoleFrom;
+import com.mojang.authlib.GameProfile;
+import net.fabricmc.fabric.api.entity.FakePlayer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 import com.linearity.opentc4.ITickEvent;
 import com.linearity.opentc4.PlatformUniqueUtils;
@@ -274,5 +280,17 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
                 },
                 ThaumcraftBlocks.ThaumcraftBlockInstances.CRUCIBLE(), ThaumcraftBlocks.ThaumcraftBlockInstances.ARCANE_SPA()
         );
+    }
+
+    @StoleFrom("appeng.util.Platform#getFakePlayer")
+    @Override
+    public ServerPlayer getFakePlayer(ServerLevel level, @Nullable UUID playerUuid) {
+        Objects.requireNonNull(level);
+
+        if (playerUuid == null) {
+            playerUuid = FakePlayer.DEFAULT_UUID;
+        }
+
+        return FakePlayer.get(level, new GameProfile(playerUuid, "[Thaumcraft]"));
     }
 }

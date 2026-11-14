@@ -145,6 +145,7 @@ public interface AspectList<Asp extends Aspect>{
 
 	void overrideAllAspects(AspectList<Asp> aspects);
 
+	
 	interface AspIntIntBiFunction<Asp extends Aspect> {
 
 		/**

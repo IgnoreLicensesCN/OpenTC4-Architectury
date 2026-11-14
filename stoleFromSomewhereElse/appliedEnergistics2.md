@@ -842,3 +842,4 @@ github:https://github.com/AppliedEnergistics/Applied-Energistics-2/tree/fabric/1
 * stole appeng.util.GenericContainerHelper idk how to get fluid from itemStack on fabric,only 2 lines:
 * * var result = ContainerItemContext.withInitial(stack).find(apiLookup); //(apiLookUp changed to FluidStorage.ITEM)
 * * var content = StorageUtil.findExtractableContent(result, null);
+* stole appeng.util.FakePlayer and appeng.util.Platform#getFakePlayer for both forge and fabric
