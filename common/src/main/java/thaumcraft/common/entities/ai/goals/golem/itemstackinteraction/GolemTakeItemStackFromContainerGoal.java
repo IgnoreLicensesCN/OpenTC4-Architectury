@@ -13,8 +13,6 @@ import thaumcraft.common.entities.ai.goals.golem.AbstractGolemGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
-import java.util.function.BiPredicate;
-
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getCachedObjectFrom;
 import static thaumcraft.common.entities.golems.GolemHelper.*;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.PRECISE_OR_ANY_AMOUNT_CONFIG_KEY;
@@ -24,7 +22,7 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
         public @NotNull ItemStack watchedItem = ItemStack.EMPTY;
     }
 
-    protected int cooldown = 0;
+    protected int tickCountRemaining = 0;
 
     public GolemTakeItemStackFromContainerGoal(BaseGolemEntity golem) {
         super(golem);
@@ -50,7 +48,7 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
 
     @Override
     public boolean canContinueToUse() {
-        return cooldown > 0;
+        return tickCountRemaining > 0;
     }
 
     //    private final List<BlockEntity> containersTempList = new ArrayList<>();
@@ -131,7 +129,7 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
                         golem.level().gameEvent(golem, GameEvent.CONTAINER_CLOSE, containerPos);
 
 //                            this.countChest = 5;
-                        this.cooldown = 200;
+                        this.tickCountRemaining = getMaxTickCountRemaining();
                         fakeFields.watchedItem = ItemStack.EMPTY;
                         {
                             containerIterator.reset();
@@ -148,6 +146,6 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
     @Override
     public void tick() {
         super.tick();
-        cooldown--;
+        tickCountRemaining--;
     }
 }

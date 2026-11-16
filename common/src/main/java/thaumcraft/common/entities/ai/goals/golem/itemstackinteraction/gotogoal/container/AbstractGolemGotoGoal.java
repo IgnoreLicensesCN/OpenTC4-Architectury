@@ -9,7 +9,7 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 
 public abstract class AbstractGolemGotoGoal extends AbstractGolemGoal {
     protected @Nullable Vec3 prevPos = null;
-    protected int tickRemaining = 0;
+    protected int tickCountRemaining = 0;
     private @Nullable BlockPos dest;
 
     protected void setDest(@Nullable BlockPos dest) {
@@ -33,18 +33,18 @@ public abstract class AbstractGolemGotoGoal extends AbstractGolemGoal {
 
     @Override
     public boolean canContinueToUse() {
-        return this.tickRemaining > 0 && !this.golem.getMoveControl().hasWanted();
+        return this.tickCountRemaining > 0 && !this.golem.getMoveControl().hasWanted();
     }
 
     @Override
     public void tick() {
-        --this.tickRemaining;
-        if (this.tickRemaining == 0
+        --this.tickCountRemaining;
+        if (this.tickCountRemaining == 0
                 && golem.position().equals(this.prevPos)
         ) {
             //back to where near home
             var homePos = golem.getRestrictCenter();//RandomPositionGenerator.findRandomTarget(this.theGolem, 2, 1);
-            this.tickRemaining = 20;
+            this.tickCountRemaining = 20;
             setWantMoveTo(homePos);
         }
         super.tick();
@@ -53,14 +53,14 @@ public abstract class AbstractGolemGotoGoal extends AbstractGolemGoal {
     @Override
     public void stop() {
         super.stop();
-        this.tickRemaining = 0;
+        this.tickCountRemaining = 0;
         this.dest = null;
     }
 
     @Override
     public void start() {
         super.start();
-        this.tickRemaining = 200;
+        this.tickCountRemaining = getMaxTickCountRemaining();
         this.prevPos = this.golem.position();
         if (dest != null) {
             setWantMoveTo(dest);

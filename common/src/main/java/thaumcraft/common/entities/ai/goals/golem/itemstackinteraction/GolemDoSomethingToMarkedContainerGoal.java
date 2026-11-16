@@ -21,7 +21,7 @@ import static thaumcraft.common.entities.golems.GolemHelper.DEFAULT_DISTANCE_PRE
 import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;
 
 public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGolemGoal {
-    protected int cooldown = 0;
+    protected int tickCountRemaining = 0;
     public GolemDoSomethingToMarkedContainerGoal(BaseGolemEntity golem) {
         super(golem);
     }
@@ -69,7 +69,7 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
 
     @Override
     public boolean canContinueToUse() {
-        if (cooldown == 0){
+        if (tickCountRemaining == 0){
             return false;
         }
         return verifyMarkerAndBE();
@@ -96,12 +96,12 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
     @Override
     public void tick() {
         super.tick();
-        cooldown-=1;
+        tickCountRemaining -=1;
     }
 
     @Override
     public void start() {
         super.start();
-        cooldown = 200;
+        tickCountRemaining = getMaxTickCountRemaining();
     }
 }

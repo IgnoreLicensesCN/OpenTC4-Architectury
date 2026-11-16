@@ -133,14 +133,14 @@ public class BlockUtils {
 
    }
 
-   public static void destroyBlockPartially(Level world, int par1, int par2, int par3, int par4, int par5) {
+   public static void destroyBlockPartially(Level world, int entityID, int par2, int par3, int par4, int par5) {
       for(ServerPlayer ServerPlayer : (List<ServerPlayer>)MinecraftServer.getServer().getConfigurationManager().playerEntityList) {
-         if (ServerPlayer != null && ServerPlayer.level() == MinecraftServer.getServer().getEntityWorld() && ServerPlayer.getEntityId() != par1) {
+         if (ServerPlayer != null && ServerPlayer.level() == MinecraftServer.getServer().getEntityWorld() && ServerPlayer.getEntityId() != entityID) {
             double d0 = (double)par2 - ServerPlayer.posX;
             double d1 = (double)par3 - ServerPlayer.posY;
             double d2 = (double)par4 - ServerPlayer.posZ;
             if (d0 * d0 + d1 * d1 + d2 * d2 < (double)1024.0F) {
-               ServerPlayer.playerNetServerHandler.sendPacket(new S25PacketBlockBreakAnim(par1, par2, par3, par4, par5));
+               ServerPlayer.playerNetServerHandler.sendPacket(new S25PacketBlockBreakAnim(entityID, par2, par3, par4, par5));
             }
          }
       }

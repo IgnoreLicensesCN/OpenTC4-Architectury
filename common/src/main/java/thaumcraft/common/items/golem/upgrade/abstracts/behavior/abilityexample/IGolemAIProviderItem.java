@@ -10,11 +10,10 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.golem.*;
 import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.*;
-import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.container.GolemGotoContainerForEmptyGoal;
-import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.container.GolemGotoContainerForFillingGoal;
-import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.pickup.GolemPickupItemGoal;
-import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.throwgoal.GolemThrowItemStackHomeIfNoContainerGoal;
-import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.throwgoal.GolemThrowItemStackToMarkedContainerGoal;
+import thaumcraft.common.entities.ai.goals.golem.miscjobs.*;
+import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.container.*;
+import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.pickup.*;
+import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.throwgoal.*;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemAbilitiesData;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
@@ -71,6 +70,8 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final Function<BaseGolemEntity,Goal> TAKE_ITEM_STACK_FROM_HOME_GOAL_PROVIDER = GolemTakeItemStackFromHomeGoal::new;
         public static final GoalResourceLocation PICKUP_ITEM = GoalResourceLocation.of(Thaumcraft.MOD_ID,"pickup_item");
         public static final Function<BaseGolemEntity,Goal> PICKUP_ITEM_GOAL_PROVIDER = GolemPickupItemGoal::new;
+        public static final GoalResourceLocation HARVEST_CROP = GoalResourceLocation.of(Thaumcraft.MOD_ID,"harvest_crop");
+        public static final Function<BaseGolemEntity,Goal> HARVEST_CROP_GOAL_PROVIDER = GolemHarvestCropsGoal::new;
     }
 
     default void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GolemGoalSelector goalSelector, GolemGoalSelector targetSelector) {

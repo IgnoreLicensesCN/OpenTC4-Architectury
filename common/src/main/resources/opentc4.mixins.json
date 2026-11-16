@@ -53,6 +53,7 @@
     "EntityTypeMixin",
     "FallingBlockEntityAccessor",
     "GoalAccessor",
+    "IntegerPropertyAccessor",
     "ItemEntityMixin",
     "ItemMixin",
     "ItemStackMixin",

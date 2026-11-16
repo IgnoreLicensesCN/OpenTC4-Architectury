@@ -24,6 +24,7 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.items.ThaumcraftItemsRegistry;
 import thaumcraft.common.lib.network.gamedata.PacketRequestSyncItemAspectsC2S;
+import thaumcraft.common.lib.utils.CropUtils;
 import thaumcraft.common.lib.world.HolderCache;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 import thaumcraft.common.lootbag.ThaumcraftLootBags;
@@ -107,6 +108,8 @@ public final class OpenTC4 {
         EntityBasicAspectGetters.init();
 
         ChampionModifierManager.init();
+
+        CropUtils.init();
     }
 
     public static void onClientStarted() {

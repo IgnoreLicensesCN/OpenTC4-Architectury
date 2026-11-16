@@ -1,15 +1,10 @@
 package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.throwgoal;
 
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.entities.ai.goals.golem.AbstractGolemGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
-import static thaumcraft.common.entities.golems.BaseGolemEntity.BaseGolemEntityClientEventSignals.START_ACTION_TIMER;
 
 public class GolemThrowItemStackHomeIfNoContainerGoal extends AbstractGolemGoal {
     public GolemThrowItemStackHomeIfNoContainerGoal(BaseGolemEntity golem) {
@@ -37,7 +32,7 @@ public class GolemThrowItemStackHomeIfNoContainerGoal extends AbstractGolemGoal 
     @Override
     public void start() {
         super.start();
-        this.cooldown = 200;
+        this.tickCountRemaining = getMaxTickCountRemaining();
         var golemPos = golem.position();
         golem.throwItemStack(golem.getMainHandItem(),golemPos);
     }
@@ -47,12 +42,12 @@ public class GolemThrowItemStackHomeIfNoContainerGoal extends AbstractGolemGoal 
     @Override
     public void tick() {
         super.tick();
-        cooldown -= 1;
+        tickCountRemaining -= 1;
     }
 
-    public int cooldown = 0;
+    public int tickCountRemaining = 0;
     @Override
     public boolean canContinueToUse() {
-        return this.canUse() && this.cooldown > 0;
+        return this.canUse() && this.tickCountRemaining > 0;
     }
 }

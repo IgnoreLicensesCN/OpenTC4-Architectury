@@ -20,4 +20,8 @@ public abstract class AbstractGolemGoal extends Goal {
     protected int getGolemGoalDelay(){
         return Config.CONFIG_INSTANCE.getGolemDelay();
     }
+
+    protected int getMaxTickCountRemaining(){
+        return 200;
+    }
 }

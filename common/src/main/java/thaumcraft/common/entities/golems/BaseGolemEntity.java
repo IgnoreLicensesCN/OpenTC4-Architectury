@@ -58,6 +58,7 @@ import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemIt
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemTargetControlItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.*;
+import thaumcraft.common.items.golem.upgrade.abstracts.behavior.special.IReplantCropUpgradeItem;
 import thaumcraft.common.lib.network.toserveraction.PacketSetGolemConfigC2S;
 import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLocation;
 
@@ -163,6 +164,7 @@ public abstract class BaseGolemEntity
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemUpdateItemInHandListenerItem.class,1600));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemItemStackMatcherModifierItem.class,1700));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemConfigurationProviderFillerItem.class,1800));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IReplantCropUpgradeItem.class,1900));
     }
 
     public List<ObjectIntPair<Class<? extends BaseGolemEntity.IGolemUpgradeItem>>> getAvailableGolemModifierTypes() {
@@ -877,5 +879,9 @@ public abstract class BaseGolemEntity
             }
             level().broadcastEntityEvent(this, START_ACTION_TIMER);
         }
+    }
+
+    public int getStrength(){
+        return (int) abilitiesData.strength;
     }
 }
