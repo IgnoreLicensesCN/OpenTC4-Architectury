@@ -8,6 +8,9 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 public class GolemMeleeAttackGoal extends MeleeAttackGoal {
     protected final BaseGolemEntity golem;
     protected final boolean followingTargetEvenIfNotSeen;
+    public GolemMeleeAttackGoal(BaseGolemEntity golem){
+        this(golem, 1, false);
+    }
     public GolemMeleeAttackGoal(BaseGolemEntity pathfinderMob, double d, boolean followingTargetEvenIfNotSeen) {
         super(pathfinderMob, d, followingTargetEvenIfNotSeen);
         this.golem = pathfinderMob;

@@ -89,14 +89,14 @@ public abstract class BaseGolemEntity
         var attrInstance = getAttribute(Attributes.MOVEMENT_SPEED);
         if (attrInstance != null) {
             attrInstance.removeModifier(SPEED_MODOFIER_UUID);
-            attrInstance.addTransientModifier(getSpeedModifierAttribute());
+            attrInstance.addPermanentModifier(getSpeedModifierAttribute());
         }
     }
     public void freezeSpeedModifier() {
         var attrInstance = getAttribute(Attributes.MOVEMENT_SPEED);
         if (attrInstance != null) {
             attrInstance.removeModifier(SPEED_MODOFIER_UUID);
-            attrInstance.addTransientModifier(getFreezingSpeedModifierAttribute());
+            attrInstance.addPermanentModifier(getFreezingSpeedModifierAttribute());
         }
     }
 
