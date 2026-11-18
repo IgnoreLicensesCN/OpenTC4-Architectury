@@ -1,0 +1,111 @@
+package thaumcraft.common.entities.golems.configuration.providerimpl.basic;
+
+import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
+import com.linearity.opentc4.utils.compoundtag.accessors.basic.IntTagAccessor;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.nbt.CompoundTag;
+import thaumcraft.common.entities.golems.BaseGolemEntity;
+import thaumcraft.common.entities.golems.configuration.GolemConfigurationProvider;
+
+import java.util.function.Supplier;
+
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
+
+public class GolemConfigurationProviderIntImpl extends GolemConfigurationProvider<Integer> {
+    public final int defaultValue;
+    protected final IntTagAccessor compoundTagAccessor;
+
+    public GolemConfigurationProviderIntImpl(String accessorName) {
+        this(new IntTagAccessor(accessorName));
+    }
+
+    public GolemConfigurationProviderIntImpl(String accessorName,int defaultValue) {
+        this(new IntTagAccessor(accessorName),defaultValue);
+    }
+
+    public GolemConfigurationProviderIntImpl(IntTagAccessor compoundTagAccessor) {
+        this(compoundTagAccessor,0);
+    }
+
+    public GolemConfigurationProviderIntImpl(IntTagAccessor compoundTagAccessor,int defaultValue) {
+        this.compoundTagAccessor = compoundTagAccessor;
+        var valueMap = new Object2IntOpenHashMap<GolemConfigurationProviderIntImpl>();
+        valueMap.defaultReturnValue(defaultValue);
+        this.fakeFieldsSupplier = () -> new GolemConfigurationsFakeFields(new ProviderImplToValueMap(valueMap));
+        this.defaultValue = defaultValue;
+    }
+
+    public static class ProviderImplToValueMap {
+        private final Object2IntMap<GolemConfigurationProviderIntImpl> internalMap;
+
+        public ProviderImplToValueMap() {
+            this.internalMap = new Object2IntOpenHashMap<>();
+        }
+
+        public ProviderImplToValueMap(Object2IntMap<GolemConfigurationProviderIntImpl> internalMap) {
+            this.internalMap = internalMap;
+        }
+
+        public int get(GolemConfigurationProviderIntImpl provider){
+            return internalMap.getInt(provider);
+        }
+
+        public void put(GolemConfigurationProviderIntImpl provider, int value){
+            internalMap.put(provider,value);
+        }
+    }
+    public static class GolemConfigurationsFakeFields implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<BaseGolemEntity> {
+        public final ProviderImplToValueMap configurationValueMap;
+        public GolemConfigurationsFakeFields(ProviderImplToValueMap configurationValueMap) {
+            this.configurationValueMap = configurationValueMap;
+        }
+
+        public GolemConfigurationsFakeFields(){
+            this.configurationValueMap = new ProviderImplToValueMap();
+        }
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public Integer getFrom(BaseGolemEntity golem) {
+        return getIntFrom(golem);
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public void setTo(BaseGolemEntity golem, Integer value) {
+        setIntTo(golem,value);
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public Integer serializeFrom(CompoundTag tag) {
+        return serializeIntFrom(tag);
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public void deserializeTo(CompoundTag tag, Integer value) {
+        deserializeIntTo(tag,value);
+    }
+
+    public int getIntFrom(BaseGolemEntity golem) {
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, fakeFieldsSupplier);
+        return fakeField.configurationValueMap.get(this);
+    }
+
+    public void setIntTo(BaseGolemEntity golem, int value) {
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, fakeFieldsSupplier);
+        fakeField.configurationValueMap.put(this,value);
+    }
+
+    public int serializeIntFrom(CompoundTag tag) {
+        return compoundTagAccessor.readIntFromCompoundTag(tag);
+    }
+    public void deserializeIntTo(CompoundTag tag,int value) {
+        compoundTagAccessor.writeIntToCompoundTag(tag,value);
+    }
+
+    protected Supplier<GolemConfigurationsFakeFields> fakeFieldsSupplier = GolemConfigurationsFakeFields::new;
+}

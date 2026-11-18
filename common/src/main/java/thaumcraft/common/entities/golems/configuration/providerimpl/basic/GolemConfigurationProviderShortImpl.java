@@ -1,0 +1,111 @@
+package thaumcraft.common.entities.golems.configuration.providerimpl.basic;
+
+import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
+import com.linearity.opentc4.utils.compoundtag.accessors.basic.ShortTagAccessor;
+import it.unimi.dsi.fastutil.objects.Object2ShortMap;
+import it.unimi.dsi.fastutil.objects.Object2ShortOpenHashMap;
+import net.minecraft.nbt.CompoundTag;
+import thaumcraft.common.entities.golems.BaseGolemEntity;
+import thaumcraft.common.entities.golems.configuration.GolemConfigurationProvider;
+
+import java.util.function.Supplier;
+
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
+
+public class GolemConfigurationProviderShortImpl extends GolemConfigurationProvider<Short> {
+    public final short defaultValue;
+    protected final ShortTagAccessor compoundTagAccessor;
+
+    public GolemConfigurationProviderShortImpl(String accessorName) {
+        this(new ShortTagAccessor(accessorName));
+    }
+
+    public GolemConfigurationProviderShortImpl(String accessorName,short defaultValue) {
+        this(new ShortTagAccessor(accessorName),defaultValue);
+    }
+
+    public GolemConfigurationProviderShortImpl(ShortTagAccessor compoundTagAccessor) {
+        this(compoundTagAccessor,(short) 0);
+    }
+
+    public GolemConfigurationProviderShortImpl(ShortTagAccessor compoundTagAccessor,short defaultValue) {
+        this.compoundTagAccessor = compoundTagAccessor;
+        var valueMap = new Object2ShortOpenHashMap<GolemConfigurationProviderShortImpl>();
+        valueMap.defaultReturnValue(defaultValue);
+        this.fakeFieldsSupplier = () -> new GolemConfigurationsFakeFields(new ProviderImplToValueMap(valueMap));
+        this.defaultValue = defaultValue;
+    }
+
+    public static class ProviderImplToValueMap {
+        private final Object2ShortMap<GolemConfigurationProviderShortImpl> internalMap;
+
+        public ProviderImplToValueMap() {
+            this.internalMap = new Object2ShortOpenHashMap<>();
+        }
+
+        public ProviderImplToValueMap(Object2ShortMap<GolemConfigurationProviderShortImpl> internalMap) {
+            this.internalMap = internalMap;
+        }
+
+        public short get(GolemConfigurationProviderShortImpl provider){
+            return internalMap.getShort(provider);
+        }
+
+        public void put(GolemConfigurationProviderShortImpl provider, short value){
+            internalMap.put(provider,value);
+        }
+    }
+    public static class GolemConfigurationsFakeFields implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<BaseGolemEntity> {
+        public final ProviderImplToValueMap configurationValueMap;
+        public GolemConfigurationsFakeFields(ProviderImplToValueMap configurationValueMap) {
+            this.configurationValueMap = configurationValueMap;
+        }
+
+        public GolemConfigurationsFakeFields(){
+            this.configurationValueMap = new ProviderImplToValueMap();
+        }
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public Short getFrom(BaseGolemEntity golem) {
+        return getShortFrom(golem);
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public void setTo(BaseGolemEntity golem, Short value) {
+        setShortTo(golem,value);
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public Short serializeFrom(CompoundTag tag) {
+        return serializeShortFrom(tag);
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public void deserializeTo(CompoundTag tag, Short value) {
+        deserializeShortTo(tag,value);
+    }
+
+    public short getShortFrom(BaseGolemEntity golem) {
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, fakeFieldsSupplier);
+        return fakeField.configurationValueMap.get(this);
+    }
+
+    public void setShortTo(BaseGolemEntity golem, short value) {
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, fakeFieldsSupplier);
+        fakeField.configurationValueMap.put(this,value);
+    }
+
+    public short serializeShortFrom(CompoundTag tag) {
+        return compoundTagAccessor.readShortFromCompoundTag(tag);
+    }
+    public void deserializeShortTo(CompoundTag tag,short value) {
+        compoundTagAccessor.writeShortToCompoundTag(tag,value);
+    }
+
+    protected Supplier<GolemConfigurationsFakeFields> fakeFieldsSupplier = GolemConfigurationsFakeFields::new;
+}

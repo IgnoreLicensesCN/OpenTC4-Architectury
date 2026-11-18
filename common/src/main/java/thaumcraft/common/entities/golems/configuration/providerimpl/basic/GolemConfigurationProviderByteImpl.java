@@ -1,0 +1,111 @@
+package thaumcraft.common.entities.golems.configuration.providerimpl.basic;
+
+import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
+import com.linearity.opentc4.utils.compoundtag.accessors.basic.ByteTagAccessor;
+import it.unimi.dsi.fastutil.objects.Object2ByteMap;
+import it.unimi.dsi.fastutil.objects.Object2ByteOpenHashMap;
+import net.minecraft.nbt.CompoundTag;
+import thaumcraft.common.entities.golems.BaseGolemEntity;
+import thaumcraft.common.entities.golems.configuration.GolemConfigurationProvider;
+
+import java.util.function.Supplier;
+
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
+
+public class GolemConfigurationProviderByteImpl extends GolemConfigurationProvider<Byte> {
+    public final byte defaultValue;
+    protected final ByteTagAccessor compoundTagAccessor;
+
+    public GolemConfigurationProviderByteImpl(String accessorName) {
+        this(new ByteTagAccessor(accessorName));
+    }
+
+    public GolemConfigurationProviderByteImpl(String accessorName,byte defaultValue) {
+        this(new ByteTagAccessor(accessorName),defaultValue);
+    }
+
+    public GolemConfigurationProviderByteImpl(ByteTagAccessor compoundTagAccessor) {
+        this(compoundTagAccessor,(byte) 0);
+    }
+
+    public GolemConfigurationProviderByteImpl(ByteTagAccessor compoundTagAccessor,byte defaultValue) {
+        this.compoundTagAccessor = compoundTagAccessor;
+        var valueMap = new Object2ByteOpenHashMap<GolemConfigurationProviderByteImpl>();
+        valueMap.defaultReturnValue(defaultValue);
+        this.fakeFieldsSupplier = () -> new GolemConfigurationsFakeFields(new ProviderImplToValueMap(valueMap));
+        this.defaultValue = defaultValue;
+    }
+
+    public static class ProviderImplToValueMap {
+        private final Object2ByteMap<GolemConfigurationProviderByteImpl> internalMap;
+
+        public ProviderImplToValueMap() {
+            this.internalMap = new Object2ByteOpenHashMap<>();
+        }
+
+        public ProviderImplToValueMap(Object2ByteMap<GolemConfigurationProviderByteImpl> internalMap) {
+            this.internalMap = internalMap;
+        }
+
+        public byte get(GolemConfigurationProviderByteImpl provider){
+            return internalMap.getByte(provider);
+        }
+
+        public void put(GolemConfigurationProviderByteImpl provider, byte value){
+            internalMap.put(provider,value);
+        }
+    }
+    public static class GolemConfigurationsFakeFields implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<BaseGolemEntity> {
+        public final ProviderImplToValueMap configurationValueMap;
+        public GolemConfigurationsFakeFields(ProviderImplToValueMap configurationValueMap) {
+            this.configurationValueMap = configurationValueMap;
+        }
+
+        public GolemConfigurationsFakeFields(){
+            this.configurationValueMap = new ProviderImplToValueMap();
+        }
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public Byte getFrom(BaseGolemEntity golem) {
+        return getByteFrom(golem);
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public void setTo(BaseGolemEntity golem, Byte value) {
+        setByteTo(golem,value);
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public Byte serializeFrom(CompoundTag tag) {
+        return serializeByteFrom(tag);
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public void deserializeTo(CompoundTag tag, Byte value) {
+        deserializeByteTo(tag,value);
+    }
+
+    public byte getByteFrom(BaseGolemEntity golem) {
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, fakeFieldsSupplier);
+        return fakeField.configurationValueMap.get(this);
+    }
+
+    public void setByteTo(BaseGolemEntity golem, byte value) {
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, fakeFieldsSupplier);
+        fakeField.configurationValueMap.put(this,value);
+    }
+
+    public byte serializeByteFrom(CompoundTag tag) {
+        return compoundTagAccessor.readByteFromCompoundTag(tag);
+    }
+    public void deserializeByteTo(CompoundTag tag,byte value) {
+        compoundTagAccessor.writeByteToCompoundTag(tag,value);
+    }
+
+    protected Supplier<GolemConfigurationsFakeFields> fakeFieldsSupplier = GolemConfigurationsFakeFields::new;
+}
