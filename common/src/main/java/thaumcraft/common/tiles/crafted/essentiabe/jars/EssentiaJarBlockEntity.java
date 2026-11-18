@@ -166,7 +166,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
 
     @Override
     public int getSuctionAmount(@NotNull Direction face) {
-        if (this.aspectAmountCurrent < getAspectCapacity()) {
+        if (this.getAspectAmountCurrent() < getAspectCapacity()) {
             return getBaseSuction() + (this.aspectFilter.isEmpty() ? 0 : getAspectFilterSuctionAddition());
         } else {
             return 0;
@@ -200,11 +200,11 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
     }
 
     protected boolean capacityFullForAddEssentia(){
-        return this.aspectAmountCurrent >= getAspectCapacity();
+        return this.getAspectAmountCurrent() >= getAspectCapacity();
     }
 
     protected int doAddEssentia(Aspect aspect, int amount) {
-        if ((aspect == this.aspectCurrent || this.aspectAmountCurrent == 0) && aspectMatchesFilter(aspect)) {
+        if ((aspect == this.aspectCurrent || this.getAspectAmountCurrent() == 0) && aspectMatchesFilter(aspect)) {
             this.aspectCurrent = aspect;
             int added = Math.min(amount, getAspectCapacity() - this.aspectAmountCurrent);
             increaseAspectAmount(added);
@@ -287,7 +287,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
 
                 if (suctionAllowed && outBE.canOutputTo(beOutToDir)){
                     Aspect aspToGet = this.aspectFilter;
-                    if (aspToGet.isEmpty() && !this.aspectCurrent.isEmpty() && this.aspectAmountCurrent > 0){
+                    if (aspToGet.isEmpty() && !this.aspectCurrent.isEmpty() && this.getAspectAmountCurrent() > 0){
                         aspToGet = this.aspectCurrent;
                     }
                     if (aspToGet.isEmpty()){
@@ -309,7 +309,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
             IEssentiaContainerItem<Aspect> itemToFill,
             Aspect aspect
     ) {
-        return (aspect == this.aspectCurrent || aspect.isEmpty()) && this.aspectAmountCurrent != 0;
+        return (aspect == this.aspectCurrent || aspect.isEmpty()) && this.getAspectAmountCurrent() != 0;
     }
     public boolean canBeFilledWithEssentiaContainerItem(
             ItemStack stackFiller,
@@ -319,7 +319,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         if (aspect.isEmpty()){
             return false;
         }
-        if (this.aspectAmountCurrent >= getAspectCapacity() && !this.aspectCurrent.isEmpty()){
+        if (this.getAspectAmountCurrent() >= getAspectCapacity() && !this.aspectCurrent.isEmpty()){
             return false;
         }
         var hasFilter = !this.aspectFilter.isEmpty();
@@ -377,7 +377,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         if (!this.aspectCurrent.isEmpty() && aspectToFill != this.aspectCurrent){
             return false;
         }
-        if (this.aspectAmountCurrent + exactAmount >= getAspectCapacity()){
+        if (this.getAspectAmountCurrent() + exactAmount >= getAspectCapacity()){
             return false;
         }
         this.aspectCurrent = aspectToFill;
@@ -412,7 +412,7 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         if (!isConnectable(fromDirection)){
             return 0;
         }
-        if (this.aspectAmountCurrent < amount){
+        if (this.getAspectAmountCurrent() < amount){
             return 0;
         }
         if (aspect == this.aspectCurrent) {
@@ -435,4 +435,8 @@ public class EssentiaJarBlockEntity extends TileThaumcraft
         return 32;
     }
 
+    @Override
+    public boolean isFullFor(@NotNull Aspect aspect, @NotNull Direction fromDirection) {
+        return !canInputFrom(fromDirection) || capacityFullForAddEssentia();
+    }
 }

@@ -15,10 +15,15 @@ import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.blocks.multipartcomponent.infernalfurnace.InfernalFurnaceLavaBlock.SELF_POS_1_1_1;
 
-public class InfernalFurnaceNozzleBlockEntity extends TileThaumcraft implements IEssentiaTransportInBlockEntity {
+public class InfernalFurnaceNozzleBlockEntity
+        extends
+        TileThaumcraft
+        implements
+        IEssentiaTransportInBlockEntity
+        /*but do not really accept others' input,only draw by it self(should i change this old design?)*/
+{
     public InfernalFurnaceNozzleBlockEntity(BlockEntityType<? extends InfernalFurnaceNozzleBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
@@ -102,6 +107,11 @@ public class InfernalFurnaceNozzleBlockEntity extends TileThaumcraft implements 
     @Override
     public int addEssentia(@NotNull Aspect aspect, int amount, @NotNull Direction fromDirection) {
         return 0;
+    }
+
+    @Override
+    public boolean isFullFor(@NotNull Aspect aspect, @NotNull Direction fromDirection) {
+        return true;
     }
 
     @Override

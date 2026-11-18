@@ -35,4 +35,6 @@ public interface IEssentiaTransportInBlockEntity extends IEssentiaTransportConne
      * @return how much was actually added
      */
     int addEssentia(@NotNull Aspect aspect, int amount,@NotNull Direction fromDirection);
+
+    boolean isFullFor(@NotNull Aspect aspect,@NotNull Direction fromDirection);
 }

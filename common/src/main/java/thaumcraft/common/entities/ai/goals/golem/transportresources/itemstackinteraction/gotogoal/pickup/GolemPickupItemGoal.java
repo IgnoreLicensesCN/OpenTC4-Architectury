@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.pickup;
+package thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.gotogoal.pickup;
 
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;

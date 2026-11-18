@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.container;
+package thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.gotogoal.container;
 
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
@@ -9,7 +9,7 @@ import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.GolemTakeItemStackFromContainerGoal;
+import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.GolemTakeItemStackFromContainerGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.lib.utils.InventoryUtils;

@@ -1049,6 +1049,18 @@ public class ArcaneBoreBlockEntity
         return getBlockState().getValue(OUTPUT_FACING);
     }
 
+    @Override
+    public boolean isFullFor(@NotNull Aspect aspect, @NotNull Direction fromDirection) {
+        if (!canInputFrom(fromDirection)) {
+            return true;
+        }
+        if (aspect != getRequiredAspect()){
+            return true;
+        }
+        int visSizeRemaining = 1 - aspectAmount;
+        return visSizeRemaining < 0;
+    }
+
 
     public void getDigEvent(BlockPos digPos) {
         this.digPos = digPos;

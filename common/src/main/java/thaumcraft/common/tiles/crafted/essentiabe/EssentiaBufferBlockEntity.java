@@ -193,16 +193,22 @@ public class EssentiaBufferBlockEntity
 
     @Override
     public int addEssentia(@NotNull Aspect aspect, int amount, @NotNull Direction fromDirection) {
-        if (!canInputFrom(fromDirection)) {
+        if (!isFullFor(aspect, fromDirection)) {
             return 0;
         }
         int visSizeRemaining = getAspectCapacity() - aspects.visSize();
-        if (visSizeRemaining == 0) {
-            return 0;
-        }
         int canAdd = Math.min(amount, visSizeRemaining);
         aspects.addAll(aspect, canAdd);
         return canAdd;
+    }
+
+    @Override
+    public boolean isFullFor(@NotNull Aspect aspect, @NotNull Direction fromDirection) {
+        if (!canInputFrom(fromDirection)) {
+            return true;
+        }
+        int visSizeRemaining = getAspectCapacity() - aspects.visSize();
+        return visSizeRemaining <= 0;
     }
 
     @Override

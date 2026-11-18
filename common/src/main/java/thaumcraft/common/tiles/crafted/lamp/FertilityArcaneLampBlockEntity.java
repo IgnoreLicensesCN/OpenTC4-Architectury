@@ -153,6 +153,14 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
     }
 
     @Override
+    public boolean isFullFor(@NotNull Aspect aspect, @NotNull Direction fromDirection) {
+        if (aspect != getAllowedAspect()){
+            return true;
+        }
+        return this.charge > 0;
+    }
+
+    @Override
     @NotNull
     public Aspect getEssentiaType(@NotNull Direction face) {
         return Aspects.EMPTY;

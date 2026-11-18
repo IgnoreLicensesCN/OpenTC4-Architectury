@@ -145,6 +145,14 @@ public class GrowthArcaneLampBlockEntity extends TileThaumcraft implements IEsse
     }
 
     @Override
+    public boolean isFullFor(@NotNull Aspect aspect, @NotNull Direction fromDirection) {
+        if (aspect != getAllowedAspect()) {
+            return true;
+        }
+        return this.charge > 0;
+    }
+
+    @Override
     @NotNull
     public Aspect getEssentiaType(@NotNull Direction face) {
         return Aspects.EMPTY;

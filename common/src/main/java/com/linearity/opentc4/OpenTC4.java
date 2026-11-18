@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes;
 import thaumcraft.common.entities.championmod.ChampionModifierManager;
+import thaumcraft.common.entities.golems.GolemEssentiaJarSearchingHelper;
 import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.items.abstracts.IRepairableItem;
 import thaumcraft.api.aspects.Aspects;
@@ -110,6 +111,7 @@ public final class OpenTC4 {
         ChampionModifierManager.init();
 
         CropUtils.init();
+        GolemEssentiaJarSearchingHelper.init();
     }
 
     public static void onClientStarted() {

@@ -2,8 +2,6 @@ package com.linearity.opentc4.utils;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectRBTreeMap;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -50,10 +48,9 @@ public class HighestFurthestBlockFinder {
         int bestZ = startZ;
 
         BlockSearchDeque stack = new BlockSearchDeque();
-        stack.push(startX, startY, startZ);
+        stack.addIfChecked(startX, startY, startZ);
 //        ArrayDeque<BlockPos> stack = new ArrayDeque<>();
 //        stack.push(start);
-        addChecked(startX,startY,startZ,visitedY_XZ);
         while (!stack.isEmpty()) {
 
             int posX = stack.popX();
@@ -106,17 +103,12 @@ public class HighestFurthestBlockFinder {
                         continue;
                     }
 
-                    if (addChecked(nextX, nextY, nextZ, visitedY_XZ)) {
-                        stack.push(nextX, nextY, nextZ);
-                    }
+                    stack.addIfChecked(nextX, nextY, nextZ);
                 }
             }
         }
     }
 
-    private boolean addChecked(int posX, int posY, int posZ, Int2ObjectMap<LongSet> visitedY_XZ) {
-        return visitedY_XZ.computeIfAbsent(posY, ignored -> new LongOpenHashSet()).add(packInt(posX, posZ));
-    }
 
     private final BlockPos.MutableBlockPos cachePos = new BlockPos.MutableBlockPos();
     public boolean testBlockState(int x,int y,int z) {
@@ -126,30 +118,5 @@ public class HighestFurthestBlockFinder {
     private int manhattanDistanceXZ(int xa,int za,int xb, int zb){
         return Math.abs(xa - xb) + Math.abs(za - zb);
     }
-    public static class BlockSearchDeque {
-        IntArrayList xCoords = new IntArrayList();
-        IntArrayList zCoords = new IntArrayList();
-        IntArrayList yCoords = new IntArrayList();
-        public void push(int x,int y, int z) {
-            xCoords.add(x);
-            yCoords.add(y);
-            zCoords.add(z);
-        }
-        public int popY(){
-            return yCoords.removeInt(yCoords.size()-1);
-        }
-        public int popX(){
-            return xCoords.removeInt(xCoords.size()-1);
-        }
-        public int popZ(){
-            return zCoords.removeInt(zCoords.size()-1);
-        }
-        public boolean isEmpty(){
-            return xCoords.isEmpty();
-        }
-    }
 
-    private static long packInt(int x, int z) {
-        return ((long) x << 32) | (z & 0xFFFFFFFFL);
-    }
 }

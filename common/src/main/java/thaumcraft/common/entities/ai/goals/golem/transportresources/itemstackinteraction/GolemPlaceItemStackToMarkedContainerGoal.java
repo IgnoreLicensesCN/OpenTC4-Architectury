@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction;
+package thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction;
 
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Container;

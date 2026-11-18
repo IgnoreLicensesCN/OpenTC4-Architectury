@@ -272,6 +272,14 @@ public class ThaumatoriumBlockEntity extends TileThaumcraftWithMenu<Thaumatorium
     public int addEssentia(@NotNull Aspect aspect, int amount, @NotNull Direction fromDirection) {
         return this.canInputFrom(fromDirection) ? amount - this.addIntoContainer(aspect, amount) : 0;
     }
+
+    @Override
+    public boolean isFullFor(@NotNull Aspect aspect, @NotNull Direction fromDirection) {
+        if (!canInputFrom(fromDirection)) {
+            return true;
+        }
+        return aspectRequiredCache.get(aspect) <= 0;
+    }
     //return remaining
     public int addIntoContainer(Aspect couldBeRequired, int amountCanAdd) {
         if (!this.isHeating()){

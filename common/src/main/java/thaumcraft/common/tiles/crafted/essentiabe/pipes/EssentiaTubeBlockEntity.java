@@ -377,6 +377,14 @@ public class EssentiaTubeBlockEntity extends TileThaumcraft
     }
 
     @Override
+    public boolean isFullFor(@NotNull Aspect aspect, @NotNull Direction fromDirection) {
+        if (!canInputFrom(fromDirection)) {
+            return true;
+        }
+        return !owningAspect.isEmpty();
+    }
+
+    @Override
     public @NotNull Aspect getSuctionType(@NotNull Direction face) {
         return suctionType;
     }

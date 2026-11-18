@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.throwgoal;
+package thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.throwgoal;
 
 import net.minecraft.world.Container;
 import thaumcraft.common.entities.ai.goals.golem.AbstractGolemGoal;

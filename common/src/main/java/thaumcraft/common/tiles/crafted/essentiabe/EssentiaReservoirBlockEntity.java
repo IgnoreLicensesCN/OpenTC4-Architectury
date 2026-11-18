@@ -405,4 +405,12 @@ public class EssentiaReservoirBlockEntity extends TileThaumcraft
         unregisterFromWeakLookup(this.level);
         super.setRemoved();
     }
+
+    @Override
+    public boolean isFullFor(@NotNull Aspect aspect, @NotNull Direction fromDirection) {
+        if (!canInputFrom(fromDirection)) {
+            return true;
+        }
+        return capacityFullForAddEssentia();
+    }
 }

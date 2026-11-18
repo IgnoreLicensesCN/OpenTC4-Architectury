@@ -199,6 +199,15 @@ public class EssentiaCrystallizerBlockEntity extends TileThaumcraft
     }
 
     @Override
+    public boolean isFullFor(@NotNull Aspect aspect, @NotNull Direction fromDirection) {
+        if (!canInputFrom(fromDirection)) {
+            return true;
+        }
+        int visSizeRemaining = 1 - (crystallizingAspect.isEmpty()?0:1);
+        return visSizeRemaining <= 0;
+    }
+
+    @Override
     public @NotNull Aspect getEssentiaType(@NotNull Direction face) {
         return crystallizingAspect;
     }

@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction;
+package thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction;
 
 import it.unimi.dsi.fastutil.ints.IntIterator;
 import net.minecraft.world.Container;
@@ -6,7 +6,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
-import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.ai.goals.golem.AbstractGolemGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemHelper;
@@ -17,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
-import static thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.GolemEmptyCorePlaceItemStackToHomeGoal.findSomethingEmptyCore;
+import static thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.GolemEmptyCorePlaceItemStackToHomeGoal.findSomethingEmptyCore;
 import static thaumcraft.common.entities.golems.GolemHelper.*;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY;
 

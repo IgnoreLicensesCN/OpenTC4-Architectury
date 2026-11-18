@@ -178,6 +178,14 @@ public class EssentiaCentrifugeBlockEntity extends TileThaumcraft
     }
 
     @Override
+    public boolean isFullFor(@NotNull Aspect aspect, @NotNull Direction fromDirection) {
+        return !this.aspectIn.isEmpty()
+                || !canOutputTo(fromDirection)
+                || !(aspect instanceof CompoundAspect);
+    }
+
+
+    @Override
     public int takeEssentia(Aspect aspect, int amount, @NotNull Direction outputToDirection) {
         if (aspect.isEmpty() || amount <= 0 || !canOutputTo(outputToDirection) || aspect != this.aspectOut) {
             return 0;

@@ -1,4 +1,4 @@
-package thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.container;
+package thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.gotogoal.container;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;

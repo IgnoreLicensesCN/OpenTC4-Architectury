@@ -6,9 +6,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.essentiabe.IEssentiaOverflowDestroyerBlockEntity;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
-public class VoidJarBlockEntity extends EssentiaJarBlockEntity {
+public class VoidJarBlockEntity extends EssentiaJarBlockEntity implements IEssentiaOverflowDestroyerBlockEntity {
 
     public VoidJarBlockEntity(BlockEntityType<? extends VoidJarBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -33,5 +34,13 @@ public class VoidJarBlockEntity extends EssentiaJarBlockEntity {
             return amount;//what differs
         }
         return doAddEssentia(aspect, amount);
+    }
+
+    @Override
+    public boolean willDestroy(Aspect aspect) {
+        if (!canAddEssentia(aspect,1,getConnectableDirection())) {
+            return false;
+        }
+        return capacityFullForAddEssentia();
     }
 }
