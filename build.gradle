@@ -1,5 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
+import java.util.regex.Pattern
+
 class CodeGen {
 
     def static variedResourceLocationImports(){ """
@@ -198,59 +200,105 @@ subprojects {
         outputs.dir(outputDir)
 
         doLast {
-            if (!sourceDir.exists()) {
-                return // 如果当前模块没有这个目录（比如纯 fabric 模块），直接跳过
-            }
+            if (sourceDir.exists()) {
+                // 正则匹配形如: //#include VariedResourceLocationSource("ClassName", "TypeName")
+                def pattern = ~/\/\/#include VariedResourceLocationSource\("([^"]+)",\s*"([^"]+)"\)/
+                def importPattern = ~/\/\/#include VariedResourceLocationImports/
 
-            // 正则匹配形如: //#include VariedResourceLocationSource("ClassName", "TypeName")
-            def pattern = ~/\/\/#include VariedResourceLocationSource\("([^"]+)",\s*"([^"]+)"\)/
-            def importPattern = ~/\/\/#include VariedResourceLocationImports/
+                sourceDir.eachFileRecurse { file ->
+                    if (file.file && file.name.endsWith(".java")) {
+                        def content = file.text
+                        def matcher = pattern.matcher(content)
 
-            sourceDir.eachFileRecurse { file ->
-                if (file.file && file.name.endsWith(".java")) {
-                    def content = file.text
-                    def matcher = pattern.matcher(content)
+                        def relativePath = sourceDir.toPath().relativize(file.toPath())
+                        def outFile = new File(outputDir, relativePath.toString())
+                        outFile.parentFile.mkdirs()
+                        if (matcher.find()) {
+                            // 提取参数
+                            def className = matcher.group(1)
+                            def typeName = matcher.group(2)
 
-                    def relativePath = sourceDir.toPath().relativize(file.toPath())
-                    def outFile = new File(outputDir, relativePath.toString())
-                    outFile.parentFile.mkdirs()
-                    if (matcher.find()) {
-                        // 提取参数
-                        def className = matcher.group(1)
-                        def typeName = matcher.group(2)
+                            // 生成你要替换进去的模板代码（这里以你前面展示的带缓存逻辑的代码为例）
+                            def generatedCode = CodeGen.generateTemplateCode(className, typeName)
 
-                        // 生成你要替换进去的模板代码（这里以你前面展示的带缓存逻辑的代码为例）
-                        def generatedCode = CodeGen.generateTemplateCode(className, typeName)
+                            // 把整行注释替换为生成的模板代码
+                            def newContent = matcher.replaceAll(generatedCode)
+                            def importPatternMatcher = importPattern.matcher(newContent)
+                            if (importPatternMatcher.find()){
+                                newContent = importPatternMatcher.replaceAll(CodeGen.variedResourceLocationImports())
+                            }
 
-                        // 把整行注释替换为生成的模板代码
-                        def newContent = matcher.replaceAll(generatedCode)
-                        def importPatternMatcher = importPattern.matcher(newContent)
-                        if (importPatternMatcher.find()){
-                            newContent = importPatternMatcher.replaceAll(CodeGen.variedResourceLocationImports())
+                            // 保持原有的目录结构输出到 generated 目录
+                            outFile.text = newContent
+
+                            println "Preprocessed: ${file.name} -> Class: ${className}, Type: ${typeName}"
                         }
-
-                        // 保持原有的目录结构输出到 generated 目录
-                        outFile.text = newContent
-
-                        println "Preprocessed: ${file.name} -> Class: ${className}, Type: ${typeName}"
-                    }
-                    else {
+                        else {
 //                        // 如果没有匹配的注释，直接复制原文件
 //                        def relativePath = sourceDir.toPath().relativize(file.toPath())
 //                        def outFile = new File(outputDir, relativePath.toString())
 //                        outFile.parentFile.mkdirs()
-                        outFile.text = file.text
+                            outFile.text = file.text
+                        }
                     }
                 }
             }
+
+
+        }
+    }
+    task preprocessGolemConfigurationProviderBasicTypeImpls {
+
+        def sourceFile = file("src/main/codeGenTemplate/providerimplbasictypes/GolemConfigurationProviderBASICTYPEImpl.java") // 你的目标包路径
+        def outputDir = file("src/main/java/thaumcraft/common/entities/golems/configuration/providerimpl/basic")
+        if (sourceFile.exists()) {
+            inputs.file(sourceFile)
+        }
+        outputs.dir(outputDir)
+
+        doLast {
+            if (sourceFile.exists()) {
+//                sourceFile.eachFileRecurse { file ->
+                    if (sourceFile.file) {
+                        //${BASIC_TYPE_BOXING_CLASS_NAME},${BASIC_TYPE_NAME},${BASIC_TYPE_BOXING_CLASS_SHORT_NAME},
+                        String[][] replaceWithNames = new String[][]{
+                                new String[]{"Boolean","boolean","Boolean","false"},
+                                new String[]{"Byte","byte","Byte","(byte) 0"},
+                                new String[]{"Integer","int","Int","0"},
+                                new String[]{"Long","long","Long","0L"},
+                                new String[]{"Short","short","Short","(short) 0"},
+                                new String[]{"Float","float","Float","0F"},
+                                new String[]{"Double","double","Double","0."},
+                        };
+                        for (String[] replaceWithName:replaceWithNames){
+
+                            def content = sourceFile.text
+
+                            content = content
+                                    .replace('${BASIC_TYPE_BOXING_CLASS_NAME}',replaceWithName[0])
+                                    .replace('${BASIC_TYPE_NAME}',replaceWithName[1])
+                                    .replace('${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}',replaceWithName[2])
+                                    .replace('${BASIC_TYPE_DEFAULT_VALUE}',replaceWithName[3])
+
+                            def outFile = new File(outputDir, "GolemConfigurationProvider" + replaceWithName[2] + "Impl.java")
+                            outFile.parentFile.mkdirs()
+                            outFile.text = content
+                            println "Preprocessed: " + "GolemConfigurationProvider" + replaceWithName[2] + "Impl.java"
+                        }
+                    }
+//                }
+            }
+
+
         }
     }
 //    sourceSets.main.java.srcDir file("$rootDir/generated/sources/preprocessor/src/main/java")
     tasks.named('compileJava') {
         dependsOn "preprocessResourceLocations_${project.name}"
+        dependsOn "preprocessGolemConfigurationProviderBasicTypeImpls_${project.name}"
     }
+//    tasks.named('preprocessResourceLocations'){
+//        dependsOn "preprocessGolemConfigurationProviderBasicTypeImpls_${project.name}"
+//    }
 
-//// 绑定编译任务：让编译 Java 之前先执行这个预处理，并把生成的代码加入源码集
-//    compileJava.dependsOn preprocessResourceLocations
-//    sourceSets.main.java.srcDirs += "$buildDir/generated/sources/preprocessor/java"
 }

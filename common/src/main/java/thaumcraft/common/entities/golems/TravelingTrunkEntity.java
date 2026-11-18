@@ -79,10 +79,10 @@ public class TravelingTrunkEntity extends AbstractGolemUpgradeApplicableEntity<T
                 .add(Attributes.MAX_HEALTH, 75)
                 .add(Attributes.ATTACK_DAMAGE,4);
     }
-    private static final EntityDataAccessor<Boolean> DATA_ID_OPENED = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> DATA_ID_STAY = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DATA_ID_SLOT_COUNT = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DATA_ID_ANGER = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Boolean> DATA_ID_OPENED = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> DATA_ID_STAY = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Integer> DATA_ID_SLOT_COUNT = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> DATA_ID_ANGER = SynchedEntityData.defineId(TravelingTrunkEntity.class, EntityDataSerializers.INT);
 
 
     @Override

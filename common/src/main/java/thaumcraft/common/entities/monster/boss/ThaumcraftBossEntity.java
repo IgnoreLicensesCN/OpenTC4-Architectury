@@ -36,8 +36,8 @@ public abstract class ThaumcraftBossEntity extends Monster implements ICustomSpe
     //#thaumcraft boss part
     protected Int2FloatMap aggro = new Int2FloatOpenHashMap();
     protected int invulnerableTicksLimit = 220;
-    private static final EntityDataAccessor<Integer> DATA_ID_INV = SynchedEntityData.defineId(ThaumcraftBossEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DATA_ID_ANGER = SynchedEntityData.defineId(ThaumcraftBossEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> DATA_ID_INV = SynchedEntityData.defineId(ThaumcraftBossEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> DATA_ID_ANGER = SynchedEntityData.defineId(ThaumcraftBossEntity.class, EntityDataSerializers.INT);
 
     public EntityDataAccessor<Integer> thaumcraftBoss$getAngerDataID() {
         return DATA_ID_ANGER;

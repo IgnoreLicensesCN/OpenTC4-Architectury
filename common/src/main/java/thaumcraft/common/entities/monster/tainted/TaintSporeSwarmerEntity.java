@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaintSporeSwarmerEntity extends Monster {
-    private static final EntityDataAccessor<Integer> DATA_SIZE_ID = SynchedEntityData.defineId(TaintSporeSwarmerEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> DATA_SIZE_ID = SynchedEntityData.defineId(TaintSporeSwarmerEntity.class, EntityDataSerializers.INT);
 
 
     public TaintSporeSwarmerEntity(Level level) {

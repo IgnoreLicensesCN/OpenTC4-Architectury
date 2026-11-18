@@ -34,7 +34,7 @@ import static thaumcraft.common.items.ThaumcraftItemInstances.*;
 
 public class AspectArrowEntity
         extends AbstractArrow {
-    private static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(
+    public static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(
             AspectArrowEntity.class, EntityDataSerializers.INT);
 
     public static class AspectArrowManager {

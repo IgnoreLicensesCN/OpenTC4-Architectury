@@ -40,7 +40,7 @@ import thaumcraft.common.lib.utils.EntityUtils;
 import static com.linearity.opentc4.Consts.EldritchGolemEntityTagAccessors.HEADLESS;
 
 public class EldritchGolemEntity extends ThaumcraftBossEntity implements IChampionModifiedNamingRuleOwner, RangedAttackMob {
-    private static final EntityDataAccessor<Boolean> DATA_HEADLESS_ID = SynchedEntityData.defineId(EldritchGolemEntity.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> DATA_HEADLESS_ID = SynchedEntityData.defineId(EldritchGolemEntity.class, EntityDataSerializers.BOOLEAN);
     protected int beamCharge = 0;
     protected boolean chargingBeam = false;
     protected int arcing = 0;

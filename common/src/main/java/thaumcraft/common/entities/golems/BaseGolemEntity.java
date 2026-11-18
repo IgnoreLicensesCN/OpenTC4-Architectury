@@ -55,7 +55,6 @@ import thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.*
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.configruable.IGolemConfigurationProviderFillerItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemColorfulMarkerProviderItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemItemStackMatcherModifierItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemTargetControlItem;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.attack.rangedattack.*;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.special.IReplantCropUpgradeItem;
@@ -145,9 +144,9 @@ public abstract class BaseGolemEntity
     public static List<ObjectIntPair<Class<? extends IGolemUpgradeItem>/*int:priority(lower ones comes first)*/>> defaultGolemUpgradeItemTypes = new AutoSortThreadSafeList<>(ObjectIntPair::compareTo);
 
     static {
-        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemCoreItem.class, 0));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemBasicUpgradeItem.class, 0));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemDecorationItem.class, 100));
-        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemBasicUpgradeItem.class, 200));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemCoreItem.class, 200));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemAIProviderItem.class, 300));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemRangedAttackPerformerItem.class, 400));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemAbilityModifierItem.class, 500));
@@ -156,11 +155,11 @@ public abstract class BaseGolemEntity
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemDamagedListenerItem.class, 800));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemCollapseToItemStackListenerItem.class, 900));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemPlayerInteractionListenerItem.class, 1000));
-        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemHomeRangeModifierItem.class, 1100));
-        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemColorfulMarkerProviderItem.class, 1200));
-        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemShootAccuracyModifierItem.class,1300));
-        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemShootCooldownModifierItem.class,1400));
-        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemTargetControlItem.class,1500));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemBeingOpenedGUIListenerItem.class,1100));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemHomeRangeModifierItem.class, 1200));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemColorfulMarkerProviderItem.class, 1300));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemShootAccuracyModifierItem.class,1400));
+        defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemShootCooldownModifierItem.class,1500));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemUpdateItemInHandListenerItem.class,1600));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemItemStackMatcherModifierItem.class,1700));
         defaultGolemUpgradeItemTypes.add(new ObjectIntPair<>(IGolemConfigurationProviderFillerItem.class,1800));
@@ -319,17 +318,17 @@ public abstract class BaseGolemEntity
 
     public static final EntityDataAccessor<byte[]> DATA_ID_INVENTORY_COLORS = SynchedEntityData.defineId(BaseGolemEntity.class, EntityDataSerializerAdditions.BYTE_ARRAY);
     public static final EntityDataAccessor<Byte> DATA_ID_ATTACK_CONTROL_FLAGS = SynchedEntityData.defineId(BaseGolemEntity.class,BYTE);
-    public static final byte FLAG_CAN_ATTACK_HOSTILES = 1;
-    public static final byte FLAG_CAN_ATTACK_ANIMALS = 1<<1;
-    public static final byte FLAG_CAN_ATTACK_PLAYERS = 1<<2;
-    public static final byte FLAG_CAN_ATTACK_CREEPERS = 1<<3;
+//    public static final byte FLAG_CAN_ATTACK_HOSTILES = 1;
+//    public static final byte FLAG_CAN_ATTACK_ANIMALS = 1<<1;
+//    public static final byte FLAG_CAN_ATTACK_PLAYERS = 1<<2;
+//    public static final byte FLAG_CAN_ATTACK_CREEPERS = 1<<3;
 
-    public byte getAttackControlFlags(){
-        return entityData.get(DATA_ID_ATTACK_CONTROL_FLAGS);
-    }
-    public void setAttackControlFlags(byte flags){
-        entityData.set(DATA_ID_ATTACK_CONTROL_FLAGS,flags);
-    }
+//    public byte getAttackControlFlags(){
+//        return entityData.get(DATA_ID_ATTACK_CONTROL_FLAGS);
+//    }
+//    public void setAttackControlFlags(byte flags){
+//        entityData.set(DATA_ID_ATTACK_CONTROL_FLAGS,flags);
+//    }
 
 
     @Override
@@ -472,8 +471,8 @@ public abstract class BaseGolemEntity
     }
 
     @Override
-    public void setUpgradeStacks(List<ItemStack> stacks) {
-        super.setUpgradeStacks(stacks);
+    public void updateUpgradeStacks(List<ItemStack> stacks) {
+        super.updateUpgradeStacks(stacks);
         configurationProviderMap.clear();
         for (var fillerPair:golemUpgradesCacheView.get(IGolemConfigurationProviderFillerItem.class)) {
             fillerPair.getUpgradeType().fillGolemConfigurationProviders(this, fillerPair.getUpgradeStack(), configurationProviderMap);
@@ -883,5 +882,23 @@ public abstract class BaseGolemEntity
 
     public int getStrength(){
         return (int) abilitiesData.strength;
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
+        super.onSyncedDataUpdated(entityDataAccessor);
+        if (entityDataAccessor == DATA_ID_UPGRADES) {
+            if (this.level().isClientSide){
+                updateUpgradeStacks(getUpgradeStacks());
+            }
+        }
+    }
+
+    @Override
+    public void swing(InteractionHand interactionHand) {
+        super.swing(interactionHand);
+        if (interactionHand == InteractionHand.MAIN_HAND){
+            this.level().broadcastEntityEvent(this,START_ACTION_TIMER);
+        }
     }
 }

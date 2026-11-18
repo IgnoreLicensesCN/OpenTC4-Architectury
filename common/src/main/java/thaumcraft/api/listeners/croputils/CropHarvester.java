@@ -37,7 +37,7 @@ public abstract class CropHarvester implements Comparable<CropHarvester> {
                 harvestWithEmptyHandUse(level, pos, harvester);
             }
         }),
-        DIRECTLY_BREAK(new CropHarvester(100) {
+        DIRECTLY_BREAK(new CropHarvester(200) {
             @Override
             public boolean canHarvestWithThis(ServerLevel level, BlockPos pos, @Nullable Entity harvester) {
                 return canDirectlyBreakHarvest(level, pos, harvester);

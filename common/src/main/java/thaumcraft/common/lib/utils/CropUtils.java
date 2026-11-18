@@ -21,16 +21,6 @@ import static thaumcraft.api.listeners.croputils.CropHarvester.CROP_HARVESTERS;
 
 public class CropUtils {
 
-    public static boolean isHarvestableCrop(ServerLevel world, BlockPos pos,@Nullable Entity harvesterEntity) {
-        for (var harvester:CROP_HARVESTERS.getListeners()){
-            if (harvester.canHarvestWithThis(world, pos, harvesterEntity)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     public static final UUID USE_CROP_PLAYER_UUID = UUID.fromString("e0dea31d-ebf0-4745-8409-552bfef51e1d");
     public static void harvestCropUsingRightClick(ServerLevel world, BlockPos pos,@Nullable Entity harvester) {
         useWithFakePlayerAt(ItemStack.EMPTY,world, pos, Direction.DOWN);
@@ -50,13 +40,20 @@ public class CropUtils {
         fakePlayer.moveTo(0,32768,0,0,0);
     }
 
-
-
     public static void init(){
         DirectlyBreakHarvestableCropChecker.init();
         UseHarvestableCropChecker.init();
         ReplantPlaceableCropItemGetter.init();
         CropHarvester.init();
+    }
+
+    public static boolean isHarvestableCrop(ServerLevel world, BlockPos pos,@Nullable Entity harvesterEntity) {
+        for (var harvester:CROP_HARVESTERS.getListeners()){
+            if (harvester.canHarvestWithThis(world, pos, harvesterEntity)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean tryHarvest(

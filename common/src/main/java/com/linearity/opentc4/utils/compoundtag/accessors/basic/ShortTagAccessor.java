@@ -11,20 +11,22 @@ public class ShortTagAccessor extends CompoundTagAccessor<Short> {
     }
 
     @Override
-    @Deprecated(forRemoval = true,since = "boxing costs")
+    @Deprecated(forRemoval = true, since = "boxing costs")
     public Short readFromCompoundTag(CompoundTag tag) {
-        return tag.getShort(tagKey);
+        return readShortFromCompoundTag(tag);
     }
 
 
     @Override
-    @Deprecated(forRemoval = true,since = "boxing costs")
+    @Deprecated(forRemoval = true, since = "boxing costs")
     public void writeToCompoundTag(CompoundTag tag, Short value) {
-        tag.putLong(tagKey, value);
+        writeShortToCompoundTag(tag, value);
     }
+
     public short readShortFromCompoundTag(CompoundTag tag) {
         return tag.getShort(tagKey);
     }
+
     public void writeShortToCompoundTag(CompoundTag tag, short value) {
         tag.putLong(tagKey, value);
     }

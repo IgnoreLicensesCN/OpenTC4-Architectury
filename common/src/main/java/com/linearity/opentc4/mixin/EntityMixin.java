@@ -11,8 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import thaumcraft.api.blockapi.IEntityInLavaBlock;
@@ -20,6 +19,7 @@ import thaumcraft.common.entities.ThaumcraftEntityEvents;
 
 @Mixin(Entity.class)
 public class EntityMixin implements IObjectCacheableFakeFieldOwner {
+
     @WrapOperation(
             method = "updateFluidHeightAndDoFluidPushing",
             at = @At(

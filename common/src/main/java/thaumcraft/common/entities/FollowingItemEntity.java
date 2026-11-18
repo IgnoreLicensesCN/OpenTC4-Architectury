@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import thaumcraft.common.ClientFXUtils;
 
 public class FollowingItemEntity extends ItemEntity {
-    private static final EntityDataAccessor<Integer> DATA_ID_RENDER_TYPE = SynchedEntityData.defineId(FollowingItemEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> DATA_ID_RENDER_TYPE = SynchedEntityData.defineId(FollowingItemEntity.class, EntityDataSerializers.INT);
     protected Vec3 targetPos = null;
     public Entity targetEntity = null;
 //    protected int renderType = 3;

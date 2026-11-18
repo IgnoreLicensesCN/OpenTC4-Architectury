@@ -17,11 +17,11 @@ import thaumcraft.api.damage.ThaumcraftDamageSources;
 import thaumcraft.common.entities.ThaumcraftEntities;
 
 public class EmberEntity extends ThrowableProjectile {
-    private static final EntityDataAccessor<Integer> DATA_DURATION_ID
+    public static final EntityDataAccessor<Integer> DATA_DURATION_ID
             = SynchedEntityData.defineId(EmberEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DATA_FIREY_ID
+    public static final EntityDataAccessor<Integer> DATA_FIREY_ID
             = SynchedEntityData.defineId(EmberEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> DATA_DAMAGE_ID
+    public static final EntityDataAccessor<Float> DATA_DAMAGE_ID
             = SynchedEntityData.defineId(EmberEntity.class, EntityDataSerializers.FLOAT);
 
     @Override

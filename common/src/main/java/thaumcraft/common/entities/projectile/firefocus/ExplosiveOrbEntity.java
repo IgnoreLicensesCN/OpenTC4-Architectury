@@ -23,9 +23,9 @@ import static com.linearity.opentc4.Consts.ExplosiveOrbEntityTagAccessors.ON_FIR
 import static com.linearity.opentc4.Consts.ExplosiveOrbEntityTagAccessors.STRENGTH;
 
 public class ExplosiveOrbEntity extends ThrowableProjectile {
-    private static final EntityDataAccessor<Float> DATA_STRENGTH_ID
+    public static final EntityDataAccessor<Float> DATA_STRENGTH_ID
             = SynchedEntityData.defineId(ExplosiveOrbEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Boolean> DATA_ON_FIRE_ID
+    public static final EntityDataAccessor<Boolean> DATA_ON_FIRE_ID
             = SynchedEntityData.defineId(ExplosiveOrbEntity.class, EntityDataSerializers.BOOLEAN);
 
     @Override

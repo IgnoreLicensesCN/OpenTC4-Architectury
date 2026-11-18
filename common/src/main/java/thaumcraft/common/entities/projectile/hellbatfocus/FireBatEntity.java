@@ -58,9 +58,9 @@ public class FireBatEntity extends Monster implements OwnableEntity {
     private static final int DEVIL_FLAG = 1 << 2;
     private static final int VAMPIRE_FLAG = 1 << 3;
     private static final int SUMMONED_FLAG = 1 << 4;
-    private static final EntityDataAccessor<Byte> DATA_FLAGS_ID
+    public static final EntityDataAccessor<Byte> DATA_FLAGS_ID
             = SynchedEntityData.defineId(FireBatEntity.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Integer> DATA_DAMAGE_BONUS_ID
+    public static final EntityDataAccessor<Integer> DATA_DAMAGE_BONUS_ID
             = SynchedEntityData.defineId(FireBatEntity.class, EntityDataSerializers.INT);
     protected UUID ownerUUID;
     @Nullable

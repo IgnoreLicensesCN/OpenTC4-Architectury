@@ -49,8 +49,8 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         return itemCooldowns;
     }
 
-    private static final EntityDataAccessor<Optional<UUID>> DATA_ID_OWNER = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<@Modifiable /*modification wont sync directly*/ List<ItemStack>> DATA_ID_UPGRADES = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializerAdditions.ITEM_STACK_NON_NULL_LIST);
+    public static final EntityDataAccessor<Optional<UUID>> DATA_ID_OWNER = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    public static final EntityDataAccessor<@Modifiable /*modification wont sync directly*/ List<ItemStack>> DATA_ID_UPGRADES = SynchedEntityData.defineId(AbstractGolemUpgradeApplicableEntity.class, EntityDataSerializerAdditions.ITEM_STACK_NON_NULL_LIST);
     protected AbstractGolemUpgradeApplicableEntity(EntityType<? extends AbstractGolemUpgradeApplicableEntity> entityType, Level level) {
         super(entityType, level);
     }
@@ -93,9 +93,13 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
 
     public void setUpgradeStacks(List<ItemStack> stack) {
         this.entityData.set(DATA_ID_UPGRADES, stack);
+        updateUpgradeStacks(stack);
+    }
+
+    public void updateUpgradeStacks(List<ItemStack> stack) {
         List<UpgradePair<UpgradeItem>> cache = new AutoSortThreadSafeList<>(UpgradePair::compareTo);
         var upgradeClass = getUpgradeClass();
-        for (var upgradeStack:stack) {
+        for (var upgradeStack: stack) {
             var item = upgradeStack.getItem();
             if (upgradeClass.isInstance(item) && item instanceof IAbstractGolemUpgradeItem upgradeItem) {
                 var upgrade = upgradeClass.cast(item);
@@ -114,11 +118,16 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
             }
         }
 
-        upgradesCache = cache;
+        setUpgradesCache(cache);
+    }
+
+    private void setUpgradesCache(List<UpgradePair<UpgradeItem>> cache){
+        this.upgradesCache = cache;
         upgradesCacheView = Collections.unmodifiableList(upgradesCache);
     }
+
     private List<UpgradePair<UpgradeItem>> upgradesCache = List.of();
-    protected List<UpgradePair<UpgradeItem>> upgradesCacheView = Collections.unmodifiableList(upgradesCache);
+    protected List<UpgradePair<UpgradeItem>> upgradesCacheView = List.of();
 
     public interface IAbstractGolemUpgradeItem {
 

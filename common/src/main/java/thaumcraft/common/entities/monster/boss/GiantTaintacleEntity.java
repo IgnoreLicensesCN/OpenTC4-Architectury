@@ -65,8 +65,8 @@ public class GiantTaintacleEntity extends TaintacleEntity implements IThaumcraft
     //#thaumcraft boss part
     protected Int2FloatMap aggro = new Int2FloatOpenHashMap();
     protected int invulnerableTicksLimit = 220;
-    private static final EntityDataAccessor<Integer> DATA_ID_INV = SynchedEntityData.defineId(GiantTaintacleEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DATA_ID_ANGER = SynchedEntityData.defineId(GiantTaintacleEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> DATA_ID_INV = SynchedEntityData.defineId(GiantTaintacleEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> DATA_ID_ANGER = SynchedEntityData.defineId(GiantTaintacleEntity.class, EntityDataSerializers.INT);
 
     public EntityDataAccessor<Integer> thaumcraftBoss$getAngerDataID() {
         return DATA_ID_ANGER;

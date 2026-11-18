@@ -11,20 +11,21 @@ public class BooleanTagAccessor extends CompoundTagAccessor<Boolean> {
     }
 
     @Override
-    @Deprecated(forRemoval = true,since = "boxing costs")
+    @Deprecated(forRemoval = true, since = "boxing costs")
     public Boolean readFromCompoundTag(CompoundTag tag) {
-        return tag.getBoolean(tagKey);
+        return readBooleanFromCompoundTag(tag);
     }
-
 
     @Override
-    @Deprecated(forRemoval = true,since = "boxing costs")
+    @Deprecated(forRemoval = true, since = "boxing costs")
     public void writeToCompoundTag(CompoundTag tag, Boolean value) {
-        tag.putBoolean(tagKey, value);
+        writeBooleanToCompoundTag(tag, value);
     }
+
     public boolean readBooleanFromCompoundTag(CompoundTag tag) {
         return tag.getBoolean(tagKey);
     }
+
     public void writeBooleanToCompoundTag(CompoundTag tag, boolean value) {
         tag.putBoolean(tagKey, value);
     }

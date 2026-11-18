@@ -33,7 +33,7 @@ import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.CULTIST;
 import static thaumcraft.common.items.ThaumcraftItemInstances.CULTIST_PLATE_CHESTPLATE;
 
 public class EldritchCrabEntity extends Spider implements ISpiderWithoutSkeletonRiding {
-    private static final EntityDataAccessor<Boolean> DATA_HELM_ID
+    public static final EntityDataAccessor<Boolean> DATA_HELM_ID
             = SynchedEntityData.defineId(EldritchCrabEntity.class, EntityDataSerializers.BOOLEAN);
     public static final UUID HELM_SPEED_MODIFIER_UUID = UUID.fromString("c02d4d36-617b-4ec9-9fe7-bf792e5c006f");
     public static final UUID HELM_ARMOR_MODIFIER_UUID = UUID.fromString("daba19f7-88b2-4a7b-b9bc-1fdf045edd9d");

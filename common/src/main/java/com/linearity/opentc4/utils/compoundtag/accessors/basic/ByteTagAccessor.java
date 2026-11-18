@@ -11,18 +11,21 @@ public class ByteTagAccessor extends CompoundTagAccessor<Byte> {
     }
 
     @Override
-    @Deprecated(forRemoval = true,since = "boxing costs")
+    @Deprecated(forRemoval = true, since = "boxing costs")
     public Byte readFromCompoundTag(CompoundTag tag) {
-        return tag.getByte(tagKey);
+        return readByteFromCompoundTag(tag);
     }
+
     @Override
-    @Deprecated(forRemoval = true,since = "boxing costs")
+    @Deprecated(forRemoval = true, since = "boxing costs")
     public void writeToCompoundTag(CompoundTag tag, Byte value) {
-        tag.putByte(tagKey, value);
+        writeByteToCompoundTag(tag, value);
     }
+
     public byte readByteFromCompoundTag(CompoundTag tag) {
         return tag.getByte(tagKey);
     }
+
     public void writeByteToCompoundTag(CompoundTag tag, byte value) {
         tag.putByte(tagKey, value);
     }

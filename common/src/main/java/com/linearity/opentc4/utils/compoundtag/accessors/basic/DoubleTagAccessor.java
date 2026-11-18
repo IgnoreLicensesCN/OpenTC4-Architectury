@@ -11,18 +11,21 @@ public class DoubleTagAccessor extends CompoundTagAccessor<Double> {
     }
 
     @Override
-    @Deprecated(forRemoval = true,since = "boxing costs")
+    @Deprecated(forRemoval = true, since = "boxing costs")
     public Double readFromCompoundTag(CompoundTag tag) {
-        return tag.getDouble(tagKey);
+        return readDoubleFromCompoundTag(tag);
     }
+
     @Override
-    @Deprecated(forRemoval = true,since = "boxing costs")
+    @Deprecated(forRemoval = true, since = "boxing costs")
     public void writeToCompoundTag(CompoundTag tag, Double value) {
-        tag.putDouble(tagKey, value);
+        writeDoubleToCompoundTag(tag, value);
     }
+
     public double readDoubleFromCompoundTag(CompoundTag tag) {
         return tag.getFloat(tagKey);
     }
+
     public void writeDoubleToCompoundTag(CompoundTag tag, double value) {
         tag.putDouble(tagKey, value);
     }

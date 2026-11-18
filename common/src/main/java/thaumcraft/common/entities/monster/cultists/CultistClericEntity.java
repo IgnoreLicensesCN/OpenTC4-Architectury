@@ -29,7 +29,7 @@ import thaumcraft.common.items.ThaumcraftItemInstances;
 import static com.linearity.opentc4.Consts.CultistClericEntityTagAccessors.IS_RITUALIST;
 
 public class CultistClericEntity extends CultistEntity implements CultistClericLikeRangedAttackMob {
-    private static final EntityDataAccessor<Boolean> DATA_RITUALIST_FLAG = SynchedEntityData.defineId(CultistClericEntity.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> DATA_RITUALIST_FLAG = SynchedEntityData.defineId(CultistClericEntity.class, EntityDataSerializers.BOOLEAN);
     public CultistClericEntity(EntityType<? extends CultistClericEntity> entityType, Level level) {
         super(entityType, level);
     }

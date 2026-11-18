@@ -85,9 +85,9 @@ import static thaumcraft.common.items.ThaumcraftItemInstances.*;
 public abstract class AbstractPechEntity extends DoorBreakingMonster
         implements
         RangedAttackMob {
-    private static final EntityDataAccessor<Boolean> DATA_TAMED
+    public static final EntityDataAccessor<Boolean> DATA_TAMED
             = SynchedEntityData.defineId(AbstractPechEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DATA_ANGER
+    public static final EntityDataAccessor<Integer> DATA_ANGER
             = SynchedEntityData.defineId(AbstractPechEntity.class, EntityDataSerializers.INT);
     public boolean trading = false;
     public boolean updateAINextTick = false;

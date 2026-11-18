@@ -17,8 +17,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class MindSpiderEntity extends Spider {
-    private static final EntityDataAccessor<Byte> DATA_MIND_SPIDER_FLAGS = SynchedEntityData.defineId(MindSpiderEntity.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Optional<UUID>> DATA_VISIBLE_TO = SynchedEntityData.defineId(MindSpiderEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    public static final EntityDataAccessor<Byte> DATA_MIND_SPIDER_FLAGS = SynchedEntityData.defineId(MindSpiderEntity.class, EntityDataSerializers.BYTE);
+    public static final EntityDataAccessor<Optional<UUID>> DATA_VISIBLE_TO = SynchedEntityData.defineId(MindSpiderEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     public MindSpiderEntity(Level level) {
         this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.MIND_SPIDER(), level);
     }

@@ -1,38 +1,39 @@
 package thaumcraft.common.entities.ai.interact;
 
-import com.mojang.authlib.GameProfile;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BlockDirectional;
-import net.minecraft.world.level.block.BlockLog;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ItemSeedFood;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.util.Direction;
-import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
-import net.minecraft.core.Direction;
-import thaumcraft.api.BlockCoordinates;
-import thaumcraft.common.config.Config;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.entities.golems.EntityGolemBase;
-import thaumcraft.common.lib.utils.BlockUtils;
-import thaumcraft.common.lib.utils.CropUtils;
-import thaumcraft.common.lib.utils.EntityUtils;
+//import com.mojang.authlib.GameProfile;
+//import net.minecraft.world.level.block.Block;
+//import net.minecraft.world.level.block.BlockDirectional;
+//import net.minecraft.world.level.block.BlockLog;
+//import net.minecraft.world.entity.Entity;
+//import net.minecraft.entity.ai.EntityAIBase;
+//import net.minecraft.entity.item.EntityItem;
+//import net.minecraft.world.level.block.Blocks;
+//import net.minecraft.world.item.Items;
+//import net.minecraft.world.item.ItemSeedFood;
+//import net.minecraft.world.item.ItemStack;
+//import net.minecraft.util.Direction;
+//import com.linearity.opentc4.utils.vanilla1710.MathHelper;
+//import net.minecraft.util.Vec3;
+//import net.minecraft.world.level.Level;
+//import net.minecraft.world.WorldServer;
+//import net.minecraftforge.common.IPlantable;
+//import net.minecraftforge.common.util.FakePlayer;
+//import net.minecraftforge.common.util.FakePlayerFactory;
+//import net.minecraft.core.Direction;
+//import thaumcraft.api.BlockCoordinates;
+//import thaumcraft.common.config.Config;
+//import thaumcraft.common.config.ConfigBlocks;
+//import thaumcraft.common.config.ConfigItems;
+//import thaumcraft.common.entities.golems.EntityGolemBase;
+//import thaumcraft.common.lib.utils.BlockUtils;
+//import thaumcraft.common.lib.utils.CropUtils;
+//import thaumcraft.common.lib.utils.EntityUtils;
+//
+//import java.util.ArrayList;
+//import java.util.Collections;
+//import java.util.Random;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-
+@Deprecated(forRemoval = true)
 public class AIHarvestCrops /*extends EntityAIBase*/ {
 //   private EntityGolemBase theGolem;
 //   private int xx;

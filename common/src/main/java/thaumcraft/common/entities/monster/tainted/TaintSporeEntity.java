@@ -35,7 +35,7 @@ import static com.linearity.opentc4.Consts.TaintSporeEntityTagAccessors.SIZE;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.MATURE_SPORE_STALK;
 
 public class TaintSporeEntity extends Monster {
-    private static final EntityDataAccessor<Integer> DATA_SIZE_ID = SynchedEntityData.defineId(TaintSporeEntity.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> DATA_SIZE_ID = SynchedEntityData.defineId(TaintSporeEntity.class, EntityDataSerializers.INT);
     public TaintSporeEntity(Level level) {
         this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINT_SPORE(), level);
     }

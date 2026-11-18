@@ -21,7 +21,7 @@ import static com.linearity.opentc4.Consts.GiantBrainyZombieEntityTagAccessors.A
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.GIANT_BRAINY_ZOMBIE;
 
 public class GiantBrainyZombieEntity extends BrainyZombieEntity {
-    private static final EntityDataAccessor<Float> ID_ANGER = SynchedEntityData.defineId(GiantBrainyZombieEntity.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> ID_ANGER = SynchedEntityData.defineId(GiantBrainyZombieEntity.class, EntityDataSerializers.FLOAT);
     public GiantBrainyZombieEntity(EntityType<? extends BrainyZombieEntity> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 15;

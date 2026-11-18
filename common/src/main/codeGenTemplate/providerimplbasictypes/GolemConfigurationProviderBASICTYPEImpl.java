@@ -1,0 +1,111 @@
+package thaumcraft.common.entities.golems.configuration.providerimpl.basic;
+
+import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
+import com.linearity.opentc4.utils.compoundtag.accessors.basic.${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}TagAccessor;
+import it.unimi.dsi.fastutil.objects.Object2${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Map;
+import it.unimi.dsi.fastutil.objects.Object2${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}OpenHashMap;
+import net.minecraft.nbt.CompoundTag;
+import thaumcraft.common.entities.golems.BaseGolemEntity;
+import thaumcraft.common.entities.golems.configuration.GolemConfigurationProvider;
+
+import java.util.function.Supplier;
+
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
+
+public class GolemConfigurationProvider${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Impl extends GolemConfigurationProvider<${BASIC_TYPE_BOXING_CLASS_NAME}> {
+    public final ${BASIC_TYPE_NAME} defaultValue;
+    protected final ${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}TagAccessor compoundTagAccessor;
+
+    public GolemConfigurationProvider${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Impl(String accessorName) {
+        this(new ${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}TagAccessor(accessorName));
+    }
+
+    public GolemConfigurationProvider${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Impl(String accessorName,${BASIC_TYPE_NAME} defaultValue) {
+        this(new ${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}TagAccessor(accessorName),defaultValue);
+    }
+
+    public GolemConfigurationProvider${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Impl(${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}TagAccessor compoundTagAccessor) {
+        this(compoundTagAccessor,${BASIC_TYPE_DEFAULT_VALUE});
+    }
+
+    public GolemConfigurationProvider${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Impl(${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}TagAccessor compoundTagAccessor,${BASIC_TYPE_NAME} defaultValue) {
+        this.compoundTagAccessor = compoundTagAccessor;
+        var valueMap = new Object2${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}OpenHashMap<GolemConfigurationProvider${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Impl>();
+        valueMap.defaultReturnValue(defaultValue);
+        this.fakeFieldsSupplier = () -> new GolemConfigurationsFakeFields(new ProviderImplToValueMap(valueMap));
+        this.defaultValue = defaultValue;
+    }
+
+    public static class ProviderImplToValueMap {
+        private final Object2${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Map<GolemConfigurationProvider${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Impl> internalMap;
+
+        public ProviderImplToValueMap() {
+            this.internalMap = new Object2${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}OpenHashMap<>();
+        }
+
+        public ProviderImplToValueMap(Object2${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Map<GolemConfigurationProvider${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Impl> internalMap) {
+            this.internalMap = internalMap;
+        }
+
+        public ${BASIC_TYPE_NAME} get(GolemConfigurationProvider${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Impl provider){
+            return internalMap.get${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}(provider);
+        }
+
+        public void put(GolemConfigurationProvider${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}Impl provider, ${BASIC_TYPE_NAME} value){
+            internalMap.put(provider,value);
+        }
+    }
+    public static class GolemConfigurationsFakeFields implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<BaseGolemEntity> {
+        public final ProviderImplToValueMap configurationValueMap;
+        public GolemConfigurationsFakeFields(ProviderImplToValueMap configurationValueMap) {
+            this.configurationValueMap = configurationValueMap;
+        }
+
+        public GolemConfigurationsFakeFields(){
+            this.configurationValueMap = new ProviderImplToValueMap();
+        }
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public ${BASIC_TYPE_BOXING_CLASS_NAME} getFrom(BaseGolemEntity golem) {
+        return get${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}From(golem);
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public void setTo(BaseGolemEntity golem, ${BASIC_TYPE_BOXING_CLASS_NAME} value) {
+        set${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}To(golem,value);
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public ${BASIC_TYPE_BOXING_CLASS_NAME} serializeFrom(CompoundTag tag) {
+        return serialize${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}From(tag);
+    }
+
+    @Override
+    @Deprecated(forRemoval = true,since = "boxing costs")
+    public void deserializeTo(CompoundTag tag, ${BASIC_TYPE_BOXING_CLASS_NAME} value) {
+        deserialize${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}To(tag,value);
+    }
+
+    public ${BASIC_TYPE_NAME} get${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}From(BaseGolemEntity golem) {
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, fakeFieldsSupplier);
+        return fakeField.configurationValueMap.get(this);
+    }
+
+    public void set${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}To(BaseGolemEntity golem, ${BASIC_TYPE_NAME} value) {
+        var fakeField = opentc4$getOrCreateCachedObjectFrom(golem,GolemConfigurationsFakeFields.class, fakeFieldsSupplier);
+        fakeField.configurationValueMap.put(this,value);
+    }
+
+    public ${BASIC_TYPE_NAME} serialize${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}From(CompoundTag tag) {
+        return compoundTagAccessor.read${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}FromCompoundTag(tag);
+    }
+    public void deserialize${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}To(CompoundTag tag,${BASIC_TYPE_NAME} value) {
+        compoundTagAccessor.write${BASIC_TYPE_BOXING_CLASS_SHORT_NAME}ToCompoundTag(tag,value);
+    }
+
+    protected Supplier<GolemConfigurationsFakeFields> fakeFieldsSupplier = GolemConfigurationsFakeFields::new;
+}

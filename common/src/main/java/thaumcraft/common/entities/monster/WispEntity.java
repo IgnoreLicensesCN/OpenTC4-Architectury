@@ -49,7 +49,7 @@ public class WispEntity extends FlyingMob
         Enemy
 {
     protected @NotNull Aspect aspect = Aspects.EMPTY;
-    private static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(
+    public static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(
             WispEntity.class,
             EntityDataSerializers.INT
     );

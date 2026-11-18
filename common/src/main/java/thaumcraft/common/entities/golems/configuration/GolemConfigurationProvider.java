@@ -2,7 +2,6 @@ package thaumcraft.common.entities.golems.configuration;
 
 import net.minecraft.nbt.CompoundTag;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
-import thaumcraft.common.lib.resourcelocations.GolemConfigurationResourceLocation;
 
 public abstract class GolemConfigurationProvider<T> {
 

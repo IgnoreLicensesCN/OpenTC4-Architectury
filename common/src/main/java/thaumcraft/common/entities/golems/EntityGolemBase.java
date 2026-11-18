@@ -53,6 +53,7 @@ package thaumcraft.common.entities.golems;
 //import java.util.ArrayList;
 //import java.util.Arrays;
 
+@Deprecated(forRemoval = true)
 public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalSpawnData*/ {
 //   public InventoryMob inventory;
 //   public ItemStack itemCarried;
@@ -225,17 +226,17 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //            this.tasks.addTask(1, new AIHomePlace(this));
 //            this.tasks.addTask(2, new AIItemPickup(this));
 //            break;
-         case 3:
-            this.tasks.addTask(2, new AIHarvestCrops(this));
-            break;
-         case 4:
+//         case 3:
+//            this.tasks.addTask(2, new AIHarvestCrops(this));
+//            break;
+//         case 4:
 //            if (this.decoration.contains("R")) {
 //               this.tasks.addTask(2, new AIDartAttack(this));
 //            }
-            this.tasks.addTask(3, new AIGolemAttackOnCollide(this));
-            this.targetTasks.addTask(1, new AIHurtByTarget(this, false));
-            this.targetTasks.addTask(2, new AINearestAttackableTarget(this, 0, true));
-            break;
+//            this.tasks.addTask(3, new AIGolemAttackOnCollide(this));
+//            this.targetTasks.addTask(1, new AIHurtByTarget(this, false));
+//            this.targetTasks.addTask(2, new AINearestAttackableTarget(this, 0, true));
+//            break;
          case 5:
             this.tasks.addTask(1, new AILiquidEmpty(this));
             this.tasks.addTask(2, new AILiquidGather(this));

@@ -1,10 +1,14 @@
 package thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.Thaumcraft;
@@ -14,14 +18,20 @@ import thaumcraft.common.entities.ai.goals.golem.miscjobs.*;
 import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.container.*;
 import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.gotogoal.pickup.*;
 import thaumcraft.common.entities.ai.goals.golem.itemstackinteraction.throwgoal.*;
+import thaumcraft.common.entities.ai.goals.golem.targeting.GolemHurtByTargetGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemAbilitiesData;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
+import thaumcraft.common.entities.golems.configuration.GolemConfigurationKey;
+import thaumcraft.common.entities.golems.configuration.GolemConfigurationProvider;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemAbilityModifierItem;
 import thaumcraft.common.lib.resourcelocations.GoalResourceLocation;
 
+import java.util.Set;
 import java.util.function.Function;
 
+import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.*;
+import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.TARGET_SELECTOR_PLAYER_CONFIG_KEY;
 import static thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem.DefaultGoalsAndIDs.*;
 
 public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
@@ -72,6 +82,45 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final Function<BaseGolemEntity,Goal> PICKUP_ITEM_GOAL_PROVIDER = GolemPickupItemGoal::new;
         public static final GoalResourceLocation HARVEST_CROP = GoalResourceLocation.of(Thaumcraft.MOD_ID,"harvest_crop");
         public static final Function<BaseGolemEntity,Goal> HARVEST_CROP_GOAL_PROVIDER = GolemHarvestCropsGoal::new;
+        public static final GoalResourceLocation GOLEM_HURT_BY_TARGET = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_hurt_by_target");
+        public static final Function<BaseGolemEntity,Goal> GOLEM_HURT_BY_TARGET_GOAL_PROVIDER = GolemHurtByTargetGoal::new;
+        public static final GoalResourceLocation ATTACK_NEAREST_ATTACKABLE = GoalResourceLocation.of(Thaumcraft.MOD_ID,"attack_nearest_attackable");
+        public static final Function<BaseGolemEntity, Goal> ATTACK_NEAREST_ATTACKABLE_GOAL_PROVIDER = (golem) -> new NearestAttackableTargetGoal<>(golem, LivingEntity.class,true,living -> golemCanSelectTargetWithDefaultConfig(golem,living));
+        public static final GoalResourceLocation GOLEM_MELEE_ATTACK = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_melee_attack");
+        public static final Function<BaseGolemEntity, Goal> GOLEM_MELEE_ATTACK_GOAL_PROVIDER = GolemMeleeAttackGoal::new;
+
+        public static void registerDefaultTargetConfig(Set<GolemConfigurationKey<?>> configurationProviders){
+            configurationProviders.add(TARGET_SELECTOR_HOSTILE_CONFIG_KEY);
+            configurationProviders.add(TARGET_SELECTOR_ANIMAL_CONFIG_KEY);
+            configurationProviders.add(TARGET_SELECTOR_PLAYER_CONFIG_KEY);
+            configurationProviders.add(TARGET_SELECTOR_CREEPER_CONFIG_KEY);
+        }
+        public static boolean golemCanSelectTargetWithDefaultConfig(BaseGolemEntity golem, LivingEntity maybeTarget) {
+            boolean hostileFlag = golem.configurationProviders.contains(TARGET_SELECTOR_HOSTILE_CONFIG_KEY)
+                    ? TARGET_SELECTOR_HOSTILE_CONFIG_KEY.provider.getBooleanFrom(golem) : TARGET_SELECTOR_HOSTILE_CONFIG_KEY.provider.defaultValue;
+            boolean creeperFlag = golem.configurationProviders.contains(TARGET_SELECTOR_CREEPER_CONFIG_KEY)
+                    ? TARGET_SELECTOR_CREEPER_CONFIG_KEY.provider.getBooleanFrom(golem) : TARGET_SELECTOR_CREEPER_CONFIG_KEY.provider.defaultValue;
+            if (maybeTarget instanceof Enemy){
+                if (maybeTarget instanceof Creeper){
+                    return creeperFlag;
+                }
+                return hostileFlag;
+            }
+            boolean animalFlag = golem.configurationProviders.contains(TARGET_SELECTOR_ANIMAL_CONFIG_KEY)
+                    ? TARGET_SELECTOR_ANIMAL_CONFIG_KEY.provider.getBooleanFrom(golem) : TARGET_SELECTOR_ANIMAL_CONFIG_KEY.provider.defaultValue;
+            if (maybeTarget instanceof Animal){
+                return animalFlag;
+            }
+            boolean playerFlag = golem.configurationProviders.contains(TARGET_SELECTOR_PLAYER_CONFIG_KEY)
+                    ? TARGET_SELECTOR_PLAYER_CONFIG_KEY.provider.getBooleanFrom(golem) : TARGET_SELECTOR_PLAYER_CONFIG_KEY.provider.defaultValue;
+            if (maybeTarget instanceof Player player){
+                var owner = golem.getOwner();
+                if (owner == null || !player.isAlliedTo(owner)){
+                    return playerFlag;
+                }
+            }
+            return false;
+        }
     }
 
     default void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GolemGoalSelector goalSelector, GolemGoalSelector targetSelector) {

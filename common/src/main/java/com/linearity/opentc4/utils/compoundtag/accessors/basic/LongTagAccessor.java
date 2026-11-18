@@ -11,20 +11,22 @@ public class LongTagAccessor extends CompoundTagAccessor<Long> {
     }
 
     @Override
-    @Deprecated(forRemoval = true,since = "boxing costs")
+    @Deprecated(forRemoval = true, since = "boxing costs")
     public Long readFromCompoundTag(CompoundTag tag) {
-        return tag.getLong(tagKey);
+        return readLongFromCompoundTag(tag);
     }
 
 
     @Override
-    @Deprecated(forRemoval = true,since = "boxing costs")
+    @Deprecated(forRemoval = true, since = "boxing costs")
     public void writeToCompoundTag(CompoundTag tag, Long value) {
-        tag.putLong(tagKey, value);
+        writeLongToCompoundTag(tag, value);
     }
+
     public void writeLongToCompoundTag(CompoundTag tag, long value) {
         tag.putLong(tagKey, value);
     }
+
     public long readLongFromCompoundTag(CompoundTag tag) {
         return tag.getLong(tagKey);
     }

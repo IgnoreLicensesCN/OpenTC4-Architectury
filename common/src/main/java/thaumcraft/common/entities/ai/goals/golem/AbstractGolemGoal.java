@@ -12,7 +12,7 @@ public abstract class AbstractGolemGoal extends Goal {
     public static final EnumSet<Flag> FLAGS = EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK);
     protected final BaseGolemEntity golem;
 
-    protected AbstractGolemGoal(BaseGolemEntity golem) {
+    public AbstractGolemGoal(BaseGolemEntity golem) {
         this.golem = golem;
         setFlags(FLAGS);
     }

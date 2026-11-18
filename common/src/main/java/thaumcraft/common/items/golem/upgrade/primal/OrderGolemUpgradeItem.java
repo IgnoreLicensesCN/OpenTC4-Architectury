@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemBasicUpgradeItem;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemTargetControlItem;
 
 import java.util.List;
 
@@ -23,7 +22,6 @@ import static thaumcraft.common.entities.golems.BaseGolemEntity.*;
 
 //GolemUpgrade:4
 public class OrderGolemUpgradeItem extends GolemBasicUpgradeItem implements
-        IGolemTargetControlItem,
         IGolemBasicUpgradeItem {
     public OrderGolemUpgradeItem(Properties properties) {
         super(properties);
@@ -46,24 +44,4 @@ public class OrderGolemUpgradeItem extends GolemBasicUpgradeItem implements
         return travelingTrunkStack;
     }
 
-    @Override
-    public boolean canTarget(BaseGolemEntity golem, ItemStack upgrade, LivingEntity maybeTarget) {
-        byte flags = golem.getAttackControlFlags();
-        if (maybeTarget instanceof Enemy){
-            if (maybeTarget instanceof Creeper){
-                return (flags & FLAG_CAN_ATTACK_CREEPERS) != 0;
-            }
-            return (flags & FLAG_CAN_ATTACK_HOSTILES) != 0;
-        }
-        if (maybeTarget instanceof Animal){
-            return (flags & FLAG_CAN_ATTACK_ANIMALS) != 0;
-        }
-        if (maybeTarget instanceof Player player){
-            var owner = golem.getOwner();
-            if (owner == null || !player.isAlliedTo(owner)){
-                return (flags & FLAG_CAN_ATTACK_PLAYERS) != 0;
-            }
-        }
-        return false;
-    }
 }

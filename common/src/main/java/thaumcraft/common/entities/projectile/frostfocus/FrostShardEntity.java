@@ -24,15 +24,15 @@ import static com.linearity.opentc4.Consts.FrostShardEntityTagAccessors.*;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.FROST_FOCUS_PARTICLE_PROVIDER;
 
 public class FrostShardEntity extends ThrowableProjectile {
-    private static final EntityDataAccessor<Integer> DATA_FROSTY_ID
+    public static final EntityDataAccessor<Integer> DATA_FROSTY_ID
             = SynchedEntityData.defineId(FrostShardEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> DATA_FRAGILE_ID
+    public static final EntityDataAccessor<Boolean> DATA_FRAGILE_ID
             = SynchedEntityData.defineId(FrostShardEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Float> DATA_BOUNCE_ID
+    public static final EntityDataAccessor<Float> DATA_BOUNCE_ID
             = SynchedEntityData.defineId(FrostShardEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Integer> DATA_BOUNCE_LIMIT_ID
+    public static final EntityDataAccessor<Integer> DATA_BOUNCE_LIMIT_ID
             = SynchedEntityData.defineId(FrostShardEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> DATA_DAMAGE_ID
+    public static final EntityDataAccessor<Float> DATA_DAMAGE_ID
             = SynchedEntityData.defineId(FrostShardEntity.class, EntityDataSerializers.FLOAT);
 
     public FrostShardEntity(EntityType<FrostShardEntity> type, Level par1World) {
