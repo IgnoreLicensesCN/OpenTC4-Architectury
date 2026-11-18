@@ -1,9 +1,7 @@
 package thaumcraft.api.listeners.warp.consts;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.server.level.ServerPlayer;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
@@ -14,7 +12,7 @@ import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
 import thaumcraft.common.entities.monster.warp.MindSpiderEntity;
-import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
+import thaumcraft.common.lib.network.misc.PacketMistEventS2C;
 import thaumcraft.api.research.ResearchAndScannedInfo;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateAspectS2C;
 
@@ -24,6 +22,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
 import static com.linearity.opentc4.utils.equip.bauble.BaubleUtils.forEachBaubleAndArmor;
 import static thaumcraft.api.listeners.warp.WarpEventManager.*;
+import static thaumcraft.api.listeners.warp.consts.WarpEventsEnum.COMPONENT_SPAWN_GUARD;
+import static thaumcraft.api.listeners.warp.consts.WarpEventsEnum.COMPONENT_SPAWN_SPIDER;
 
 public class WarpEvents {
 
@@ -37,7 +37,7 @@ public class WarpEvents {
 
    public static void spawnMist(LivingEntity living, int warp, int guardian) {
       if (living instanceof ServerPlayer serverPlayer) {
-         new PacketMiscEventS2C((short)1).sendTo(serverPlayer);
+         new PacketMistEventS2C((short)1).sendTo(serverPlayer);
       }
       if (guardian > 0) {
          guardian = Math.min(8, guardian);
@@ -47,7 +47,7 @@ public class WarpEvents {
          }
       }
 
-      living.sendSystemMessage(Component.translatable("warp.text.6").withStyle(ChatFormatting.DARK_PURPLE).withStyle(ChatFormatting.ITALIC));
+      living.sendSystemMessage(COMPONENT_SPAWN_GUARD);
    }
 
    public static void grantResearchAspect(LivingEntity living, int times) {
@@ -147,7 +147,7 @@ public class WarpEvents {
          }
       }
 
-      living.sendSystemMessage(Component.translatable("warp.text.7").withStyle(ChatFormatting.DARK_PURPLE).withStyle(ChatFormatting.ITALIC));
+      living.sendSystemMessage(COMPONENT_SPAWN_SPIDER);
    }
 
    public static int getWarpFromGear(LivingEntity living) {

@@ -48,7 +48,7 @@ public class HighestFurthestBlockFinder {
         int bestZ = startZ;
 
         BlockSearchDeque stack = new BlockSearchDeque();
-        stack.addIfChecked(startX, startY, startZ);
+        stack.addIfNotChecked(startX, startY, startZ);
 //        ArrayDeque<BlockPos> stack = new ArrayDeque<>();
 //        stack.push(start);
         while (!stack.isEmpty()) {
@@ -103,7 +103,7 @@ public class HighestFurthestBlockFinder {
                         continue;
                     }
 
-                    stack.addIfChecked(nextX, nextY, nextZ);
+                    stack.addIfNotChecked(nextX, nextY, nextZ);
                 }
             }
         }

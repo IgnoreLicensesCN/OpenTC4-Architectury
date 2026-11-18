@@ -12,7 +12,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.lib.effects.DeathGazeEffect;
 
-public class PacketMiscEventS2C  extends ThaumcraftBaseS2CMessage {
+public class PacketMistEventS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":misc_event";
     public static MessageType messageType;
     private short type;
@@ -20,16 +20,16 @@ public class PacketMiscEventS2C  extends ThaumcraftBaseS2CMessage {
     public static final short MIST_EVENT = 1;
     public static final short MIST_EVENT_SHORT = 2;
 
-    public PacketMiscEventS2C(short type){
+    public PacketMistEventS2C(short type){
         this.type = type;
     }
 
-    public static PacketMiscEventS2C decode(FriendlyByteBuf buf) {
+    public static PacketMistEventS2C decode(FriendlyByteBuf buf) {
         short type = buf.readShort();
-        return new PacketMiscEventS2C(type);
+        return new PacketMistEventS2C(type);
     }
 
-    public static void encode(PacketMiscEventS2C msg, FriendlyByteBuf buf) {
+    public static void encode(PacketMistEventS2C msg, FriendlyByteBuf buf) {
         buf.writeShort(msg.type);
     }
 

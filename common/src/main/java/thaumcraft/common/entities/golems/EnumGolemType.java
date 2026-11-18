@@ -3,6 +3,7 @@ package thaumcraft.common.entities.golems;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated(forRemoval = true)
 public enum EnumGolemType {
    STRAW(10, 0, 0.38F, false, 1, 1, 75, 0),
    WOOD(20, 6, 0.35F, false, 1, 4, 75, 1),

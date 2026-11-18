@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -147,12 +146,19 @@ public class GolemEssentiaJarSearchingHelper {
         GolemSearchingEssentiaJarPriority.init();
     }
 
-    public static @Nullable BlockEntity getBestEssentiaJarForConnectedJars(BaseGolemEntity golem,Level level, BlockPos pos,Aspect expectedAspect,int expectedAmount) {
+    public static @Nullable BlockEntity getBestEssentiaJarForConnectedJars(
+            BaseGolemEntity golem,
+            BlockPos pos,//marker pos
+            Aspect expectedAspect,
+            int expectedAmount,
+            Direction usingDir
+    ) {
+        var level = golem.level();
         var deque = new BlockSearchDeque();
         var checkingPos = new BlockPos.MutableBlockPos();
         GolemSearchingEssentiaJarPriority checkingPriority = new GolemSearchingEssentiaJarPriority();
         GolemSearchingEssentiaJarPriority.PriorityCalculator.PriorityCalculatorContext calculatorContext = null;
-        deque.addIfChecked(pos.getX(), pos.getY(), pos.getZ());
+        deque.addIfNotChecked(pos.getX(), pos.getY(), pos.getZ());
 
 //        Direction dirForBest = Direction.UP;
         GolemSearchingEssentiaJarPriority bestPriority = null;
@@ -161,16 +167,18 @@ public class GolemEssentiaJarSearchingHelper {
 
         double rangeSqrSqr = golem.getHomeRange();
         rangeSqrSqr *= rangeSqrSqr;
-        rangeSqrSqr *= rangeSqrSqr;//azanor wrote this(dist < rangeSqr) probably a bug but i want to keep it,vote in democracy to change?
+        rangeSqrSqr *= rangeSqrSqr;//azanor wrote this(distNotSqr < rangeSqr)
+        // probably a bug but i want to keep it so we have a large range.
+        // vote in democracy to change?
 
 
-        while (!deque.isEmpty()){
+        while (!deque.isEmpty()) {
             int currentX = deque.popX();
             int currentY = deque.popY();
             int currentZ = deque.popZ();
             var be = level.getBlockEntity(checkingPos.set(currentX, currentY, currentZ));
             if (be instanceof IEssentiaTransportInBlockEntity inBE) {
-                if (calculatorContext == null){
+                if (calculatorContext == null) {
                     calculatorContext = new GolemSearchingEssentiaJarPriority.PriorityCalculator.PriorityCalculatorContext(inBE);
                 }
 
@@ -179,39 +187,37 @@ public class GolemEssentiaJarSearchingHelper {
                 calculatorContext.expectAmount = expectedAmount;
                 calculatorContext.golem = golem;
 
-                for (var dir:Direction.values()){
-                    calculatorContext.interactionDirection = dir;
-                    //TODO verify and then calc
-                    if (inBE.canInputFrom(dir) && !(inBE.isFullFor(expectedAspect, dir))){
-                        checkingPriority.calculateFor(calculatorContext);
-                        var distSqrHome = be.getBlockPos().distSqr(golem.getRestrictCenter());
-                        if (
-                                bestPriority == null ||
-                                (bestPriority.compareTo(checkingPriority) >= 0
-                                    && distSqrHome < rangeSqrSqr
-                                    && distSqrHome < distSqrFromHomeForBest)
-                        ){
-                            {
-                                var priorityCache = bestPriority;
-                                bestPriority = checkingPriority;
-                                checkingPriority = priorityCache;
-                            }//exchange value,we're going to override checkingPriority next run
-                            distSqrFromHomeForBest = distSqrHome;
-                            bestBE = be;
-//                            dirForBest = dir;
-                        }
-                        break;
+
+                calculatorContext.interactionDirection = usingDir;
+                if (inBE.canInputFrom(usingDir)
+                        && !(inBE.isFullFor(expectedAspect, usingDir))
+                ) {
+                    checkingPriority.calculateFor(calculatorContext);
+                    var distSqrHome = be.getBlockPos().distSqr(golem.getRestrictCenter());
+                    if (distSqrHome < rangeSqrSqr
+                            && (bestPriority == null
+                            || (bestPriority.compareTo(checkingPriority) >= 0
+                                && distSqrHome < distSqrFromHomeForBest))
+                    ) {
+                        {
+                            var priorityCache = bestPriority;
+                            bestPriority = checkingPriority;
+                            checkingPriority = priorityCache;
+                        }//exchange value,we're going to override checkingPriority next run
+                        distSqrFromHomeForBest = distSqrHome;
+                        bestBE = be;
                     }
                 }
-                for (var dir:Direction.values()){
-                    deque.addIfChecked(
-                            pos.getX() + dir.getStepX(),
-                            pos.getY() + dir.getStepY(),
-                            pos.getZ() + dir.getStepZ()
+                for (var dir : Direction.values()) {
+                    deque.addIfNotChecked(
+                            currentX + dir.getStepX(),
+                            currentY + dir.getStepY(),
+                            currentZ + dir.getStepZ()
                     );
                 }
             }
         }
         return bestBE;
     }
+    //
 }

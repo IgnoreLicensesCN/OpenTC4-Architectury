@@ -14,7 +14,7 @@ import thaumcraft.api.listeners.warp.consts.WarpEventsEnum;
 import thaumcraft.api.listeners.warp.listeners.*;
 import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.config.Config;
-import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
+import thaumcraft.common.lib.network.misc.PacketMistEventS2C;
 
 
 import java.util.Map;
@@ -50,7 +50,7 @@ public class WarpEventManager {
 
         warpEventListenerAfterManager.registerListener(CHECK_RESEARCH);
         warpEventListenerAfterManager.registerListener(DECREASE_A_TEMP_WARP);
-        warpEventListenerAfterManager.registerListener(DONT_SEND_MISC_FOR_EMPTY);
+        warpEventListenerAfterManager.registerListener(DONT_SEND_MIST_FOR_EMPTY);
 
         warpConditionCheckerManager.registerListener(WARP_AND_COUNTER);
         warpConditionCheckerManager.registerListener(NO_WARP_WARD);
@@ -104,9 +104,9 @@ public class WarpEventManager {
             for (WarpEventListenerAfter listener : warpEventListenerAfterManager.getListeners()) {
                 listener.onWarpEvent(warpContext, e, living);
             }
-            if (e.sendMiscPacket) {
+            if (e.sendMistPacket) {
                 if (living instanceof ServerPlayer serverPlayer) {
-                    new PacketMiscEventS2C((short) 0).sendTo(serverPlayer);
+                    new PacketMistEventS2C((short) 0).sendTo(serverPlayer);
                 }
             }
             var warpInfo =  WarpInfo.getFromLivingEntity(living);

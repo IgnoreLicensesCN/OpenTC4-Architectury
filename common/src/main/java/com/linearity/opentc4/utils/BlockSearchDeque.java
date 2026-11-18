@@ -38,7 +38,8 @@ public class BlockSearchDeque {
         return visitedY_XZ.computeIfAbsent(posY, ignored -> new LongOpenHashSet()).add(packInt(posX, posZ));
     }
 
-    public boolean addIfChecked(int x, int y, int z) {
+    //true if added false not
+    public boolean addIfNotChecked(int x, int y, int z) {
         if (addChecked(x, y, z, visitedY_XZ)) {
             push(x, y, z);
             return true;

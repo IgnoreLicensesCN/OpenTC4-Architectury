@@ -1,6 +1,5 @@
 package thaumcraft.api.listeners.warp.listeners;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.listeners.warp.PickWarpEventContext;
@@ -10,7 +9,7 @@ public abstract class WarpEvent implements Comparable<WarpEvent> {
     public final int weight;
     public boolean retryAnotherFlag = false;
     public boolean enabledFlag = true;
-    public boolean sendMiscPacket = true;
+    public boolean sendMistPacket = true;
 
     public WarpEvent(int weight, int warpRequired) {
         this.warpRequired = warpRequired;

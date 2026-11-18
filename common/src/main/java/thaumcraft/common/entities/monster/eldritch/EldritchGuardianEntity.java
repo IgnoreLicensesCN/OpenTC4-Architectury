@@ -42,12 +42,11 @@ import thaumcraft.common.entities.monster.boss.EldritchWardenEntity;
 import thaumcraft.common.entities.monster.cultists.CultistEntity;
 import thaumcraft.common.entities.projectile.EldritchOrbEntity;
 import thaumcraft.common.lib.network.fx.PacketFXSonicS2C;
-import thaumcraft.common.lib.network.misc.PacketMiscEventS2C;
+import thaumcraft.common.lib.network.misc.PacketMistEventS2C;
 import thaumcraft.common.lib.utils.EntityUtils;
 
 import static com.linearity.opentc4.Consts.EldritchGuardianEntityTagAccessors.HOME_POS;
 import static net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED;
-import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.CULTIST;
 import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.ELDRITCH;
 import static thaumcraft.common.items.ThaumcraftItemInstances.WISP_ESSENCE;
 
@@ -169,7 +168,7 @@ public class EldritchGuardianEntity extends DoorBreakingMonster implements Range
                     if (player.isAlive() && player instanceof ServerPlayer serverPlayer) {
                         double d5 = player.distanceToSqr(this);
                         if (d5 < d6) {
-                            new PacketMiscEventS2C((short) 2).sendTo(serverPlayer);
+                            new PacketMistEventS2C((short) 2).sendTo(serverPlayer);
                         }
                     }
                 }

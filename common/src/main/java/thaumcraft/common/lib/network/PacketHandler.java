@@ -59,7 +59,7 @@ public class PacketHandler {
         PacketConfigS2C.messageType = INSTANCE.registerS2C(PacketConfigS2C.ID, PacketConfigS2C::decode);
 
         PacketItemKeyC2S.messageType = INSTANCE.registerC2S(PacketItemKeyC2S.ID,PacketItemKeyC2S::decode);
-        PacketMiscEventS2C.messageType = INSTANCE.registerS2C(PacketMiscEventS2C.ID, PacketMiscEventS2C::decode);
+        PacketMistEventS2C.messageType = INSTANCE.registerS2C(PacketMistEventS2C.ID, PacketMistEventS2C::decode);
 
         PacketFXBeamPulseS2C.messageType = INSTANCE.registerS2C(PacketFXBeamPulseS2C.ID, PacketFXBeamPulseS2C::decode);
         PacketFXBeamPulseGolemBossS2C.messageType = INSTANCE.registerS2C(PacketFXBeamPulseGolemBossS2C.ID, PacketFXBeamPulseGolemBossS2C::decode);
