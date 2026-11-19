@@ -106,7 +106,6 @@ public final class OpenTC4 {
 
         EventListeners.init();
         ThaumcraftItemAspects.init();
-        EntityBasicAspectGetters.init();
 
         ChampionModifierManager.init();
 

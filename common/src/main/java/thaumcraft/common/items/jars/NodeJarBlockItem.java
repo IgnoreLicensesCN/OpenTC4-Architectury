@@ -12,6 +12,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.api.aspects.IAspectDisplayItem;
+import thaumcraft.api.nodes.INodeInfoProviderItem;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.lib.NodeInfo;
 
@@ -19,7 +20,8 @@ import java.util.Map;
 
 import static com.linearity.opentc4.Consts.NodeJarTagAccessors.NODE_INFO;
 
-public class NodeJarBlockItem extends BlockItem implements IAspectDisplayItem<Aspect> {
+public class NodeJarBlockItem extends BlockItem implements IAspectDisplayItem<Aspect>,
+        INodeInfoProviderItem {
     public NodeJarBlockItem(Block block, Properties properties) {
         super(block, properties);
     }

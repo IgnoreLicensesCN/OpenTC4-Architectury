@@ -10,10 +10,14 @@ public enum AddAdditionalBasicAspectListeners {
             new AddAdditionalBasicAspectListener(0) {
                 @Override
                 public void considerAddAdditional(AddAdditionalBasicAspectContext context) {
-                    context.submitAdditional(getAdditionalBasicAspects(context.item));
+                    registeredAdditional(context);
                 }
             }
     );
+
+    public static void registeredAdditional(AddAdditionalBasicAspectContext context) {
+        context.submitAdditional(getAdditionalBasicAspects(context.item));
+    }
 
     public final AddAdditionalBasicAspectListener listener;
 

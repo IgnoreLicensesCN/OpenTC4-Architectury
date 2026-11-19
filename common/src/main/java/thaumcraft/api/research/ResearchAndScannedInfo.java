@@ -23,6 +23,7 @@ import thaumcraft.common.lib.resourcelocations.ScannedTypeResourceLocation;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -112,9 +113,9 @@ public class ResearchAndScannedInfo {
         }
         return null;
     }
-    public @Nullable static ResearchAndScannedInfo getFromLiving(Player player){
+    public @NotNull static ResearchAndScannedInfo getFromLiving(Player player){
         if (player instanceof IResearchAndScannedInfoOwnerLivingEntity owner){
-            return owner.getResearchAndScannedInfo();
+            return Objects.requireNonNull(owner.getResearchAndScannedInfo());
         }
         throw new IllegalStateException("player should have ResearchAndScannedInfo instance!");
     }

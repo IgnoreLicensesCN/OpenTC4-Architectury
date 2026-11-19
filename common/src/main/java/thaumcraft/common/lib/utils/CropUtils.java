@@ -41,10 +41,6 @@ public class CropUtils {
     }
 
     public static void init(){
-        DirectlyBreakHarvestableCropChecker.init();
-        UseHarvestableCropChecker.init();
-        ReplantPlaceableCropItemGetter.init();
-        CropHarvester.init();
     }
 
     public static boolean isHarvestableCrop(ServerLevel world, BlockPos pos,@Nullable Entity harvesterEntity) {

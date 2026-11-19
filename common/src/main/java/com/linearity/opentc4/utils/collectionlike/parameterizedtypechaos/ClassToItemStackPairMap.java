@@ -1,4 +1,4 @@
-package com.linearity.opentc4.utils;
+package com.linearity.opentc4.utils.collectionlike.parameterizedtypechaos;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
@@ -12,6 +12,9 @@ import java.util.IdentityHashMap;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+//TODO:[maybe wont finished]annotation processor like modified lombok or whatever
+// to set A<B1,B2...Bn>,A has n slot(s) for parameterized type in order,
+// we may also want A extends C<B1,B2,...,String,...Bn> for n-1 slots(one is string) which breaks chain
 public class ClassToItemStackPairMap {
     private final Multimap<Class<?>, UpgradePair<?>> delegate = Multimaps.newMultimap(new IdentityHashMap<>(),() -> new PriorityQueue<>(UpgradePair::compare));
 

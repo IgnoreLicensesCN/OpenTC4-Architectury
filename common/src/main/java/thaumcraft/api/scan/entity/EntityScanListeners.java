@@ -19,9 +19,7 @@ public enum EntityScanListeners {
             new EntityScanListener(0) {
                 @Override
                 public void onEntityScan(EntityScanContext context) {
-                    if (scanEntityCommon(context.livingScanning,context.entity)){
-                        context.shouldBreak = true;
-                    }
+                    normalEntityScan(context);
                 }
             }
     ),
@@ -29,12 +27,7 @@ public enum EntityScanListeners {
             new EntityScanListener(100) {
                 @Override
                 public void onEntityScan(EntityScanContext context) {
-                    if (context.entity instanceof ItemEntity itemEntity) {
-                        var stack = itemEntity.getItem();
-                        if (!stack.isEmpty()){
-                            ScanManager.onScanItemStack(context.livingScanning,stack);
-                        }
-                    }
+                    itemEntityScan(context);
                 }
             }
     ),
@@ -42,15 +35,35 @@ public enum EntityScanListeners {
             new EntityScanListener(1000) {
                 @Override
                 public void onEntityScan(EntityScanContext context) {
-                    if (context.entity instanceof Player playerBeingScanned){
-                        if (scanPlayer(context.livingScanning,playerBeingScanned)){
-                            context.shouldBreak = true;
-                        }
-                    }
+                    playerScan(context);
                 }
             }
     )
     ;
+
+    public static void playerScan(EntityScanContext context) {
+        if (context.entity instanceof Player playerBeingScanned){
+            if (scanPlayer(context.livingScanning,playerBeingScanned)){
+                context.shouldBreak = true;
+            }
+        }
+    }
+
+    public static void itemEntityScan(EntityScanContext context) {
+        if (context.entity instanceof ItemEntity itemEntity) {
+            var stack = itemEntity.getItem();
+            if (!stack.isEmpty()){
+                ScanManager.onScanItemStack(context.livingScanning,stack);
+            }
+        }
+    }
+
+    public static void normalEntityScan(EntityScanContext context) {
+        if (scanEntityCommon(context.livingScanning, context.entity)){
+            context.shouldBreak = true;
+        }
+    }
+
     public final EntityScanListener listener;
     EntityScanListeners(EntityScanListener listener){
         this.listener = listener;

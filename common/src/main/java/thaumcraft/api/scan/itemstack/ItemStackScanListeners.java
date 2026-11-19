@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
+import thaumcraft.api.nodes.INodeInfoProviderBlockEntity;
 import thaumcraft.api.research.impl.eldritch.PrimePearlResearch;
 import thaumcraft.api.scan.ScanManager;
 import thaumcraft.api.research.ResearchAndScannedInfo;
@@ -20,17 +21,37 @@ public enum ItemStackScanListeners {
     SCAN_ITEM_COMMON(new ItemStackScanListener(0) {
         @Override
         public void onItemStackScan(ItemStackScanContext context) {
-            var item = context.stack.getItem();
-            if (scanItemCommon(context.livingScanning,item)){
-                var consumer = onScannedItemEvents.get(item);
-                if (consumer != null) {
-                    consumer.accept(context);
-                }
+            scanItemCommon(context);
+        }
+    }),
+    SCAN_NODE_INFO_PROVIDER(new ItemStackScanListener(100) {
+        @Override
+        public void onItemStackScan(ItemStackScanContext context) {
+            scanNodeInfoProvider(context);
+        }
+    })
+    ;
+
+    private static void scanItemCommon(ItemStackScanContext context) {
+        var item = context.stack.getItem();
+        if (scanItemCommon(context.livingScanning,item)){
+            var consumer = onScannedItemEvents.get(item);
+            if (consumer != null) {
+                consumer.accept(context);
+            }
+            context.shouldBreak = true;
+        }
+    }
+
+    public static void scanNodeInfoProvider(ItemStackScanContext context) {
+        var item = context.stack.getItem();
+        if (item instanceof INodeInfoProviderBlockEntity provider){
+            if (ScanManager.NodeScanManager.onScanVisNode(context.livingScanning,provider.getNodeInfo())){
                 context.shouldBreak = true;
             }
         }
-    }),//TODO:[maybe wont finished]handle node item
-    ;
+    }
+
     public final ItemStackScanListener listener;
     ItemStackScanListeners(ItemStackScanListener listener){
         this.listener = listener;

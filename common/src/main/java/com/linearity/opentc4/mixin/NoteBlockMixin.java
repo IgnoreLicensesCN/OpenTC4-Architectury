@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,7 +25,7 @@ public abstract class NoteBlockMixin {
                             "Lnet/minecraft/core/BlockPos;)V"
             )
     )
-    private void opentc4$onNotePlayed(Entity entity, BlockState state, Level level, BlockPos pos, CallbackInfo ci) {
+    private void opentc4$onNotePlayed(@Nullable Entity entity, BlockState state, Level level, BlockPos pos, CallbackInfo ci) {
         NoteBlockEventManager.onPlayedNote(entity, state, level, pos);
     }
 }

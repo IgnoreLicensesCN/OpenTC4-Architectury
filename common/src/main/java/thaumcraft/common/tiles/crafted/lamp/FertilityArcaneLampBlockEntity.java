@@ -1,7 +1,7 @@
 package thaumcraft.common.tiles.crafted.lamp;
 
-import com.google.common.collect.HashMultimap;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
+import com.linearity.opentc4.utils.collectionlike.parameterizedtypechaos.ClassToEntitiesMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -19,8 +19,7 @@ import thaumcraft.api.listeners.lamp.fertility.check.FertilityLampAffectiveManag
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.*;
 
 import static com.linearity.opentc4.Consts.FertilityArcaneLampTagAccessors.CHARGE;
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
@@ -203,13 +202,18 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
         return CHARGE_COST_EACH_TIME;
     }
 
-    private boolean isAffectiveEntity(Entity entity,HashMultimap<Class<? extends Entity>,Entity> entityMap){
+    private <E extends Entity> boolean isAffectiveEntity(E entity, ClassToEntitiesMap entityMap){
+        return isAffectiveEntity((Class<E>) entity.getClass(),entity,entityMap);
+    }
+
+    private <E extends Entity> boolean isAffectiveEntity(Class<E> entityClass,E entity,ClassToEntitiesMap entityMap){
         if (FertilityLampAffectiveManager.isAffectiveEntity(entity)) {
-            entityMap.put(entity.getClass(), entity);
+            entityMap.add(entityClass, entity);
             return true;
         }
         return false;
     }
+
     private void updateAnimals() {
         if (this.cooldown > 0){
             this.cooldown--;
@@ -217,7 +221,7 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
         }
         if (this.level == null){return;}
 //        Object2IntMap<Class<? extends Entity>> entityTypeCounter = new Object2IntOpenHashMap<>();
-        HashMultimap<Class<? extends Entity>,Entity> entityMap = HashMultimap.create();
+        var entityMap = new ClassToEntitiesMap();
         final var entityLimitTotal = getEntityLimitTotal();
         this.level.getEntities(
                 ENTITY_TEST,
@@ -228,11 +232,11 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
         );
 
         int affectedCounter = 0;
-        for (Class<? extends Entity> clazz : entityMap.keySet()) {
-            Set<Entity> group = entityMap.get(clazz);
+        var iter = entityMap.entrySetIterator();
+        while (iter.hasNext()){
+            var entry = iter.next();
 
-            // 调用方法
-            if (affectEntity((Class<Entity>)clazz, group, getRecommendedEntityLimitForClass())) {
+            if (affectEntity(entry, getRecommendedEntityLimitForClass())) {
                 affectedCounter++;
                 this.charge -= getChargeCostEachTime();
             }

@@ -10,9 +10,7 @@ public enum InfusionInstabilityEventListeners {
     DEFAULT_TRIGGER_EVENT(new InfusionInstabilityEventListener(0) {
         @Override
         public void onInstabilityEvent(InfusionInstabilityEventContext ctx) {
-            EVENT_FOR_DEFAULT_TRIGGER.getRandom(
-                    ctx.level.random
-            ).accept(ctx);
+            EVENT_FOR_DEFAULT_TRIGGER.getRandom(ctx.level.random).accept(ctx);
         }
     });
     public static final WeightedRandomCollection<Consumer<InfusionInstabilityEventListener.InfusionInstabilityEventContext>> EVENT_FOR_DEFAULT_TRIGGER = new WeightedRandomCollection<>();
