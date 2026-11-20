@@ -55,5 +55,6 @@ public class LiquidGolemCoreItem
         super.registerGoalForGolem(golem, upgradeStack, goalSelector, targetSelector);
         goalSelector.addGoalIfNotExist(1,GOLEM_FILL_IN_LIQUID,GOLEM_FILL_IN_LIQUID_GOAL_PROVIDER,golem);
         goalSelector.addGoalIfNotExist(2,GOLEM_GET_LIQUID,GOLEM_GET_LIQUID_GOAL_PROVIDER,golem);
+        goalSelector.addGoalIfNotExist(3,GOLEM_GOTO_GET_LIQUID,GOLEM_GOTO_GET_LIQUID_GOAL_PROVIDER,golem);
     }
 }

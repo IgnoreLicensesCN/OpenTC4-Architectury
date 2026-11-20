@@ -4,25 +4,15 @@ import com.linearity.opentc4.utils.HighestFurthestBlockFinder;
 import dev.architectury.fluid.FluidStack;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
-import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
-import thaumcraft.common.entities.golems.Marker;
+import thaumcraft.common.items.golem.upgrade.abstracts.IGolemBasicUpgradeItem;
 import thaumcraft.common.items.golem.upgrade.core.LiquidGolemCoreItem;
 
-import java.util.HashSet;
-import java.util.Set;
+import static thaumcraft.common.items.ThaumcraftItemInstances.ORDER_GOLEM_UPGRADE;
 
-import static com.linearity.opentc4.OpenTC4.platformUtils;
-
-public class GolemGetLiquidGoal extends AbstractGolemFluidGoal {
-    protected MarkedFluidHandlerIterator fluidHandlerIterator = new MarkedFluidHandlerIterator(golem);
-    protected Set<Fluid> missingFluidCache = new HashSet<>();
-    protected @Nullable Set<Fluid> missingFluids = missingFluidCache;
-    protected @Nullable Marker targetMarker = null;
+public class GolemGetLiquidGoal extends AbstractGolemFindLiquidToGetGoal {
     protected BlockPosOffsets offsets = new BlockPosOffsets();
     protected HighestFurthestBlockFinder.TriIntConsumer offsetsConsumer = offsets::add;
     protected boolean searchedFluidThisRun = false;
@@ -35,14 +25,14 @@ public class GolemGetLiquidGoal extends AbstractGolemFluidGoal {
 
         public void add(BlockPos pos) {
             xCoords.add(pos.getX() - posBase.getX());
-            yCoords.add(pos.getY() - posBase.getX());
-            zCoords.add(pos.getZ() - posBase.getX());
+            yCoords.add(pos.getY() - posBase.getY());
+            zCoords.add(pos.getZ() - posBase.getZ());
         }
 
         public void add(int x, int y, int z) {
             xCoords.add(x - posBase.getX());
-            yCoords.add(y - posBase.getX());
-            zCoords.add(z - posBase.getX());
+            yCoords.add(y - posBase.getY());
+            zCoords.add(z - posBase.getZ());
         }
 
         public void removeLast(BlockPos.MutableBlockPos receiver) {
@@ -80,20 +70,8 @@ public class GolemGetLiquidGoal extends AbstractGolemFluidGoal {
         }
 
         private static int distSubtractionSign(int x1, int y1, int z1, int x2, int y2, int z2) {
-            var value = distSubtraction(x1, y1, z1, x2, y2, z2);
-            if (value == 0) {
-                return 0;
-            }
-            if (value > 0) {
-                return 1;
-            }
-            return -1;
+            return Long.compare(dist(x1, y1, z1),dist(x2, y2, z2));
         }
-
-        private static long distSubtraction(int x1, int y1, int z1, int x2, int y2, int z2) {
-            return dist(x1, y1, z1) - dist(x2, y2, z2);
-        }
-
         private static long dist(long x1, long y1, long z1) {
             return Math.abs(x1) + Math.abs(y1) + Math.abs(z1);
         }
@@ -103,67 +81,10 @@ public class GolemGetLiquidGoal extends AbstractGolemFluidGoal {
         super(golem);
     }
 
-    private final BlockPos.MutableBlockPos posCacheForCanUse = new BlockPos.MutableBlockPos();
-
-    @Override
-    public boolean canUse() {
-        targetMarker = null;
-        var holdingFluid = LiquidGolemCoreItem.GolemHoldingFluidFakeField.getHoldingFluid(golem);
-        if (holdingFluid.getAmount() >= golem.getFluidCarryPower()) {
-            return false;
-        }
-        if (!golem.getNavigation().isDone()) {
-            return false;
-        }
-        missingFluids = getMissingFluid(golem, missingFluidCache);
-        if (missingFluids == null) {
-            return false;
-        }
-
-        var level = golem.level();
-        fluidHandlerIterator.reset();
-        while (fluidHandlerIterator.hasNext()) {
-            var fluidContainerInfo = fluidHandlerIterator.next();
-            var marker = fluidContainerInfo.marker;
-            BlockPos pos = marker.getPos();
-            Direction dir = marker.getSide();
-            posCacheForCanUse.setWithOffset(pos, dir);
-            if (posCacheForCanUse.distToCenterSqr(golem.position()) < reachRangeSqr()) {
-                int tanks = platformUtils.getFluidTanksFromPos(level, pos, dir);
-                for (var tankIndex = 0; tankIndex < tanks; tankIndex++) {
-                    var fluidInside = platformUtils.getFluidFromPos(level, pos, dir, tankIndex);
-                    if (!fluidInside.isEmpty()) {
-                        if (verifyFluidForMarker(fluidInside, marker)) {
-                            return true;
-                        }
-                    }
-                }
-                var directlyGet = getFluidDirectlyFrom(level, pos);
-                if (!directlyGet.isEmpty()) {
-                    if (verifyFluidForMarker(directlyGet, marker)) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
-    protected boolean verifyFluidForMarker(FluidStack directlyGet, Marker marker) {
-        if (missingFluids == null) {
-            return false;
-        }
-        if (missingFluids.isEmpty() || missingFluids.contains(directlyGet.getFluid())) {
-            targetMarker = marker;
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public void stop() {
         tickPassed = 0;
+        targetMarker = null;
     }
 
     protected int tickPassed = 0;
@@ -206,15 +127,19 @@ public class GolemGetLiquidGoal extends AbstractGolemFluidGoal {
                 var dir = targetMarker.getSide();
                 var gotFromMarker = extractFluidFrom(level, pos, dir, remainingSpace, true);
                 if (gotFromMarker.isEmpty()) {
-                    if (!searchedFluidThisRun){
-                        searchFluidSource(level, pos);
-                        searchedFluidThisRun = true;
-                    }
+                    if (golem.golemUpgradesCacheView.get(IGolemBasicUpgradeItem.class)
+                            .stream()
+                            .anyMatch(pair -> pair.getUpgradeStack().getItem() == ORDER_GOLEM_UPGRADE())){
+                        if (!searchedFluidThisRun){
+                            searchFluidSource(level, pos);
+                            searchedFluidThisRun = true;
+                        }
 
-                    while ((!offsets.isEmpty() && getRemainingSpace() > 0 && gotFromMarker.isEmpty())) {
-                        offsets.removeLast(pickLastFluidOffset);
-                        pickLastFluidOffset.move(offsets.posBase);
-                        gotFromMarker = extractFluidDirectlyFrom(level, pickLastFluidOffset, dir);
+                        while ((!offsets.isEmpty() && getRemainingSpace() > 0 && gotFromMarker.isEmpty())) {
+                            offsets.removeLast(pickLastFluidOffset);
+                            pickLastFluidOffset.move(offsets.posBase);
+                            gotFromMarker = extractFluidDirectlyFrom(level, pickLastFluidOffset, dir);
+                        }
                     }
                 }
                 if (!gotFromMarker.isEmpty()) {

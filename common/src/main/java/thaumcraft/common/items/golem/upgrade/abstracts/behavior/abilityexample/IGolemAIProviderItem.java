@@ -23,6 +23,7 @@ import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackint
 import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.throwgoal.GolemThrowItemStackToMarkedContainerGoal;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.liquidinteraction.GolemFillInLiquidGoal;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.liquidinteraction.GolemGetLiquidGoal;
+import thaumcraft.common.entities.ai.goals.golem.transportresources.liquidinteraction.GolemGotoGetLiquidGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemAbilitiesData;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
@@ -96,6 +97,8 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final GolemGoalProvider GOLEM_FILL_IN_LIQUID_GOAL_PROVIDER = GolemFillInLiquidGoal::new;
         public static final GoalResourceLocation GOLEM_GET_LIQUID = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_get_liquid");
         public static final GolemGoalProvider GOLEM_GET_LIQUID_GOAL_PROVIDER = GolemGetLiquidGoal::new;
+        public static final GoalResourceLocation GOLEM_GOTO_GET_LIQUID = GoalResourceLocation.of(Thaumcraft.MOD_ID,"goto_goto_get_liquid");
+        public static final GolemGoalProvider GOLEM_GOTO_GET_LIQUID_GOAL_PROVIDER = GolemGotoGetLiquidGoal::new;
 
         public static void registerDefaultTargetConfig(Set<GolemConfigurationKey<?>> configurationProviders){
             configurationProviders.add(TARGET_SELECTOR_HOSTILE_CONFIG_KEY);

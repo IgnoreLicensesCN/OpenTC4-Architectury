@@ -154,13 +154,17 @@ public abstract class AbstractGolemFluidGoal extends AbstractGolemGoal {
                 if (marker.getPos().equals(golem.getRestrictCenter())){
                     continue;
                 }
-                if (isPositionFluidContainer(golem.level(),marker.getPos(),marker.getSide())){
+                if (isValidMarker(marker)){
                     info.marker = marker;
                     resultCache = info;
                     return true;
                 }
             }
             return false;
+        }
+
+        protected boolean isValidMarker(Marker marker) {
+            return isPositionFluidContainer(golem.level(), marker.getPos(), marker.getSide());
         }
 
         @Override
