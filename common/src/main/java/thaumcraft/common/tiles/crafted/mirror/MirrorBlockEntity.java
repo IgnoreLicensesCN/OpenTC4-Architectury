@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.crafted.mirror;
 
-import com.linearity.opentc4.utils.NonNullListWithConstructor;
+import com.linearity.opentc4.utils.collectionlike.NonNullListWithConstructor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;

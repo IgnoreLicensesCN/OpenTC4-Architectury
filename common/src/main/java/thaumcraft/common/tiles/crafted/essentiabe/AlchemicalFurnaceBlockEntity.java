@@ -66,6 +66,9 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
     protected int speedBoostAspectExtractTime = 20;
     protected int defaultAspectExtractTime = 40;
 
+    public int getAlembicRange() {
+        return ALEMBIC_RANGE;
+    }
     @Override
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
@@ -109,7 +112,8 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
             if (this.count % (this.speedBoost ? speedBoostAspectExtractTime : defaultAspectExtractTime) == 0
                     && !this.aspects.isEmpty()) {
                 AspectList<Aspect> exlude = new LinkedHashAspectList<>();
-                for (int deep = 1; deep <= ALEMBIC_RANGE; deep++) {
+                int alembicRange = getAlembicRange();
+                for (int deep = 1; deep <= alembicRange; deep++) {
                     var probablyAlembicPos = getBlockPos().above(deep);
                     var tile = LevelBlockEntityAccessing.getExistingBlockEntity(this.level, probablyAlembicPos);
                     if (!(tile instanceof IAlembic alembic)) {
@@ -129,7 +133,7 @@ public class AlchemicalFurnaceBlockEntity extends TileThaumcraftWithMenu<Alchemi
                         setBlockStateAndUpdate(alembicState);
                     }
                 }
-                for (int deep = 1; deep <= ALEMBIC_RANGE; deep++) {
+                for (int deep = 1; deep <= alembicRange; deep++) {
                     var probablyAlembicPos = getBlockPos().above(deep);
                     var tile = LevelBlockEntityAccessing.getExistingBlockEntity(this.level, probablyAlembicPos);
                     if (!(tile instanceof IAlembic alembic)) {

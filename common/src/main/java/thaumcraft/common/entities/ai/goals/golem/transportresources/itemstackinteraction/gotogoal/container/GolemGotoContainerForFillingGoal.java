@@ -231,7 +231,7 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGotoFurthestC
                 BiPredicate<ItemStack, ItemStack> golemStackMatcher
         ) {
             if (containerAtHome instanceof WorldlyContainer worldlyContainer /*&& facing.ordinal() > -1*/) {
-                int[] canAccessSlots = worldlyContainer.getSlotsForFace(golem.homeDirection.getOpposite());
+                int[] canAccessSlots = worldlyContainer.getSlotsForFace(golem.homeDirection);
 
                 for (int canAccessSlotIndex : canAccessSlots) {
                     ItemStack consideringStack = worldlyContainer.getItem(canAccessSlotIndex);

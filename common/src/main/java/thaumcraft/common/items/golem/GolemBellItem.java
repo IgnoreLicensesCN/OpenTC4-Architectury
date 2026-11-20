@@ -1,5 +1,6 @@
 package thaumcraft.common.items.golem;
 
+import com.linearity.opentc4.Consts;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +25,7 @@ import thaumcraft.common.items.golem.upgrade.abstracts.behavior.filters.IGolemCo
 
 import java.util.Objects;
 
+import static com.linearity.opentc4.Consts.BaseGolemEntityTagAccessors.*;
 import static com.linearity.opentc4.Consts.GolemBellTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
 import static thaumcraft.common.entities.golems.Marker.INVALID_MARKER_COLOR;

@@ -59,7 +59,7 @@ public class GolemPlaceItemStackToHomeGoal extends AbstractGolemGoal {
             ItemStack result = InventoryUtils.placeItemStackIntoInventory(
                     this.golem.getMainHandItem(),
                     container,
-                    facing.getOpposite(),
+                    facing,
                     true
             );
             if (!ItemStack.isSameItem(result, this.golem.getMainHandItem())) {

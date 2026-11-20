@@ -26,12 +26,11 @@ public class GolemFillInLiquidGoal extends AbstractGolemFluidGoal {
     }
 
     protected long insertFluidHome(FluidStack holdingFluid,boolean doit) {
-        var dir = golem.homeDirection.getOpposite();
+        var dir = golem.homeDirection;
         var homePos = golem.getRestrictCenter();
-        var homeBEPos = homePos.relative(dir);
         return platformUtils.insertFluidToPos(
                 golem.level(),
-                homeBEPos,
+                homePos,
                 dir,
                 holdingFluid,
                 doit

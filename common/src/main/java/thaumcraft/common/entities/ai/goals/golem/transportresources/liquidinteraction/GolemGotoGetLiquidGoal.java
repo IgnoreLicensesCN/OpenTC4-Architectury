@@ -28,9 +28,7 @@ public class GolemGotoGetLiquidGoal extends AbstractGolemFindLiquidToGetGoal{
     }
 
     protected @Nullable Path getPath(Marker marker) {
-        var reachSqr = reachRangeSqr();
-        var range = reachSqr > Integer.MAX_VALUE ? (2<<16) : IntMath.sqrt((int)reachSqr, RoundingMode.FLOOR);
-        return golem.getNavigation().createPath(marker.getPos(),range);
+        return golem.getNavigation().createPath(marker.getPos(),(int)reachRange());
     }
     @Override
     public void start() {

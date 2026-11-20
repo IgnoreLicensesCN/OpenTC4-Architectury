@@ -22,10 +22,12 @@ public abstract class BaseGolemPlacerItem<GolemClass extends BaseGolemEntity> ex
         if (stackTag != null){
             int inventorySize = INVENTORY_SIZE.readIntFromCompoundTag(stackTag);
             golemPlaced.inventory = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
+            var dir = useOnContext.getClickedFace();
             golemPlaced.restrictTo(
                     useOnContext.getClickedPos(),
                     golemPlaced.getDefaultRestrictionSize()
             );
+            golemPlaced.homeDirection = dir;
             golemPlaced.homeLevelResourceLocation = useOnContext.getLevel().dimension().location();
             MARKERS.readFromCompoundTagInto(stackTag,golemPlaced.markers);
         }

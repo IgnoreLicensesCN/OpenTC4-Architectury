@@ -17,13 +17,11 @@ import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.aspect.Comp
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.node.NodeInfoAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.tc4specific.researches.HexGridAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.resourcelocation.*;
-import com.linearity.opentc4.utils.compoundtag.accessors.utility.*;
 import com.linearity.opentc4.utils.compoundtag.accessors.utility.collection.*;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.crafting.crucible.CrucibleRecipe;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
 import thaumcraft.common.entities.golems.Marker;
-import thaumcraft.common.lib.resourcelocations.FocusUpgradeTypeResourceLocation;
 
 import java.lang.ref.WeakReference;
 
@@ -403,13 +401,13 @@ public class Consts {
         public static final ByteArrayTagAccessor INVENTORY_COLORS = new ByteArrayTagAccessor("inventory_colors");
     }
     public static class GolemBellTagAccessors {
-        public static final ModifiableSetTagAccessor<Marker> MARKERS = BaseGolemEntityTagAccessors.MARKERS;
-        public static final DirectionTagAccessor HOME_FACE = BaseGolemEntityTagAccessors.HOME_FACE;
-        public static final BlockPosAccessor HOME_POS = BaseGolemEntityTagAccessors.HOME_POS;
-        public static final ResourceLocationTagAccessor HOME_LEVEL = BaseGolemEntityTagAccessors.HOME_LEVEL;
         public static final UUIDTagAccessor GOLEM_ID = new UUIDTagAccessor("golem_id");
     }
     public static class LiquidCoreTagAccessors {
         public static final FluidStackTagAccessor HOLDING_FLUID = new FluidStackTagAccessor("holding_fluid");
+    }
+    public static class EssentiaCoreTagAccessors {
+        public static final AspectAccessor HOLDING_ESSENTIA_TYPE = new AspectAccessor("holding_essentia_type");
+        public static final IntTagAccessor HOLDING_ESSENTIA_AMOUNT = new IntTagAccessor("holding_essentia_amount");
     }
 }

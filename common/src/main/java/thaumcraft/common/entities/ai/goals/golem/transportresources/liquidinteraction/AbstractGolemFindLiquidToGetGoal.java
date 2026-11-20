@@ -14,6 +14,7 @@ import java.util.Set;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
 
+//TODO:[maybe wont finished]Liquid container interaction logic API
 public abstract class AbstractGolemFindLiquidToGetGoal extends AbstractGolemFluidGoal{
     public AbstractGolemFindLiquidToGetGoal(BaseGolemEntity golem) {
         super(golem);

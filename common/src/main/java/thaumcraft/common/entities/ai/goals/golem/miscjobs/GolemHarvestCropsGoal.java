@@ -65,7 +65,7 @@ public class GolemHarvestCropsGoal extends AbstractGolemGoal {
             int x = homePos.getX() + xOffset;
             int z = homePos.getZ() + zOffset;
             int yCenter = homePos.getY();
-            for (int y = yCenter-3; y <= yCenter + 3; y++) {
+            for (int y = yCenter-getFarmingDistanceY(); y <= yCenter + getFarmingDistanceY(); y++) {
                 if (checkAndHarvest(serverLevel,x,y,z)) {
                     return true;
                 }
@@ -90,7 +90,7 @@ public class GolemHarvestCropsGoal extends AbstractGolemGoal {
     public void start() {
         super.start();
         this.tickCountRemaining = getMaxTickCountRemaining();
-        golem.getNavigation().moveTo(targetPos.getX(),targetPos.getY(),targetPos.getZ(),golem.getMoveControl().getSpeedModifier());
+        golem.getNavigation().moveTo(golem.getNavigation().createPath(targetPos,getReachDistance()),golem.getMoveControl().getSpeedModifier());
     }
 
     @Override

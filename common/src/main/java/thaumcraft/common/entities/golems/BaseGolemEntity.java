@@ -300,7 +300,7 @@ public abstract class BaseGolemEntity
 
     public BlockPos.MutableBlockPos attachedBlockPos = new BlockPos.MutableBlockPos();
     public BlockPos getHomeAttachedBlockPos(){
-        return attachedBlockPos.setWithOffset(getRestrictCenter(), homeDirection.getOpposite());
+        return attachedBlockPos.set(getRestrictCenter());
     }
 
     private final GolemAbilitiesData abilitiesData = new GolemAbilitiesData(this.wrappedGoalSelector, this.wrappedTargetSelector, getBasicAbilityProperties());
@@ -311,6 +311,9 @@ public abstract class BaseGolemEntity
 
     public long getFluidCarryPower() {
         return getCarryPower() * 1000L;//no api yet but you may do some overriding?
+    }
+    public int getEssentiaCarryPower() {
+        return getCarryPower();//no api yet but you may do some overriding?
     }
 
     public int getAttackDelay() {

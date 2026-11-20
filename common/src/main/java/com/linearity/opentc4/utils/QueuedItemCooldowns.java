@@ -1,6 +1,7 @@
 package com.linearity.opentc4.utils;
 
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
+import lombok.Getter;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
@@ -13,15 +14,12 @@ public class QueuedItemCooldowns extends ItemCooldowns {
 
     protected final Map<Item, CooldownInstance> cooldowns = new IdentityHashMap<>();
     protected final PriorityQueue<ObjectIntPair<Item>> cooldownQueue = new PriorityQueue<>(ObjectIntPair::compareTo);
+    @Getter
     private int tickCount;
 
     @Override
     public boolean isOnCooldown(Item item) {
         return this.cooldowns.containsKey(item);
-    }
-
-    public int getTickCount() {
-        return tickCount;
     }
 
     @Override

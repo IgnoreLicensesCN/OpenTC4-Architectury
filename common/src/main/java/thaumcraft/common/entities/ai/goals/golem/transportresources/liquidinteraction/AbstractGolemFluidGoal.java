@@ -31,8 +31,11 @@ public abstract class AbstractGolemFluidGoal extends AbstractGolemGoal {
         super(golem);
     }
 
+    public double reachRange(){
+        return 2.25;
+    }
     public double reachRangeSqr(){
-        return 5;
+        return reachRange() * reachRange();
     }
 
     public @Nullable("empty -> any,null -> no") Set<Fluid> getMissingFluid(BaseGolemEntity golem, Set<Fluid> fluidFilterCacheSet){
@@ -122,6 +125,7 @@ public abstract class AbstractGolemFluidGoal extends AbstractGolemGoal {
                 var fakePlayer = platformUtils.getFakePlayer(serverLevel,EXTRACT_FLUID_PLAYER_UUID);
                 var usingSimulateStack = bucketItem.getDefaultInstance();
                 fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, usingSimulateStack);
+                fakePlayer.moveTo(pos.getX(),pos.getY(),pos.getZ());
                 blockState.use(serverLevel,fakePlayer,InteractionHand.MAIN_HAND,new BlockHitResult(pos.getCenter(), direction, pos,false));
                 var mainHandStack = fakePlayer.getItemInHand(InteractionHand.MAIN_HAND);
                 fakePlayer.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);

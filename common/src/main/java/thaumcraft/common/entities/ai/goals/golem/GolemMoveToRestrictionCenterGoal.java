@@ -10,14 +10,16 @@ import static com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAcces
 
 public class GolemMoveToRestrictionCenterGoal extends Goal {
     public static final EnumSet<Goal.Flag> FLAGS = EnumSet.of(Goal.Flag.MOVE);
-    private final BaseGolemEntity mob;
-    private final double speedModifier;
-    private final double wantedClosingRangeSqr;
-    private final double wantedTriggerRangeSqr;
+    protected final BaseGolemEntity mob;
+    protected final double speedModifier;
+    protected final int wantedClosingRange;
+    protected final double wantedClosingRangeSqr;
+    protected final double wantedTriggerRangeSqr;
 
     public GolemMoveToRestrictionCenterGoal(BaseGolemEntity mob, double speedModifier, double wantedClosingRange, double wantedTriggerRange) {
         this.mob = mob;
         this.speedModifier = speedModifier;
+        this.wantedClosingRange = (int) wantedClosingRange;
         this.wantedClosingRangeSqr = wantedClosingRange * wantedClosingRange;
         this.wantedTriggerRangeSqr = wantedTriggerRange * wantedTriggerRange;
         this.setFlags(FLAGS);
@@ -35,7 +37,8 @@ public class GolemMoveToRestrictionCenterGoal extends Goal {
     @Override
     public void start() {
         BlockPos homePos = this.mob.getRestrictCenter();
-        this.mob.getNavigation().moveTo(homePos.getX() + 0.5D, homePos.getY(), homePos.getZ() + 0.5D, this.speedModifier);
+        var path = this.mob.getNavigation().createPath(homePos,wantedClosingRange);
+        this.mob.getNavigation().moveTo(path, this.speedModifier);
     }
 
     @Override

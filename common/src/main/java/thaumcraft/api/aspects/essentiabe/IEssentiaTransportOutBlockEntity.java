@@ -35,7 +35,7 @@ public interface IEssentiaTransportOutBlockEntity extends IEssentiaTransportConn
             }
         }
         return takeEssentia(aspect, amount, outputToDirection);
-    };
+    }
     /**
      * Essentia will not be drawn from this container unless the suction exceeds this amount.
      * @return the amount

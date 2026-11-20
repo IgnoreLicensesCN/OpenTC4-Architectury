@@ -1,6 +1,7 @@
 package thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.gotogoal.container;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,10 +20,11 @@ public abstract class AbstractGolemGotoGoal extends AbstractGolemGoal {
         }
     }
     protected void setWantMoveTo(@NotNull BlockPos dest){
+        setWantMoveTo(dest,1);
+    }
+    protected void setWantMoveTo(@NotNull BlockPos dest, int distance){
         golem.getNavigation().moveTo(
-                dest.getX() + 0.5,
-                dest.getY() + 0.5,
-                dest.getZ() + 0.5,
+                golem.getNavigation().createPath(dest,distance),
                 golem.getMoveControl().getSpeedModifier()
         );
     }

@@ -1,4 +1,4 @@
-package com.linearity.opentc4.utils;
+package com.linearity.opentc4.utils.collectionlike;
 
 import net.minecraft.core.NonNullList;
 import org.jetbrains.annotations.NotNull;

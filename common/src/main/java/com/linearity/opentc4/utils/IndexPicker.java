@@ -1,6 +1,5 @@
 package com.linearity.opentc4.utils;
 
-import java.util.Collection;
 import java.util.List;
 
 public class IndexPicker {

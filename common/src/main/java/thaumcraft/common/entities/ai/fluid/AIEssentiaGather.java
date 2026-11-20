@@ -19,59 +19,67 @@ public class AIEssentiaGather extends EntityAIBase {
    private World theWorld;
    private long delay = 0L;
    int start = 0;
-
-   public AIEssentiaGather(EntityGolemBase par1EntityCreature) {
-      this.theGolem = par1EntityCreature;
-      this.theWorld = par1EntityCreature.level();
-      this.setMutexBits(3);
-   }
-
-   public boolean shouldExecute() {
-      if (this.theGolem.getNavigator().noPath() && this.delay <= System.currentTimeMillis()) {
-         ChunkCoordinates home = this.theGolem.getHomePosition();
-         Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
-         int cX = home.posX - facing.offsetX;
-         int cY = home.posY - facing.offsetY;
-         int cZ = home.posZ - facing.offsetZ;
-         if (this.theGolem.getDistanceSq((float)cX + 0.5F, (float)cY + 0.5F, (float)cZ + 0.5F) > (double)6.0F) {
-            return false;
-         } else {
-            this.start = 0;
-            TileEntity te = this.theWorld.getTileEntity(cX, cY, cZ);
-            if (te != null) {
-               if (te instanceof IEssentiaTransportBlockEntity) {
-                  IEssentiaTransportBlockEntity etrans = (IEssentiaTransportBlockEntity)te;
-                  if ((te instanceof TileJarFillable || te instanceof TileEssentiaReservoir || etrans.canOutputTo(facing)) && etrans.getEssentiaAmount(facing) > 0 && (this.theGolem.essentiaAmount == 0 || (this.theGolem.essentia == null || this.theGolem.essentia.equals(etrans.getEssentiaType(facing)) || this.theGolem.essentia.equals(etrans.getEssentiaType(Direction.UNKNOWN))) && this.theGolem.essentiaAmount < this.theGolem.getCarryLimit())) {
-                     this.delay = System.currentTimeMillis() + 1000L;
-                     this.start = 0;
-                     return true;
-                  }
-               } else {
-                  int a = 5;
-                  this.start = -1;
-
-                  for(int prevTot = -1; a >= 0; --a) {
-                     te = this.theWorld.getTileEntity(cX, cY + a, cZ);
-                     if (te instanceof TileAlembic) {
-                        TileAlembic ta = (TileAlembic)te;
-                        if ((this.theGolem.essentiaAmount == 0 || (this.theGolem.essentia == null || this.theGolem.essentia.equals(ta.aspect)) && this.theGolem.essentiaAmount < this.theGolem.getCarryLimit()) && ta.amount > prevTot) {
-                           this.delay = System.currentTimeMillis() + 1000L;
-                           this.start = a;
-                           prevTot = ta.amount;
-                        }
-                     }
-                  }
-
-                   return this.start >= 0;
-               }
-            }
-
-            return false;
-         }
-      } else {
-         return false;
-      }
-   }
+//
+//   public AIEssentiaGather(EntityGolemBase par1EntityCreature) {
+//      this.theGolem = par1EntityCreature;
+//      this.theWorld = par1EntityCreature.level();
+//      this.setMutexBits(3);
+//   }
+//
+//   public boolean shouldExecute() {
+//      if (this.theGolem.getNavigator().noPath() && this.delay <= System.currentTimeMillis()) {
+//         ChunkCoordinates home = this.theGolem.getHomePosition();
+//         Direction facing = Direction.getOrientation(this.theGolem.homeFacing);
+//         int cX = home.posX - facing.offsetX;
+//         int cY = home.posY - facing.offsetY;
+//         int cZ = home.posZ - facing.offsetZ;
+//         if (this.theGolem.getDistanceSq((float)cX + 0.5F, (float)cY + 0.5F, (float)cZ + 0.5F) > (double)6.0F) {
+//            return false;
+//         } else {
+//            this.start = 0;
+//            TileEntity te = this.theWorld.getTileEntity(cX, cY, cZ);
+//            if (te != null) {
+//               if (te instanceof IEssentiaTransportBlockEntity) {
+//                  IEssentiaTransportBlockEntity etrans = (IEssentiaTransportBlockEntity)te;
+//                  if ((te instanceof TileJarFillable
+//                          || te instanceof TileEssentiaReservoir
+//                          || etrans.canOutputTo(facing))
+//                          && etrans.getEssentiaAmount(facing) > 0
+//                          && (this.theGolem.essentiaAmount == 0 ||
+//                          (this.theGolem.essentia == null || this.theGolem.essentia.equals(etrans.getEssentiaType(facing))
+//                                  || this.theGolem.essentia.equals(etrans.getEssentiaType(Direction.UNKNOWN)))
+//                                  && this.theGolem.essentiaAmount < this.theGolem.getCarryLimit())
+//                  ) {
+//                     this.delay = System.currentTimeMillis() + 1000L;
+//                     this.start = 0;
+//                     return true;
+//                  }
+//               } else {
+//                  int a = 5;
+//                  this.start = -1;
+//
+//                  for(int prevTot = -1; a >= 0; --a) {
+//                     te = this.theWorld.getTileEntity(cX, cY + a, cZ);
+//                     if (te instanceof TileAlembic) {
+//                        TileAlembic ta = (TileAlembic)te;
+//                        if ((this.theGolem.essentiaAmount == 0 || (this.theGolem.essentia == null || this.theGolem.essentia.equals(ta.aspect)) && this.theGolem.essentiaAmount < this.theGolem.getCarryLimit()) && ta.amount > prevTot) {
+//                           this.delay = System.currentTimeMillis() + 1000L;
+//                           this.start = a;
+//                           prevTot = ta.amount;
+//                        }
+//                     }
+//                  }
+//
+//                   return this.start >= 0;
+//               }
+//            }
+//
+//            return false;
+//         }
+//      } else {
+//         return false;
+//      }
+//   }
 
    public void startExecuting() {
       ChunkCoordinates home = this.theGolem.getHomePosition();
