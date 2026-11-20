@@ -93,7 +93,7 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
             }
 
             var marker = containerInfo.marker;
-            var side = marker.side.getOpposite();
+            var side = marker.getSide().getOpposite();
 
             BlockPos containerPos = containerBE.getBlockPos();
             if (!containerPos.equals(homeAttachedBlockPos)) {

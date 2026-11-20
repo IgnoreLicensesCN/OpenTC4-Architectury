@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.tainted.converted;
 
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -25,7 +26,7 @@ import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityType
 import static thaumcraft.common.entities.ThaumcraftEntities.usualCanRecoverFromTaintedMob;
 import static thaumcraft.common.entities.ThaumcraftEntities.usualTaintedMobRecover;
 
-public class TaintedCreeperEntity extends Creeper implements IExplodeOverrideCreeper, ITaintConvertableEntity, ITaintRecoverableMob {
+public class TaintedCreeperEntity extends Creeper implements IExplodeOverrideCreeper, ITaintConvertableEntity, ITaintRecoverableMob, IClearGoalOnRemovedEntity {
     public TaintedCreeperEntity(Level level) {
         this(TAINTED_CREEPER(), level);
     }

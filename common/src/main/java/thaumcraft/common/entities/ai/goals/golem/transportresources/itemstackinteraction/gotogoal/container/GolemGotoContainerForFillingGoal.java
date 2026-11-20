@@ -110,7 +110,7 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGotoFurthestC
                     continue;
                 }
                 var marker = markedContainerInfo.marker;
-                var side = marker.side.getOpposite();
+                var side = marker.getSide().getOpposite();
                 for (var stackInGolem : golem.inventory) {
                     if (stackInGolem.isEmpty()) {
                         continue;

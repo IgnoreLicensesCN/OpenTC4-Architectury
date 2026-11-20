@@ -3,6 +3,7 @@ package thaumcraft.common.entities.monster.pech;
 import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import com.linearity.opentc4.annotations.StoleFrom;
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
@@ -84,7 +85,7 @@ import static thaumcraft.common.items.ThaumcraftItemInstances.*;
 //"entity.Thaumcraft.Pech.2.name": "岩精猎手",
 public abstract class AbstractPechEntity extends DoorBreakingMonster
         implements
-        RangedAttackMob {
+        RangedAttackMob, IClearGoalOnRemovedEntity {
     public static final EntityDataAccessor<Boolean> DATA_TAMED
             = SynchedEntityData.defineId(AbstractPechEntity.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> DATA_ANGER

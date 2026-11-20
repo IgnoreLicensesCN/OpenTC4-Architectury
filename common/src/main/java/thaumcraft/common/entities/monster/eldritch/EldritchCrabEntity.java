@@ -1,6 +1,7 @@
 package thaumcraft.common.entities.monster.eldritch;
 
 import com.linearity.opentc4.annotations.StoleFrom;
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -32,7 +33,7 @@ import java.util.UUID;
 import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.CULTIST;
 import static thaumcraft.common.items.ThaumcraftItemInstances.CULTIST_PLATE_CHESTPLATE;
 
-public class EldritchCrabEntity extends Spider implements ISpiderWithoutSkeletonRiding {
+public class EldritchCrabEntity extends Spider implements ISpiderWithoutSkeletonRiding, IClearGoalOnRemovedEntity {
     public static final EntityDataAccessor<Boolean> DATA_HELM_ID
             = SynchedEntityData.defineId(EldritchCrabEntity.class, EntityDataSerializers.BOOLEAN);
     public static final UUID HELM_SPEED_MODIFIER_UUID = UUID.fromString("c02d4d36-617b-4ec9-9fe7-bf792e5c006f");

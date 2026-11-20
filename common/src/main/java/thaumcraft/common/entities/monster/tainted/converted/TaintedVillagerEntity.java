@@ -2,6 +2,7 @@ package thaumcraft.common.entities.monster.tainted.converted;
 
 import com.google.common.collect.ImmutableList;
 import com.linearity.opentc4.mixin.BrainProviderAccessor;
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -42,7 +43,7 @@ import static thaumcraft.common.entities.ThaumcraftEntities.usualTaintedMobRecov
 
 //rewritten in lazy
 public class TaintedVillagerEntity extends Villager implements IBrainGoalsOverrideVillager, Enemy,
-        IZombieConvertableEntity, ITaintConvertableEntity, ITaintRecoverableMob {
+        IZombieConvertableEntity, ITaintConvertableEntity, ITaintRecoverableMob, IClearGoalOnRemovedEntity {
     public TaintedVillagerEntity(Level level) {
         this(TAINTED_VILLAGER(),level);
     }

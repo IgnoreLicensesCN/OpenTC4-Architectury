@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 @Mod(OpenTC4.MOD_ID)
 public final class OpenTC4Forge {
 
-    static PlatformUniqueUtilsForge platformUniqueUtilsForge = new PlatformUniqueUtilsForge();
+    public static PlatformUniqueUtilsForge platformUniqueUtilsForge = new PlatformUniqueUtilsForge();
 
     @SuppressWarnings("for removal")//fk u forge
     public OpenTC4Forge() {

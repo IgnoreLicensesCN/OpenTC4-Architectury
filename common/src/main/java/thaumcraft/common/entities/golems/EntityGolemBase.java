@@ -292,9 +292,9 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //      return base;
 //   }
 
-   public int getFluidCarryLimit() {
-      return MathHelper.floor_double(Math.sqrt(this.getCarryLimit())) * 1000;
-   }
+//   public int getFluidCarryLimit() {
+//      return MathHelper.floor_double(Math.sqrt(this.getCarryLimit())) * 1000;
+//   }
 
 //   public float getAIMoveSpeed() {
 //      if (!this.paused && !this.inactive) {

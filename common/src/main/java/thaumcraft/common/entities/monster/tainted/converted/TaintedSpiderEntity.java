@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.tainted.converted;
 
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -17,7 +18,7 @@ import static thaumcraft.common.entities.ThaumcraftEntities.*;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_SPIDER;
 
 
-public class TaintedSpiderEntity extends Spider implements ITaintConvertableEntity, ITaintRecoverableMob {
+public class TaintedSpiderEntity extends Spider implements ITaintConvertableEntity, ITaintRecoverableMob, IClearGoalOnRemovedEntity {
     public TaintedSpiderEntity(Level level) {
         this(TAINTED_SPIDER(), level);
     }

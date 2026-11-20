@@ -17,22 +17,32 @@ import java.util.function.Predicate;
 //searches upper first
 @NotThreadSafe
 public class HighestFurthestBlockFinder {
-    private final Level level;
-    private final Predicate<BlockState> matcher;
+    protected final Level level;
+    protected final Predicate<BlockState> matcher;
 
-    private final int maxHeight;
-    private final int maxXZManhattanDistance;
+    protected final int maxHeight;
+    protected final int maxXZManhattanDistance;
+
+    public interface TriIntConsumer {
+        void accept(int x, int y, int z);
+    }
+    protected final TriIntConsumer validPosConsumer;
+    public HighestFurthestBlockFinder(Level level,Predicate<BlockState> matcher,int maxHeight,int maxXZManhattanDistance) {
+        this(level,matcher,maxHeight,maxXZManhattanDistance,(_ignored,_what,_ever) -> {});
+    }
 
     public HighestFurthestBlockFinder(
             Level level,
             Predicate<BlockState> matcher,
             int maxHeight,
-            int maxXZManhattanDistance
+            int maxXZManhattanDistance,
+            TriIntConsumer validPosConsumer
     ) {
         this.level = level;
         this.matcher = matcher;
         this.maxHeight = maxHeight;
         this.maxXZManhattanDistance = maxXZManhattanDistance;
+        this.validPosConsumer = validPosConsumer;
     }
 
     public BlockPos find(BlockPos start) {
@@ -103,7 +113,10 @@ public class HighestFurthestBlockFinder {
                         continue;
                     }
 
-                    stack.addIfNotChecked(nextX, nextY, nextZ);
+                    if (stack.addIfNotChecked(nextX, nextY, nextZ)){
+                        validPosConsumer.accept(nextX, nextY, nextZ);
+                    }
+
                 }
             }
         }

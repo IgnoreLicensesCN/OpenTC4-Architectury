@@ -1,11 +1,18 @@
 package com.linearity.opentc4.fabric;
 
 import com.linearity.opentc4.annotations.StoleFrom;
+import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import com.mojang.authlib.GameProfile;
 import net.fabricmc.fabric.api.entity.FakePlayer;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
+import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
+import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
 import com.linearity.opentc4.ITickEvent;
 import com.linearity.opentc4.PlatformUniqueUtils;
@@ -57,6 +64,9 @@ import thaumcraft.common.tiles.abstracts.SingleFluidContainerBlockEntity;
 import java.util.*;
 import java.util.function.Consumer;
 
+import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+
+//TODO:Figure out if i made misunderstanding to fabric fluid api
 public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
     public MinecraftServer server;
 
@@ -197,10 +207,126 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
 //        return optTag.isPresent() && optTag.get().stream().map(Holder::value).anyMatch(i -> i == item);
 //    }
 
+
     @Override
-    @SuppressWarnings({"removal", "UnstableApiUsage"})
+    @SuppressWarnings({"UnstableApiUsage"})
+    public long/*filled*/ insertFluidToPos(Level level, BlockPos pos, Direction dir, FluidStack fluidStack/*will be modified*/,boolean doit){
+        var be = getExistingBlockEntity(level,pos);
+        if (be == null) {
+            return 0;
+        }
+
+        var result = FluidStorage.SIDED.find(level,pos,dir);
+        if (result == null){
+            return 0;
+        }
+        var content = StorageUtil.findExtractableContent(result,null);
+        if (content == null){
+            return 0;
+        }
+        if (content.resource().getFluid() != fluidStack.getFluid()){
+            return 0;
+        }
+
+        long filled = doit
+                ? result.insert(content.resource(), fluidStack.getAmount(), null)
+                : StorageUtil.simulateInsert(result,content.resource(),fluidStack.getAmount(),null);
+        if (filled != 0) {
+            fluidStack.setAmount(fluidStack.getAmount()-filled);
+        }
+        return filled;
+    }
+    @Override
+    @SuppressWarnings({"UnstableApiUsage"})
+    public FluidStack/*extracted*/ extractFluidFromPos(Level level, BlockPos pos, Direction dir, long expectedAmount,boolean doit){
+        var be = getExistingBlockEntity(level,pos);
+        if (be == null) {
+            return FluidStack.empty();
+        }
+
+        var result = FluidStorage.SIDED.find(level,pos,dir);
+        if (result == null){
+            return FluidStack.empty();
+        }
+        var content = StorageUtil.findExtractableContent(result,null);
+        if (content == null){
+            return FluidStack.empty();
+        }
+        long got = doit
+                ? result.extract(content.resource(), expectedAmount, null)
+                : StorageUtil.simulateExtract(result,content.resource(),expectedAmount,null);
+        return FluidStack.create(content.resource().getFluid(),got);
+    }
+    @Override
+    @SuppressWarnings({"UnstableApiUsage"})
+    public FluidStack getFluidFromPos(Level level, BlockPos pos, Direction dir,int tankIndex){
+        var be = getExistingBlockEntity(level,pos);
+        if (be == null) {
+            return FluidStack.empty();
+        }
+
+        var result = FluidStorage.SIDED.find(level,pos,dir);
+        if (result == null){
+            return FluidStack.empty();
+        }
+        int currentIndex = 0;
+        for (net.fabricmc.fabric.api.transfer.v1.storage.StorageView<FluidVariant> element : result) {
+            currentIndex++;
+            if (currentIndex == tankIndex) {
+                return FluidStack.create(element.getResource().getFluid(), element.getAmount());
+            }
+        }
+        return FluidStack.empty();
+    }
+    @Override
+    @SuppressWarnings({"UnstableApiUsage"})
+    public int getFluidTanksFromPos(Level level, BlockPos pos, Direction dir){
+        var be = getExistingBlockEntity(level,pos);
+        if (be == null) {
+            return 0;
+        }
+
+        var result = FluidStorage.SIDED.find(level,pos,dir);
+        if (result == null){
+            return 0;
+        }
+        int currentIndex = 0;
+        for (net.fabricmc.fabric.api.transfer.v1.storage.StorageView<FluidVariant> ignored : result) {
+            currentIndex++;
+        }
+        return currentIndex;
+    }
+
+
+    @SuppressWarnings({"UnstableApiUsage"})
+    public static @Nullable Storage<FluidVariant> getFluidStorageFromItemStack(ItemStack itemStack) {
+        return FluidStorage.ITEM.find(itemStack,ContainerItemContext.ofSingleSlot(new SingleStackStorage() {
+            @Override
+            protected ItemStack getStack() {
+                return itemStack;
+            }
+
+            @Override
+            protected void setStack(ItemStack stack) {
+                ExtendedItemStack.setTo(itemStack,stack);
+            }
+        }));
+    }
+    
+    @Override
+    @SuppressWarnings({"UnstableApiUsage"})
+    public @NotNull Fluid getFluidFromItemStack(ItemStack itemStack) {
+        var result = getFluidStorageFromItemStack(itemStack);
+        if (result == null) return Fluids.EMPTY;
+        var content = StorageUtil.findExtractableContent(result, null);
+        if (content == null) return Fluids.EMPTY;
+        return content.resource().getFluid();
+    }
+    
+    @Override
+    @SuppressWarnings({"UnstableApiUsage"})
     public @Nullable FluidStack copyFluidStackFromItemStack(ItemStack itemStack) {
-        var result = ContainerItemContext.withInitial(itemStack).find(FluidStorage.ITEM);
+        var result = getFluidStorageFromItemStack(itemStack);
         if (result == null) return null;
         var content = StorageUtil.findExtractableContent(result, null);
         if (content == null) return null;
@@ -209,22 +335,27 @@ public class PlatformUniqueUtilsFabric extends PlatformUniqueUtils {
 
     //return inserted
     @Override
-    @SuppressWarnings({"removal", "UnstableApiUsage"})
-    public long increaseFluidStackToItemStack(ItemStack itemStack,FluidStack fluidStack) {
-        var result = ContainerItemContext.withInitial(itemStack).find(FluidStorage.ITEM);
+    @SuppressWarnings({"UnstableApiUsage"})
+    public long/*filled*/ insertFluidStackToItemStack(ItemStack itemStack, FluidStack fluidStack, boolean doit) {
+        var result = getFluidStorageFromItemStack(itemStack);
         if (result == null) return 0;
 
-        return result.insert(FluidVariant.of(fluidStack.getFluid()),fluidStack.getAmount(),null);
+        return doit
+                ? result.insert(FluidVariant.of(fluidStack.getFluid()),fluidStack.getAmount(),null)
+                : StorageUtil.simulateInsert(result,FluidVariant.of(fluidStack.getFluid()),fluidStack.getAmount(),null);
     }
 
     //return decreased
     @Override
-    @SuppressWarnings({"removal", "UnstableApiUsage"})
-    public long decreaseFluidStackToItemStack(ItemStack itemStack,FluidStack fluidStack) {
-        var result = ContainerItemContext.withInitial(itemStack).find(FluidStorage.ITEM);
-        if (result == null) return 0;
+    @SuppressWarnings({"UnstableApiUsage"})
+    public FluidStack drainFluidStackFromItemStack(ItemStack itemStack,FluidStack fluidStack,boolean doit) {
+        var result = getFluidStorageFromItemStack(itemStack);
+        if (result == null) return FluidStack.empty();
 
-        return result.extract(FluidVariant.of(fluidStack.getFluid()),fluidStack.getAmount(),null);
+        var drained = doit
+                ?result.extract(FluidVariant.of(fluidStack.getFluid()),fluidStack.getAmount(),null)
+                :StorageUtil.simulateExtract(result,FluidVariant.of(fluidStack.getFluid()),fluidStack.getAmount(),null);
+        return drained <= 0 ? FluidStack.empty() :FluidStack.create(fluidStack.getFluid(), drained);
     }
 
     @Override

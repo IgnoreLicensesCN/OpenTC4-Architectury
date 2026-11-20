@@ -409,4 +409,7 @@ public class Consts {
         public static final ResourceLocationTagAccessor HOME_LEVEL = BaseGolemEntityTagAccessors.HOME_LEVEL;
         public static final UUIDTagAccessor GOLEM_ID = new UUIDTagAccessor("golem_id");
     }
+    public static class LiquidCoreTagAccessors {
+        public static final FluidStackTagAccessor HOLDING_FLUID = new FluidStackTagAccessor("holding_fluid");
+    }
 }

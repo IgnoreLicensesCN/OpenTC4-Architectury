@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.boss;
 
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import it.unimi.dsi.fastutil.ints.Int2FloatMap;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +25,7 @@ import thaumcraft.common.entities.abstracts.ICustomSpecialDropEntity;
 import thaumcraft.common.entities.abstracts.boss.IThaumcraftBossEntity;
 
 //TODO:Tag with eldritch mob
-public abstract class ThaumcraftBossEntity extends Monster implements ICustomSpecialDropEntity, IThaumcraftBossEntity {
+public abstract class ThaumcraftBossEntity extends Monster implements ICustomSpecialDropEntity, IThaumcraftBossEntity, IClearGoalOnRemovedEntity {
 
 
     public static AttributeSupplier.Builder createThaumcraftBossAttributes() {

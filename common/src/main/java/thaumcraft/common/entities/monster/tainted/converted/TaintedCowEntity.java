@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.tainted.converted;
 
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,7 +24,7 @@ import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityType
 
 //oh breed light can breed this,but i decide to keep that to make chaos
 //however since goal removed they wont make love
-public class TaintedCowEntity extends Cow implements Enemy, ITaintConvertableEntity, ITaintRecoverableMob {
+public class TaintedCowEntity extends Cow implements Enemy, ITaintConvertableEntity, ITaintRecoverableMob, IClearGoalOnRemovedEntity {
     public TaintedCowEntity(Level level) {
         this(TAINTED_COW(), level);
     }

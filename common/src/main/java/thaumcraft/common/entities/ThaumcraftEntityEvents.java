@@ -1,15 +1,13 @@
 package thaumcraft.common.entities;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import com.linearity.opentc4.mixin.MobAccessor;
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.Item;
@@ -50,6 +48,29 @@ import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategor
 
 public class ThaumcraftEntityEvents {
 
+    public static void onEntityRemoved(Entity self, Entity.RemovalReason removalReason){
+        convertTaintMobOnRemoved(self,removalReason);
+        clearGoal(self);
+    }
+    public static void onEntityUnsetRemoved(Entity self){
+        rebuildGoal(self);
+    }
+    public static void clearGoal(Entity self){
+        if (self instanceof IClearGoalOnRemovedEntity){
+            if (self instanceof Mob mob){
+                ((MobAccessor)mob).getGoalSelector().removeAllGoals(_whatever -> true);
+                ((MobAccessor)mob).getTargetSelector().removeAllGoals(_whatever -> true);
+            }
+        }
+    }
+    public static void rebuildGoal(Entity self){
+        if (self instanceof IClearGoalOnRemovedEntity){
+            if (self instanceof Mob mob){
+                ((MobAccessor)mob).invokeRegisterGoals();
+            }
+        }
+
+    }
     public static void convertTaintMobOnRemoved(Entity self, Entity.RemovalReason removalReason) {
         if (self instanceof LivingEntity){
             if (removalReason == Entity.RemovalReason.KILLED){

@@ -4,7 +4,7 @@ import thaumcraft.common.entities.golems.properties.ExtraAbilityDataMap;
 import thaumcraft.common.entities.golems.properties.GolemBasicAbilityProperties;
 
 public class GolemAbilitiesData {
-    public float carryPower;//item carry capacity:*1,fluid carry capacity(mb):*1000
+    public float carryPower;
     public float inventorySize;
     public float inventorySizeMultiplier;
     public float attackDelay;

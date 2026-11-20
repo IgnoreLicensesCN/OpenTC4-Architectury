@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.tainted;
 
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import com.linearity.opentc4.mixinaccessors.cliententity.TaintedSwarmEntityClientAccessor;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -34,7 +35,7 @@ import java.util.List;
 
 import static thaumcraft.common.entities.ThaumcraftEntities.handleTargetSelectorForTaintedMob;
 
-public class TaintedSwarmEntity extends Monster {
+public class TaintedSwarmEntity extends Monster implements IClearGoalOnRemovedEntity {
     public TaintedSwarmEntity(Level level) {
         this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_SWARM(), level);
     }

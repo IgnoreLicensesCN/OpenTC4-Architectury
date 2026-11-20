@@ -39,10 +39,10 @@ public class MarkerTagAccessor extends CompoundTagAccessor<Marker> {
     public void writeToCompoundTag(CompoundTag tag, Marker marker) {
         var innerTag = new CompoundTag();
         {
-            posAccessor.writeToCompoundTag(innerTag, marker.pos);
-            dimAccessor.writeToCompoundTag(innerTag, marker.dim);
-            directionAccessor.writeToCompoundTag(innerTag, marker.side);
-            colorAccessor.writeByteToCompoundTag(innerTag, marker.color);
+            posAccessor.writeToCompoundTag(innerTag, marker.getPos());
+            dimAccessor.writeToCompoundTag(innerTag, marker.getDim());
+            directionAccessor.writeToCompoundTag(innerTag, marker.getSide());
+            colorAccessor.writeByteToCompoundTag(innerTag, marker.getColor());
         }
         wrappedAccessor.writeToCompoundTag(tag,innerTag);
     }

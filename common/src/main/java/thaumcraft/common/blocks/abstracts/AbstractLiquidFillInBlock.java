@@ -1,7 +1,9 @@
 package thaumcraft.common.blocks.abstracts;
 
+import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
+import dev.architectury.fluid.FluidStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -12,32 +14,50 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.IValueContainerBasedComparatorSignalProviderBlockEntity;
-import thaumcraft.common.tiles.abstracts.SingleFluidContainerBlockEntity;
 
+import static com.linearity.opentc4.OpenTC4.DEBUG_FLAG;
+import static com.linearity.opentc4.OpenTC4.DebugFlags.CANT_FILL_BACK_FLUID_WARN;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 @UtilityLikeAbstraction
 //TODO:[maybe wont finished]anyone help me connect with pipe
 public abstract class AbstractLiquidFillInBlock extends SuppressedWarningBlock
-        implements EntityBlock
-{
+        implements EntityBlock {
     public AbstractLiquidFillInBlock(Properties properties) {
         super(properties);
     }
 
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!level.isClientSide && LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof SingleFluidContainerBlockEntity spaBE) {
-            var stack = player.getItemInHand(interactionHand);
-            var fluidStack = platformUtils.copyFluidStackFromItemStack(stack);
-            if (fluidStack != null && !fluidStack.isEmpty()) {
-                var inserted = spaBE.insertFluid(fluidStack.getFluid(),fluidStack.getAmount());
-                if (inserted != 0){
-                    fluidStack.setAmount(fluidStack.getAmount()-inserted);
-                    platformUtils.decreaseFluidStackToItemStack(stack,fluidStack);
-                    return InteractionResult.SUCCESS;
+
+        var stack = player.getItemInHand(interactionHand);
+        var fluidStack = platformUtils.copyFluidStackFromItemStack(stack);
+        if (fluidStack == null || fluidStack.isEmpty()) {
+            return InteractionResult.PASS;
+        }
+        var canDrain = platformUtils.drainFluidStackFromItemStack(stack, fluidStack, false);
+        if (fluidStack.isEmpty()) {
+            return InteractionResult.PASS;
+        }
+        var dir = blockHitResult.getDirection();
+        var simulatedResult = platformUtils.insertFluidToPos(level, blockPos, dir, canDrain, false);
+        if (simulatedResult > 0) {
+            var reallyDrained = platformUtils.drainFluidStackFromItemStack(stack, canDrain, true);
+            var reallyInserted = platformUtils.insertFluidToPos(level, blockPos, dir, reallyDrained, true);
+            //fill back
+            if (reallyInserted > 0) {
+                var remaining = reallyDrained.getAmount() - reallyInserted;
+                if (remaining > 0) {
+                    var cantFillBack = platformUtils.insertFluidStackToItemStack(stack, FluidStack.create(reallyDrained.getFluid(), remaining), true);
+                    if (DEBUG_FLAG && CANT_FILL_BACK_FLUID_WARN &&  cantFillBack != 0){
+                        OpenTC4.LOGGER.error(
+                                "Can't fill back fluid {} in block {},remaining {}:{}",
+                                fluidStack,blockPos,cantFillBack,new IllegalStateException()
+                        );
+                    }
                 }
+                player.swing(interactionHand);
+                return InteractionResult.SUCCESS;
             }
         }
 
@@ -51,7 +71,7 @@ public abstract class AbstractLiquidFillInBlock extends SuppressedWarningBlock
 
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
-        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity provider){
+        if (LevelBlockEntityAccessing.getExistingBlockEntity(level, blockPos) instanceof IValueContainerBasedComparatorSignalProviderBlockEntity provider) {
             return provider.getComparatorSignal();
         }
         return 0;

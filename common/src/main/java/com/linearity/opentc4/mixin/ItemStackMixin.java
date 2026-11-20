@@ -8,18 +8,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.*;
 
 import static net.minecraft.world.item.ItemStack.EMPTY;
 
 @Mixin(ItemStack.class)
-public class ItemStackMixin implements IObjectCacheableFakeFieldOwner, ExtendedItemStack {
+public abstract class ItemStackMixin implements IObjectCacheableFakeFieldOwner, ExtendedItemStack {
+    @Mutable
     @Shadow @Final /*@Deprecated*/ private @Nullable Item item;
     @Shadow private int count;
     @Shadow private @Nullable CompoundTag tag;
+
+    @Shadow public abstract boolean isEmpty();
+
     @Unique
     private final ClassToInstanceMap<Object> opentc4$objectCacheMap = MutableClassToInstanceMap.create();
 
@@ -40,7 +41,10 @@ public class ItemStackMixin implements IObjectCacheableFakeFieldOwner, ExtendedI
 
     @Override
     public ItemStack opentc4$splitAll() {
-        ItemStack newStack = new ItemStack(item == null? EMPTY.getItem():item,count);
+        if (item == null || isEmpty()){
+            return EMPTY;
+        }
+        ItemStack newStack = new ItemStack(item,count);
         ((ExtendedItemStack)(Object)newStack).opentc4$forceSetTag(tag);
         this.count = 0;
         this.tag = null;
@@ -80,6 +84,23 @@ public class ItemStackMixin implements IObjectCacheableFakeFieldOwner, ExtendedI
 
         return itemStack;
 
+    }
+
+    @Override
+    public void opentc4$setTo(ItemStack stack) {
+        this.opentc4$setToShareTag(stack);
+        if (tag != null){
+            tag = tag.copy();
+        }
+    }
+    @Override
+    public void opentc4$setToShareTag(ItemStack stack) {
+        if ((Object)this == EMPTY){
+            throw new IllegalStateException("EMPTY stack should not be modified,which will lead to chaos");
+        }
+        this.item = stack.getItem();
+        this.count = stack.getCount();
+        this.tag = stack.getTag();
     }
 
     @Override

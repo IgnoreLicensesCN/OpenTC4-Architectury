@@ -61,6 +61,7 @@
     "LivingEntityAccessor",
     "LivingEntityMixin",
     "MilkBucketItemMixin",
+    "MobAccessor",
     "MobMixin",
     "MobSpawnSettingsBuilderMixin",
     "MonsterMixin",

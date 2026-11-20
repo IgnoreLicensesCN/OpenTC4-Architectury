@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.tainted;
 
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import com.linearity.opentc4.mixinaccessors.SlimeAttackGoalAccessorGetter;
 import com.linearity.opentc4.mixinaccessors.SlimeMoveControlAccessorGetter;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
@@ -25,7 +26,7 @@ import thaumcraft.common.entities.ThaumcraftEntities;
 
 import java.util.EnumSet;
 
-public class ThaumicSlimeEntity extends Slime {
+public class ThaumicSlimeEntity extends Slime implements IClearGoalOnRemovedEntity {
 
     public ThaumicSlimeEntity(Level level) {
         this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.THAUMIC_SLIME(), level);

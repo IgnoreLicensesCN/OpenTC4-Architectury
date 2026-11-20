@@ -5,7 +5,6 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.*;
 import tc4tweak.ConfigurationHandler;
@@ -55,7 +54,7 @@ public class AILiquidGather extends EntityAIBase {
                 for (Marker marker : GolemHelper.getMarkedFluidHandlersAdjacentToGolem(fluid, this.theWorld, this.theGolem)) {
                     TileEntity te = this.theWorld.getTileEntity(marker.x, marker.y, marker.z);
                     if (te instanceof IFluidHandler) {
-                        FluidStack fs = ((IFluidHandler) te).drain(Direction.getOrientation(marker.side), new FluidStack(fluid.getFluid(), max - camt), false);
+                        FluidStack fs = ((IFluidHandler) te).drain(Direction.getOrientation(marker.getSide()), new FluidStack(fluid.getFluid(), max - camt), false);
                         if (fs != null && fs.amount > 0) {
                             return true;
                         }
@@ -121,7 +120,7 @@ public class AILiquidGather extends EntityAIBase {
                     for (Marker marker : GolemHelper.getMarkedFluidHandlersAdjacentToGolem(fluidstack, this.theWorld, this.theGolem)) {
                         TileEntity te = this.theWorld.getTileEntity(marker.x, marker.y, marker.z);
                         if (te instanceof IFluidHandler) {
-                            FluidStack fs = ((IFluidHandler) te).drain(Direction.getOrientation(marker.side), new FluidStack(fluidstack.getFluid(), max - camt), true);
+                            FluidStack fs = ((IFluidHandler) te).drain(Direction.getOrientation(marker.getSide()), new FluidStack(fluidstack.getFluid(), max - camt), true);
                             if (fs != null && fs.amount > 0) {
                                 if (this.theGolem.fluidCarried != null) {
                                     FluidStack var31 = this.theGolem.fluidCarried;

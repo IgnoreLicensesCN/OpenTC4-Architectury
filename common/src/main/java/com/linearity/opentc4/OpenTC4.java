@@ -11,7 +11,6 @@ import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.items.abstracts.IRepairableItem;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.listeners.EventListeners;
-import thaumcraft.api.listeners.aspects.entity.basic.EntityBasicAspectGetters;
 import thaumcraft.api.listeners.aspects.item.basic.ItemBasicAspectCalculator;
 import thaumcraft.api.listeners.aspects.item.basic.getters.ItemBasicAspectGetter;
 import thaumcraft.api.research.ThaumcraftResearches;
@@ -48,8 +47,14 @@ public final class OpenTC4 {
     public static boolean logDuplicate = true;
     public static boolean throwDuplicate = true;
 
-    public static boolean DEBUG_FLAG = false;
-    public static boolean CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG = DEBUG_FLAG;
+    public static boolean DEBUG_FLAG = true;
+    public static class DebugFlags {
+        public static boolean VALIDATE_MARKER_COLOR = true;
+        public static boolean CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG = true;
+        public static boolean CHECK_TAG_ACCESSOR_WHEN_DEBUG = true;
+        public static boolean CANT_FILL_BACK_FLUID_WARN = true;
+    }
+
     public static final String MOD_ID = "opentc4";
     public static final String MOD_NAME = "OpenTC4";
     public static PlatformUniqueUtils platformUtils;
@@ -64,8 +69,6 @@ public final class OpenTC4 {
     }
 
     public static void onInitialize() {
-
-
         platformUtils.init();
     }
     public static void onInitializeClient() {

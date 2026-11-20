@@ -1,6 +1,7 @@
 package thaumcraft.common.entities.abstracts;
 
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.*;
@@ -12,7 +13,7 @@ import net.minecraft.world.level.Level;
 import java.util.function.Predicate;
 
 @UtilityLikeAbstraction
-public abstract class DoorBreakingMonster extends Monster {
+public abstract class DoorBreakingMonster extends Monster implements IClearGoalOnRemovedEntity {
     protected boolean canBreakDoors = true;
     protected BreakDoorGoal breakDoorGoal = new BreakDoorGoal(this, DIFFICULTY_PREDICATE);
     protected static final Predicate<Difficulty> DIFFICULTY_PREDICATE = d -> d == Difficulty.HARD;

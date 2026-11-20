@@ -24,9 +24,9 @@ public class GolemPlaceItemStackToMarkedContainerGoal extends GolemDoSomethingTo
         if (usingBE instanceof Container container){
             golem.setItemInHand(
                     InteractionHand.MAIN_HAND,
-                    InventoryUtils.placeItemStackIntoInventory(golem.getMainHandItem(), container, usingMarker.side, true)
+                    InventoryUtils.placeItemStackIntoInventory(golem.getMainHandItem(), container, usingMarker.getSide(), true)
             );
-            golem.level().gameEvent(golem, GameEvent.CONTAINER_OPEN,usingMarker.pos);
+            golem.level().gameEvent(golem, GameEvent.CONTAINER_OPEN, usingMarker.getPos());
             golem.playSound(SoundEvents.CHEST_OPEN, 1.0F, 1.0F);
         }
     }
@@ -36,7 +36,7 @@ public class GolemPlaceItemStackToMarkedContainerGoal extends GolemDoSomethingTo
         super.stop();
         golem.playSound(SoundEvents.CHEST_CLOSE, 1.0F, 1.0F);
         if (usingMarker != null){
-            golem.level().gameEvent(golem, GameEvent.CONTAINER_CLOSE,usingMarker.pos);
+            golem.level().gameEvent(golem, GameEvent.CONTAINER_CLOSE, usingMarker.getPos());
         }
     }
 }

@@ -33,8 +33,6 @@ public class GolemPlaceItemStackToHomeGoalWithItemStackTickMark extends GolemPla
     }
 
     protected boolean canUseAdditional(){
-        //case 1:
-        //                  return !GolemHelper.findSomethingEmptyCore(this.theGolem, this.theGolem.getCarried());
         //               case 8:
         //                  return !GolemHelper.findSomethingUseCore(this.theGolem, this.theGolem.getCarried());
         //               case 10:

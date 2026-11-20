@@ -37,7 +37,7 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
         if (golemHoldingStack.isEmpty()) {
             return false;
         }
-        if (golem.getNavigation().isInProgress()){
+        if (!golem.getNavigation().isDone()){
             return false;
         }
         var homeBEPos = golem.getHomeAttachedBlockPos();
@@ -52,9 +52,9 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
             var be = info.blockEntityRef.get();
             if (container == null || be==null || be.isRemoved()) { continue;}
             var marker = info.marker;
-            if (homeBEPos.equals(marker.pos)){continue;}
+            if (homeBEPos.equals(marker.getPos())){continue;}
             if (marker.colorEqualsFuzzy(colorsCache)){
-                ItemStack is = InventoryUtils.placeItemStackIntoInventory(golemHoldingStack, container, marker.side, false);
+                ItemStack is = InventoryUtils.placeItemStackIntoInventory(golemHoldingStack, container, marker.getSide(), false);
                 if (!ItemStack.isSameItem(is, golemHoldingStack)) {
                     usingMarker = marker;
                     usingBlockEntity = new WeakReference<>(be);
@@ -78,7 +78,7 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
     protected boolean verifyMarkerAndBE() {
         if (!(
                 usingMarker != null
-                        && getExistingBlockEntity(golem.level(),usingMarker.pos) == usingBlockEntity.get()
+                        && getExistingBlockEntity(golem.level(), usingMarker.getPos()) == usingBlockEntity.get()
                         && usingBlockEntity.get() instanceof BlockEntity blockEntity
                         && !blockEntity.isRemoved()
                         && blockEntity instanceof Container container
@@ -88,7 +88,7 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
         var mainHandStack = golem.getMainHandItem();
         return !mainHandStack.isEmpty()
                 && !ItemStack.isSameItem(
-                InventoryUtils.placeItemStackIntoInventory(mainHandStack, container, usingMarker.side, false),
+                InventoryUtils.placeItemStackIntoInventory(mainHandStack, container, usingMarker.getSide(), false),
                 mainHandStack
         );
     }

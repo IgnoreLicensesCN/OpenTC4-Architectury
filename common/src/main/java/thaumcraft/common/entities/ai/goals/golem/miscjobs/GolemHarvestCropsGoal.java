@@ -47,7 +47,7 @@ public class GolemHarvestCropsGoal extends AbstractGolemGoal {
 
         if (this.delay < 0
                 && this.golem.tickCount % getGolemGoalDelay() <= 0
-                && !this.golem.getNavigation().isInProgress()
+                && this.golem.getNavigation().isDone()
         ) {
             return this.findGrownCrop();
         } else {
@@ -119,7 +119,7 @@ public class GolemHarvestCropsGoal extends AbstractGolemGoal {
             }
 
             if (this.delay > 0) {
-                if (--this.delay > 0 && this.delay % this.mod == 0 && !this.golem.getNavigation().isInProgress()) {
+                if (--this.delay > 0 && this.delay % this.mod == 0 && this.golem.getNavigation().isDone()) {
                     level.broadcastEntityEvent(golem,START_ACTION_TIMER);
                 }
 

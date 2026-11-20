@@ -309,6 +309,10 @@ public abstract class BaseGolemEntity
         return (int) this.abilitiesData.carryPower;
     }
 
+    public long getFluidCarryPower() {
+        return getCarryPower() * 1000L;//no api yet but you may do some overriding?
+    }
+
     public int getAttackDelay() {
         return (int) this.abilitiesData.attackDelay;
     }
@@ -522,6 +526,12 @@ public abstract class BaseGolemEntity
         for (var providerPair : golemUpgradesCacheView.get(IGolemAIProviderItem.class)) {
             providerPair.getUpgradeType().registerGoalForGolem(this, providerPair.getUpgradeStack(), this.wrappedGoalSelector, this.wrappedTargetSelector);
         }
+    }
+
+    @Override
+    public void remove(RemovalReason removalReason) {
+        this.wrappedGoalSelector.removeAllGoals(_ignored -> true);
+        super.remove(removalReason);
     }
 
     @Override

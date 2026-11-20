@@ -9,7 +9,6 @@ import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -176,8 +175,8 @@ public class AIUseItem extends EntityAIBase {
    boolean findSomething() {
       for(byte col : this.theGolem.getColorsMatching(this.theGolem.itemCarried)) {
          for(Marker marker : this.theGolem.getMarkers()) {
-            if ((marker.color == col || col == -1) && (!this.theGolem.getToggles()[0] || this.theGolem.level().isAirBlock(marker.x, marker.y, marker.z)) && (this.theGolem.getToggles()[0] || !this.theGolem.level().isAirBlock(marker.x, marker.y, marker.z))) {
-               Direction opp = Direction.getOrientation(marker.side);
+            if ((marker.getColor() == col || col == -1) && (!this.theGolem.getToggles()[0] || this.theGolem.level().isAirBlock(marker.x, marker.y, marker.z)) && (this.theGolem.getToggles()[0] || !this.theGolem.level().isAirBlock(marker.x, marker.y, marker.z))) {
+               Direction opp = Direction.getOrientation(marker.getSide());
                if (this.theGolem.level().isAirBlock(marker.x + opp.offsetX, marker.y + opp.offsetY, marker.z + opp.offsetZ)) {
                   this.color = col;
                   this.xx = marker.x;

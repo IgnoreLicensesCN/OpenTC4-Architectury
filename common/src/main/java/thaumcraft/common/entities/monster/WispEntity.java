@@ -2,6 +2,7 @@ package thaumcraft.common.entities.monster;
 
 import com.linearity.opentc4.Color;
 import com.linearity.opentc4.annotations.StoleFrom;
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -46,7 +47,7 @@ import static thaumcraft.common.items.ThaumcraftItemInstances.WISP_ESSENCE;
 
 public class WispEntity extends FlyingMob
         implements
-        Enemy
+        Enemy, IClearGoalOnRemovedEntity
 {
     protected @NotNull Aspect aspect = Aspects.EMPTY;
     public static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(

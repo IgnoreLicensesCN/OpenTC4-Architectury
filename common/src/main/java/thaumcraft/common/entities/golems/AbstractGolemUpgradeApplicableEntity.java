@@ -4,6 +4,7 @@ import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.annotations.Modifiable;
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
 import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
 import com.linearity.opentc4.utils.QueuedItemCooldowns;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
@@ -40,7 +41,7 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         implements
         OwnableEntity,
         IItemStackCollapsibleGolem,
-        ItemCooldownOwnerEntity //trunk may eat eternal beef?but golem really shoots dart.
+        ItemCooldownOwnerEntity//trunk may eat eternal beef?but golem really shoots dart.
 {
     public final ItemCooldowns itemCooldowns = new QueuedItemCooldowns();
 
@@ -249,5 +250,18 @@ public abstract class AbstractGolemUpgradeApplicableEntity<
         OpenTC4.LOGGER.info(
                 "[Thaumcraft] {} was killed by {} ( {} ) at {}",this,damageSource.getEntity(),damageSource.type(),this.position()
         );
+    }
+
+    @Override
+    public void remove(RemovalReason removalReason) {
+        super.remove(removalReason);
+        this.goalSelector.removeAllGoals(_ignored -> true);
+        this.targetSelector.removeAllGoals(_ignored -> true);
+    }
+
+    @Override
+    protected void unsetRemoved() {
+        super.unsetRemoved();
+        registerGoals();
     }
 }

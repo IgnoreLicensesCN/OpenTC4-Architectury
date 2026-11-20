@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.tainted;
 
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import com.linearity.opentc4.mixinaccessors.cliententity.TaintSporeSwarmerEntityClientAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -24,7 +25,7 @@ import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaintSporeSwarmerEntity extends Monster {
+public class TaintSporeSwarmerEntity extends Monster implements IClearGoalOnRemovedEntity {
     public static final EntityDataAccessor<Integer> DATA_SIZE_ID = SynchedEntityData.defineId(TaintSporeSwarmerEntity.class, EntityDataSerializers.INT);
 
 

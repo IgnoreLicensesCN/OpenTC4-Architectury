@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.tainted;
 
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import com.linearity.opentc4.mixinaccessors.cliententity.TaintacleEntityClientAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -40,7 +41,7 @@ import java.util.EnumSet;
 import static com.linearity.opentc4.Consts.getEmptyWeakRef;
 import static thaumcraft.common.entities.ThaumcraftEntities.taintedMobWontAttack;
 
-public class TaintacleEntity extends Monster implements IMobAttackDamageTypeReplaceable {
+public class TaintacleEntity extends Monster implements IMobAttackDamageTypeReplaceable, IClearGoalOnRemovedEntity {
     public TaintacleEntity(Level level) {
         this(ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTACLE(), level);
     }

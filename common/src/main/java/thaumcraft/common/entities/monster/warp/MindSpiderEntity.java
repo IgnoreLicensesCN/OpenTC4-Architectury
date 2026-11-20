@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.warp;
 
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,7 +17,7 @@ import thaumcraft.common.entities.ThaumcraftEntities;
 import java.util.Optional;
 import java.util.UUID;
 
-public class MindSpiderEntity extends Spider {
+public class MindSpiderEntity extends Spider implements IClearGoalOnRemovedEntity {
     public static final EntityDataAccessor<Byte> DATA_MIND_SPIDER_FLAGS = SynchedEntityData.defineId(MindSpiderEntity.class, EntityDataSerializers.BYTE);
     public static final EntityDataAccessor<Optional<UUID>> DATA_VISIBLE_TO = SynchedEntityData.defineId(MindSpiderEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     public MindSpiderEntity(Level level) {

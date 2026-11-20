@@ -8,6 +8,7 @@ public final class OpenTC4Fabric implements ModInitializer {
     @Override
     public void onInitialize() {
         PlatformUniqueUtilsFabric platformUniqueUtilsFabric = new PlatformUniqueUtilsFabric();
+        OpenTC4.init(platformUniqueUtilsFabric);
         OpenTC4.onInitialize();
         OpenTC4.onCommonSetup();
         ServerLifecycleEvents.SERVER_STARTING.register(server -> platformUniqueUtilsFabric.server = server);
@@ -19,6 +20,5 @@ public final class OpenTC4Fabric implements ModInitializer {
         // Proceed with mild caution.
 
         // Run our common setup.
-        OpenTC4.init(platformUniqueUtilsFabric);
     }
 }

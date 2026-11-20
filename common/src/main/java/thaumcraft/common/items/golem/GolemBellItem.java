@@ -75,7 +75,7 @@ public class GolemBellItem extends Item {
                         if (!player.isShiftKeyDown()
                                 && !golem.golemUpgradesCacheView.get(IGolemColorfulMarkerProviderItem.class).isEmpty()){
                             golem.markers.remove(markerExisting);
-                            byte newColor = markerExisting.color;
+                            byte newColor = markerExisting.getColor();
                             newColor += 1;
                             if (newColor > MARKER_COLOR_MAX){
                                 newColor = INVALID_MARKER_COLOR;
@@ -88,7 +88,7 @@ public class GolemBellItem extends Item {
                                 }
                             }
 
-                            markerExisting = new Marker(markerExisting.pos,markerExisting.dim,markerExisting.side,newColor);
+                            markerExisting = new Marker(markerExisting.getPos(), markerExisting.getDim(), markerExisting.getSide(),newColor);
                             addMarkerFor(golem, markerExisting, stackTag);
                         } else {
                             removeMarkerFor(golem, markerExisting, stackTag);
@@ -123,9 +123,9 @@ public class GolemBellItem extends Item {
     private static @Nullable Marker findMarkerAt(BaseGolemEntity golem, BlockPos usedAtPos, Direction usedAtFace, ResourceLocation levelResLoc) {
         var markers = golem.markers;
         for (var marker : markers) {
-            if (Objects.equals(marker.pos, usedAtPos)
-            && Objects.equals(marker.side, usedAtFace)
-            && Objects.equals(marker.dim, levelResLoc)
+            if (Objects.equals(marker.getPos(), usedAtPos)
+            && Objects.equals(marker.getSide(), usedAtFace)
+            && Objects.equals(marker.getDim(), levelResLoc)
             ){
                 return marker;
             }

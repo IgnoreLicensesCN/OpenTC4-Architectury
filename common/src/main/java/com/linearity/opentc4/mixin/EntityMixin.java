@@ -2,6 +2,7 @@ package com.linearity.opentc4.mixin;
 
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.MutableClassToInstanceMap;
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -43,7 +44,15 @@ public class EntityMixin implements IObjectCacheableFakeFieldOwner {
             at = @At("HEAD")
     )
     private void opentc4$onRemoved(Entity.RemovalReason removalReason, CallbackInfo ci){
-        ThaumcraftEntityEvents.convertTaintMobOnRemoved((Entity) (Object) this,removalReason);
+        ThaumcraftEntityEvents.onEntityRemoved((Entity) (Object) this,removalReason);
+    }
+
+    @Inject(
+            method = "unsetRemoved",
+            at = @At("RETURN")
+    )
+    private void opentc4$onUnsetRemoved(CallbackInfo ci){
+        ThaumcraftEntityEvents.onEntityUnsetRemoved((Entity) (Object) this);
     }
 
     @Unique

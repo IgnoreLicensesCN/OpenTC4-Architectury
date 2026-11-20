@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.tainted.converted;
 
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -22,7 +23,7 @@ import thaumcraft.common.entities.abstracts.ITaintRecoverableMob;
 import static thaumcraft.common.entities.ThaumcraftEntities.*;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_CHICKEN;
 
-public class TaintedChickenEntity extends Chicken implements Enemy, ITaintConvertableEntity, ITaintRecoverableMob {
+public class TaintedChickenEntity extends Chicken implements Enemy, ITaintConvertableEntity, ITaintRecoverableMob, IClearGoalOnRemovedEntity {
     public TaintedChickenEntity(Level level) {
         this(TAINTED_CHICKEN(), level);
     }

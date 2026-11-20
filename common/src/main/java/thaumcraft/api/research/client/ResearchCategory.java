@@ -13,8 +13,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.linearity.opentc4.OpenTC4.CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG;
+import static com.linearity.opentc4.OpenTC4.DEBUG_FLAG;
+import static com.linearity.opentc4.OpenTC4.DebugFlags.CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG;
 
+@Deprecated(forRemoval = true,since = "just redesign it.")
 public class ResearchCategory {
 
     //Research
@@ -90,7 +92,7 @@ public class ResearchCategory {
         this.maxDisplayColumn = Math.max(shownInfo.column(), this.maxDisplayColumn);
         this.maxDisplayRow = Math.max(shownInfo.row(), this.maxDisplayRow);
 
-        if (CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG){
+        if (DEBUG_FLAG && CHECK_RESEARCH_RENDER_LOCATION_SAME_FLAG){
             for (var researchAndShowInfoEntry : this.researchesShownInfo.entrySet()) {
                 var researchShowInfoAdded = researchAndShowInfoEntry.getValue();
                 if (researchShowInfoAdded.row() == shownInfo.row()

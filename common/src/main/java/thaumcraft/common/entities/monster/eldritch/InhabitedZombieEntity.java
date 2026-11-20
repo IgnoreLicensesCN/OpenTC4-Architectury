@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.monster.eldritch;
 
+import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
@@ -28,7 +29,7 @@ import thaumcraft.common.entities.abstracts.ITaintRecoverableMob;
 import thaumcraft.common.entities.monster.cultists.CultistEntity;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 
-public class InhabitedZombieEntity extends Zombie implements ITaintConvertableEntity, ITaintRecoverableMob {
+public class InhabitedZombieEntity extends Zombie implements ITaintConvertableEntity, ITaintRecoverableMob, IClearGoalOnRemovedEntity {
     public InhabitedZombieEntity(EntityType<? extends Zombie> entityType, Level level) {
         super(entityType, level);
     }
