@@ -11,7 +11,6 @@ import java.math.RoundingMode;
 
 public class GolemGotoGetLiquidGoal extends AbstractGolemFindLiquidToGetGoal{
     public int tickRemaining = 0;
-    public BlockPos.MutableBlockPos prevPos = new BlockPos.MutableBlockPos();
     public GolemGotoGetLiquidGoal(BaseGolemEntity golem) {
         super(golem);
 
@@ -38,7 +37,6 @@ public class GolemGotoGetLiquidGoal extends AbstractGolemFindLiquidToGetGoal{
             return;
         }
         tickRemaining = 200;
-        prevPos.set(golem.blockPosition());
         golem.getNavigation().moveTo(getPath(targetMarker),golem.getMoveControl().getSpeedModifier());
     }
 
@@ -52,7 +50,6 @@ public class GolemGotoGetLiquidGoal extends AbstractGolemFindLiquidToGetGoal{
     public void tick() {
         super.tick();
         tickRemaining--;
-        prevPos.set(golem.blockPosition());
     }
 
     @Override

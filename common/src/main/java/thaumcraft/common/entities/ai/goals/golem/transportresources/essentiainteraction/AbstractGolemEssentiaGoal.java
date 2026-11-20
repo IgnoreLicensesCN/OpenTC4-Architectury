@@ -13,6 +13,7 @@ public abstract class AbstractGolemEssentiaGoal extends AbstractGolemGoal {
     public double reachRange() {
         return 2;
     }
+
     public double reachRangeSqr(){
         return reachRange() * reachRange();
     }

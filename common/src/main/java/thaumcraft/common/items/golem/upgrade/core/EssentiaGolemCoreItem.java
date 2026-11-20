@@ -16,6 +16,7 @@ import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemAdditional
 
 import static com.linearity.opentc4.Consts.EssentiaCoreTagAccessors.*;
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
+import static thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem.DefaultGoalsAndIDs.*;
 
 public class EssentiaGolemCoreItem extends AbstractGolemCoreItem implements IGolemAdditionalDataProviderItem {
 
@@ -65,6 +66,8 @@ public class EssentiaGolemCoreItem extends AbstractGolemCoreItem implements IGol
     @Override
     public void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GolemGoalSelector goalSelector, GolemGoalSelector targetSelector) {
         super.registerGoalForGolem(golem, upgradeStack, goalSelector, targetSelector);
-
+        goalSelector.addGoalIfNotExist(1,GOLEM_FILL_IN_ESSENTIA,GOLEM_FILL_IN_ESSENTIA_GOAL_PROVIDER,golem);
+        goalSelector.addGoalIfNotExist(2,GOLEM_GATHER_ESSENTIA,GOLEM_GATHER_ESSENTIA_GOAL_PROVIDER,golem);
+        goalSelector.addGoalIfNotExist(2,GOLEM_GOTO_FILL_IN_ESSENTIA,GOLEM_GOTO_FILL_IN_ESSENTIA_GOAL_PROVIDER,golem);
     }
 }

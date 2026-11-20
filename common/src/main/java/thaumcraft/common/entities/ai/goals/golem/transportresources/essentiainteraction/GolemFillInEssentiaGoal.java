@@ -8,37 +8,9 @@ import thaumcraft.common.items.golem.upgrade.core.EssentiaGolemCoreItem;
 
 import static thaumcraft.common.entities.golems.GolemEssentiaJarSearchingHelper.getBestEssentiaContainerWithRoomForConnectedJars;
 
-public class GolemFillInEssentiaGoal extends AbstractGolemEssentiaGoal {
-    protected GolemEssentiaJarSearchingHelper.BestEssentiaContainerResultReceiver searchResultReceiver =
-            new GolemEssentiaJarSearchingHelper.BestEssentiaContainerResultReceiver();
-
+public class GolemFillInEssentiaGoal extends AbstractGolemSearchToFillInEssentiaGoal {
     public GolemFillInEssentiaGoal(BaseGolemEntity golem) {
         super(golem);
-    }
-    @Override
-    public boolean canUse() {
-        var holding = EssentiaGolemCoreItem.GolemHoldingEssentiaFakeField.getHolding(golem);
-        if (holding.aspect.isEmpty() || holding.amount <= 0) {
-            return false;
-        }
-        for (var marker:golem.markers){
-            searchResultReceiver.reset();
-            getBestEssentiaContainerWithRoomForConnectedJars(
-                    golem,
-                    marker.getPos(),
-                    holding.aspect,
-                    holding.amount,
-                    searchResultReceiver
-                    );
-            var atPos = searchResultReceiver.getBlockPos();
-            if (searchResultReceiver.isFoundResult()
-                    && !(atPos.getX() == Integer.MAX_VALUE || atPos.getY() == Integer.MAX_VALUE || atPos.getZ() == Integer.MAX_VALUE)
-                    && atPos.distToCenterSqr(golem.position()) <= reachRange()
-            ){
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
@@ -60,7 +32,6 @@ public class GolemFillInEssentiaGoal extends AbstractGolemEssentiaGoal {
                 }
             }
         }
-
     }
 
     @Override

@@ -15,6 +15,9 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.golem.*;
 import thaumcraft.common.entities.ai.goals.golem.miscjobs.*;
 import thaumcraft.common.entities.ai.goals.golem.targeting.GolemHurtByTargetGoal;
+import thaumcraft.common.entities.ai.goals.golem.transportresources.essentiainteraction.GolemFillInEssentiaGoal;
+import thaumcraft.common.entities.ai.goals.golem.transportresources.essentiainteraction.GolemGatherEssentiaGoal;
+import thaumcraft.common.entities.ai.goals.golem.transportresources.essentiainteraction.GolemGotoFillInEssentiaGoal;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.*;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.gotogoal.container.GolemGotoContainerForEmptyGoal;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.gotogoal.container.GolemGotoContainerForFillingGoal;
@@ -99,6 +102,12 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final GolemGoalProvider GOLEM_GET_LIQUID_GOAL_PROVIDER = GolemGetLiquidGoal::new;
         public static final GoalResourceLocation GOLEM_GOTO_GET_LIQUID = GoalResourceLocation.of(Thaumcraft.MOD_ID,"goto_goto_get_liquid");
         public static final GolemGoalProvider GOLEM_GOTO_GET_LIQUID_GOAL_PROVIDER = GolemGotoGetLiquidGoal::new;
+        public static final GoalResourceLocation GOLEM_FILL_IN_ESSENTIA = GoalResourceLocation.of(Thaumcraft.MOD_ID,"fill_in_essentia");
+        public static final GolemGoalProvider GOLEM_FILL_IN_ESSENTIA_GOAL_PROVIDER = GolemFillInEssentiaGoal::new;
+        public static final GoalResourceLocation GOLEM_GATHER_ESSENTIA = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_gather_essentia");
+        public static final GolemGoalProvider GOLEM_GATHER_ESSENTIA_GOAL_PROVIDER = GolemGatherEssentiaGoal::new;
+        public static final GoalResourceLocation GOLEM_GOTO_FILL_IN_ESSENTIA = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_goto_gather_essentia");
+        public static final GolemGoalProvider GOLEM_GOTO_FILL_IN_ESSENTIA_GOAL_PROVIDER = GolemGotoFillInEssentiaGoal::new;
 
         public static void registerDefaultTargetConfig(Set<GolemConfigurationKey<?>> configurationProviders){
             configurationProviders.add(TARGET_SELECTOR_HOSTILE_CONFIG_KEY);

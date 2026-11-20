@@ -13,6 +13,7 @@ import thaumcraft.common.tiles.crafted.essentiabe.AlchemicalFurnaceBlockEntity;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
+//TODO:[maybe wont finished]API for varied extraction
 public class GolemGatherEssentiaGoal extends AbstractGolemEssentiaGoal{
 
     public GolemGatherEssentiaGoal(BaseGolemEntity golem) {
