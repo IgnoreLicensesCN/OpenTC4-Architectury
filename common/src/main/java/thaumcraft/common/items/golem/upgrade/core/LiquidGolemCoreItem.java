@@ -11,8 +11,7 @@ import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemAdditional
 
 import static com.linearity.opentc4.Consts.LiquidCoreTagAccessors.HOLDING_FLUID;
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
-import static thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem.DefaultGoalsAndIDs.GOLEM_FILL_IN_LIQUID;
-import static thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem.DefaultGoalsAndIDs.GOLEM_FILL_IN_LIQUID_GOAL_PROVIDER;
+import static thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem.DefaultGoalsAndIDs.*;
 
 public class LiquidGolemCoreItem
         extends AbstractGolemCoreItemWithGui
@@ -55,5 +54,6 @@ public class LiquidGolemCoreItem
     public void registerGoalForGolem(BaseGolemEntity golem, ItemStack upgradeStack, GolemGoalSelector goalSelector, GolemGoalSelector targetSelector) {
         super.registerGoalForGolem(golem, upgradeStack, goalSelector, targetSelector);
         goalSelector.addGoalIfNotExist(1,GOLEM_FILL_IN_LIQUID,GOLEM_FILL_IN_LIQUID_GOAL_PROVIDER,golem);
+        goalSelector.addGoalIfNotExist(2,GOLEM_GET_LIQUID,GOLEM_GET_LIQUID_GOAL_PROVIDER,golem);
     }
 }

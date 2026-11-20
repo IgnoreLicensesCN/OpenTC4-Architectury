@@ -99,7 +99,7 @@ public class ElementalAxeItem extends AxeItem implements IDropFollowingUserTool,
     public BlockPos redirectBreakPosToPos(BlockPos originalPos, Entity entityUsingTool,ItemStack usingStack) {
         var level = entityUsingTool.level();
         if (level.getBlockState(originalPos).is(BlockTags.MINEABLE_WITH_AXE)) {
-            return new HighestFurthestBlockFinder(level, state -> state.is(BlockTags.MINEABLE_WITH_AXE),64,5).find(originalPos);
+            return new HighestFurthestBlockFinder(level, (_ignoredLevel,_ignoredPos,state) -> state.is(BlockTags.MINEABLE_WITH_AXE),64,5).find(originalPos);
         }
         return originalPos;
     }

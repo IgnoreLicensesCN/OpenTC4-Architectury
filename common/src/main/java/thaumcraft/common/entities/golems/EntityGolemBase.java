@@ -238,8 +238,8 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //            this.targetTasks.addTask(2, new AINearestAttackableTarget(this, 0, true));
 //            break;
          case 5:
-            this.tasks.addTask(1, new AILiquidEmpty(this));
-            this.tasks.addTask(2, new AILiquidGather(this));
+//            this.tasks.addTask(1, new AILiquidEmpty(this));
+//            this.tasks.addTask(2, new AILiquidGather(this));
             this.tasks.addTask(3, new AILiquidGoto(this));
             break;
          case 6:

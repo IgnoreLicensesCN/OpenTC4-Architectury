@@ -208,6 +208,7 @@ public class GolemGetLiquidGoal extends AbstractGolemFluidGoal {
                 if (gotFromMarker.isEmpty()) {
                     if (!searchedFluidThisRun){
                         searchFluidSource(level, pos);
+                        searchedFluidThisRun = true;
                     }
 
                     while ((!offsets.isEmpty() && getRemainingSpace() > 0 && gotFromMarker.isEmpty())) {
@@ -224,11 +225,18 @@ public class GolemGetLiquidGoal extends AbstractGolemFluidGoal {
         }
     }
 
-    protected void searchFluidSource(Level level, BlockPos pos) {
+    @Override
+    public void start() {
+        super.start();
+        searchedFluidThisRun = false;
+        tickPassed = 0;
+    }
+
+    protected void searchFluidSource(Level level, BlockPos fromPos) {
         var searcher = new HighestFurthestBlockFinder(
                 golem.level(),
-                _ignored -> {
-                    var got = getFluidDirectlyFrom(level, pos);
+                (l,pos,state) -> {
+                    var got = getFluidDirectlyFrom(l, pos);
                     return got != null && !got.isEmpty();
                 },
                 getMaxHeight(),
@@ -236,8 +244,8 @@ public class GolemGetLiquidGoal extends AbstractGolemFluidGoal {
                 offsetsConsumer
         );
         offsets.clear();
-        offsets.posBase.set(pos);
-        searcher.find(pos);
+        offsets.posBase.set(fromPos);
+        searcher.find(fromPos);
         offsets.sort();
     }
 

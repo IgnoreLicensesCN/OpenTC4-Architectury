@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import oshi.annotation.concurrent.NotThreadSafe;
 
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 //TODO:Result cache in some situations to reduce lag
@@ -18,7 +19,7 @@ import java.util.function.Predicate;
 @NotThreadSafe
 public class HighestFurthestBlockFinder {
     protected final Level level;
-    protected final Predicate<BlockState> matcher;
+    protected final ValidFindingBlockPredicate matcher;
 
     protected final int maxHeight;
     protected final int maxXZManhattanDistance;
@@ -26,14 +27,17 @@ public class HighestFurthestBlockFinder {
     public interface TriIntConsumer {
         void accept(int x, int y, int z);
     }
+    public interface ValidFindingBlockPredicate {
+        boolean test(Level level, BlockPos pos,BlockState state);
+    }
     protected final TriIntConsumer validPosConsumer;
-    public HighestFurthestBlockFinder(Level level,Predicate<BlockState> matcher,int maxHeight,int maxXZManhattanDistance) {
+    public HighestFurthestBlockFinder(Level level,ValidFindingBlockPredicate matcher,int maxHeight,int maxXZManhattanDistance) {
         this(level,matcher,maxHeight,maxXZManhattanDistance,(_ignored,_what,_ever) -> {});
     }
 
     public HighestFurthestBlockFinder(
             Level level,
-            Predicate<BlockState> matcher,
+            ValidFindingBlockPredicate matcher,
             int maxHeight,
             int maxXZManhattanDistance,
             TriIntConsumer validPosConsumer
@@ -125,7 +129,7 @@ public class HighestFurthestBlockFinder {
 
     private final BlockPos.MutableBlockPos cachePos = new BlockPos.MutableBlockPos();
     public boolean testBlockState(int x,int y,int z) {
-        return matcher.test(level.getBlockState(cachePos.set(x, y, z)));
+        return matcher.test(level,cachePos.set(x, y, z),level.getBlockState(cachePos));
     }
 
     private int manhattanDistanceXZ(int xa,int za,int xb, int zb){

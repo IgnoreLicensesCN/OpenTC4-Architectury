@@ -19,12 +19,10 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.entities.golems.Marker;
 import thaumcraft.common.items.golem.upgrade.core.LiquidGolemCoreItem;
-import thaumcraft.common.lib.fakeplayer.FakeThaumcraftPlayer;
 
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 import static com.linearity.opentc4.OpenTC4.platformUtils;
 
