@@ -1,5 +1,6 @@
 package thaumcraft.common.entities.ai.goals.golem.transportresources.liquidinteraction;
 
+import com.linearity.opentc4.PlatformUniqueUtils;
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -50,9 +51,10 @@ public abstract class AbstractGolemFindLiquidToGetGoal extends AbstractGolemFlui
             Direction dir = marker.getSide();
             posCacheForCanUse.set(pos);
             if (posCacheForCanUse.distToCenterSqr(golem.position()) < reachRangeSqr()) {
-                int tanks = platformUtils.getFluidTanksFromPos(level, pos, dir);
+                PlatformUniqueUtils.FluidInteractionManager fluidInteractionManager = platformUtils.getFluidInteractionManager();
+                int tanks = fluidInteractionManager.getFluidTanksFromPos(level, pos, dir);
                 for (var tankIndex = 0; tankIndex < tanks; tankIndex++) {
-                    var fluidInside = platformUtils.getFluidFromPos(level, pos, dir, tankIndex);
+                    var fluidInside = fluidInteractionManager.getFluidFromPos(level, pos, dir, tankIndex);
                     if (!fluidInside.isEmpty()) {
                         if (verifyFluidForMarker(fluidInside, marker)) {
                             return true;

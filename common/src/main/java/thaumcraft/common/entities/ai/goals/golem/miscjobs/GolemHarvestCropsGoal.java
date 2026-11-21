@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.goals.golem.miscjobs;
 
-import com.linearity.opentc4.utils.EasyLCGGenerator;
+import com.linearity.opentc4.utils.random.LCGBlockPosGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -19,7 +19,8 @@ public class GolemHarvestCropsGoal extends AbstractGolemGoal {
     private int delay = -1;
     private int mod = 1;
     protected int tickCountRemaining = 0;
-    protected EasyLCGGenerator LCGGen = new EasyLCGGenerator((getFarmingDistance()*2+1)*(getFarmingDistance()*2+1));
+    protected LCGBlockPosGenerator posGen = new LCGBlockPosGenerator(getFarmingDistance(),1,getFarmingDistance());
+//    protected EasyLCGGenerator LCGGen = new EasyLCGGenerator((getFarmingDistance()*2+1)*(getFarmingDistance()*2+1));
     public GolemHarvestCropsGoal(BaseGolemEntity golem) {
         super(golem);
     }
@@ -58,9 +59,10 @@ public class GolemHarvestCropsGoal extends AbstractGolemGoal {
     protected boolean findGrownCrop() {
         var level = golem.level();
         if (level instanceof ServerLevel serverLevel){
-            int xz = LCGGen.next();
-            int xOffset = xz%(getFarmingDistance()*2+1);
-            int zOffset = xz/(getFarmingDistance()*2+1);
+            posGen.moveToNextBlockPos();
+            int xOffset = posGen.resultCache.getX();
+            int zOffset = posGen.resultCache.getZ();
+
             BlockPos homePos = golem.getRestrictCenter();
             int x = homePos.getX() + xOffset;
             int z = homePos.getZ() + zOffset;

@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.crafted;
 
-import com.linearity.opentc4.utils.EasyLCGGenerator;
+import com.linearity.opentc4.utils.random.LCGBlockPosGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -91,24 +91,25 @@ implements IEssentiaTransportOutBlockEntity {
     protected int getMaxToCheckEachRun(){
         return 16;
     }
-
-    protected EasyLCGGenerator LCGGen = new EasyLCGGenerator((getCleanDistance()*2 + 1)*(getCleanDistance()*2 + 1)*(getCleanDistance()*2 + 1));
+    protected LCGBlockPosGenerator posGen = new LCGBlockPosGenerator(
+            getCleanDistance(),getCleanDistance(),getCleanDistance()
+    );
+//    protected EasyLCGGenerator LCGGen = new EasyLCGGenerator((getCleanDistance()*2 + 1)*(getCleanDistance()*2 + 1)*(getCleanDistance()*2 + 1));
     protected final BlockPos.MutableBlockPos posToCheck = new BlockPos.MutableBlockPos();
     private void checkFlux() {
         if (this.level == null){
             return;
         }
         int distance = getCleanDistance();
-//        int distanceCube = ((distance*2 + 1)*(distance*2 + 1)*(distance*2 + 1));
-//        LCGGen.setStep(distanceCube);
-        int index = LCGGen.next();
         for (int i = 0; i< getMaxToCheckEachRun(); i++){
-            int x = (index/((distance*2 + 1)*(distance*2 + 1))) ;
-            int yz = index % ((distance*2 + 1)*(distance*2 + 1));
-            int y = yz /((distance*2 + 1));
-            int z = yz %((distance*2 + 1));
+            posGen.moveToNextBlockPos();
+            var offset = posGen.resultCache;
+            int xOffset = offset.getX();
+            int yOffset = offset.getY();
+            int zOffset = offset.getZ();
+
             var selfPos = getBlockPos();
-            posToCheck.set(x + selfPos.getX(), y + selfPos.getY(), z + selfPos.getZ());
+            posToCheck.set(xOffset + selfPos.getX(), yOffset + selfPos.getY(), zOffset + selfPos.getZ());
             if (this.isFlux(posToCheck)) {
                 this.centiVisAmount -= 5;
 
@@ -123,7 +124,7 @@ implements IEssentiaTransportOutBlockEntity {
                 }
 
                 if (this.level instanceof ServerLevel serverLevel){
-                    new PacketFXBlockSparkleS2C(x, y, z, 0xdd00ff).sendToAllAround(serverLevel,posToCheck,32*32);
+                    new PacketFXBlockSparkleS2C(posToCheck.getX(),posToCheck.getY(),posToCheck.getZ(), 0xdd00ff).sendToAllAround(serverLevel,posToCheck,32*32);
                 }
                 ++this.progressForNextEssentiaGeneration;
                 markDirtyAndUpdateSelf();

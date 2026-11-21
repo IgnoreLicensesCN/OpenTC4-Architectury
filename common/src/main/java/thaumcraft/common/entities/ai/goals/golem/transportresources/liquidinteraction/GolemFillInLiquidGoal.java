@@ -2,6 +2,7 @@ package thaumcraft.common.entities.ai.goals.golem.transportresources.liquidinter
 
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.Level;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.golem.upgrade.core.LiquidGolemCoreItem;
 
@@ -28,13 +29,8 @@ public class GolemFillInLiquidGoal extends AbstractGolemFluidGoal {
     protected long insertFluidHome(FluidStack holdingFluid,boolean doit) {
         var dir = golem.homeDirection;
         var homePos = golem.getRestrictCenter();
-        return platformUtils.insertFluidToPos(
-                golem.level(),
-                homePos,
-                dir,
-                holdingFluid,
-                doit
-        );
+        Level level = golem.level();
+        return platformUtils.getFluidInteractionManager().insertFluidToPos(level, homePos, dir, holdingFluid, doit);
     }
 
     @Override

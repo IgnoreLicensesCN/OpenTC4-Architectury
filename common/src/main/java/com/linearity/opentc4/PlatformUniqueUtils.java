@@ -43,21 +43,28 @@ public abstract class PlatformUniqueUtils {
     public abstract void registerServerTickEndEvent(ITickEvent tickEvent);
     public abstract void registerCommand(TriConsumer<CommandDispatcher<CommandSourceStack>, CommandBuildContext, Commands.CommandSelection> commandDispatcherConsumer);
     public abstract void registerEntityDefaultAttribute(EntityType<? extends LivingEntity> entityType, Attribute attribute);
-    public abstract void registerModelForItem(Item item, ResourceLocation modelLocation);
     public abstract void registerOnLeftClickBlockListenerForItem(IAttackBlockListenerItem listener, Item forItem);
+
+    public abstract void registerModelForItem(Item item, ResourceLocation modelLocation);
     public abstract BakedModel getModel(ResourceLocation modelLocation);
     public void registerModel(ResourceLocation modelLocation){};
 
-    public abstract long/*filled*/ insertFluidToPos(Level level, BlockPos pos, Direction dir, FluidStack fluidStack/*will be modified*/,boolean doit);
-    public abstract FluidStack/*extracted*/ extractFluidFromPos(Level level, BlockPos pos, Direction dir, long expectedAmount,boolean doit);
-    public abstract FluidStack/*extracted*/ getFluidFromPos(Level level, BlockPos pos, Direction dir,int tankIndex);
-    public abstract int getFluidTanksFromPos(Level level, BlockPos pos, Direction dir);
-    public abstract @Nullable FluidStack copyFluidStackFromItemStack(ItemStack itemStack);
-    public abstract @NotNull Fluid getFluidFromItemStack(ItemStack itemStack);
-    public abstract FluidStack drainFluidStackFromItemStack(ItemStack itemStack,FluidStack fluidStack,boolean doit);
-    public abstract long/*filled*/ insertFluidStackToItemStack(ItemStack itemStack, FluidStack fluidStack, boolean doit);
+    public abstract static class FluidInteractionManager {
+        public abstract long/*filled*/ insertFluidToPos(Level level, BlockPos pos, Direction dir, FluidStack fluidStack/*will be modified*/,boolean doit);
+        public abstract FluidStack/*extracted*/ extractFluidFromPos(Level level, BlockPos pos, Direction dir, long expectedAmount,boolean doit);
+        public abstract FluidStack/*extracted*/ getFluidFromPos(Level level, BlockPos pos, Direction dir,int tankIndex);
+        public abstract int getFluidTanksFromPos(Level level, BlockPos pos, Direction dir);
+        public abstract @Nullable FluidStack copyFluidStackFromItemStack(ItemStack itemStack);
+        public abstract @NotNull Fluid getFluidFromItemStack(ItemStack itemStack);
+        public abstract FluidStack drainFluidStackFromItemStack(ItemStack itemStack,FluidStack fluidStack,boolean doit);
+        public abstract long/*filled*/ insertFluidStackToItemStack(ItemStack itemStack, FluidStack fluidStack, boolean doit);
+    }
 
+    public abstract FluidInteractionManager getFluidInteractionManager();
+
+    //TODO:[maybe wont finished]IOwnedFakePlayer to mark owner context for fake player
     public abstract ServerPlayer getFakePlayer(ServerLevel level, @Nullable UUID playerUuid);
+    public abstract boolean isFakePlayer(ServerPlayer player);
 
     public abstract void init();
 

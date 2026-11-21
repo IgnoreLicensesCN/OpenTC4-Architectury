@@ -1,22 +1,24 @@
-package com.linearity.opentc4.utils;
+package com.linearity.opentc4.utils.random;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 //for small numbers only,only positive numbers
 //if you got something makes "gcd(LCGStep,step) != 1" it would not work fine.
 //but that may not happen now since we have so large primes(all them >2^31)
-@RequiredArgsConstructor
 @AllArgsConstructor
 public class EasyLCGGenerator {
+
     public EasyLCGGenerator(int step){
+        if (step <= 0) {
+            throw new IllegalArgumentException("step must be greater than 0");
+        }
         this.step = step;
     }
     @Setter//but dont set it all the day it would be terrible for rng performance
     protected int step;
     protected int easyLCGState = 0;
-    protected long LCGStep = LCGNeededPrimesExample[Math.abs(System.identityHashCode(this)% LCGNeededPrimesExample.length)];
+    protected long LCGStep = LCGNeededPrimesExample[(System.identityHashCode(this) & Integer.MAX_VALUE)% LCGNeededPrimesExample.length];
     public int next(){
         easyLCGState = (int)((easyLCGState + LCGStep) % step);
         return easyLCGState;

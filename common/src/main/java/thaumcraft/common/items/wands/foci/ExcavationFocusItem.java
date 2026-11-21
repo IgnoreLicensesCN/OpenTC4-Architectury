@@ -2,10 +2,16 @@ package thaumcraft.common.items.wands.foci;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.opentc4.annotations.RecommendedLogicalSide;
 import com.linearity.opentc4.mixinaccessors.DropExperienceBlockAccessor;
-import com.linearity.opentc4.utils.EasyLCGGenerator;
+import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
+import com.linearity.opentc4.utils.random.EasyLCGGenerator;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
+import dev.architectury.platform.Platform;
+import dev.architectury.utils.Env;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -40,18 +46,21 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
+import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.IWandFocusEngineItem;
 import thaumcraft.client.fx.migrated.beams.FXBeamWand;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
+import thaumcraft.common.items.golem.upgrade.core.EssentiaGolemCoreItem;
 import thaumcraft.common.items.wands.render.waveanimations.AbstractWandWaveAnimation;
 import thaumcraft.common.items.wands.render.waveanimations.ThaumcraftWandWaveAnimations;
 
 import java.util.*;
 import java.util.function.Consumer;
 
+import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
 import static com.linearity.opentc4.utils.consts.DirectionShuffles.DIRECTIONS_SHUFFLED;
 import static net.minecraft.world.level.block.Block.getDrops;
 import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS;
@@ -133,10 +142,22 @@ public class ExcavationFocusItem extends BasicFocusItem {
         return new InteractionResultHolder<>(InteractionResult.CONSUME, wandStack);
     }
 
-    private static final Map<Entity, BlockPos> lastUsingAtCoords = new MapMaker().weakKeys().concurrencyLevel(2).makeMap();
-    private static final Map<Entity, Long> soundDelay = new MapMaker().weakKeys().concurrencyLevel(2).makeMap();
-    private static final Map<Entity, FXBeamWand> beam = new MapMaker().weakKeys().concurrencyLevel(2).makeMap();
-    private static final Map<Entity, Float> breakCount = new MapMaker().weakKeys().concurrencyLevel(2).makeMap();
+//    private static final Map<Entity, BlockPos> lastUsingAtCoords = new MapMaker().weakKeys().concurrencyLevel(2).makeMap();
+//    private static final Map<Entity, Long> soundDelay = new MapMaker().weakKeys().concurrencyLevel(2).makeMap();
+//    private static final Map<Entity, FXBeamWand> beam = new MapMaker().weakKeys().concurrencyLevel(2).makeMap();
+//    private static final Map<Entity, Float> breakCount = new MapMaker().weakKeys().concurrencyLevel(2).makeMap();
+
+    public static class ExcavationFocusFakeField implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<Entity> {
+        BlockPos.MutableBlockPos lastUsingAtCoords = new BlockPos.MutableBlockPos(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        int soundTickDelay = 0;
+        float breakCount = 0.0F;
+        @Environment(EnvType.CLIENT)
+        @Nullable FXBeamWand fxBeamWand = null;
+
+        public static ExcavationFocusFakeField getExcavationEffectField(Entity entity) {
+            return opentc4$getOrCreateCachedObjectFrom(entity, ExcavationFocusFakeField.class, ExcavationFocusFakeField::new);
+        }
+    }
     private static final BlockPos ZERO = new BlockPos(0, 0, 0);
     private static final BlockPos MAX = new BlockPos(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
 
@@ -169,10 +190,7 @@ public class ExcavationFocusItem extends BasicFocusItem {
         }
         {
 
-            soundDelay.putIfAbsent(user, 0L);
-            breakCount.putIfAbsent(user, 0.0F);
-            lastUsingAtCoords.putIfAbsent(user, ZERO);
-
+            var effectField = ExcavationFocusFakeField.getExcavationEffectField(user);
             HitResult mop = user.pick(5, 0, false);
             Vec3 v = user.getLookAngle();
             double tx = user.getX() + v.x() * (double)10.0F;
@@ -180,12 +198,12 @@ public class ExcavationFocusItem extends BasicFocusItem {
             double tz = user.getZ() + v.z() * (double)10.0F;
             int impact = 0;
 
-            if (mop.getType() == HitResult.Type.MISS && level.isClientSide) {
+            if (Platform.getEnvironment() == Env.CLIENT && level.isClientSide && mop.getType() == HitResult.Type.MISS) {
                 if (level instanceof ClientLevel clientLevel) {
-                    lastUsingAtCoords.put(user, MAX);
-                    breakCount.put(user, 0.F);
-                    soundDelay.put(user, 0L);
-                    beam.put(user, ClientFXUtils.beamCont(clientLevel, user, tx, ty, tz, 2, 65382, false, 0.0F, beam.get(user), impact));
+                    effectField.lastUsingAtCoords.set(MAX);
+                    effectField.breakCount = 0;
+                    effectField.soundTickDelay = 0;
+                    effectField.fxBeamWand = ClientFXUtils.beamCont(clientLevel, user, tx, ty, tz, 2, 65382, false, 0.0F, effectField.fxBeamWand, impact);
                 }
                 return;
             }
@@ -195,17 +213,19 @@ public class ExcavationFocusItem extends BasicFocusItem {
             tz = mopVec.z();
             var mopBlockPos = new BlockPos((int)mopVec.x(),(int) mopVec.y(),(int)mopVec.z());
             impact = 5;
-            if (serverSideFlag && soundDelay.get(user) < System.currentTimeMillis()) {
+            if (serverSideFlag && effectField.soundTickDelay < user.tickCount) {
                 level.playSound(user,mopBlockPos, ThaumcraftSounds.RUMBLE, SoundSource.BLOCKS,.3F,1.F);
-                soundDelay.put(user, System.currentTimeMillis() + 1200L);
+                effectField.soundTickDelay = user.tickCount + 24;
             }
-            if (level instanceof ClientLevel clientLevel) {
-                beam.put(user, ClientFXUtils.beamCont(clientLevel, user, tx, ty, tz, 2, 65382, false, 2.0F, beam.get(user), impact));
+            if (Platform.getEnvironment() == Env.CLIENT) {
+                if (level instanceof ClientLevel clientLevel) {
+                    effectField.fxBeamWand = ClientFXUtils.beamCont(clientLevel, user, tx, ty, tz, 2, 65382, false, 2.0F, effectField.fxBeamWand, impact);
+                }
             }
 
             if (mop.getType() != HitResult.Type.BLOCK || !(user instanceof Player player)){
-                lastUsingAtCoords.put(user,MAX);
-                breakCount.put(user,0.F);
+                effectField.lastUsingAtCoords.set(MAX);
+                effectField.breakCount = 0;
                 return;
             }
 
@@ -225,9 +245,9 @@ public class ExcavationFocusItem extends BasicFocusItem {
                         speed *= 3.0F;
                     }
 
-                    if (Objects.equals(mopBlockPos,lastUsingAtCoords.getOrDefault(user,MAX))
+                    if (Objects.equals(mopBlockPos,effectField.lastUsingAtCoords)
                     ) {
-                        float bc = breakCount.get(user);
+                        float bc = effectField.breakCount;
                         if (!serverSideFlag && bc > 0.0F && !blockState.isAir()) {
                             int progress = (int)(bc / hardness * 9.0F);
                             ClientFXUtils.excavateFX(mopBlockPos, user, blockState.getBlock().arch$registryName(), progress);
@@ -235,9 +255,9 @@ public class ExcavationFocusItem extends BasicFocusItem {
 
                         if (!serverSideFlag) {
                             if (bc >= hardness) {
-                                breakCount.put(user, 0.0F);
+                                effectField.breakCount = 0;
                             } else {
-                                breakCount.put(user, bc + speed);
+                                effectField.breakCount = bc + speed;
                             }
                         } else if (bc >= hardness
                                 && container.consumeAllCentiVis(usingWand, user, getCentiVisCost(focusStack,upgrades),
@@ -250,19 +270,19 @@ public class ExcavationFocusItem extends BasicFocusItem {
                                     }
                                 }
                             }
-                            lastUsingAtCoords.put(user,MAX);
-                            breakCount.put(user, 0.0F);
+                            effectField.lastUsingAtCoords.set(MAX);
+                            effectField.breakCount = 0;
                         } else {
-                            breakCount.put(user, bc + speed);
+                            effectField.breakCount = bc + speed;
                         }
                     } else {
-                        lastUsingAtCoords.put(user,MAX);
-                        breakCount.put(user, 0.0F);
+                        effectField.lastUsingAtCoords.set(MAX);
+                        effectField.breakCount = 0;
                     }
                 }
             } else {
-                lastUsingAtCoords.put(user,MAX);
-                breakCount.put(user,0.F);
+                effectField.lastUsingAtCoords.set(MAX);
+                effectField.breakCount = 0;
             }
 
         }

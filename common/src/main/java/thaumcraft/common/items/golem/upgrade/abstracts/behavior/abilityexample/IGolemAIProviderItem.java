@@ -96,18 +96,21 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final GolemGoalProvider ATTACK_NEAREST_ATTACKABLE_GOAL_PROVIDER = (golem) -> new NearestAttackableTargetGoal<>(golem, LivingEntity.class,true,living -> golemCanSelectTargetWithDefaultConfig(golem,living));
         public static final GoalResourceLocation GOLEM_MELEE_ATTACK = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_melee_attack");
         public static final GolemGoalProvider GOLEM_MELEE_ATTACK_GOAL_PROVIDER = GolemMeleeAttackGoal::new;
-        public static final GoalResourceLocation GOLEM_FILL_IN_LIQUID = GoalResourceLocation.of(Thaumcraft.MOD_ID,"fill_in_liquid");
+        public static final GoalResourceLocation GOLEM_FILL_IN_LIQUID = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_fill_in_liquid");
         public static final GolemGoalProvider GOLEM_FILL_IN_LIQUID_GOAL_PROVIDER = GolemFillInLiquidGoal::new;
         public static final GoalResourceLocation GOLEM_GET_LIQUID = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_get_liquid");
         public static final GolemGoalProvider GOLEM_GET_LIQUID_GOAL_PROVIDER = GolemGetLiquidGoal::new;
-        public static final GoalResourceLocation GOLEM_GOTO_GET_LIQUID = GoalResourceLocation.of(Thaumcraft.MOD_ID,"goto_goto_get_liquid");
+        public static final GoalResourceLocation GOLEM_GOTO_GET_LIQUID = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_goto_goto_get_liquid");
         public static final GolemGoalProvider GOLEM_GOTO_GET_LIQUID_GOAL_PROVIDER = GolemGotoGetLiquidGoal::new;
-        public static final GoalResourceLocation GOLEM_FILL_IN_ESSENTIA = GoalResourceLocation.of(Thaumcraft.MOD_ID,"fill_in_essentia");
+        public static final GoalResourceLocation GOLEM_FILL_IN_ESSENTIA = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_fill_in_essentia");
         public static final GolemGoalProvider GOLEM_FILL_IN_ESSENTIA_GOAL_PROVIDER = GolemFillInEssentiaGoal::new;
         public static final GoalResourceLocation GOLEM_GATHER_ESSENTIA = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_gather_essentia");
         public static final GolemGoalProvider GOLEM_GATHER_ESSENTIA_GOAL_PROVIDER = GolemGatherEssentiaGoal::new;
         public static final GoalResourceLocation GOLEM_GOTO_FILL_IN_ESSENTIA = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_goto_gather_essentia");
         public static final GolemGoalProvider GOLEM_GOTO_FILL_IN_ESSENTIA_GOAL_PROVIDER = GolemGotoFillInEssentiaGoal::new;
+        public static final GoalResourceLocation GOLEM_HARVEST_LOG = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_harvest_log");
+        public static final GolemGoalProvider GOLEM_HARVEST_LOG_GOAL_PROVIDER = GolemHarvestLogsGoal::new;
+
 
         public static void registerDefaultTargetConfig(Set<GolemConfigurationKey<?>> configurationProviders){
             configurationProviders.add(TARGET_SELECTOR_HOSTILE_CONFIG_KEY);

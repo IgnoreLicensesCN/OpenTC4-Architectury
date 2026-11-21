@@ -1,6 +1,7 @@
 package thaumcraft.common.blocks.abstracts;
 
 import com.linearity.opentc4.OpenTC4;
+import com.linearity.opentc4.PlatformUniqueUtils;
 import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import dev.architectury.fluid.FluidStack;
@@ -31,24 +32,26 @@ public abstract class AbstractLiquidFillInBlock extends SuppressedWarningBlock
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
 
         var stack = player.getItemInHand(interactionHand);
-        var fluidStack = platformUtils.copyFluidStackFromItemStack(stack);
+        PlatformUniqueUtils.FluidInteractionManager fluidInteractionManager = platformUtils.getFluidInteractionManager();
+        var fluidStack = fluidInteractionManager.copyFluidStackFromItemStack(stack);
         if (fluidStack == null || fluidStack.isEmpty()) {
             return InteractionResult.PASS;
         }
-        var canDrain = platformUtils.drainFluidStackFromItemStack(stack, fluidStack, false);
+        var canDrain = fluidInteractionManager.drainFluidStackFromItemStack(stack, fluidStack, false);
         if (fluidStack.isEmpty()) {
             return InteractionResult.PASS;
         }
         var dir = blockHitResult.getDirection();
-        var simulatedResult = platformUtils.insertFluidToPos(level, blockPos, dir, canDrain, false);
+        var simulatedResult = fluidInteractionManager.insertFluidToPos(level, blockPos, dir, canDrain, false);
         if (simulatedResult > 0) {
-            var reallyDrained = platformUtils.drainFluidStackFromItemStack(stack, canDrain, true);
-            var reallyInserted = platformUtils.insertFluidToPos(level, blockPos, dir, reallyDrained, true);
+            var reallyDrained = fluidInteractionManager.drainFluidStackFromItemStack(stack, canDrain, true);
+            var reallyInserted = fluidInteractionManager.insertFluidToPos(level, blockPos, dir, reallyDrained, true);
             //fill back
             if (reallyInserted > 0) {
                 var remaining = reallyDrained.getAmount() - reallyInserted;
                 if (remaining > 0) {
-                    var cantFillBack = platformUtils.insertFluidStackToItemStack(stack, FluidStack.create(reallyDrained.getFluid(), remaining), true);
+                    FluidStack fluidStack1 = FluidStack.create(reallyDrained.getFluid(), remaining);
+                    var cantFillBack = fluidInteractionManager.insertFluidStackToItemStack(stack, fluidStack1, true);
                     if (DEBUG_FLAG && CANT_FILL_BACK_FLUID_WARN &&  cantFillBack != 0){
                         OpenTC4.LOGGER.error(
                                 "Can't fill back fluid {} in block {},remaining {}:{}",

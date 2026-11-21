@@ -3,10 +3,7 @@ package thaumcraft.common.entities.ai.goals.golem.transportresources.essentiaint
 import net.minecraft.sounds.SoundEvents;
 import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
-import thaumcraft.common.entities.golems.GolemEssentiaJarSearchingHelper;
 import thaumcraft.common.items.golem.upgrade.core.EssentiaGolemCoreItem;
-
-import static thaumcraft.common.entities.golems.GolemEssentiaJarSearchingHelper.getBestEssentiaContainerWithRoomForConnectedJars;
 
 public class GolemFillInEssentiaGoal extends AbstractGolemSearchToFillInEssentiaGoal {
     public GolemFillInEssentiaGoal(BaseGolemEntity golem) {

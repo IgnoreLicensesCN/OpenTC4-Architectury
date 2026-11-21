@@ -1,7 +1,7 @@
 package thaumcraft.common.items.wands.foci;
 
 
-import com.linearity.opentc4.utils.EasyLCGGenerator;
+import com.linearity.opentc4.utils.random.EasyLCGGenerator;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;

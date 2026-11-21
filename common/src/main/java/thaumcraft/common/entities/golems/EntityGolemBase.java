@@ -247,9 +247,9 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //            this.tasks.addTask(2, new AIEssentiaGather(this));
 //            this.tasks.addTask(3, new AIEssentiaGoto(this));
 //            break;
-         case 7:
-            this.tasks.addTask(2, new AIHarvestLogs(this));
-            break;
+//         case 7:
+//            this.tasks.addTask(2, new AIHarvestLogs(this));
+//            break;
          case 8:
             this.tasks.addTask(0, new AIHomeReplace(this));
             this.tasks.addTask(0, new AIUseItem(this));
@@ -1183,65 +1183,65 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //      }
 //   }
 
-   public boolean canAttackClass(Class par1Class) {
-      return EntityVillager.class != par1Class && EntityGolemBase.class != par1Class && EntityBat.class != par1Class;
-   }
+//   public boolean canAttackClass(Class par1Class) {
+//      return EntityVillager.class != par1Class && EntityGolemBase.class != par1Class && EntityBat.class != par1Class;
+//   }
 
-   public boolean isValidTarget(Entity target) {
-      if (!target.isEntityAlive()) {
-         return false;
-      } else if (
-              target instanceof Player
-                      && target.getCommandSenderName().equals(this.getOwnerName())
-      ) {
-         return false;
-      } else if (
-              !this.isWithinHomeDistance(
-                      MathHelper.floor_double(target.posX),
-                      MathHelper.floor_double(target.posY),
-                      MathHelper.floor_double(target.posZ)
-              )
-      ) {
-         return false;
-      } else {
-         if (this.getCore() == 9) {
-            if ((target instanceof IAnimals) && !(target instanceof IMob)
-                    && (!(target instanceof EntityTameable) || !((EntityTameable)target).isTamed())
-                    && !(target instanceof EntityGolem)
-            ) {
-                return !(target instanceof EntityAnimal) || !((EntityAnimal) target).isChild();
-            }
-         } else {
-            if (this.canAttackCreepers()
-                    && this.getUpgradeAmount(4) > 0
-                    && target instanceof EntityCreeper
-            ) {
-               return true;
-            }
-
-            if (this.canAttackHostiles()
-                    && (target instanceof IMob)
-                    && !(target instanceof EntityCreeper)
-            ) {
-               return true;
-            }
-
-            if (this.canAttackAnimals()
-                    && this.getUpgradeAmount(4) > 0
-                    && (target instanceof IAnimals)
-                    && !(target instanceof IMob)
-                    && (!(target instanceof EntityTameable) || !((EntityTameable)target).isTamed())
-                    && !(target instanceof EntityGolem)
-            ) {
-               return true;
-            }
-
-             return this.canAttackPlayers() && this.getUpgradeAmount(4) > 0 && target instanceof Player;
-         }
-
-         return false;
-      }
-   }
+//   public boolean isValidTarget(Entity target) {
+//      if (!target.isEntityAlive()) {
+//         return false;
+//      } else if (
+//              target instanceof Player
+//                      && target.getCommandSenderName().equals(this.getOwnerName())
+//      ) {
+//         return false;
+//      } else if (
+//              !this.isWithinHomeDistance(
+//                      MathHelper.floor_double(target.posX),
+//                      MathHelper.floor_double(target.posY),
+//                      MathHelper.floor_double(target.posZ)
+//              )
+//      ) {
+//         return false;
+//      } else {
+//         if (this.getCore() == 9) {
+//            if ((target instanceof IAnimals) && !(target instanceof IMob)
+//                    && (!(target instanceof EntityTameable) || !((EntityTameable)target).isTamed())
+//                    && !(target instanceof EntityGolem)
+//            ) {
+//                return !(target instanceof EntityAnimal) || !((EntityAnimal) target).isChild();
+//            }
+//         } else {
+//            if (this.canAttackCreepers()
+//                    && this.getUpgradeAmount(4) > 0
+//                    && target instanceof EntityCreeper
+//            ) {
+//               return true;
+//            }
+//
+//            if (this.canAttackHostiles()
+//                    && (target instanceof IMob)
+//                    && !(target instanceof EntityCreeper)
+//            ) {
+//               return true;
+//            }
+//
+//            if (this.canAttackAnimals()
+//                    && this.getUpgradeAmount(4) > 0
+//                    && (target instanceof IAnimals)
+//                    && !(target instanceof IMob)
+//                    && (!(target instanceof EntityTameable) || !((EntityTameable)target).isTamed())
+//                    && !(target instanceof EntityGolem)
+//            ) {
+//               return true;
+//            }
+//
+//             return this.canAttackPlayers() && this.getUpgradeAmount(4) > 0 && target instanceof Player;
+//         }
+//
+//         return false;
+//      }
+//   }
 
 //   public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLiving) {
 //      EntityDart var2 = new EntityDart(this.level(), this, par1EntityLiving, 1.6F, 7.0F - (float)this.getUpgradeAmount(3) * 1.75F);

@@ -544,7 +544,6 @@ public class ClientFXUtils {
                 new BlockPos(x, y, z),     // BlockPos
                 progress                  // 0–9
         );
-
     }
 
     public static void beam(ClientLevel worldObj, double sx, double sy, double sz, double tx, double ty, double tz, int type, int color, boolean reverse, float endmod, int age) {
@@ -573,15 +572,11 @@ public class ClientFXUtils {
         Minecraft.getInstance().particleEngine.add(beamcon);
     }
 
-    public static FXBeamWand beamCont(ClientLevel worldObj, LivingEntity living, double tx, double ty, double tz, int type, int color, boolean reverse, float endmod, Object input, int impact) {
+    public static FXBeamWand beamCont(ClientLevel worldObj, LivingEntity living, double tx, double ty, double tz, int type, int color, boolean reverse, float endmod,@Nullable FXBeamWand beamcon, int impact) {
         if (!checkPlatformClient()) {
             throw new RuntimeException("not avaliable in server");
         }
-        FXBeamWand beamcon = null;
         Color c = new Color(color);
-        if (input instanceof FXBeamWand) {
-            beamcon = (FXBeamWand) input;
-        }
 
         if (beamcon != null && !beamcon.isDead()) {
             beamcon.updateBeam(

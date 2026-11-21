@@ -2,16 +2,13 @@ package thaumcraft.common.items.golem.upgrade.core;
 
 import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
 import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
-import dev.architectury.fluid.FluidStack;
 import lombok.NoArgsConstructor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.aspectlists.AspectList;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemGoalSelector;
-import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemAdditionalDataProviderItem;
 
 import static com.linearity.opentc4.Consts.EssentiaCoreTagAccessors.*;

@@ -173,6 +173,127 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
 //            return false;
 //        }
 //    }
+    public static class ForgeFluidInteractionManager extends FluidInteractionManager {
+
+        @Override
+        public long/*filled*/ insertFluidToPos(Level level, BlockPos pos, Direction dir, FluidStack fluidStack/*will be modified*/,boolean doit){
+            var be = getExistingBlockEntity(level,pos);
+            if (be == null) {
+                return 0;
+            }
+            LazyOptional<IFluidHandler> cap = be.getCapability(FLUID_HANDLER,dir);
+            var handlerInstance = cap.map(handler -> handler).orElse(null);
+            if (handlerInstance == null) {
+                return 0;
+            }
+            int filled = handlerInstance.fill(new net.minecraftforge.fluids.FluidStack(fluidStack.getFluid(),(int)(fluidStack.getAmount() % Integer.MAX_VALUE)),doit?IFluidHandler.FluidAction.EXECUTE:IFluidHandler.FluidAction.SIMULATE);
+            if (filled != 0) {
+                fluidStack.setAmount(fluidStack.getAmount()-filled);
+            }
+            return filled;
+        }
+        @Override
+        public FluidStack/*extracted*/ extractFluidFromPos(Level level, BlockPos pos, Direction dir, long expectedAmount,boolean doit){
+            var be = getExistingBlockEntity(level,pos);
+            if (be == null) {
+                return FluidStack.empty();
+            }
+            LazyOptional<IFluidHandler> cap = be.getCapability(FLUID_HANDLER,dir);
+            var handlerInstance = cap.map(handler -> handler).orElse(null);
+            if (handlerInstance == null) {
+                return FluidStack.empty();
+            }
+            var extracted = handlerInstance.drain((int)(expectedAmount %Integer.MAX_VALUE),doit?IFluidHandler.FluidAction.EXECUTE:IFluidHandler.FluidAction.SIMULATE);
+            return FluidStack.create(extracted.getFluid(),extracted.getAmount());
+        }
+        @Override
+        public FluidStack getFluidFromPos(Level level, BlockPos pos, Direction dir,int tankIndex){
+            var be = getExistingBlockEntity(level,pos);
+            if (be == null) {
+                return FluidStack.empty();
+            }
+            LazyOptional<IFluidHandler> cap = be.getCapability(FLUID_HANDLER,dir);
+            var handlerInstance = cap.map(handler -> handler).orElse(null);
+            if (handlerInstance == null) {
+                return FluidStack.empty();
+            }
+            var extracted = handlerInstance.getFluidInTank(tankIndex);
+            return FluidStack.create(extracted.getFluid(),extracted.getAmount());
+        }
+        @Override
+        public int getFluidTanksFromPos(Level level, BlockPos pos, Direction dir){
+            var be = getExistingBlockEntity(level,pos);
+            if (be == null) {
+                return 0;
+            }
+            LazyOptional<IFluidHandler> cap = be.getCapability(FLUID_HANDLER,dir);
+            var handlerInstance = cap.map(handler -> handler).orElse(null);
+            if (handlerInstance == null) {
+                return 0;
+            }
+            return handlerInstance.getTanks();
+        }
+
+        @Override
+        public @NotNull Fluid getFluidFromItemStack(ItemStack stack) {
+            LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+            var handlerItem = cap.map(handler -> handler.getFluidInTank(0)).orElse(null);
+            if (handlerItem == null) {
+                return Fluids.EMPTY;
+            }
+            return handlerItem.getFluid();
+        }
+
+        @Override
+        public @Nullable FluidStack copyFluidStackFromItemStack(ItemStack stack) {
+            LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+            var handlerItem = cap.map(handler -> handler).orElse(null);
+            if (handlerItem == null) {return null;}
+            int tanks = handlerItem.getTanks();
+            if (tanks <= 0){
+                return null;
+            }
+            for (int tankIndex = 0; tankIndex < tanks; tankIndex++) {
+                var got = handlerItem.getFluidInTank(tankIndex);
+                if (!got.isEmpty()){
+                    return FluidStack.create(got.getFluid(),got.getAmount());
+                }
+            }
+            return FluidStack.empty();
+        }
+
+
+        private record TankInfo(net.minecraftforge.fluids.FluidStack stack,int capacity){}
+        @Override
+        public FluidStack drainFluidStackFromItemStack(ItemStack stack, FluidStack fluidStack, boolean doit) {
+            LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+            var handlerItem = cap.map(handler -> handler).orElse(null);
+            if (handlerItem == null) {return FluidStack.empty();}
+            var drained = handlerItem.drain(new net.minecraftforge.fluids.FluidStack(
+                            fluidStack.getFluid(),
+                            (int)(fluidStack.getAmount() % Integer.MAX_VALUE)),
+                    doit?IFluidHandler.FluidAction.EXECUTE:IFluidHandler.FluidAction.SIMULATE);
+            return FluidStack.create(drained.getFluid(),drained.getAmount());
+        }
+
+        @Override
+        public long/*filled*/ insertFluidStackToItemStack(ItemStack stack, FluidStack fluidStack, boolean doit) {
+            LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
+            var handlerItem = cap.map(handler -> handler).orElse(null);
+            if (handlerItem == null) {return 0;}
+            return handlerItem.fill(
+                    new net.minecraftforge.fluids.FluidStack(fluidStack.getFluid(),(int)(fluidStack.getAmount() % Integer.MAX_VALUE)),
+                    doit?IFluidHandler.FluidAction.EXECUTE:IFluidHandler.FluidAction.SIMULATE
+            );
+        }
+    }
+
+    protected final FluidInteractionManager fluidInteractionManager = new ForgeFluidInteractionManager();
+
+    @Override
+    public FluidInteractionManager getFluidInteractionManager() {
+        return fluidInteractionManager;
+    }
 
     @Override
     public BakedModel getModel(ResourceLocation modelLocation) {
@@ -184,117 +305,6 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
                 ));
     }
 
-    @Override
-    public long/*filled*/ insertFluidToPos(Level level, BlockPos pos, Direction dir, FluidStack fluidStack/*will be modified*/,boolean doit){
-        var be = getExistingBlockEntity(level,pos);
-        if (be == null) {
-            return 0;
-        }
-        LazyOptional<IFluidHandler> cap = be.getCapability(FLUID_HANDLER,dir);
-        var handlerInstance = cap.map(handler -> handler).orElse(null);
-        if (handlerInstance == null) {
-            return 0;
-        }
-        int filled = handlerInstance.fill(new net.minecraftforge.fluids.FluidStack(fluidStack.getFluid(),(int)(fluidStack.getAmount() % Integer.MAX_VALUE)),doit?IFluidHandler.FluidAction.EXECUTE:IFluidHandler.FluidAction.SIMULATE);
-        if (filled != 0) {
-            fluidStack.setAmount(fluidStack.getAmount()-filled);
-        }
-        return filled;
-    }
-    @Override
-    public FluidStack/*extracted*/ extractFluidFromPos(Level level, BlockPos pos, Direction dir, long expectedAmount,boolean doit){
-        var be = getExistingBlockEntity(level,pos);
-        if (be == null) {
-            return FluidStack.empty();
-        }
-        LazyOptional<IFluidHandler> cap = be.getCapability(FLUID_HANDLER,dir);
-        var handlerInstance = cap.map(handler -> handler).orElse(null);
-        if (handlerInstance == null) {
-            return FluidStack.empty();
-        }
-        var extracted = handlerInstance.drain((int)(expectedAmount %Integer.MAX_VALUE),doit?IFluidHandler.FluidAction.EXECUTE:IFluidHandler.FluidAction.SIMULATE);
-        return FluidStack.create(extracted.getFluid(),extracted.getAmount());
-    }
-    @Override
-    public FluidStack getFluidFromPos(Level level, BlockPos pos, Direction dir,int tankIndex){
-        var be = getExistingBlockEntity(level,pos);
-        if (be == null) {
-            return FluidStack.empty();
-        }
-        LazyOptional<IFluidHandler> cap = be.getCapability(FLUID_HANDLER,dir);
-        var handlerInstance = cap.map(handler -> handler).orElse(null);
-        if (handlerInstance == null) {
-            return FluidStack.empty();
-        }
-        var extracted = handlerInstance.getFluidInTank(tankIndex);
-        return FluidStack.create(extracted.getFluid(),extracted.getAmount());
-    }
-    @Override
-    public int getFluidTanksFromPos(Level level, BlockPos pos, Direction dir){
-        var be = getExistingBlockEntity(level,pos);
-        if (be == null) {
-            return 0;
-        }
-        LazyOptional<IFluidHandler> cap = be.getCapability(FLUID_HANDLER,dir);
-        var handlerInstance = cap.map(handler -> handler).orElse(null);
-        if (handlerInstance == null) {
-            return 0;
-        }
-        return handlerInstance.getTanks();
-    }
-
-    @Override
-    public @NotNull Fluid getFluidFromItemStack(ItemStack stack) {
-        LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-        var handlerItem = cap.map(handler -> handler.getFluidInTank(0)).orElse(null);
-        if (handlerItem == null) {
-            return Fluids.EMPTY;
-        }
-        return handlerItem.getFluid();
-    }
-
-    @Override
-    public @Nullable FluidStack copyFluidStackFromItemStack(ItemStack stack) {
-        LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-        var handlerItem = cap.map(handler -> handler).orElse(null);
-        if (handlerItem == null) {return null;}
-        int tanks = handlerItem.getTanks();
-        if (tanks <= 0){
-            return null;
-        }
-        for (int tankIndex = 0; tankIndex < tanks; tankIndex++) {
-            var got = handlerItem.getFluidInTank(tankIndex);
-            if (!got.isEmpty()){
-                return FluidStack.create(got.getFluid(),got.getAmount());
-            }
-        }
-        return FluidStack.empty();
-    }
-
-
-    private record TankInfo(net.minecraftforge.fluids.FluidStack stack,int capacity){}
-    @Override
-    public FluidStack drainFluidStackFromItemStack(ItemStack stack, FluidStack fluidStack, boolean doit) {
-        LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-        var handlerItem = cap.map(handler -> handler).orElse(null);
-        if (handlerItem == null) {return FluidStack.empty();}
-        var drained = handlerItem.drain(new net.minecraftforge.fluids.FluidStack(
-                fluidStack.getFluid(),
-                        (int)(fluidStack.getAmount() % Integer.MAX_VALUE)),
-                doit?IFluidHandler.FluidAction.EXECUTE:IFluidHandler.FluidAction.SIMULATE);
-        return FluidStack.create(drained.getFluid(),drained.getAmount());
-    }
-
-    @Override
-    public long/*filled*/ insertFluidStackToItemStack(ItemStack stack, FluidStack fluidStack, boolean doit) {
-        LazyOptional<IFluidHandlerItem> cap = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM);
-        var handlerItem = cap.map(handler -> handler).orElse(null);
-        if (handlerItem == null) {return 0;}
-        return handlerItem.fill(
-                new net.minecraftforge.fluids.FluidStack(fluidStack.getFluid(),(int)(fluidStack.getAmount() % Integer.MAX_VALUE)),
-                doit?IFluidHandler.FluidAction.EXECUTE:IFluidHandler.FluidAction.SIMULATE
-                );
-    }
     /**
      * Default UUID, for fake players not associated with a specific (human) player.
      */
@@ -309,6 +319,11 @@ public class PlatformUniqueUtilsForge extends PlatformUniqueUtils {
         }
 
         return FakePlayer.get(level, new GameProfile(playerUuid, "[Thaumcraft]"));
+    }
+
+    @Override
+    public boolean isFakePlayer(ServerPlayer player) {
+        return player instanceof net.minecraftforge.common.util.FakePlayer;
     }
 
     @StoleFrom("appeng.util.FakePlayer")

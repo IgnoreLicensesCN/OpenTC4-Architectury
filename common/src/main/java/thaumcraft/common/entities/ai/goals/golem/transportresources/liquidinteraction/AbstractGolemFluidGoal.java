@@ -49,7 +49,7 @@ public abstract class AbstractGolemFluidGoal extends AbstractGolemGoal {
 
         for (var stack:golem.inventory){//filters, TODO:[maybe wont finished]special way to set fluid filters instead of unnecessary itemstack in inventory
             if (!stack.isEmpty()){
-                var fluidFilter = platformUtils.getFluidFromItemStack(stack);
+                var fluidFilter = platformUtils.getFluidInteractionManager().getFluidFromItemStack(stack);
                 if (fluidFilter != Fluids.EMPTY){
                     if (fluidInHand == fluidFilter){
                         fluidFilterCacheSet.clear();
@@ -78,19 +78,19 @@ public abstract class AbstractGolemFluidGoal extends AbstractGolemGoal {
         return extractFluidFromPos(level,pos,direction,expectedAmount,doit);
     }
     public static FluidStack extractFluidFromPos(Level level, BlockPos pos, Direction direction, long expectedAmount, boolean doit){
-        return platformUtils.extractFluidFromPos(level,pos,direction,expectedAmount,doit);
+        return platformUtils.getFluidInteractionManager().extractFluidFromPos(level, pos, direction, expectedAmount, doit);
     }
     public boolean isFluidContainer(Level level, BlockPos pos, Direction direction){
         return isPositionFluidContainer(level, pos, direction);
     }
     public static boolean isPositionFluidContainer(Level level, BlockPos pos, Direction direction){
-        return platformUtils.getFluidTanksFromPos(level,pos,direction) > 0;
+        return platformUtils.getFluidInteractionManager().getFluidTanksFromPos(level, pos, direction) > 0;
     }
     public @Nullable FluidStack getFluidFrom(ItemStack stack){
         return getFluidFromItemStack(stack);
     }
     public static @Nullable FluidStack getFluidFromItemStack(ItemStack stack){
-        return platformUtils.copyFluidStackFromItemStack(stack);
+        return platformUtils.getFluidInteractionManager().copyFluidStackFromItemStack(stack);
     }
     public FluidStack getFluidDirectlyFrom(Level level,BlockPos pos){
         return getFluidDirectlyFromBlock(level,pos);
@@ -105,7 +105,7 @@ public abstract class AbstractGolemFluidGoal extends AbstractGolemGoal {
             var fluidBucket = fluid.getBucket();
             if (fluidBucket != Items.AIR) {
                 var fluidBucketStack = fluidBucket.getDefaultInstance();
-                return platformUtils.copyFluidStackFromItemStack(fluidBucketStack);
+                return platformUtils.getFluidInteractionManager().copyFluidStackFromItemStack(fluidBucketStack);
             }
         }
         return FluidStack.empty();
@@ -129,7 +129,7 @@ public abstract class AbstractGolemFluidGoal extends AbstractGolemGoal {
                 blockState.use(serverLevel,fakePlayer,InteractionHand.MAIN_HAND,new BlockHitResult(pos.getCenter(), direction, pos,false));
                 var mainHandStack = fakePlayer.getItemInHand(InteractionHand.MAIN_HAND);
                 fakePlayer.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);
-                return platformUtils.copyFluidStackFromItemStack(mainHandStack);
+                return platformUtils.getFluidInteractionManager().copyFluidStackFromItemStack(mainHandStack);
             }
         }
         return FluidStack.empty();
