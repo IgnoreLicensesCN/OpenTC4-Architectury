@@ -1,40 +1,44 @@
 package com.linearity.opentc4.utils.collectionlike.parameterizedtypechaos;
 
+import com.linearity.opentc4.utils.entity.category.EntityCategory;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import net.minecraft.world.entity.Entity;
-import thaumcraft.common.tiles.crafted.lamp.FertilityArcaneLampBlockEntity;
 
 import java.util.*;
 
 @SuppressWarnings("unchecked")
-public class ClassToEntitiesMap /*extends Map<Class<? extends Entity>,Set<? extends Entity>>*/ {
-    private final Map<Class<? extends Entity>, Set<? extends Entity>> innerMap = new HashMap<>();
+public class EntityCategoryToEntitiesMap /*extends Map<Class<? extends Entity>,Set<? extends Entity>>*/ {
+    private final Map<EntityCategory<? extends Entity>, Set<? extends Entity>> innerMap = new HashMap<>();
 
-    public <E extends Entity> Set<E> get(Class<E> clazz) {
+    public <E extends Entity> Set<E> get(EntityCategory<E> clazz) {
         return (Set<E>) innerMap.get(clazz);
     }
 
-    public <E extends Entity> void put(Class<E> clazz, Set<E> entities) {
+    public <E extends Entity> void put(EntityCategory<E> clazz, Set<E> entities) {
         innerMap.put(clazz, entities);
     }
 
-    public <E extends Entity> void add(Class<E> clazz, E entity) {
+    public <E extends Entity> void add(EntityCategory<E> clazz, E entity) {
         getOrCreate(clazz).add(entity);
     }
 
-    public <E extends Entity> Set<E> getOrCreate(Class<E> clazz) {
+    public <E extends Entity> Set<E> getOrCreate(EntityCategory<E> clazz) {
         return (Set<E>) innerMap.computeIfAbsent(clazz, k -> new HashSet<>());
+    }
+
+    public void clear() {
+        innerMap.clear();
     }
 
     //dont hold this,DO use once you get this
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class UnifiedEntry<E> implements Map.Entry<Class<E>, Set<E>> {
-        private Map.Entry<Class<E>, Set<E>> innerEntry;
+    public static class UnifiedEntry<E extends Entity> implements Map.Entry<EntityCategory<E>, Set<E>> {
+        private Map.Entry<EntityCategory<E>, Set<E>> innerEntry;
 
         @Override
-        public Class<E> getKey() {
+        public EntityCategory<E> getKey() {
             return innerEntry.getKey();
         }
 
@@ -53,7 +57,7 @@ public class ClassToEntitiesMap /*extends Map<Class<? extends Entity>,Set<? exte
         return new Iterator<>() {
             private final UnifiedEntry<? extends Entity> iterationCache =
                     new UnifiedEntry<>();
-            private final Iterator<Map.Entry<Class<? extends Entity>, Set<? extends Entity>>> innerIterator =
+            private final Iterator<Map.Entry<EntityCategory<? extends Entity>, Set<? extends Entity>>> innerIterator =
                     innerMap.entrySet().iterator();
 
             @Override

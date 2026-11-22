@@ -762,6 +762,7 @@ public class ThaumcraftEntities {
         public static final TagKey<EntityType<?>> NOT_TAINT_CONVERTABLE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"not_taint_convertable"));
         public static final TagKey<EntityType<?>> CAN_SPAWN_SMALL_TAINTACLE = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"can_spawn_small_taintacle"));
         public static final TagKey<EntityType<?>> PECH = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"pech"));
+        public static final TagKey<EntityType<?>> BUTCHER_GOLEM_WONT_KILL = TagKey.create(Registries.ENTITY_TYPE,new ResourceLocation(Thaumcraft.MOD_ID,"butcher_golem_wont_kill"));
     }
 
     public static void init(){

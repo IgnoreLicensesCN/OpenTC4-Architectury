@@ -50,16 +50,22 @@ public class ThaumcraftEntityEvents {
 
     public static void onEntityRemoved(Entity self, Entity.RemovalReason removalReason){
         convertTaintMobOnRemoved(self,removalReason);
-        clearGoal(self);
+        avoidMemoryLeakOnRemoved(self);
     }
     public static void onEntityUnsetRemoved(Entity self){
         rebuildGoal(self);
     }
-    public static void clearGoal(Entity self){
+    public static void avoidMemoryLeakOnRemoved(Entity self){
         if (self instanceof IClearGoalOnRemovedEntity){
             if (self instanceof Mob mob){
                 ((MobAccessor)mob).getGoalSelector().removeAllGoals(_whatever -> true);
                 ((MobAccessor)mob).getTargetSelector().removeAllGoals(_whatever -> true);
+            }
+        }
+        if (self instanceof Mob mob){
+            var currentTarget = mob.getTarget();
+            if (currentTarget == null || currentTarget.isRemoved()){
+                mob.setTarget(null);
             }
         }
     }

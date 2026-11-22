@@ -1,7 +1,10 @@
 package thaumcraft.api.listeners.lamp.fertility.check;
 
+import com.linearity.opentc4.utils.entity.category.EntityCategoryByClass;
 import lombok.AllArgsConstructor;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Enemy;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.api.listeners.lamp.fertility.IFertilityAffectiveEntity;
 
@@ -52,19 +55,6 @@ public abstract class FertilityLampAffectiveChecker implements Comparable<Fertil
         })
         ;
 
-        public static void instanceCheck(FertilityLampAffectiveContext context) {
-            if (context.entity instanceof IFertilityAffectiveEntity){
-                context.recommendAffective = true;
-                context.endCheck = true;
-            }
-        }
-
-        public static void commonAnimalCheck(FertilityLampAffectiveContext context) {
-            if (context.entity instanceof Animal){
-                context.recommendAffective = true;
-                context.endCheck = true;
-            }
-        }
 
         public static void tagAvoidCheck(FertilityLampAffectiveContext context) {
             if (context.entity.getType().is(FERTILITY_LAMP_NOT_AFFECTIVE)){
@@ -73,10 +63,33 @@ public abstract class FertilityLampAffectiveChecker implements Comparable<Fertil
             }
         }
 
+        public static void instanceCheck(FertilityLampAffectiveContext context) {
+            if (context.entity instanceof IFertilityAffectiveEntity<?,?> entity) {
+                IFertilityAffectiveEntity affective = entity;
+                var category = affective.getFertilityLampCategory();
+                if (category != null) {
+                    context.entityMap.add(category, context.entity);
+                }
+                context.recommendAffective = true;
+//                context.endCheck = true;
+            }
+        }
+
+        public static void commonAnimalCheck(FertilityLampAffectiveContext context) {
+            if (context.entity instanceof Animal animal && !(animal instanceof Enemy)){
+                context.recommendAffective = true;
+                Class<Animal> clz = (Class<Animal>)animal.getClass();
+                context.entityMap.add(EntityCategoryByClass.of(clz),animal);
+//                context.endCheck = true;
+            }
+        }
+
         public static void tagCheck(FertilityLampAffectiveContext context) {
             if (context.entity.getType().is(FERTILITY_LAMP_AFFECTIVE)){
+                Class<Entity> clz = (Class<Entity>)context.entity.getClass();
+                context.entityMap.add(EntityCategoryByClass.of(clz),context.entity);
                 context.recommendAffective = true;
-                context.endCheck = true;
+//                context.endCheck = true;
             }
         }
 

@@ -1,5 +1,8 @@
 {
   "replace": false,
   "values": [
+    "thaumcraft:pech_forager",
+    "thaumcraft:pech_mage",
+    "thaumcraft:pech_staker"
   ]
 }

@@ -1,7 +1,8 @@
 package thaumcraft.common.tiles.crafted.lamp;
 
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
-import com.linearity.opentc4.utils.collectionlike.parameterizedtypechaos.ClassToEntitiesMap;
+import com.linearity.opentc4.utils.collectionlike.parameterizedtypechaos.EntityCategoryToEntitiesMap;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -15,6 +16,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.Aspects;
 import thaumcraft.api.aspects.essentiabe.IEssentiaTransportInBlockEntity;
 import thaumcraft.api.aspects.essentiabe.IEssentiaTransportOutBlockEntity;
+import thaumcraft.api.listeners.aspects.item.basic.reciperesolver.calculateutils.DoNotReallyPutInList;
 import thaumcraft.api.listeners.lamp.fertility.check.FertilityLampAffectiveManager;
 import thaumcraft.common.tiles.TileThaumcraft;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
@@ -22,12 +24,12 @@ import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import java.util.*;
 
 import static com.linearity.opentc4.Consts.FertilityArcaneLampTagAccessors.CHARGE;
-import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
 import static thaumcraft.api.listeners.lamp.fertility.apply.FertilityLampAffectManager.affectEntity;
 import static thaumcraft.common.blocks.crafted.lamps.ArcaneLampBlock.FACING;
 import static thaumcraft.common.blocks.crafted.lamps.GrowthArcaneLampBlock.LIT;
 
+@Getter
 public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IEssentiaTransportInBlockEntity {
     public FertilityArcaneLampBlockEntity(BlockEntityType<? extends FertilityArcaneLampBlockEntity> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -53,10 +55,6 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
     public void writeCustomNBT(CompoundTag compoundTag) {
         super.writeCustomNBT(compoundTag);
         CHARGE.writeIntToCompoundTag(compoundTag,this.charge);
-    }
-
-    public int getCharge() {
-        return charge;
     }
 
     public Direction getFacing() {
@@ -202,32 +200,25 @@ public class FertilityArcaneLampBlockEntity extends TileThaumcraft implements IE
         return CHARGE_COST_EACH_TIME;
     }
 
-    private <E extends Entity> boolean isAffectiveEntity(E entity, ClassToEntitiesMap entityMap){
-        return isAffectiveEntity((Class<E>) entity.getClass(),entity,entityMap);
+    protected  <E extends Entity> boolean isAffectiveEntity(E entity, EntityCategoryToEntitiesMap entityMap){
+        //            entityMap.add(category, entity);
+        return FertilityLampAffectiveManager.isAffectiveEntity(entity, entityMap);
     }
 
-    private <E extends Entity> boolean isAffectiveEntity(Class<E> entityClass,E entity,ClassToEntitiesMap entityMap){
-        if (FertilityLampAffectiveManager.isAffectiveEntity(entity)) {
-            entityMap.add(entityClass, entity);
-            return true;
-        }
-        return false;
-    }
-
-    private void updateAnimals() {
+    protected void updateAnimals() {
         if (this.cooldown > 0){
             this.cooldown--;
             return;
         }
         if (this.level == null){return;}
 //        Object2IntMap<Class<? extends Entity>> entityTypeCounter = new Object2IntOpenHashMap<>();
-        var entityMap = new ClassToEntitiesMap();
+        var entityMap = new EntityCategoryToEntitiesMap();
         final var entityLimitTotal = getEntityLimitTotal();
         this.level.getEntities(
                 ENTITY_TEST,
                 AABB.of(new BoundingBox(getBlockPos())).inflate(getAffectRadius()),
                 e -> this.isAffectiveEntity(e, entityMap),
-                new ArrayList<>(entityLimitTotal),
+                DoNotReallyPutInList.getInstance(),
                 entityLimitTotal
         );
 

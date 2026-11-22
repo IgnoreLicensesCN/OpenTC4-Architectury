@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.entities.ai.goals.golem.*;
 import thaumcraft.common.entities.ai.goals.golem.miscjobs.*;
+import thaumcraft.common.entities.ai.goals.golem.targeting.GolemButcherTargetGoal;
 import thaumcraft.common.entities.ai.goals.golem.targeting.GolemHurtByTargetGoal;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.essentiainteraction.GolemFillInEssentiaGoal;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.essentiainteraction.GolemGatherEssentiaGoal;
@@ -113,6 +114,8 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final GoalResourceLocation GOLEM_USE = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_use");
         public static final GolemGoalProvider GOLEM_USE_GOAL_PROVIDER = GolemUseItemStackGoal::new;
         public static final GolemGoalProvider USE_CORE_TAKE_ITEM_STACK_FROM_HOME_GOAL_PROVIDER = GolemUseCoreTakeItemStackFromHomeGoal::new;
+        public static final GoalResourceLocation BUTCHER_TARGET = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_butcher_target");
+        public static final GolemGoalProvider BUTCHER_TARGET_GOAL_PROVIDER = GolemButcherTargetGoal::new;
 
         public static void registerDefaultTargetConfig(Set<GolemConfigurationKey<?>> configurationProviders){
             configurationProviders.add(TARGET_SELECTOR_HOSTILE_CONFIG_KEY);
