@@ -1,6 +1,7 @@
 package thaumcraft.common.entities.ai.goals.golem.transportresources.liquidinteraction;
 
-import com.linearity.opentc4.utils.HighestFurthestBlockFinder;
+import com.linearity.opentc4.utils.blocksearch.BlockPosOffsets;
+import com.linearity.opentc4.utils.blocksearch.HighestFurthestBlockFinder;
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -12,7 +13,7 @@ import thaumcraft.common.items.golem.upgrade.core.LiquidGolemCoreItem;
 import static thaumcraft.common.items.ThaumcraftItemInstances.ORDER_GOLEM_UPGRADE;
 
 public class GolemGetLiquidGoal extends AbstractGolemFindLiquidToGetGoal {
-    protected HighestFurthestBlockFinder.BlockPosOffsets offsets = new HighestFurthestBlockFinder.BlockPosOffsets();
+    protected BlockPosOffsets offsets = new BlockPosOffsets();
     protected HighestFurthestBlockFinder.TriIntConsumer offsetsConsumer = offsets::add;
     protected boolean searchedFluidThisRun = false;
 

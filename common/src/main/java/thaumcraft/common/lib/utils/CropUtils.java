@@ -32,6 +32,7 @@ public class CropUtils {
         fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, usingStack);
         fakePlayer.setItemInHand(InteractionHand.OFF_HAND,ItemStack.EMPTY);
         world.getBlockState(pos).use(world,fakePlayer, InteractionHand.MAIN_HAND,new BlockHitResult(pos.getCenter(), direction, pos,false));
+        fakePlayer.setItemInHand(InteractionHand.MAIN_HAND,ItemStack.EMPTY);
         for (var stack:fakePlayer.getInventory().items){
             if (!stack.isEmpty()){
                 fakePlayer.spawnAtLocation(ExtendedItemStack.splitAll(stack));

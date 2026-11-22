@@ -124,11 +124,11 @@ public class EntropyGolemUpgradeItem extends GolemBasicUpgradeItem
     }
 
     public static boolean getItemStackItemStackForNBTAndTagConfig(BaseGolemEntity golem,ItemStack a,ItemStack b) {
-        var matchNBT = golem.configurationProviders.contains(MATCH_NBT_CONFIG_KEY)?MATCH_NBT_CONFIG_KEY.provider:null;
+        var matchNBT = golem.configurationProvidersView.contains(MATCH_NBT_CONFIG_KEY)?MATCH_NBT_CONFIG_KEY.provider:null;
         if (matchNBT != null && matchNBT.getBooleanFrom(golem)) {
             return BaseGolemEntity.GolemItemStackMatcher.isSameItemSameTags.test(golem,a,b);
         }
-        var matchTag = golem.configurationProviders.contains(MATCH_TAG_CONFIG_KEY)?MATCH_TAG_CONFIG_KEY.provider:null;
+        var matchTag = golem.configurationProvidersView.contains(MATCH_TAG_CONFIG_KEY)?MATCH_TAG_CONFIG_KEY.provider:null;
         if (matchTag != null){
             var tagMatching = matchTag.getFrom(golem);
             if (!tagMatching.getNamespace().isEmpty() && !tagMatching.getPath().isEmpty()) {
@@ -139,7 +139,7 @@ public class EntropyGolemUpgradeItem extends GolemBasicUpgradeItem
     }
 
     public static boolean getItemStackHaveSameTag(BaseGolemEntity golem,ItemStack a,ItemStack b) {
-        var matchHaveSameTag = golem.configurationProviders.contains(MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY) ? MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY.provider:null;
+        var matchHaveSameTag = golem.configurationProvidersView.contains(MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY) ? MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY.provider:null;
         if (matchHaveSameTag != null && matchHaveSameTag.getBooleanFrom(golem)) {
             var tags = getConsideringTagsForItem(a.getItem());
             var tagsForConsidering = getConsideringTagsForItem(b.getItem());

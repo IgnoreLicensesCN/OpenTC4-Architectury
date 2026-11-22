@@ -10,6 +10,7 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemHelper;
 
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.*;
+import static thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.GolemPlaceItemStackToHomeGoalWithItemStackTickMark.ItemStackSortingTickMarkFakeField.getOrCreateAndSetTickMarkFrom;
 import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;
 
 public class GolemEmptyCorePlaceItemStackToHomeGoal extends GolemPlaceItemStackToHomeGoalWithItemStackTickMark {
@@ -58,14 +59,19 @@ public class GolemEmptyCorePlaceItemStackToHomeGoal extends GolemPlaceItemStackT
             }
             containersWithRoomIterator.reset();
 //        }
-        var fakeFieldToSetTickDelay = opentc4$getCachedObjectFrom(itemToMatch, ItemStackSortingTickMarkFakeFields.class);
-        if (fakeFieldToSetTickDelay == null){
-            fakeFieldToSetTickDelay =  new ItemStackSortingTickMarkFakeFields(
-                    golem.getId(),
-                    golem.tickCount + Config.CONFIG_INSTANCE.getGolemIgnoreDelayTicks()
-            );
-            opentc4$putCachedObjectTo(itemToMatch, ItemStackSortingTickMarkFakeFields.class,fakeFieldToSetTickDelay);
-        }
+//        var fakeFieldToSetTickDelay = opentc4$getCachedObjectFrom(itemToMatch, ItemStackSortingTickMarkFakeField.class);
+//        if (fakeFieldToSetTickDelay == null){
+//            fakeFieldToSetTickDelay =  new ItemStackSortingTickMarkFakeField(
+//                    golem.getId(),
+//                    golem.tickCount + Config.CONFIG_INSTANCE.getGolemIgnoreDelayTicks()
+//            );
+//            opentc4$putCachedObjectTo(itemToMatch, ItemStackSortingTickMarkFakeField.class,fakeFieldToSetTickDelay);
+//        }
+        getOrCreateAndSetTickMarkFrom(
+                itemToMatch,
+                golem.getId(),
+                golem.tickCount + Config.CONFIG_INSTANCE.getGolemIgnoreDelayTicks()
+        );
         return false;
     }
 }

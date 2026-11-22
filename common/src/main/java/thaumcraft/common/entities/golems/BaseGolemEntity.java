@@ -480,9 +480,9 @@ public abstract class BaseGolemEntity
     @Override
     public void updateUpgradeStacks(List<ItemStack> stacks) {
         super.updateUpgradeStacks(stacks);
-        configurationProviderMap.clear();
+        configurationProviders.clear();
         for (var fillerPair:golemUpgradesCacheView.get(IGolemConfigurationProviderFillerItem.class)) {
-            fillerPair.getUpgradeType().fillGolemConfigurationProviders(this, fillerPair.getUpgradeStack(), configurationProviderMap);
+            fillerPair.getUpgradeType().fillGolemConfigurationProviders(this, fillerPair.getUpgradeStack(), configurationProviders);
         }
         for (var stack : stacks) {
             var item = stack.getItem();
@@ -863,8 +863,8 @@ public abstract class BaseGolemEntity
         return !getOffhandItem().isEmpty();
     }
 
-    private final Set<GolemConfigurationKey<?>> configurationProviderMap = Sets.newIdentityHashSet();
-    public final Set<GolemConfigurationKey<?>> configurationProviders = Collections.unmodifiableSet(configurationProviderMap);
+    private final Set<GolemConfigurationKey<?>> configurationProviders = Sets.newIdentityHashSet();
+    public final Set<GolemConfigurationKey<?>> configurationProvidersView = Collections.unmodifiableSet(configurationProviders);
 
     @RecommendedLogicalSide(RecommendedLogicalSide.LogicalSide.CLIENT)
     public void syncConfigToServer(){

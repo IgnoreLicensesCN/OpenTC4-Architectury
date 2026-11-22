@@ -14,14 +14,14 @@ public interface IGolemConfigurationProviderFillerItem extends BaseGolemEntity.I
     CompoundTagAccessorImpl CONFIGURATION_ACCESSOR = new CompoundTagAccessorImpl("golem_configurations");
     default void readAdditionalConfig(BaseGolemEntity golem, ItemStack upgradeStack, CompoundTag tag){
         var wrappedTag = CONFIGURATION_ACCESSOR.readFromCompoundTag(tag);
-        for (var providerKey:golem.configurationProviders){
+        for (var providerKey:golem.configurationProvidersView){
             GolemConfigurationProvider<Object> castedProvider = (GolemConfigurationProvider<Object>) providerKey.provider;
             castedProvider.setTo(golem,castedProvider.serializeFrom(wrappedTag));
         }
     }
     default void writeAdditionalConfig(BaseGolemEntity golem, ItemStack upgradeStack, CompoundTag tag){
         var wrappedTag = new CompoundTag();
-        for (var providerKey:golem.configurationProviders){
+        for (var providerKey:golem.configurationProvidersView){
             GolemConfigurationProvider<Object> castedProvider = (GolemConfigurationProvider<Object>) providerKey.provider;
             castedProvider.deserializeTo(wrappedTag,castedProvider.getFrom(golem));
         }

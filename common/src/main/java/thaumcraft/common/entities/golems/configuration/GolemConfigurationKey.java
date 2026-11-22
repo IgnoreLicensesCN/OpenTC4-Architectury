@@ -90,5 +90,26 @@ public class GolemConfigurationKey<ProviderClass extends GolemConfigurationProvi
                                 "target_selector_creeper"
                         )
                 );
+        public static final GolemConfigurationKey<GolemConfigurationProviderBooleanImpl> USE_CORE_BLOCK_OR_EMPTY =
+                new GolemConfigurationKey<>(
+                        GolemConfigurationResourceLocation.of(Thaumcraft.MOD_ID,"use_core_block_or_empty"),
+                        new GolemConfigurationProviderBooleanImpl(
+                                "use_core_block_or_empty"
+                        )
+                );
+        public static final GolemConfigurationKey<GolemConfigurationProviderBooleanImpl> USE_CORE_DO_SNEAKING =
+                new GolemConfigurationKey<>(
+                        GolemConfigurationResourceLocation.of(Thaumcraft.MOD_ID,"use_core_do_sneaking"),
+                        new GolemConfigurationProviderBooleanImpl(
+                                "use_core_do_sneaking"
+                        )
+                );
+        public static final GolemConfigurationKey<GolemConfigurationProviderBooleanImpl> USE_CORE_LEFT_CLICK =
+                new GolemConfigurationKey<>(
+                        GolemConfigurationResourceLocation.of(Thaumcraft.MOD_ID,"use_core_left_click"),
+                        new GolemConfigurationProviderBooleanImpl(
+                                "use_core_left_click"
+                        )
+                );
     }
 }

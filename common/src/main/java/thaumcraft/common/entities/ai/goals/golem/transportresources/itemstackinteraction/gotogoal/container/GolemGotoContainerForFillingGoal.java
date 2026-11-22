@@ -137,7 +137,7 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGotoFurthestC
 
     protected MissingItemsIterator getMissingItemsIterator() {
         if (/*golem.getToggles()[0]*/
-                golem.configurationProviders.contains(PRECISE_OR_ANY_AMOUNT_CONFIG_KEY)
+                golem.configurationProvidersView.contains(PRECISE_OR_ANY_AMOUNT_CONFIG_KEY)
                         && PRECISE_OR_ANY_AMOUNT_CONFIG_KEY.provider.getBooleanFrom(golem)
         ) {//Any amount
             return missingItemsIteratorForAnyAmount;
@@ -265,7 +265,7 @@ public class GolemGotoContainerForFillingGoal extends AbstractGolemGotoFurthestC
 
 
         protected boolean fuzzyMatch() {
-            return golem.configurationProviders.contains(MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY)
+            return golem.configurationProvidersView.contains(MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY)
                     && MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY.provider.getBooleanFrom(golem);
         }
 

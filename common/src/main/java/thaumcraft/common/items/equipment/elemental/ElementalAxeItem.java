@@ -1,7 +1,7 @@
 package thaumcraft.common.items.equipment.elemental;
 
 import com.linearity.opentc4.utils.consts.EntityTypeTests;
-import com.linearity.opentc4.utils.HighestFurthestBlockFinder;
+import com.linearity.opentc4.utils.blocksearch.HighestFurthestBlockFinder;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

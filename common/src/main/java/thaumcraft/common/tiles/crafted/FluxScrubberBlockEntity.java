@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.crafted;
 
-import com.linearity.opentc4.utils.random.LCGBlockPosGenerator;
+import com.linearity.opentc4.utils.random.LCGBlockPosPicker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -91,7 +91,7 @@ implements IEssentiaTransportOutBlockEntity {
     protected int getMaxToCheckEachRun(){
         return 16;
     }
-    protected LCGBlockPosGenerator posGen = new LCGBlockPosGenerator(
+    protected LCGBlockPosPicker posGen = new LCGBlockPosPicker(
             getCleanDistance(),getCleanDistance(),getCleanDistance()
     );
 //    protected EasyLCGGenerator LCGGen = new EasyLCGGenerator((getCleanDistance()*2 + 1)*(getCleanDistance()*2 + 1)*(getCleanDistance()*2 + 1));

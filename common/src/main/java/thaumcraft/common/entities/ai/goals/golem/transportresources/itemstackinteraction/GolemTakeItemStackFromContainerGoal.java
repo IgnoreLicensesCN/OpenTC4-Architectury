@@ -78,7 +78,7 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
 //        getMarkedContainersWithinDefaultRangeAsBlockEntity(containersTempList,golem);
 
         boolean countLimited = false;
-        var configProvider = golem.configurationProviders.contains(PRECISE_OR_ANY_AMOUNT_CONFIG_KEY) ? PRECISE_OR_ANY_AMOUNT_CONFIG_KEY.provider : null;
+        var configProvider = golem.configurationProvidersView.contains(PRECISE_OR_ANY_AMOUNT_CONFIG_KEY) ? PRECISE_OR_ANY_AMOUNT_CONFIG_KEY.provider : null;
         if (configProvider != null) {
             countLimited = configProvider.getBooleanFrom(golem);
         }

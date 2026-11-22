@@ -2,7 +2,7 @@ package com.linearity.opentc4.utils.random;
 
 import net.minecraft.core.BlockPos;
 
-public class LCGBlockPosGenerator {
+public class LCGBlockPosPicker {
     protected EasyLCGGenerator lcg;
     protected final int xRange;
     protected final int yRange;
@@ -10,7 +10,7 @@ public class LCGBlockPosGenerator {
     //get result from here
     public final BlockPos.MutableBlockPos resultCache = new BlockPos.MutableBlockPos();
 
-    public LCGBlockPosGenerator(int xRange, int yRange, int zRange) {
+    public LCGBlockPosPicker(int xRange, int yRange, int zRange) {
         if (xRange <= 0 || yRange <= 0 || zRange <= 0) {
             throw new IllegalArgumentException("xRange, yRange and zRange must be greater than 0");
         }

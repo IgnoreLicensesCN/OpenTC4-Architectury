@@ -250,16 +250,16 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //         case 7:
 //            this.tasks.addTask(2, new AIHarvestLogs(this));
 //            break;
-         case 8:
-            this.tasks.addTask(0, new AIHomeReplace(this));
-            this.tasks.addTask(0, new AIUseItem(this));
-            this.tasks.addTask(4, new AIHomeTake(this));
-            break;
+//         case 8:
+//            this.tasks.addTask(0, new AIHomeReplace(this));
+//            this.tasks.addTask(0, new AIUseItem(this));
+//            this.tasks.addTask(4, new AIHomeTake(this));
+//            break;
          case 9:
 //            if (this.decoration.contains("R")) {
 //               this.tasks.addTask(2, new AIDartAttack(this));
 //            }
-            this.tasks.addTask(3, new AIGolemAttackOnCollide(this));
+            this.tasks.addTask(3, new AIGolemAttackOnCollide(this));//finished
             this.targetTasks.addTask(1, new AINearestButcherTarget(this, 0, true));
             break;
          case 10:

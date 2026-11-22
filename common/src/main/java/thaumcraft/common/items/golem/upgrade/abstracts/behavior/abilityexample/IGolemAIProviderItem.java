@@ -76,7 +76,6 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final GolemGoalProvider TAKE_ITEM_STACK_FROM_CONTAINER_GOAL_PROVIDER = GolemTakeItemStackFromContainerGoal::new;
         public static final GoalResourceLocation GOTO_CONTAINER_FOR_FILLING = GoalResourceLocation.of(Thaumcraft.MOD_ID,"goto_container_for_filling");
         public static final GolemGoalProvider GOTO_CONTAINER_FOR_FILLING_GOAL_PROVIDER = GolemGotoContainerForFillingGoal::new;
-        public static final GoalResourceLocation EMPTY_CORE_PLACE_ITEM_STACK_HOME = GoalResourceLocation.of(Thaumcraft.MOD_ID,"empty_core_place_item_stack_home");
         public static final GolemGoalProvider EMPTY_CORE_PLACE_ITEM_STACK_HOME_GOAL_PROVIDER = GolemEmptyCorePlaceItemStackToHomeGoal::new;
         public static final GoalResourceLocation PLACE_ITEM_STACK_TO_MARKED_CONTAINER = GoalResourceLocation.of(Thaumcraft.MOD_ID,"place_item_stack_to_marked_container");
         public static final GolemGoalProvider PLACE_ITEM_STACK_TO_MARKED_CONTAINER_GOAL_PROVIDER = GolemPlaceItemStackToMarkedContainerGoal::new;
@@ -85,7 +84,7 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final GoalResourceLocation GOTO_CONTAINER_FOR_EMPTY = GoalResourceLocation.of(Thaumcraft.MOD_ID,"goto_container_for_empty");
         public static final GolemGoalProvider GOTO_CONTAINER_FOR_EMPTY_GOAL_PROVIDER = GolemGotoContainerForEmptyGoal::new;
         public static final GoalResourceLocation TAKE_ITEM_STACK_FROM_HOME = GoalResourceLocation.of(Thaumcraft.MOD_ID,"take_item_stack_from_home");
-        public static final GolemGoalProvider TAKE_ITEM_STACK_FROM_HOME_GOAL_PROVIDER = GolemTakeItemStackFromHomeGoal::new;
+        public static final GolemGoalProvider EMPTY_CORE_TAKE_ITEM_STACK_FROM_HOME_GOAL_PROVIDER = GolemEmptyCoreTakeItemStackFromHomeGoal::new;
         public static final GoalResourceLocation PICKUP_ITEM = GoalResourceLocation.of(Thaumcraft.MOD_ID,"pickup_item");
         public static final GolemGoalProvider PICKUP_ITEM_GOAL_PROVIDER = GolemPickupItemGoal::new;
         public static final GoalResourceLocation HARVEST_CROP = GoalResourceLocation.of(Thaumcraft.MOD_ID,"harvest_crop");
@@ -110,7 +109,10 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final GolemGoalProvider GOLEM_GOTO_FILL_IN_ESSENTIA_GOAL_PROVIDER = GolemGotoFillInEssentiaGoal::new;
         public static final GoalResourceLocation GOLEM_HARVEST_LOG = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_harvest_log");
         public static final GolemGoalProvider GOLEM_HARVEST_LOG_GOAL_PROVIDER = GolemHarvestLogsGoal::new;
-
+        public static final GolemGoalProvider GOLEM_USE_CORE_PLACE_ITEM_STACK_HOME_GOAL_PROVIDER = GolemUseCorePlaceItemStackToHomeGoal::new;
+        public static final GoalResourceLocation GOLEM_USE = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_use");
+        public static final GolemGoalProvider GOLEM_USE_GOAL_PROVIDER = GolemUseItemStackGoal::new;
+        public static final GolemGoalProvider USE_CORE_TAKE_ITEM_STACK_FROM_HOME_GOAL_PROVIDER = GolemUseCoreTakeItemStackFromHomeGoal::new;
 
         public static void registerDefaultTargetConfig(Set<GolemConfigurationKey<?>> configurationProviders){
             configurationProviders.add(TARGET_SELECTOR_HOSTILE_CONFIG_KEY);
@@ -119,9 +121,9 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
             configurationProviders.add(TARGET_SELECTOR_CREEPER_CONFIG_KEY);
         }
         public static boolean golemCanSelectTargetWithDefaultConfig(BaseGolemEntity golem, LivingEntity maybeTarget) {
-            boolean hostileFlag = golem.configurationProviders.contains(TARGET_SELECTOR_HOSTILE_CONFIG_KEY)
+            boolean hostileFlag = golem.configurationProvidersView.contains(TARGET_SELECTOR_HOSTILE_CONFIG_KEY)
                     ? TARGET_SELECTOR_HOSTILE_CONFIG_KEY.provider.getBooleanFrom(golem) : TARGET_SELECTOR_HOSTILE_CONFIG_KEY.provider.defaultValue;
-            boolean creeperFlag = golem.configurationProviders.contains(TARGET_SELECTOR_CREEPER_CONFIG_KEY)
+            boolean creeperFlag = golem.configurationProvidersView.contains(TARGET_SELECTOR_CREEPER_CONFIG_KEY)
                     ? TARGET_SELECTOR_CREEPER_CONFIG_KEY.provider.getBooleanFrom(golem) : TARGET_SELECTOR_CREEPER_CONFIG_KEY.provider.defaultValue;
             if (maybeTarget instanceof Enemy){
                 if (maybeTarget instanceof Creeper){
@@ -129,12 +131,12 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
                 }
                 return hostileFlag;
             }
-            boolean animalFlag = golem.configurationProviders.contains(TARGET_SELECTOR_ANIMAL_CONFIG_KEY)
+            boolean animalFlag = golem.configurationProvidersView.contains(TARGET_SELECTOR_ANIMAL_CONFIG_KEY)
                     ? TARGET_SELECTOR_ANIMAL_CONFIG_KEY.provider.getBooleanFrom(golem) : TARGET_SELECTOR_ANIMAL_CONFIG_KEY.provider.defaultValue;
             if (maybeTarget instanceof Animal){
                 return animalFlag;
             }
-            boolean playerFlag = golem.configurationProviders.contains(TARGET_SELECTOR_PLAYER_CONFIG_KEY)
+            boolean playerFlag = golem.configurationProvidersView.contains(TARGET_SELECTOR_PLAYER_CONFIG_KEY)
                     ? TARGET_SELECTOR_PLAYER_CONFIG_KEY.provider.getBooleanFrom(golem) : TARGET_SELECTOR_PLAYER_CONFIG_KEY.provider.defaultValue;
             if (maybeTarget instanceof Player player){
                 var owner = golem.getOwner();

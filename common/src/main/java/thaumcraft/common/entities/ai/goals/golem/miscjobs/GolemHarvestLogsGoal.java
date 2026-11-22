@@ -1,14 +1,17 @@
 package thaumcraft.common.entities.ai.goals.golem.miscjobs;
 
-import com.linearity.opentc4.utils.HighestFurthestBlockFinder;
-import com.linearity.opentc4.utils.random.LCGBlockPosGenerator;
+import com.linearity.opentc4.utils.blocksearch.BlockPosOffsets;
+import com.linearity.opentc4.utils.blocksearch.HighestFurthestBlockFinder;
+import com.linearity.opentc4.utils.random.LCGBlockPosPicker;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
 import thaumcraft.common.entities.ai.goals.golem.AbstractGolemGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
+import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.lib.utils.Utils;
 
 import java.util.UUID;
@@ -103,10 +106,14 @@ public class GolemHarvestLogsGoal extends AbstractGolemGoal {
                 var fakePlayer = platformUtils.getFakePlayer(serverLevel,LOG_HARVESTER_FAKE_PLAYER_UUID);
                 fakePlayer.moveTo(breakingPosCache.getX() + 0.5, breakingPosCache.getY() + 0.5, breakingPosCache.getZ() + 0.5);
                 serverLevel.destroyBlock(breakingPosCache,true,fakePlayer);
+                dropFakePlayerContents(fakePlayer);
                 level.broadcastEntityEvent(golem,START_ACTION_TIMER);
                 resetRemainingTicks();
             }
         }
+    }
+    protected void dropFakePlayerContents(ServerPlayer fakePlayer) {
+        GolemHelper.dropFakePlayerContentsBelongsToGolem(golem, fakePlayer);
     }
 
     protected BlockPos.MutableBlockPos currentBreaking = new BlockPos.MutableBlockPos(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -182,7 +189,7 @@ public class GolemHarvestLogsGoal extends AbstractGolemGoal {
         return getSearchRange() * 4;
     }
 
-    protected LCGBlockPosGenerator posGen = new LCGBlockPosGenerator(
+    protected LCGBlockPosPicker posGen = new LCGBlockPosPicker(
             getSearchXZRange(),getSearchYRange(),getSearchXZRange()
     );
 
@@ -201,7 +208,7 @@ public class GolemHarvestLogsGoal extends AbstractGolemGoal {
                 searchLogResult.set(searchLogPickingPosCache);
                 boolean isLog = Utils.isWoodLog(level, searchLogPickingPosCache);
                 if (isLog){
-                    while (Utils.isWoodLog(level, searchLogPickingPosCache)) {
+                    do {
                         var distanceCurrent = searchLogPickingPosCache.distToCenterSqr(golemPos);
                         if (distanceCurrent <= /*this "=" might be helpful?*/ minDistance) {
                             minDistance = distanceCurrent;
@@ -210,21 +217,19 @@ public class GolemHarvestLogsGoal extends AbstractGolemGoal {
                         } else {
                             return;
                         }
-                    }
+                    } while (Utils.isWoodLog(level, searchLogPickingPosCache));
                 }
             }
         }
     }
 
 
-    protected HighestFurthestBlockFinder.BlockPosOffsets logOffsets = new HighestFurthestBlockFinder.BlockPosOffsets();
+    protected BlockPosOffsets logOffsets = new BlockPosOffsets();
     protected HighestFurthestBlockFinder.TriIntConsumer offsetsConsumer = logOffsets::add;
     protected void findConnectedLogs(){
         var searcher = new HighestFurthestBlockFinder(
                 golem.level(),
-                (l,pos,state) -> {
-                    return Utils.isWoodLog(l,pos);
-                },
+                (l,pos,state) -> Utils.isWoodLog(l,pos),
                 getBreakRange(),
                 getBreakRange(),
                 offsetsConsumer

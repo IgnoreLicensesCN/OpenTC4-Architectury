@@ -13,11 +13,13 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -1056,7 +1058,9 @@ public class GolemHelper {
     public static boolean findSomethingUseCore(EntityGolemBase golem, ItemStack itemToMatch) {
         for (byte col : golem.getColorsMatching(itemToMatch)) {
             for (Marker marker : golem.getMarkers()) {
-                if ((marker.getColor() == col || col == -1) && (!golem.getToggles()[0] || golem.level().isAirBlock(marker.x, marker.y, marker.z)) && (golem.getToggles()[0] || !golem.level().isAirBlock(marker.x, marker.y, marker.z))) {
+                if ((marker.getColor() == col || col == -1)
+                        && (!golem.getToggles()[0] || golem.level().isAirBlock(marker.x, marker.y, marker.z))
+                        && (golem.getToggles()[0] || !golem.level().isAirBlock(marker.x, marker.y, marker.z))) {
                     Direction opp = Direction.getOrientation(marker.getSide());
                     if (golem.level().isAirBlock(marker.x + opp.offsetX, marker.y + opp.offsetY, marker.z + opp.offsetZ)) {
                         return true;
@@ -1134,7 +1138,7 @@ public class GolemHelper {
     public static boolean isOnTimeOut(BaseGolemEntity golem, ItemStack stack) {
         var fakeField = opentc4$getCachedObjectFrom(
                 stack,
-                GolemPlaceItemStackToHomeGoalWithItemStackTickMark.ItemStackSortingTickMarkFakeFields.class);
+                GolemPlaceItemStackToHomeGoalWithItemStackTickMark.ItemStackSortingTickMarkFakeField.class);
         if (fakeField == null) {
             return false;
         }
@@ -1324,4 +1328,16 @@ public class GolemHelper {
 //            return true;
 //        }
 //    }
+
+
+    public static void dropFakePlayerContentsBelongsToGolem(BaseGolemEntity golem, ServerPlayer fakePlayer) {
+        if (fakePlayer.getItemInHand(InteractionHand.MAIN_HAND) == golem.getMainHandItem()) {
+            fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        }
+        for (var stack:fakePlayer.getInventory().items){
+            if (!stack.isEmpty()){
+                fakePlayer.spawnAtLocation(ExtendedItemStack.splitAll(stack));
+            }
+        }
+    }
 }

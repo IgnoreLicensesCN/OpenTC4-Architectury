@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.goals.golem.miscjobs;
 
-import com.linearity.opentc4.utils.random.LCGBlockPosGenerator;
+import com.linearity.opentc4.utils.random.LCGBlockPosPicker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -19,7 +19,7 @@ public class GolemHarvestCropsGoal extends AbstractGolemGoal {
     private int delay = -1;
     private int mod = 1;
     protected int tickCountRemaining = 0;
-    protected LCGBlockPosGenerator posGen = new LCGBlockPosGenerator(getFarmingDistance(),1,getFarmingDistance());
+    protected LCGBlockPosPicker posGen = new LCGBlockPosPicker(getFarmingDistance(),1,getFarmingDistance());
 //    protected EasyLCGGenerator LCGGen = new EasyLCGGenerator((getFarmingDistance()*2+1)*(getFarmingDistance()*2+1));
     public GolemHarvestCropsGoal(BaseGolemEntity golem) {
         super(golem);

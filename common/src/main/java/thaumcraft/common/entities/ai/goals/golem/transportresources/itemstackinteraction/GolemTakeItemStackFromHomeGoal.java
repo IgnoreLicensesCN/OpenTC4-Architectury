@@ -20,16 +20,15 @@ import static thaumcraft.common.entities.ai.goals.golem.transportresources.items
 import static thaumcraft.common.entities.golems.GolemHelper.*;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY;
 
-public class GolemTakeItemStackFromHomeGoal extends AbstractGolemGoal {
+public abstract class GolemTakeItemStackFromHomeGoal extends AbstractGolemGoal {
 
     public GolemTakeItemStackFromHomeGoal(BaseGolemEntity golem) {
         super(golem);
     }
-    protected GolemHelper.ContainersWithRoomIterator containersWithRoomIterator = new GolemHelper.ContainersWithRoomIterator(golem);
     public List<ItemStack> cache = new ArrayList<>();
 
     public boolean meetsFilter(ItemStack stack){
-        return findSomethingEmptyCore(golem, stack, containersWithRoomIterator) && !isOnTimeOut(golem, stack);
+        return findSomething(stack) && !isOnTimeOut(golem, stack);
     }
     @Override
     public boolean canUse() {
@@ -81,7 +80,7 @@ public class GolemTakeItemStackFromHomeGoal extends AbstractGolemGoal {
                             golem,container,i,dir,false
                     );
                     if (!extracted.isEmpty()) {
-                        if (findSomethingEmptyCore(golem,extracted,containersWithRoomIterator)){
+                        if (findSomething(extracted)){
                             extracted = extractStackFromContainerWithTimeout(
                                     golem,container,i,dir,true
                             );
@@ -122,8 +121,10 @@ public class GolemTakeItemStackFromHomeGoal extends AbstractGolemGoal {
         return false;
     }
 
+    protected abstract boolean findSomething(ItemStack extracted);
+
     protected boolean fuzzyMatch() {
-        return golem.configurationProviders.contains(MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY)
+        return golem.configurationProvidersView.contains(MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY)
                 && MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY.provider.getBooleanFrom(golem);
     }
 
