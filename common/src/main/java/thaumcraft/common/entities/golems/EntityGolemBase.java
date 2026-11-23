@@ -262,12 +262,12 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //            this.tasks.addTask(3, new AIGolemAttackOnCollide(this));//finished
 //            this.targetTasks.addTask(1, new AINearestButcherTarget(this, 0, true));
 //            break;
-         case 10:
-            this.tasks.addTask(0, new AIHomeReplace(this));
-            this.tasks.addTask(1, new AISortingPlace(this));
-            this.tasks.addTask(3, new AISortingGoto(this));
-            this.tasks.addTask(4, new AIHomeTakeSorting(this));
-            break;
+//         case 10:
+//            this.tasks.addTask(0, new AIHomeReplace(this));
+//            this.tasks.addTask(1, new AISortingPlace(this));
+//            this.tasks.addTask(3, new AISortingGoto(this));
+//            this.tasks.addTask(4, new AIHomeTakeSorting(this));
+//            break;
          case 11:
             this.tasks.addTask(2, new AIFish(this));
       }

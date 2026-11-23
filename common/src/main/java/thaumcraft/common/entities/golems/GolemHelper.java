@@ -20,14 +20,12 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.GolemPlaceItemStackToHomeGoalWithItemStackTickMark;
 import thaumcraft.common.lib.utils.InventoryUtils;
 import thaumcraft.common.tiles.junkbox.TileJarFillable;
@@ -44,24 +42,58 @@ import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingB
 
 public class GolemHelper {
     public static final double ADJACENT_RANGE = 4.0F;
-    static HashMap<String, TileJarFillable> jarlist = new HashMap<>();
-    private static ArrayList<Integer> reggedLiquids = null;
-    static ArrayList<SortingItemTimeout> itemTimeout = new ArrayList<>();
+//    static HashMap<String, TileJarFillable> jarlist = new HashMap<>();
+//    private static ArrayList<Integer> reggedLiquids = null;
+//    static ArrayList<SortingItemTimeout> itemTimeout = new ArrayList<>();
 
-    public static ArrayList<IInventory> getMarkedContainers(World world, EntityGolemBase golem) {
-        ArrayList<IInventory> results = new ArrayList<>();
+//    public static ArrayList<IInventory> getMarkedContainers(World world, EntityGolemBase golem) {
+//        ArrayList<IInventory> results = new ArrayList<>();
+//
+//        for (Marker marker : golem.getMarkers()) {
+//            TileEntity te = world.getTileEntity(marker.x, marker.y, marker.z);
+//            if (marker.getDim() == world.dimension() && te instanceof IInventory) {
+//                results.add((IInventory) te);
+//                if (InventoryUtils.getDoubleChest(te) != null) {
+//                    results.add(InventoryUtils.getDoubleChest(te));
+//                }
+//            }
+//        }
+//
+//        return results;
+//    }
 
-        for (Marker marker : golem.getMarkers()) {
-            TileEntity te = world.getTileEntity(marker.x, marker.y, marker.z);
-            if (marker.getDim() == world.dimension() && te instanceof IInventory) {
-                results.add((IInventory) te);
-                if (InventoryUtils.getDoubleChest(te) != null) {
-                    results.add(InventoryUtils.getDoubleChest(te));
+    public static void getItemsNeeded(Iterator<ItemStack> inventoryToSearch,BaseGolemEntity golem, boolean fuzzy, List<ItemStack> resultReceiver, BiPredicate<BaseGolemEntity,ItemStack> stackFilter){
+        getItemsNeeded(inventoryToSearch,golem,fuzzy,resultReceiver,stackFilter,Integer.MAX_VALUE);
+    }
+    public static void getItemsNeeded(Iterator<ItemStack> inventoryToSearch,BaseGolemEntity golem, boolean fuzzy, List<ItemStack> resultReceiver, BiPredicate<BaseGolemEntity,ItemStack> stackFilter,int max) {
+
+        while (inventoryToSearch.hasNext()) {
+            var consideringStack = inventoryToSearch.next();
+            if (consideringStack.isEmpty()){
+                continue;
+            }
+            if (ItemStack.isSameItemSameTags(consideringStack, consideringStack)) {
+                if (stackFilter.test(golem,consideringStack)){
+                    resultReceiver.add(consideringStack);
+                    max -= 1;
+                    if (max <= 0){
+                        break;
+                    }
+                }
+            } else if (fuzzy) {
+                var tags = getConsideringTagsForItem(consideringStack.getItem());
+                var tagsForConsidering = getConsideringTagsForItem(consideringStack.getItem());
+                if (!Collections.disjoint(tags, tagsForConsidering)){
+                    if (stackFilter.test(golem,consideringStack)){
+                        resultReceiver.add(consideringStack);
+                        max -= 1;
+                        if (max <= 0){
+                            break;
+                        }
+                    }
                 }
             }
         }
-
-        return results;
     }
 
     public interface Resettable {
@@ -336,17 +368,17 @@ public class GolemHelper {
         }
     }
 
-    public static ArrayList<ChunkCoordinates> getMarkedBlocksAdjacentToGolem(World world, EntityGolemBase golem, byte color) {
-        ArrayList<ChunkCoordinates> results = new ArrayList<>();
-
-        for (Marker marker : golem.getMarkers()) {
-            if ((marker.getColor() == color || color == -1) && (golem.level().getTileEntity(marker.x, marker.y, marker.z) == null || !(golem.level().getTileEntity(marker.x, marker.y, marker.z) instanceof IInventory)) && golem.getDistanceSq((double) marker.x + (double) 0.5F, (double) marker.y + (double) 0.5F, (double) marker.z + (double) 0.5F) < (double) 4.0F) {
-                results.add(new ChunkCoordinates(marker.x, marker.y, marker.z));
-            }
-        }
-
-        return results;
-    }
+//    public static ArrayList<ChunkCoordinates> getMarkedBlocksAdjacentToGolem(World world, EntityGolemBase golem, byte color) {
+//        ArrayList<ChunkCoordinates> results = new ArrayList<>();
+//
+//        for (Marker marker : golem.getMarkers()) {
+//            if ((marker.getColor() == color || color == -1) && (golem.level().getTileEntity(marker.x, marker.y, marker.z) == null || !(golem.level().getTileEntity(marker.x, marker.y, marker.z) instanceof IInventory)) && golem.getDistanceSq((double) marker.x + (double) 0.5F, (double) marker.y + (double) 0.5F, (double) marker.z + (double) 0.5F) < (double) 4.0F) {
+//                results.add(new ChunkCoordinates(marker.x, marker.y, marker.z));
+//            }
+//        }
+//
+//        return results;
+//    }
 
     public static class ContainersWithRoomIterator implements Iterator<ContainerInfo>, Resettable {
         protected final BaseGolemEntity golem;
@@ -425,18 +457,18 @@ public class GolemHelper {
         }
     }
 
-    public static ArrayList<IInventory> getContainersWithRoom(World world, EntityGolemBase golem, byte color) {
-        ArrayList<IInventory> results = new ArrayList<>();
-
-        for (IInventory inventory : getMarkedContainers(world, golem)) {
-            boolean hasRoom = false;
-
-            for (Integer side : getMarkedSides(golem, (TileEntity) inventory, color)) {
-                ItemStack result = InventoryUtils.placeItemStackIntoInventory(golem.getCarried(), inventory, side, false);
-                if (!ItemStack.areItemStacksEqual(result, golem.itemCarried)) {
-                    results.add(inventory);
-                    break;
-                }
+//    public static ArrayList<IInventory> getContainersWithRoom(World world, EntityGolemBase golem, byte color) {
+//        ArrayList<IInventory> results = new ArrayList<>();
+//
+//        for (IInventory inventory : getMarkedContainers(world, golem)) {
+//            boolean hasRoom = false;
+//
+//            for (Integer side : getMarkedSides(golem, (TileEntity) inventory, color)) {
+//                ItemStack result = InventoryUtils.placeItemStackIntoInventory(golem.getCarried(), inventory, side, false);
+//                if (!ItemStack.areItemStacksEqual(result, golem.itemCarried)) {
+//                    results.add(inventory);
+//                    break;
+//                }
 
 //            if (InventoryUtils.getDoubleChest((TileEntity)inventory) != null) {
 //               result = InventoryUtils.placeItemStackIntoInventory(golem.getCarried(), InventoryUtils.getDoubleChest((TileEntity)inventory), side, false);
@@ -444,24 +476,24 @@ public class GolemHelper {
 //                  results.add(InventoryUtils.getDoubleChest((TileEntity)inventory));
 //               }
 //            }
-            }
-        }
+//            }
+//        }
+//
+//        return results;
+//    }
 
-        return results;
-    }
-
-    public static ArrayList<IInventory> getContainersWithRoom(World world, EntityGolemBase golem, byte color, ItemStack itemToMatch) {
-        ArrayList<IInventory> results = new ArrayList<>();
-
-        for (IInventory inventory : getMarkedContainers(world, golem)) {
-            boolean hasRoom = false;
-
-            for (Integer side : getMarkedSides(golem, (TileEntity) inventory, color)) {
-                ItemStack result = InventoryUtils.placeItemStackIntoInventory(itemToMatch, inventory, side, false);
-                if (!ItemStack.areItemStacksEqual(result, itemToMatch)) {
-                    results.add(inventory);
-                    break;
-                }
+//    public static ArrayList<IInventory> getContainersWithRoom(World world, EntityGolemBase golem, byte color, ItemStack itemToMatch) {
+//        ArrayList<IInventory> results = new ArrayList<>();
+//
+//        for (IInventory inventory : getMarkedContainers(world, golem)) {
+//            boolean hasRoom = false;
+//
+//            for (Integer side : getMarkedSides(golem, (TileEntity) inventory, color)) {
+//                ItemStack result = InventoryUtils.placeItemStackIntoInventory(itemToMatch, inventory, side, false);
+//                if (!ItemStack.areItemStacksEqual(result, itemToMatch)) {
+//                    results.add(inventory);
+//                    break;
+//                }
 
 //            if (InventoryUtils.getDoubleChest((TileEntity)inventory) != null) {
 //               result = InventoryUtils.placeItemStackIntoInventory(itemToMatch, InventoryUtils.getDoubleChest((TileEntity)inventory), side, false);
@@ -469,11 +501,11 @@ public class GolemHelper {
 //                  results.add(InventoryUtils.getDoubleChest((TileEntity)inventory));
 //               }
 //            }
-            }
-        }
-
-        return results;
-    }
+//            }
+//        }
+//
+//        return results;
+//    }
 
     public static Set<Direction> getMarkedSides(BaseGolemEntity golem, BlockEntity tile, byte color) {
         var pos = tile.getBlockPos();
@@ -839,164 +871,164 @@ public class GolemHelper {
 //
 //    }
 
-    public static ArrayList<Integer> getReggedLiquids() {
-        if (reggedLiquids == null) {
-            reggedLiquids = new ArrayList<>();
+//    public static ArrayList<Integer> getReggedLiquids() {
+//        if (reggedLiquids == null) {
+//            reggedLiquids = new ArrayList<>();
+//
+//            reggedLiquids.addAll(FluidRegistry.getRegisteredFluidIDs().values());
+//        }
+//
+//        return reggedLiquids;
+//    }
 
-            reggedLiquids.addAll(FluidRegistry.getRegisteredFluidIDs().values());
-        }
+//    public static ArrayList<FluidStack> getMissingLiquids(EntityGolemBase golem) {
+//        ArrayList<FluidStack> out = new ArrayList<>();
+//        Direction facing = Direction.getOrientation(golem.homeFacing);
+//        ChunkCoordinates home = golem.getHomePosition();
+//        int cX = home.posX - facing.offsetX;
+//        int cY = home.posY - facing.offsetY;
+//        int cZ = home.posZ - facing.offsetZ;
+//        TileEntity tile = golem.level().getTileEntity(cX, cY, cZ);
+//        if (tile instanceof IFluidHandler fluidhandler) {
+//            Iterator<Integer> i$ = getReggedLiquids().iterator();
+//
+//            while (true) {
+//                Integer id;
+//                while (true) {
+//                    if (!i$.hasNext()) {
+//                        return out;
+//                    }
+//
+//                    id = i$.next();
+//                    if ((golem.fluidCarried == null || golem.fluidCarried.amount <= 0 || golem.fluidCarried.getFluidID() == id) && fluidhandler.canFill(facing, FluidRegistry.getFluid(id))) {
+//                        FluidStack fs = new FluidStack(FluidRegistry.getFluid(id), Integer.MAX_VALUE);
+//                        if (!golem.inventory.hasSomething()) {
+//                            break;
+//                        }
+//
+//                        FluidStack fis = null;
+//                        boolean found = false;
+//
+//                        for (int a = 0; a < golem.inventory.slotCount; ++a) {
+//                            fis = FluidContainerRegistry.getFluidForFilledItem(golem.inventory.getStackInSlot(a));
+//                            if (fis != null && fis.isFluidEqual(fs)) {
+//                                found = true;
+//                                break;
+//                            }
+//                        }
+//
+//                        if (found) {
+//                            break;
+//                        }
+//                    }
+//                }
+//
+//                out.add(new FluidStack(id, Integer.MAX_VALUE));
+//            }
+//        } else {
+//            return out;
+//        }
+//    }
 
-        return reggedLiquids;
-    }
+//    public static Vec3 findPossibleLiquid(FluidStack ls, EntityGolemBase golem) {
+//        Direction facing = Direction.getOrientation(golem.homeFacing);
+//        ChunkCoordinates home = golem.getHomePosition();
+//        int var10000 = home.posX - facing.offsetX;
+//        var10000 = home.posY - facing.offsetY;
+//        var10000 = home.posZ - facing.offsetZ;
+//        float dmod = golem.getRange();
+//        ChunkCoordinates v = null;
+//        ArrayList<IFluidHandler> fluidhandlers = getMarkedFluidHandlers(ls, golem.level(), golem);
+//        double dd = Double.MAX_VALUE;
+//        if (fluidhandlers != null) {
+//            for (IFluidHandler fluidhandler : fluidhandlers) {
+//                if (fluidhandler != null) {
+//                    TileEntity tile = (TileEntity) fluidhandler;
+//                    double d = golem.getDistanceSq((double) tile.xCoord + (double) 0.5F, (double) tile.yCoord + (double) 0.5F, (double) tile.zCoord + (double) 0.5F);
+//                    if (d <= (double) (dmod * dmod) && d < dd) {
+//                        dd = d;
+//                        v = new ChunkCoordinates(tile.xCoord, tile.yCoord, tile.zCoord);
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (v == null) {
+//            ArrayList<ChunkCoordinates> inworld = getMarkedFluidBlocks(ls, golem.level(), golem);
+//            dd = Double.MAX_VALUE;
+//            if (inworld != null) {
+//                for (ChunkCoordinates coord : inworld) {
+//                    if (coord != null) {
+//                        double d = golem.getDistanceSq((double) coord.posX + (double) 0.5F, (double) coord.posY + (double) 0.5F, (double) coord.posZ + (double) 0.5F);
+//                        if (d <= (double) (dmod * dmod) && d < dd) {
+//                            dd = d;
+//                            v = new ChunkCoordinates(coord.posX, coord.posY, coord.posZ);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        return v != null ? Vec3.createVectorHelper(v.posX, v.posY, v.posZ) : null;
+//    }
+//
+//    public static ArrayList<Marker> getMarkedFluidHandlersAdjacentToGolem(FluidStack ls, World world, EntityGolemBase golem) {
+//        ArrayList<Marker> results = new ArrayList<>();
+//
+//        for (Marker marker : golem.getMarkers()) {
+//            TileEntity te = world.getTileEntity(marker.x, marker.y, marker.z);
+//            if (marker.getDim() == world.dimension() && te instanceof IFluidHandler
+//                    && golem.getDistanceSq((double) te.xCoord + (double) 0.5F, (double) te.yCoord + (double) 0.5F, (double) te.zCoord + (double) 0.5F) < (double) 4.0F
+//            ) {
+//                FluidStack fs = ((IFluidHandler) te).drain(Direction.getOrientation(marker.getSide()), new FluidStack(ls.getFluid(), 1), false);
+//                if (fs != null && fs.amount > 0) {
+//                    results.add(marker);
+//                }
+//            }
+//        }
+//
+//        return results;
+//    }
+//
+//    public static ArrayList getMarkedFluidHandlers(FluidStack ls, World world, EntityGolemBase golem) {
+//        ArrayList<IFluidHandler> results = new ArrayList<>();
+//
+//        for (Marker marker : golem.getMarkers()) {
+//            TileEntity te = world.getTileEntity(marker.x, marker.y, marker.z);
+//            if (marker.getDim() == world.dimension() && te instanceof IFluidHandler) {
+//                FluidStack fs = ((IFluidHandler) te).drain(Direction.getOrientation(marker.getSide()), new FluidStack(ls.getFluid(), 1), false);
+//                if (fs != null && fs.amount > 0) {
+//                    results.add((IFluidHandler) te);
+//                }
+//            }
+//        }
+//
+//        return results;
+//    }
+//
+//    public static ArrayList getMarkedFluidBlocks(FluidStack ls, World world, EntityGolemBase golem) {
+//        ArrayList<ChunkCoordinates> results = new ArrayList<>();
+//
+//        for (Marker marker : golem.getMarkers()) {
+//            Block bi = world.getBlock(marker.x, marker.y, marker.z);
+//            if (marker.getDim() == world.dimension() && FluidRegistry.getFluid(ls.getFluidID()).getBlock() == bi) {
+//                if (bi instanceof BlockFluidBase && ((BlockFluidBase) bi).canDrain(world, marker.x, marker.y, marker.z)) {
+//                    results.add(new ChunkCoordinates(marker.x, marker.y, marker.z));
+//                } else if (ls.getFluidID() == FluidRegistry.WATER.getID() || ls.getFluidID() == FluidRegistry.LAVA.getID()) {
+//                    int wmd = world.getBlockMetadata(marker.x, marker.y, marker.z);
+//                    if ((FluidRegistry.lookupFluidForBlock(bi) == FluidRegistry.WATER && ls.getFluidID() == FluidRegistry.WATER.getID() || FluidRegistry.lookupFluidForBlock(bi) == FluidRegistry.LAVA && ls.getFluidID() == FluidRegistry.LAVA.getID()) && wmd == 0) {
+//                        results.add(new ChunkCoordinates(marker.x, marker.y, marker.z));
+//                    }
+//                }
+//            }
+//        }
+//
+//        return results;
+//    }
 
-    public static ArrayList<FluidStack> getMissingLiquids(EntityGolemBase golem) {
-        ArrayList<FluidStack> out = new ArrayList<>();
-        Direction facing = Direction.getOrientation(golem.homeFacing);
-        ChunkCoordinates home = golem.getHomePosition();
-        int cX = home.posX - facing.offsetX;
-        int cY = home.posY - facing.offsetY;
-        int cZ = home.posZ - facing.offsetZ;
-        TileEntity tile = golem.level().getTileEntity(cX, cY, cZ);
-        if (tile instanceof IFluidHandler fluidhandler) {
-            Iterator<Integer> i$ = getReggedLiquids().iterator();
-
-            while (true) {
-                Integer id;
-                while (true) {
-                    if (!i$.hasNext()) {
-                        return out;
-                    }
-
-                    id = i$.next();
-                    if ((golem.fluidCarried == null || golem.fluidCarried.amount <= 0 || golem.fluidCarried.getFluidID() == id) && fluidhandler.canFill(facing, FluidRegistry.getFluid(id))) {
-                        FluidStack fs = new FluidStack(FluidRegistry.getFluid(id), Integer.MAX_VALUE);
-                        if (!golem.inventory.hasSomething()) {
-                            break;
-                        }
-
-                        FluidStack fis = null;
-                        boolean found = false;
-
-                        for (int a = 0; a < golem.inventory.slotCount; ++a) {
-                            fis = FluidContainerRegistry.getFluidForFilledItem(golem.inventory.getStackInSlot(a));
-                            if (fis != null && fis.isFluidEqual(fs)) {
-                                found = true;
-                                break;
-                            }
-                        }
-
-                        if (found) {
-                            break;
-                        }
-                    }
-                }
-
-                out.add(new FluidStack(id, Integer.MAX_VALUE));
-            }
-        } else {
-            return out;
-        }
-    }
-
-    public static Vec3 findPossibleLiquid(FluidStack ls, EntityGolemBase golem) {
-        Direction facing = Direction.getOrientation(golem.homeFacing);
-        ChunkCoordinates home = golem.getHomePosition();
-        int var10000 = home.posX - facing.offsetX;
-        var10000 = home.posY - facing.offsetY;
-        var10000 = home.posZ - facing.offsetZ;
-        float dmod = golem.getRange();
-        ChunkCoordinates v = null;
-        ArrayList<IFluidHandler> fluidhandlers = getMarkedFluidHandlers(ls, golem.level(), golem);
-        double dd = Double.MAX_VALUE;
-        if (fluidhandlers != null) {
-            for (IFluidHandler fluidhandler : fluidhandlers) {
-                if (fluidhandler != null) {
-                    TileEntity tile = (TileEntity) fluidhandler;
-                    double d = golem.getDistanceSq((double) tile.xCoord + (double) 0.5F, (double) tile.yCoord + (double) 0.5F, (double) tile.zCoord + (double) 0.5F);
-                    if (d <= (double) (dmod * dmod) && d < dd) {
-                        dd = d;
-                        v = new ChunkCoordinates(tile.xCoord, tile.yCoord, tile.zCoord);
-                    }
-                }
-            }
-        }
-
-        if (v == null) {
-            ArrayList<ChunkCoordinates> inworld = getMarkedFluidBlocks(ls, golem.level(), golem);
-            dd = Double.MAX_VALUE;
-            if (inworld != null) {
-                for (ChunkCoordinates coord : inworld) {
-                    if (coord != null) {
-                        double d = golem.getDistanceSq((double) coord.posX + (double) 0.5F, (double) coord.posY + (double) 0.5F, (double) coord.posZ + (double) 0.5F);
-                        if (d <= (double) (dmod * dmod) && d < dd) {
-                            dd = d;
-                            v = new ChunkCoordinates(coord.posX, coord.posY, coord.posZ);
-                        }
-                    }
-                }
-            }
-        }
-
-        return v != null ? Vec3.createVectorHelper(v.posX, v.posY, v.posZ) : null;
-    }
-
-    public static ArrayList<Marker> getMarkedFluidHandlersAdjacentToGolem(FluidStack ls, World world, EntityGolemBase golem) {
-        ArrayList<Marker> results = new ArrayList<>();
-
-        for (Marker marker : golem.getMarkers()) {
-            TileEntity te = world.getTileEntity(marker.x, marker.y, marker.z);
-            if (marker.getDim() == world.dimension() && te instanceof IFluidHandler
-                    && golem.getDistanceSq((double) te.xCoord + (double) 0.5F, (double) te.yCoord + (double) 0.5F, (double) te.zCoord + (double) 0.5F) < (double) 4.0F
-            ) {
-                FluidStack fs = ((IFluidHandler) te).drain(Direction.getOrientation(marker.getSide()), new FluidStack(ls.getFluid(), 1), false);
-                if (fs != null && fs.amount > 0) {
-                    results.add(marker);
-                }
-            }
-        }
-
-        return results;
-    }
-
-    public static ArrayList getMarkedFluidHandlers(FluidStack ls, World world, EntityGolemBase golem) {
-        ArrayList<IFluidHandler> results = new ArrayList<>();
-
-        for (Marker marker : golem.getMarkers()) {
-            TileEntity te = world.getTileEntity(marker.x, marker.y, marker.z);
-            if (marker.getDim() == world.dimension() && te instanceof IFluidHandler) {
-                FluidStack fs = ((IFluidHandler) te).drain(Direction.getOrientation(marker.getSide()), new FluidStack(ls.getFluid(), 1), false);
-                if (fs != null && fs.amount > 0) {
-                    results.add((IFluidHandler) te);
-                }
-            }
-        }
-
-        return results;
-    }
-
-    public static ArrayList getMarkedFluidBlocks(FluidStack ls, World world, EntityGolemBase golem) {
-        ArrayList<ChunkCoordinates> results = new ArrayList<>();
-
-        for (Marker marker : golem.getMarkers()) {
-            Block bi = world.getBlock(marker.x, marker.y, marker.z);
-            if (marker.getDim() == world.dimension() && FluidRegistry.getFluid(ls.getFluidID()).getBlock() == bi) {
-                if (bi instanceof BlockFluidBase && ((BlockFluidBase) bi).canDrain(world, marker.x, marker.y, marker.z)) {
-                    results.add(new ChunkCoordinates(marker.x, marker.y, marker.z));
-                } else if (ls.getFluidID() == FluidRegistry.WATER.getID() || ls.getFluidID() == FluidRegistry.LAVA.getID()) {
-                    int wmd = world.getBlockMetadata(marker.x, marker.y, marker.z);
-                    if ((FluidRegistry.lookupFluidForBlock(bi) == FluidRegistry.WATER && ls.getFluidID() == FluidRegistry.WATER.getID() || FluidRegistry.lookupFluidForBlock(bi) == FluidRegistry.LAVA && ls.getFluidID() == FluidRegistry.LAVA.getID()) && wmd == 0) {
-                        results.add(new ChunkCoordinates(marker.x, marker.y, marker.z));
-                    }
-                }
-            }
-        }
-
-        return results;
-    }
-
-    public static ArrayList<ItemStack> getItemsNeeded(EntityGolemBase golem, boolean fuzzy) {
-        ArrayList<ItemStack> needed = null;
-        switch (golem.getCore()) {
+//    public static ArrayList<ItemStack> getItemsNeeded(EntityGolemBase golem, boolean fuzzy) {
+//        ArrayList<ItemStack> needed = null;
+//        switch (golem.getCore()) {
 //            case 1:
 //                needed = golem.inventory.getItemsNeeded(golem.getUpgradeAmount(5) > 0);
 //                if (needed.isEmpty()) {
@@ -1004,20 +1036,20 @@ public class GolemHelper {
 //                }
 //
 //                return filterEmptyCore(golem, needed);
-            case 8:
-                needed = golem.inventory.getItemsNeeded(golem.getUpgradeAmount(5) > 0);
-                if (needed.isEmpty()) {
-                    return null;
-                }
-
-                return filterUseCore(golem, needed);
-            case 10:
-                needed = getItemsInHomeContainer(golem);
-                return filterSortCore(golem, needed);
-            default:
-                return needed;
-        }
-    }
+//            case 8:
+//                needed = golem.inventory.getItemsNeeded(golem.getUpgradeAmount(5) > 0);
+//                if (needed.isEmpty()) {
+//                    return null;
+//                }
+//
+//                return filterUseCore(golem, needed);
+//            case 10:
+//                needed = getItemsInHomeContainer(golem);
+//                return filterSortCore(golem, needed);
+//            default:
+//                return needed;
+//        }
+//    }
 
 //    private static ArrayList<ItemStack> filterEmptyCore(EntityGolemBase golem, ArrayList<ItemStack> in) {
 //        ArrayList<ItemStack> out = new ArrayList<>();
@@ -1031,47 +1063,47 @@ public class GolemHelper {
 //        return out;
 //    }
 
-    private static ArrayList<ItemStack> filterUseCore(EntityGolemBase golem, ArrayList<ItemStack> in) {
-        ArrayList<ItemStack> out = new ArrayList<>();
+//    private static ArrayList<ItemStack> filterUseCore(EntityGolemBase golem, ArrayList<ItemStack> in) {
+//        ArrayList<ItemStack> out = new ArrayList<>();
+//
+//        for (ItemStack itemToMatch : in) {
+//            if (!isOnTimeOut(golem, itemToMatch) && findSomethingUseCore(golem, itemToMatch)) {
+//                out.add(itemToMatch);
+//            }
+//        }
+//
+//        return out;
+//    }
 
-        for (ItemStack itemToMatch : in) {
-            if (!isOnTimeOut(golem, itemToMatch) && findSomethingUseCore(golem, itemToMatch)) {
-                out.add(itemToMatch);
-            }
-        }
+//    private static ArrayList<ItemStack> filterSortCore(EntityGolemBase golem, ArrayList<ItemStack> in) {
+//        ArrayList<ItemStack> out = new ArrayList<>();
+//
+//        for (ItemStack itemToMatch : in) {
+//            if (!isOnTimeOut(golem, itemToMatch) && findSomethingSortCore(golem, itemToMatch)) {
+//                out.add(itemToMatch);
+//            }
+//        }
+//
+//        return out;
+//    }
 
-        return out;
-    }
-
-    private static ArrayList<ItemStack> filterSortCore(EntityGolemBase golem, ArrayList<ItemStack> in) {
-        ArrayList<ItemStack> out = new ArrayList<>();
-
-        for (ItemStack itemToMatch : in) {
-            if (!isOnTimeOut(golem, itemToMatch) && findSomethingSortCore(golem, itemToMatch)) {
-                out.add(itemToMatch);
-            }
-        }
-
-        return out;
-    }
-
-    public static boolean findSomethingUseCore(EntityGolemBase golem, ItemStack itemToMatch) {
-        for (byte col : golem.getColorsMatching(itemToMatch)) {
-            for (Marker marker : golem.getMarkers()) {
-                if ((marker.getColor() == col || col == -1)
-                        && (!golem.getToggles()[0] || golem.level().isAirBlock(marker.x, marker.y, marker.z))
-                        && (golem.getToggles()[0] || !golem.level().isAirBlock(marker.x, marker.y, marker.z))) {
-                    Direction opp = Direction.getOrientation(marker.getSide());
-                    if (golem.level().isAirBlock(marker.x + opp.offsetX, marker.y + opp.offsetY, marker.z + opp.offsetZ)) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        itemTimeout.add(new SortingItemTimeout(golem.getEntityId(), itemToMatch.copy(), System.currentTimeMillis() + (long) Config.golemIgnoreDelay));
-        return false;
-    }
+//    public static boolean findSomethingUseCore(EntityGolemBase golem, ItemStack itemToMatch) {
+//        for (byte col : golem.getColorsMatching(itemToMatch)) {
+//            for (Marker marker : golem.getMarkers()) {
+//                if ((marker.getColor() == col || col == -1)
+//                        && (!golem.getToggles()[0] || golem.level().isAirBlock(marker.x, marker.y, marker.z))
+//                        && (golem.getToggles()[0] || !golem.level().isAirBlock(marker.x, marker.y, marker.z))) {
+//                    Direction opp = Direction.getOrientation(marker.getSide());
+//                    if (golem.level().isAirBlock(marker.x + opp.offsetX, marker.y + opp.offsetY, marker.z + opp.offsetZ)) {
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//
+//        itemTimeout.add(new SortingItemTimeout(golem.getEntityId(), itemToMatch.copy(), System.currentTimeMillis() + (long) Config.golemIgnoreDelay));
+//        return false;
+//    }
 
 //    public static boolean findSomethingEmptyCore(EntityGolemBase golem, ItemStack itemToMatch) {
 //        ArrayList<Byte> matchingColors = golem.getColorsMatching(itemToMatch);
@@ -1108,44 +1140,44 @@ public class GolemHelper {
 //        return false;
 //    }
 
-    public static boolean findSomethingSortCore(EntityGolemBase golem, ItemStack itemToMatch) {
-        ArrayList<IInventory> markers = getContainersWithRoom(golem.level(), golem, (byte) -1, itemToMatch);
-        if (!markers.isEmpty()) {
-            Direction i$1 = Direction.getOrientation(golem.homeFacing);
-            ChunkCoordinates marker = golem.getHomePosition();
-            int cX = marker.posX - i$1.offsetX;
-            int cY = marker.posY - i$1.offsetY;
-            int cZ = marker.posZ - i$1.offsetZ;
-            double range = Double.MAX_VALUE;
-            float dmod = golem.getRange();
+//    public static boolean findSomethingSortCore(EntityGolemBase golem, ItemStack itemToMatch) {
+//        ArrayList<IInventory> markers = getContainersWithRoom(golem.level(), golem, (byte) -1, itemToMatch);
+//        if (!markers.isEmpty()) {
+//            Direction i$1 = Direction.getOrientation(golem.homeFacing);
+//            ChunkCoordinates marker = golem.getHomePosition();
+//            int cX = marker.posX - i$1.offsetX;
+//            int cY = marker.posY - i$1.offsetY;
+//            int cZ = marker.posZ - i$1.offsetZ;
+//            double range = Double.MAX_VALUE;
+//            float dmod = golem.getRange();
+//
+//            for (IInventory te : markers) {
+//                double distance = golem.getDistanceSq(
+//                        (double) ((TileEntity) te).xCoord + (double) 0.5F,
+//                        (double) ((TileEntity) te).yCoord + (double) 0.5F,
+//                        (double) ((TileEntity) te).zCoord + (double) 0.5F
+//                );
+//                if (distance < range
+//                        && distance <= (double) (dmod * dmod)
+//                        && (((TileEntity) te).xCoord != cX
+//                        || ((TileEntity) te).yCoord != cY
+//                        || ((TileEntity) te).zCoord != cZ
+//                )
+//                ) {
+//                    for (int side : getMarkedSides(golem, (TileEntity) te, (byte) -1)) {
+//                        if (InventoryUtils.inventoryContains(te, itemToMatch, side, golem.checkOreDict(), golem.ignoreDamage(), golem.ignoreNBT())) {
+//                            return true;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        itemTimeout.add(new SortingItemTimeout(golem.getEntityId(), itemToMatch.copy(), System.currentTimeMillis() + (long) Config.golemIgnoreDelay));
+//        return false;
+//    }
 
-            for (IInventory te : markers) {
-                double distance = golem.getDistanceSq((double) ((TileEntity) te).xCoord + (double) 0.5F, (double) ((TileEntity) te).yCoord + (double) 0.5F, (double) ((TileEntity) te).zCoord + (double) 0.5F);
-                if (distance < range && distance <= (double) (dmod * dmod) && (((TileEntity) te).xCoord != cX || ((TileEntity) te).yCoord != cY || ((TileEntity) te).zCoord != cZ)) {
-                    for (int side : getMarkedSides(golem, (TileEntity) te, (byte) -1)) {
-                        if (InventoryUtils.inventoryContains(te, itemToMatch, side, golem.checkOreDict(), golem.ignoreDamage(), golem.ignoreNBT())) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-
-        itemTimeout.add(new SortingItemTimeout(golem.getEntityId(), itemToMatch.copy(), System.currentTimeMillis() + (long) Config.golemIgnoreDelay));
-        return false;
-    }
-
-    public static boolean isOnTimeOut(BaseGolemEntity golem, ItemStack stack) {
-        var fakeField = opentc4$getCachedObjectFrom(
-                stack,
-                GolemPlaceItemStackToHomeGoalWithItemStackTickMark.ItemStackSortingTickMarkFakeField.class);
-        if (fakeField == null) {
-            return false;
-        }
-        return fakeField.golemID == golem.getId() && fakeField.placeBeforeTickCount < golem.tickCount;
-    }
-
-//    public static boolean validTargetForItem(BaseGolemEntity golem, ItemStack stack) {
+    //    public static boolean validTargetForItem(BaseGolemEntity golem, ItemStack stack) {
 //        if (isOnTimeOut(golem, stack)) {
 //            return false;
 //        } else {
@@ -1217,31 +1249,31 @@ public class GolemHelper {
         }
     }
 
-    public static ItemStack getFirstItemUsingTimeout(BaseGolemEntity golem, Container container, @Nullable Direction side, boolean doit) {
-        IntIterator iterator = null;
-        if (container instanceof WorldlyContainer isidedinventory && side != null) {
-            int[] aint = isidedinventory.getSlotsForFace(side);
-            iterator = new IntArrayIterator(aint);
-        } else {
-            iterator = new IntRangeIterator(container.getContainerSize());
-        }
-        while (iterator.hasNext()) {
-            int i = iterator.nextInt();
-
-            var extracted = extractStackFromContainerWithTimeout(
-                    golem,container,i,side,doit
-            );
-            if (!extracted.isEmpty()) {
-                return extracted;
-            }
-        }
-        return ItemStack.EMPTY;
-    }
+//    public static ItemStack getFirstItemUsingTimeout(BaseGolemEntity golem, Container container, @Nullable Direction side, boolean doit) {
+//        IntIterator iterator = null;
+//        if (container instanceof WorldlyContainer isidedinventory && side != null) {
+//            int[] aint = isidedinventory.getSlotsForFace(side);
+//            iterator = new IntArrayIterator(aint);
+//        } else {
+//            iterator = new IntRangeIterator(container.getContainerSize());
+//        }
+//        while (iterator.hasNext()) {
+//            int i = iterator.nextInt();
+//
+//            var extracted = extractStackFromContainerWithTimeout(
+//                    golem,container,i,side,doit
+//            );
+//            if (!extracted.isEmpty()) {
+//                return extracted;
+//            }
+//        }
+//        return ItemStack.EMPTY;
+//    }
 
     public static ItemStack extractStackFromContainerWithTimeout(BaseGolemEntity golem,Container container, int slot,@Nullable Direction side,boolean doit) {
         var consideringStack = container.getItem(slot);
         if (!consideringStack.isEmpty()) {
-            if (isOnTimeOut(golem, consideringStack)) {
+            if (GolemPlaceItemStackToHomeGoalWithItemStackTickMark.ItemStackSortingTickMarkFakeField.isOnTimeOut(golem, consideringStack)) {
                 return ItemStack.EMPTY;
             }
 
@@ -1264,38 +1296,38 @@ public class GolemHelper {
         return ItemStack.EMPTY;
     }
 
-    public static ArrayList<ItemStack> getItemsInHomeContainer(EntityGolemBase golem) {
-        Direction facing = Direction.getOrientation(golem.homeFacing);
-        ChunkCoordinates home = golem.getHomePosition();
-        int cX = home.posX - facing.offsetX;
-        int cY = home.posY - facing.offsetY;
-        int cZ = home.posZ - facing.offsetZ;
-        TileEntity tile = golem.level().getTileEntity(cX, cY, cZ);
-        if (tile instanceof IInventory inv) {
-            int[] aint = null;
-            ArrayList<ItemStack> out = new ArrayList<>();
-            if (tile instanceof ISidedInventory && facing.ordinal() > -1) {
-                aint = ((ISidedInventory) inv).getAccessibleSlotsFromSide(facing.ordinal());
-            } else {
-                aint = new int[inv.getSizeInventory()];
-
-                for (int a = 0; a < inv.getSizeInventory(); aint[a] = a++) {
-                }
-            }
-
-            if (aint != null) {
-                for (int i : aint) {
-                    if (inv.getStackInSlot(i) != null) {
-                        out.add(inv.getStackInSlot(i).copy());
-                    }
-                }
-            }
-
-            return out;
-        } else {
-            return null;
-        }
-    }
+//    public static ArrayList<ItemStack> getItemsInHomeContainer(EntityGolemBase golem) {
+//        Direction facing = Direction.getOrientation(golem.homeFacing);
+//        ChunkCoordinates home = golem.getHomePosition();
+//        int cX = home.posX - facing.offsetX;
+//        int cY = home.posY - facing.offsetY;
+//        int cZ = home.posZ - facing.offsetZ;
+//        TileEntity tile = golem.level().getTileEntity(cX, cY, cZ);
+//        if (tile instanceof IInventory inv) {
+//            int[] aint = null;
+//            ArrayList<ItemStack> out = new ArrayList<>();
+//            if (tile instanceof ISidedInventory && facing.ordinal() > -1) {
+//                aint = ((ISidedInventory) inv).getAccessibleSlotsFromSide(facing.ordinal());
+//            } else {
+//                aint = new int[inv.getSizeInventory()];
+//
+//                for (int a = 0; a < inv.getSizeInventory(); aint[a] = a++) {
+//                }
+//            }
+//
+//            if (aint != null) {
+//                for (int i : aint) {
+//                    if (inv.getStackInSlot(i) != null) {
+//                        out.add(inv.getStackInSlot(i).copy());
+//                    }
+//                }
+//            }
+//
+//            return out;
+//        } else {
+//            return null;
+//        }
+//    }
 
 //    public static class SortingItemTimeout implements Comparable<SortingItemTimeout> {
 //        ItemStack stack = null;

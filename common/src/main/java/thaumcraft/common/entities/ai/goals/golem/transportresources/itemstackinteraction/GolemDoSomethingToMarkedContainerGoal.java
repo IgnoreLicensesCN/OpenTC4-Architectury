@@ -2,6 +2,7 @@ package thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackin
 
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
+import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,10 +19,9 @@ import java.lang.ref.WeakReference;
 import static com.linearity.opentc4.Consts.getEmptyWeakRef;
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.entities.golems.GolemHelper.DEFAULT_DISTANCE_PREDICATE;
-import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;
 
 public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGolemGoal {
-    protected int tickCountRemaining = 0;
+    protected int remainingTicks = 0;
     public GolemDoSomethingToMarkedContainerGoal(BaseGolemEntity golem) {
         super(golem);
     }
@@ -42,8 +42,7 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
         }
         var homeBEPos = golem.getHomeAttachedBlockPos();
 
-        colorsCache.clear();
-        getColorsMatching(colorsCache,golem,golemHoldingStack);
+        getColorsMatching(golemHoldingStack);
 
         markedContainerAndMarkerIterator.reset();
         while (markedContainerAndMarkerIterator.hasNext()) {
@@ -55,7 +54,7 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
             if (homeBEPos.equals(marker.getPos())){continue;}
             if (marker.colorEqualsFuzzy(colorsCache)){
                 ItemStack is = InventoryUtils.placeItemStackIntoInventory(golemHoldingStack, container, marker.getSide(), false);
-                if (!ItemStack.isSameItem(is, golemHoldingStack)) {
+                if (!ItemStack.isSameItem(is, golemHoldingStack) && validItemStackForContainer(is,be,container,marker.getSide())) {
                     usingMarker = marker;
                     usingBlockEntity = new WeakReference<>(be);
                     markedContainerAndMarkerIterator.reset();
@@ -67,9 +66,18 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
         return false;
     }
 
+    protected boolean validItemStackForContainer(ItemStack is, BlockEntity be, Container container, Direction interactionDirection) {
+        return true;
+    }
+
+    protected void getColorsMatching(ItemStack golemHoldingStack) {
+        colorsCache.clear();
+        GolemHelper.getColorsMatching(colorsCache,golem, golemHoldingStack);
+    }
+
     @Override
     public boolean canContinueToUse() {
-        if (tickCountRemaining == 0){
+        if (remainingTicks == 0){
             return false;
         }
         return verifyMarkerAndBE();
@@ -96,12 +104,12 @@ public abstract class GolemDoSomethingToMarkedContainerGoal extends AbstractGole
     @Override
     public void tick() {
         super.tick();
-        tickCountRemaining -=1;
+        remainingTicks -=1;
     }
 
     @Override
     public void start() {
         super.start();
-        tickCountRemaining = getMaxTickCountRemaining();
+        remainingTicks = getMaxTickCountRemaining();
     }
 }

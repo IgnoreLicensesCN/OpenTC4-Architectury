@@ -56,7 +56,13 @@ public class AIHomeReplace /*extends EntityAIBase*/ {
 //                  ArrayList<ItemStack> neededList = GolemHelper.getItemsNeeded(this.theGolem, this.theGolem.getUpgradeAmount(5) > 0);
 //                  if (neededList != null && !neededList.isEmpty()) {
 //                     for(ItemStack stack : neededList) {
-//                        if (InventoryUtils.areItemStacksEqual(stack, this.theGolem.itemCarried, this.theGolem.checkOreDict(), this.theGolem.ignoreDamage(), this.theGolem.ignoreNBT())) {
+//                        if (InventoryUtils.areItemStacksEqual(
+//                        stack,
+//                        this.theGolem.itemCarried,
+//                        this.theGolem.checkOreDict(),
+//                        this.theGolem.ignoreDamage(),
+//                        this.theGolem.ignoreNBT())
+//                        ) {
 //                           return false;
 //                        }
 //                     }

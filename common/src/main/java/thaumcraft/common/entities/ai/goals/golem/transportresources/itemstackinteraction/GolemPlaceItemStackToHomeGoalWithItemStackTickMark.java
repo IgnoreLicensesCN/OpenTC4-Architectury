@@ -7,16 +7,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.*;
 import static thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.GolemPlaceItemStackToHomeGoalWithItemStackTickMark.ItemStackSortingTickMarkFakeField.getTickMarkFrom;
 import static thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.GolemPlaceItemStackToHomeGoalWithItemStackTickMark.ItemStackSortingTickMarkFakeField.removeTickMarkFrom;
+import static thaumcraft.common.entities.golems.GolemHelper.getItemsNeeded;
+import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY;
 
 public class GolemPlaceItemStackToHomeGoalWithItemStackTickMark extends GolemPlaceItemStackToHomeGoal {
 
     public GolemPlaceItemStackToHomeGoalWithItemStackTickMark(BaseGolemEntity golem) {
         super(golem);
     }
-
 
     @AllArgsConstructor
     public static class ItemStackSortingTickMarkFakeField implements IObjectCacheableFakeFieldOwner.FakeFieldAttachable<ItemStack> {
@@ -44,6 +48,16 @@ public class GolemPlaceItemStackToHomeGoalWithItemStackTickMark extends GolemPla
         public static void removeTickMarkFrom(ItemStack stack){
             opentc4$removeCachedObjectFrom(stack,ItemStackSortingTickMarkFakeField.class);
         }
+
+        public static boolean isOnTimeOut(BaseGolemEntity golem, ItemStack stack) {
+            var fakeField = opentc4$getCachedObjectFrom(
+                    stack,
+                    ItemStackSortingTickMarkFakeField.class);
+            if (fakeField == null) {
+                return false;
+            }
+            return fakeField.golemID == golem.getId() && fakeField.placeBeforeTickCount < golem.tickCount;
+        }
     }
     @Override
     protected boolean checkForExecution(ItemStack stackInHand) {
@@ -57,11 +71,19 @@ public class GolemPlaceItemStackToHomeGoalWithItemStackTickMark extends GolemPla
         return canUseAdditional();
     }
 
+    protected final List<ItemStack> defaultCanUseCache = new ArrayList<>(2);
     protected boolean canUseAdditional(){
-        //               case 8:
-        //                  return !GolemHelper.findSomethingUseCore(this.theGolem, this.theGolem.getCarried());
-        //               case 10:
-        //                  return !GolemHelper.findSomethingSortCore(this.theGolem, this.theGolem.getCarried());
-        return false;
+        defaultCanUseCache.clear();
+        getItemsNeeded(
+                golem.inventory.iterator(),
+                golem,
+                golem.configurationProvidersView.contains(MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY)
+                        ? MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY.provider.getBooleanFrom(golem)
+                        : MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY.provider.defaultValue
+                ,defaultCanUseCache,
+                (g,stack) -> golem.getItemStackMatcher().test(stack,golem.getMainHandItem()),
+                1
+        );
+        return !defaultCanUseCache.isEmpty();
     }
 }

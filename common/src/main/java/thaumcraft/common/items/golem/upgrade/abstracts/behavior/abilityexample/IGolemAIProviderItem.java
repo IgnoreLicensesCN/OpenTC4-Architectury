@@ -22,6 +22,7 @@ import thaumcraft.common.entities.ai.goals.golem.transportresources.essentiainte
 import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.*;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.gotogoal.container.GolemGotoContainerForEmptyGoal;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.gotogoal.container.GolemGotoContainerForFillingGoal;
+import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.gotogoal.container.GolemSortingCoreGotoMarkedContainerGoal;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.gotogoal.pickup.GolemPickupItemGoal;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.throwgoal.GolemThrowItemStackHomeIfNoContainerGoal;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.throwgoal.GolemThrowItemStackToMarkedContainerGoal;
@@ -116,6 +117,11 @@ public interface IGolemAIProviderItem extends IGolemAbilityModifierItem {
         public static final GolemGoalProvider USE_CORE_TAKE_ITEM_STACK_FROM_HOME_GOAL_PROVIDER = GolemUseCoreTakeItemStackFromHomeGoal::new;
         public static final GoalResourceLocation BUTCHER_TARGET = GoalResourceLocation.of(Thaumcraft.MOD_ID,"golem_butcher_target");
         public static final GolemGoalProvider BUTCHER_TARGET_GOAL_PROVIDER = GolemButcherTargetGoal::new;
+        public static final GolemGoalProvider SORTING_CORE_PLACE_ITEM_STACK_HOME_GOAL_PROVIDER = GolemSortingCorePlaceItemStackToHomeGoal::new;
+        public static final GolemGoalProvider SORTING_CORE_TAKE_ITEM_STACK_FROM_HOME_GOAL_PROVIDER = GolemSortingCoreTakeItemStackFromHomeGoal::new;
+        public static final GolemGoalProvider SORTING_CORE_PLACE_ITEM_STACK_TO_MARKED_CONTAINER_GOAL_PROVIDER = GolemSortingCorePlaceItemStackToMarkedContainerGoal::new;
+        public static final GoalResourceLocation SORTING_CORE_GOTO_MARKED_CONTAINER = GoalResourceLocation.of(Thaumcraft.MOD_ID,"sorting_core_goto_marked_container");
+        public static final GolemGoalProvider SORTING_CORE_GOTO_MARKED_CONTAINER_GOAL_PROVIDER = GolemSortingCoreGotoMarkedContainerGoal::new;
 
         public static void registerDefaultTargetConfig(Set<GolemConfigurationKey<?>> configurationProviders){
             configurationProviders.add(TARGET_SELECTOR_HOSTILE_CONFIG_KEY);

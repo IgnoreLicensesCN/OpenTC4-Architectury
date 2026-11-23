@@ -39,6 +39,7 @@ public class AIEmptyPlace /*extends EntityAIBase*/ {
 //            TileEntity tile = (TileEntity)te;
 //            if (tile != null && (tile.xCoord != cX || tile.yCoord != cY || tile.zCoord != cZ)) {
 //               for(byte color : this.theGolem.getColorsMatching(this.theGolem.itemCarried)) {
+
 //                  for(Integer side : GolemHelper.getMarkedSides(this.theGolem, tile, color)) {
 //                     ItemStack is = InventoryUtils.placeItemStackIntoInventory(this.theGolem.itemCarried, te, side, false);
 //                     if (!ItemStack.areItemStacksEqual(is, this.theGolem.itemCarried)) {
@@ -60,6 +61,7 @@ public class AIEmptyPlace /*extends EntityAIBase*/ {
 //                        }
 //                     }
 //                  }
+
 //               }
 //            }
 //         }

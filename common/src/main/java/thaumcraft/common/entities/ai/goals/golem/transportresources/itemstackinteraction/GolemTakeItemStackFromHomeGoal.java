@@ -6,17 +6,18 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.entities.ai.goals.golem.AbstractGolemGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemHelper;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
-import static thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.GolemEmptyCorePlaceItemStackToHomeGoal.findSomethingEmptyCore;
+import static thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.GolemPlaceItemStackToHomeGoalWithItemStackTickMark.ItemStackSortingTickMarkFakeField.isOnTimeOut;
 import static thaumcraft.common.entities.golems.GolemHelper.*;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.MATCH_IF_CONTAIN_SAME_TAG_CONFIG_KEY;
 
@@ -27,9 +28,6 @@ public abstract class GolemTakeItemStackFromHomeGoal extends AbstractGolemGoal {
     }
     public List<ItemStack> cache = new ArrayList<>();
 
-    public boolean meetsFilter(ItemStack stack){
-        return findSomething(stack) && !isOnTimeOut(golem, stack);
-    }
     @Override
     public boolean canUse() {
         if (!golem.getMainHandItem().isEmpty()){
@@ -51,20 +49,10 @@ public abstract class GolemTakeItemStackFromHomeGoal extends AbstractGolemGoal {
         if (homeBE instanceof Container container){
             var dir = golem.homeDirection;
             cache.clear();
-            for (var consideringStack:golem.inventory){
-                if (consideringStack.isEmpty()){
-                    continue;
-                }
-                if (ItemStack.isSameItemSameTags(consideringStack, consideringStack) && meetsFilter(consideringStack)) {
-                    cache.add(consideringStack);
-                } else if (fuzzy) {
-                    var tags = getConsideringTagsForItem(consideringStack.getItem());
-                    var tagsForConsidering = getConsideringTagsForItem(consideringStack.getItem());
-                    if (!Collections.disjoint(tags, tagsForConsidering) && meetsFilter(consideringStack)){
-                        cache.add(consideringStack);
-                    }
-                }
-            }
+            getItemsNeeded(getItemsToSearchAsNeeded(),golem,fuzzy,cache,(golem, stack) ->
+                    findSomething(stack)
+                            && !isOnTimeOut(golem, stack)
+            );
             if (cache.isEmpty()){
                 IntIterator iterator;
                 if (container instanceof WorldlyContainer isidedinventory) {
@@ -119,6 +107,10 @@ public abstract class GolemTakeItemStackFromHomeGoal extends AbstractGolemGoal {
         }
 
         return false;
+    }
+
+    protected @NotNull Iterator<ItemStack> getItemsToSearchAsNeeded() {
+        return golem.inventory.iterator();
     }
 
     protected abstract boolean findSomething(ItemStack extracted);

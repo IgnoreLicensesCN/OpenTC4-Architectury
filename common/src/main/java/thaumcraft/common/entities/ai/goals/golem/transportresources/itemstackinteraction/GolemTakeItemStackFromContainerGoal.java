@@ -22,7 +22,7 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
         public @NotNull ItemStack watchedItem = ItemStack.EMPTY;
     }
 
-    protected int tickCountRemaining = 0;
+    protected int remainingTicks = 0;
 
     public GolemTakeItemStackFromContainerGoal(BaseGolemEntity golem) {
         super(golem);
@@ -48,7 +48,7 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
 
     @Override
     public boolean canContinueToUse() {
-        return tickCountRemaining > 0;
+        return remainingTicks > 0;
     }
 
     //    private final List<BlockEntity> containersTempList = new ArrayList<>();
@@ -129,7 +129,7 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
                         golem.level().gameEvent(golem, GameEvent.CONTAINER_CLOSE, containerPos);
 
 //                            this.countChest = 5;
-                        this.tickCountRemaining = getMaxTickCountRemaining();
+                        this.remainingTicks = getMaxTickCountRemaining();
                         fakeFields.watchedItem = ItemStack.EMPTY;
                         {
                             containerIterator.reset();
@@ -146,6 +146,6 @@ public class GolemTakeItemStackFromContainerGoal extends AbstractGolemGoal {
     @Override
     public void tick() {
         super.tick();
-        tickCountRemaining--;
+        remainingTicks--;
     }
 }
