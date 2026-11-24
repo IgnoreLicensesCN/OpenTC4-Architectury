@@ -1,7 +1,7 @@
 package com.linearity.opentc4.utils.collectionlike.coordlookups;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
+import com.linearity.opentc4.mixinattachments.CoordLookupOwnerLevel;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;

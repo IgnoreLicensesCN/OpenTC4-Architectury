@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin.client.clientbe;
 
-import com.linearity.opentc4.mixinaccessors.clientbe.ArcaneBoreBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinattachments.client.clientbe.ArcaneBoreBlockEntityClientAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;

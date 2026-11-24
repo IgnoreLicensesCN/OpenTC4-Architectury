@@ -2,7 +2,7 @@ package thaumcraft.api.research.client;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.linearity.opentc4.annotations.RecommendedLogicalSide;
+import com.linearity.annotations.RecommendedLogicalSide;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 import thaumcraft.common.lib.resourcelocations.ResearchItemResourceLocation;
 

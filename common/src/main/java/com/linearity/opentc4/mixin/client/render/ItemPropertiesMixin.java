@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin.client.render;
 
-import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
+import com.linearity.opentc4.mixinattachments.ItemCooldownOwnerEntity;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;

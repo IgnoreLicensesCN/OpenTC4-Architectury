@@ -1,6 +1,6 @@
 package com.linearity.opentc4.recipeclean.recipewrapper;
 
-import com.linearity.opentc4.annotations.JEILikeOnly;
+import com.linearity.annotations.JEILikeOnly;
 import net.minecraft.world.item.ItemStack;
 
 @JEILikeOnly

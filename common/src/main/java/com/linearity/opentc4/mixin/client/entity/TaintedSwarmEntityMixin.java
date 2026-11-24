@@ -1,14 +1,12 @@
 package com.linearity.opentc4.mixin.client.entity;
 
-import com.linearity.opentc4.mixinaccessors.cliententity.TaintedSwarmEntityClientAccessor;
+import com.linearity.opentc4.mixinattachments.client.cliententity.TaintedSwarmEntityClientAccessor;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import thaumcraft.common.entities.monster.boss.EldritchWardenEntity;
-import thaumcraft.common.entities.monster.eldritch.EldritchGuardianEntity;
 import thaumcraft.common.entities.monster.tainted.TaintedSwarmEntity;
 
 @Mixin(TaintedSwarmEntity.class)

@@ -1,6 +1,6 @@
 package thaumcraft.common.items.golem.upgrade.core;
 
-import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
+import com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner;
 import com.linearity.opentc4.utils.functionalinterface.ObjInt2BooleanFunction;
 import lombok.NoArgsConstructor;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +12,7 @@ import thaumcraft.common.entities.golems.GolemGoalSelector;
 import thaumcraft.common.items.golem.upgrade.abstracts.behavior.IGolemAdditionalDataProviderItem;
 
 import static com.linearity.opentc4.Consts.EssentiaCoreTagAccessors.*;
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
+import static com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
 import static thaumcraft.common.items.golem.upgrade.abstracts.behavior.abilityexample.IGolemAIProviderItem.DefaultGoalsAndIDs.*;
 
 public class EssentiaGolemCoreItem extends AbstractGolemCoreItem implements IGolemAdditionalDataProviderItem {

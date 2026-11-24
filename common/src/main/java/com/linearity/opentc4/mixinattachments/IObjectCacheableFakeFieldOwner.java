@@ -1,0 +1,142 @@
+package com.linearity.opentc4.mixinattachments;
+
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Supplier;
+
+/**
+ * now look at this code
+ * <pre>
+ *     {@code
+ * public class WandCastingItem extends Item
+ * //ignores impls which should be here plz
+ * {
+ * //...
+ *      @Override
+ *     public List<ItemStack> getWandComponents(ItemStack componentOwnerStack) {
+ *         int initCapacity = 2;
+ *         if (this.canApplyFocus()){
+ *             initCapacity += 1;
+ *         }
+ *         List<ItemStack> items = new ArrayList<>(initCapacity);
+ *         var cap = getWandCapAsItemStack(componentOwnerStack);
+ *         if (!cap.isEmpty()) {
+ *             items.add(cap);
+ *         }
+ *         var rod = getWandRodAsItemStack(componentOwnerStack);
+ *         if (!rod.isEmpty()) {
+ *             items.add(rod);
+ *         }
+ *         if (this.canApplyFocus()){
+ *             var focus = getFocusItemStack(componentOwnerStack);
+ *             if (!focus.isEmpty()) {
+ *                 items.add(focus);
+ *             }
+ *         }
+ *         return Collections.unmodifiableList(items);
+ *     }
+ *     //...
+ *  }
+ *  }
+ *  </pre>
+ *  <p>we have "new ArrayList" here,which is not so fine.</p>
+ *  <p>if we have some way like
+ *  object pool(but when to recycle object?)
+ *  or threadLocal(but when thread down we need to tell threadLocal pool to free object)
+ *  we may reduce "new"</p>
+ *  <p>luckily it's totally unmodifiable,so we can just put</p>
+ *  <pre>{@code
+ *public static class WandCastingItemCachedObjectsForItemStack {
+ *         public static final Supplier<WandCastingItemCachedObjectsForItemStack> SUPPLIER = () -> new WandCastingItemCachedObjectsForItemStack(
+ *                 new ArrayList<>(3)
+ *         );
+ *         public final @Modifiable List<ItemStack> components;
+ *         public final @UnmodifiableView List<ItemStack> componentsView;
+ *
+ *         public WandCastingItemCachedObjectsForItemStack(@Modifiable List<ItemStack> components) {
+ *             this.components = components;
+ *             this.componentsView = Collections.unmodifiableList(components);
+ *         }
+ *     }
+ *  @Override
+ *     public
+ *     @UnmodifiableView
+ *     @ModifyingFakeFieldAsResult
+ *     List<ItemStack> getWandComponents(
+ *             @NotNull
+ *             @ReturnValueFakeFieldOf
+ *             ItemStack componentOwnerStack
+ *     ) {
+ *
+ *         var cached = opentc4$getOrCreateCachedObjectFromItemStack(
+ *                 componentOwnerStack,
+ *                 WandCastingItemCachedObjectsForItemStack.class,
+ *                 WandCastingItemCachedObjectsForItemStack.SUPPLIER
+ *         );
+ *
+ *         var items = cached.components;
+ *         items.clear();
+ *         var cap = getWandCapAsItemStack(componentOwnerStack);
+ *         if (!cap.isEmpty()) {
+ *             items.add(cap);
+ *         }
+ *         var rod = getWandRodAsItemStack(componentOwnerStack);
+ *         if (!rod.isEmpty()) {
+ *             items.add(rod);
+ *         }
+ *         if (this.canApplyFocus()){
+ *             var focus = getFocusItemStack(componentOwnerStack);
+ *             if (!focus.isEmpty()) {
+ *                 items.add(focus);
+ *             }
+ *         }
+ *         return cached.componentsView;
+ *     }
+ * }
+ * </pre>
+ *  with zero "new"
+ */
+//TODO:[maybe wont finished]cut "new" with this
+public interface IObjectCacheableFakeFieldOwner {
+    <T> @Nullable T opentc4$getCachedObjectFrom(Class<T> clazz);
+    <T> void opentc4$putCachedObjectInto(Class<T> clazz, T object);
+    void opentc4$removeCachedObjectFrom(Class<?> clazz);
+    default <T> T opentc4$getOrCreateCachedObjectFrom(Class<T> clazz, Supplier<T> supplier){
+        var cached = opentc4$getCachedObjectFrom(clazz);
+        if (cached == null) {
+            cached = supplier.get();
+            opentc4$putCachedObjectInto(clazz, cached);
+        }
+        return cached;
+    }
+    static <T extends FakeFieldAttachable<ItemStack>> T opentc4$getOrCreateCachedObjectFrom(ItemStack stack, Class<T> clazz, Supplier<T> supplier) {
+        return ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$getOrCreateCachedObjectFrom(clazz, supplier);
+    }
+    static <T extends FakeFieldAttachable<ItemStack>> @Nullable T opentc4$getCachedObjectFrom(ItemStack stack, Class<T> clazz) {
+        return ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$getCachedObjectFrom(clazz);
+    }
+
+    static <T extends FakeFieldAttachable<ItemStack>> void opentc4$putCachedObjectTo(ItemStack stack, Class<T> clazz,T instance) {
+        ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$putCachedObjectInto(clazz,instance);
+    }
+    static void opentc4$removeCachedObjectFrom(ItemStack stack, Class<?> clazz) {
+        ((IObjectCacheableFakeFieldOwner)(Object)stack).opentc4$removeCachedObjectFrom(clazz);
+    }
+
+    static <T extends FakeFieldAttachable<E>,E extends Entity> T opentc4$getOrCreateCachedObjectFrom(E entity, Class<T> clazz, Supplier<T> supplier) {
+        return ((IObjectCacheableFakeFieldOwner)entity).opentc4$getOrCreateCachedObjectFrom(clazz, supplier);
+    }
+    static <T extends FakeFieldAttachable<E>,E extends Entity> @Nullable T opentc4$getCachedObjectFrom(E entity, Class<T> clazz) {
+        return ((IObjectCacheableFakeFieldOwner)entity).opentc4$getCachedObjectFrom(clazz);
+    }
+    static void opentc4$removeCachedObjectFrom(Entity entity,Class<?> clazz) {
+        ((IObjectCacheableFakeFieldOwner)entity).opentc4$removeCachedObjectFrom(clazz);
+    }
+    static<T extends FakeFieldAttachable<E>,E extends Entity> void opentc4$putCachedObjectTo(E entity,Class<T> clazz,T instance) {
+        ((IObjectCacheableFakeFieldOwner)entity).opentc4$putCachedObjectInto(clazz,instance);
+    }
+
+    interface FakeFieldAttachable<C>{}
+}

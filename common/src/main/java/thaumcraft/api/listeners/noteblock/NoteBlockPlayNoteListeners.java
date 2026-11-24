@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.noteblock;
 
-import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
+import com.linearity.opentc4.mixinattachments.CoordLookupOwnerLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;

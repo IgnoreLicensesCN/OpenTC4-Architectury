@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.crafted;
 
-import com.linearity.opentc4.mixinaccessors.clientbe.CrucibleBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinattachments.client.clientbe.CrucibleBlockEntityClientAccessor;
 import dev.architectury.fluid.FluidStack;
 import io.netty.util.internal.UnstableApi;
 import net.minecraft.client.multiplayer.ClientLevel;

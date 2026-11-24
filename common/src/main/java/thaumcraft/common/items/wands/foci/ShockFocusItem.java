@@ -1,6 +1,6 @@
 package thaumcraft.common.items.wands.foci;
 
-import com.linearity.opentc4.annotations.RecommendedLogicalSide;
+import com.linearity.annotations.RecommendedLogicalSide;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;

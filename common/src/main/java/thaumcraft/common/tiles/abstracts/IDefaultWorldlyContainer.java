@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.abstracts;
 
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.annotations.UtilityLikeAbstraction;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.WorldlyContainer;

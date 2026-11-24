@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction;
 
-import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
+import com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner;
 import lombok.AllArgsConstructor;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +10,7 @@ import thaumcraft.common.entities.golems.BaseGolemEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.*;
+import static com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner.*;
 import static thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.GolemPlaceItemStackToHomeGoalWithItemStackTickMark.ItemStackSortingTickMarkFakeField.getTickMarkFrom;
 import static thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.GolemPlaceItemStackToHomeGoalWithItemStackTickMark.ItemStackSortingTickMarkFakeField.removeTickMarkFrom;
 import static thaumcraft.common.entities.golems.GolemHelper.getItemsNeeded;

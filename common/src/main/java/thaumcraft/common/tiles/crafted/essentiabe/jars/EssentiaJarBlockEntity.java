@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.crafted.essentiabe.jars;
 
-import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.annotations.Modifiable;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

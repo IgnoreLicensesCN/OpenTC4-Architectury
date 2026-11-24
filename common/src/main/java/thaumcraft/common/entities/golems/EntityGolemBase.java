@@ -207,67 +207,6 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //      }
 
       switch (this.getCore()) {
-//         case 0:
-//            this.tasks.addTask(0, new AIHomeReplace(this));
-//            this.tasks.addTask(1, new AIHomePlace(this));
-//            this.tasks.addTask(2, new AIHomeDrop(this));
-//            this.tasks.addTask(3, new AIFillTake(this));
-//            this.tasks.addTask(4, new AIFillGoto(this));
-//            break;
-//         case 1:
-//            this.tasks.addTask(0, new AIHomeReplace(this));
-//            this.tasks.addTask(1, new AIEmptyPlace(this));
-//            this.tasks.addTask(2, new AIEmptyDrop(this));
-//            this.tasks.addTask(3, new AIEmptyGoto(this));
-//            this.tasks.addTask(4, new AIHomeTake(this));
-//            break;
-//         case 2:
-//            this.tasks.addTask(0, new AIHomeReplace(this));
-//            this.tasks.addTask(1, new AIHomePlace(this));
-//            this.tasks.addTask(2, new AIItemPickup(this));
-//            break;
-//         case 3:
-//            this.tasks.addTask(2, new AIHarvestCrops(this));
-//            break;
-//         case 4:
-//            if (this.decoration.contains("R")) {
-//               this.tasks.addTask(2, new AIDartAttack(this));
-//            }
-//            this.tasks.addTask(3, new AIGolemAttackOnCollide(this));
-//            this.targetTasks.addTask(1, new AIHurtByTarget(this, false));
-//            this.targetTasks.addTask(2, new AINearestAttackableTarget(this, 0, true));
-//            break;
-//         case 5:
-//            this.tasks.addTask(1, new AILiquidEmpty(this));
-//            this.tasks.addTask(2, new AILiquidGather(this));
-//            this.tasks.addTask(3, new AILiquidGoto(this));
-//            break;
-//         case 6:
-//            this.tasks.addTask(1, new AIEssentiaEmpty(this));
-//            this.tasks.addTask(2, new AIEssentiaGather(this));
-//            this.tasks.addTask(3, new AIEssentiaGoto(this));
-//            break;
-//         case 7:
-//            this.tasks.addTask(2, new AIHarvestLogs(this));
-//            break;
-//         case 8:
-//            this.tasks.addTask(0, new AIHomeReplace(this));
-//            this.tasks.addTask(0, new AIUseItem(this));
-//            this.tasks.addTask(4, new AIHomeTake(this));
-//            break;
-//         case 9:
-//            if (this.decoration.contains("R")) {
-//               this.tasks.addTask(2, new AIDartAttack(this));
-//            }
-//            this.tasks.addTask(3, new AIGolemAttackOnCollide(this));//finished
-//            this.targetTasks.addTask(1, new AINearestButcherTarget(this, 0, true));
-//            break;
-//         case 10:
-//            this.tasks.addTask(0, new AIHomeReplace(this));
-//            this.tasks.addTask(1, new AISortingPlace(this));
-//            this.tasks.addTask(3, new AISortingGoto(this));
-//            this.tasks.addTask(4, new AIHomeTakeSorting(this));
-//            break;
          case 11:
             this.tasks.addTask(2, new AIFish(this));
       }
@@ -774,78 +713,78 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //   public float getHealthPercentage() {
 //      return (float)this.dataWatcher.getWatchableObjectByte(30) / this.getMaxHealth();
 //   }
-
-   public void setCarried(ItemStack stack) {
-      this.itemCarried = stack;
-      this.updateCarried();
-   }
-
-   public boolean hasSomething() {
-      return this.inventory.hasSomething();
-   }
-
-   public ItemStack getCarried() {
-      if (this.itemCarried != null && this.itemCarried.stackSize <= 0) {
-         this.setCarried(null);
-      }
-
-      return this.itemCarried;
-   }
-
-   public int getCarrySpace() {
-      return this.itemCarried == null
-              ? this.getCarryLimit()
-              : Math.min(
-                      this.getCarryLimit() - this.itemCarried.stackSize,
-              this.itemCarried.getMaxStackSize() - this.itemCarried.stackSize
-      );
-   }
-
-   public boolean[] getToggles() {
-      return Utils.unpack(this.dataWatcher.getWatchableObjectByte(18));
-   }
-
-   public byte getTogglesValue() {
-      return this.dataWatcher.getWatchableObjectByte(18);
-   }
-
-   public void setToggle(int index, boolean tog) {
-      boolean[] fz = this.getToggles();
-      fz[index] = tog;
-      this.dataWatcher.updateObject(18, Utils.pack(fz));
-   }
-
-   public void setTogglesValue(byte tog) {
-      this.dataWatcher.updateObject(18, tog);
-   }
-
-   public boolean canAttackHostiles() {
-      return !this.getToggles()[1];
-   }
-
-   public boolean canAttackAnimals() {
-      return !this.getToggles()[2];
-   }
-
-   public boolean canAttackPlayers() {
-      return !this.getToggles()[3];
-   }
-
-   public boolean canAttackCreepers() {
-      return !this.getToggles()[4];
-   }
-
-   public boolean checkOreDict() {
-      return this.getToggles()[5];
-   }
-
-   public boolean ignoreDamage() {
-      return this.getToggles()[6];
-   }
-
-   public boolean ignoreNBT() {
-      return this.getToggles()[7];
-   }
+//
+//   public void setCarried(ItemStack stack) {
+//      this.itemCarried = stack;
+//      this.updateCarried();
+//   }
+//
+//   public boolean hasSomething() {
+//      return this.inventory.hasSomething();
+//   }
+//
+//   public ItemStack getCarried() {
+//      if (this.itemCarried != null && this.itemCarried.stackSize <= 0) {
+//         this.setCarried(null);
+//      }
+//
+//      return this.itemCarried;
+//   }
+//
+//   public int getCarrySpace() {
+//      return this.itemCarried == null
+//              ? this.getCarryLimit()
+//              : Math.min(
+//                      this.getCarryLimit() - this.itemCarried.stackSize,
+//              this.itemCarried.getMaxStackSize() - this.itemCarried.stackSize
+//      );
+//   }
+//
+//   public boolean[] getToggles() {
+//      return Utils.unpack(this.dataWatcher.getWatchableObjectByte(18));
+//   }
+//
+//   public byte getTogglesValue() {
+//      return this.dataWatcher.getWatchableObjectByte(18);
+//   }
+//
+//   public void setToggle(int index, boolean tog) {
+//      boolean[] fz = this.getToggles();
+//      fz[index] = tog;
+//      this.dataWatcher.updateObject(18, Utils.pack(fz));
+//   }
+//
+//   public void setTogglesValue(byte tog) {
+//      this.dataWatcher.updateObject(18, tog);
+//   }
+//
+//   public boolean canAttackHostiles() {
+//      return !this.getToggles()[1];
+//   }
+//
+//   public boolean canAttackAnimals() {
+//      return !this.getToggles()[2];
+//   }
+//
+//   public boolean canAttackPlayers() {
+//      return !this.getToggles()[3];
+//   }
+//
+//   public boolean canAttackCreepers() {
+//      return !this.getToggles()[4];
+//   }
+//
+//   public boolean checkOreDict() {
+//      return this.getToggles()[5];
+//   }
+//
+//   public boolean ignoreDamage() {
+//      return this.getToggles()[6];
+//   }
+//
+//   public boolean ignoreNBT() {
+//      return this.getToggles()[7];
+//   }
 
 //   public EnumGolemType getGolemType() {
 //      return EnumGolemType.getType(this.dataWatcher.getWatchableObjectByte(19));
@@ -875,32 +814,32 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //      this.dataWatcher.updateObject(20, String.valueOf(this.decoration));
 //   }
 
-   public ItemStack getCarriedForDisplay() {
-      return this.dataWatcher.getWatchableObjectItemStack(16) != null ? this.dataWatcher.getWatchableObjectItemStack(16) : null;
-   }
-
-   public void updateCarried() {
-      if (this.itemCarried != null) {
-         this.getDataWatcher().updateObject(16, this.itemCarried.copy());
-         this.getDataWatcher().setObjectWatched(16);
-      } else if (this.getCore() == 5 && this.fluidCarried != null) {
-         this.getDataWatcher().updateObject(16, new ItemStack(Item.getItemById(this.fluidCarried.getFluidID()), 1, this.fluidCarried.amount));
-         this.getDataWatcher().setObjectWatched(16);
-      } else if (this.getCore() == 6) {
-         ItemStack disp = new ItemStack(ConfigItems.itemJarFilled);
-         int amt = (int)(64.0F * ((float)this.essentiaAmount / (float)this.getCarryLimit()));
-         if (this.essentia != null && this.essentiaAmount > 0) {
-            ((IEssentiaContainerItem)disp.getItem()).setAspects(disp, (new LinkedHashAspectList<>()).addAll(this.essentia, amt));
-         }
-
-         this.getDataWatcher().updateObject(16, disp);
-         this.getDataWatcher().setObjectWatched(16);
-      } else {
-         this.getDataWatcher().addObjectByDataType(16, 5);
-         this.getDataWatcher().setObjectWatched(16);
-      }
-
-   }
+//   public ItemStack getCarriedForDisplay() {
+//      return this.dataWatcher.getWatchableObjectItemStack(16) != null ? this.dataWatcher.getWatchableObjectItemStack(16) : null;
+//   }
+//
+//   public void updateCarried() {
+//      if (this.itemCarried != null) {
+//         this.getDataWatcher().updateObject(16, this.itemCarried.copy());
+//         this.getDataWatcher().setObjectWatched(16);
+//      } else if (this.getCore() == 5 && this.fluidCarried != null) {
+//         this.getDataWatcher().updateObject(16, new ItemStack(Item.getItemById(this.fluidCarried.getFluidID()), 1, this.fluidCarried.amount));
+//         this.getDataWatcher().setObjectWatched(16);
+//      } else if (this.getCore() == 6) {
+//         ItemStack disp = new ItemStack(ConfigItems.itemJarFilled);
+//         int amt = (int)(64.0F * ((float)this.essentiaAmount / (float)this.getCarryLimit()));
+//         if (this.essentia != null && this.essentiaAmount > 0) {
+//            ((IEssentiaContainerItem)disp.getItem()).setAspects(disp, (new LinkedHashAspectList<>()).addAll(this.essentia, amt));
+//         }
+//
+//         this.getDataWatcher().updateObject(16, disp);
+//         this.getDataWatcher().setObjectWatched(16);
+//      } else {
+//         this.getDataWatcher().addObjectByDataType(16, 5);
+//         this.getDataWatcher().setObjectWatched(16);
+//      }
+//
+//   }
 
 //   protected float getSoundVolume() {
 //      return 0.1F;

@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.monster.tainted;
 
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
-import com.linearity.opentc4.mixinaccessors.cliententity.TaintacleEntityClientAccessor;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
+import com.linearity.opentc4.mixinattachments.client.cliententity.TaintacleEntityClientAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;

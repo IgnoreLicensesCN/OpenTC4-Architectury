@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.aspects.item.bonus.consts;
 
-import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.annotations.Modifiable;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;

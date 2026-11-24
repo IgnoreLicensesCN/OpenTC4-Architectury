@@ -1,6 +1,6 @@
 package thaumcraft.common.items.golem.upgrade.decoration;
 
-import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
+import com.linearity.opentc4.mixinattachments.ItemCooldownOwnerEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;

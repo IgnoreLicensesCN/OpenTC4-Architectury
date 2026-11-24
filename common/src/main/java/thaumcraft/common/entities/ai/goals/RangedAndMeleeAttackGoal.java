@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.goals;
 
-import com.linearity.opentc4.mixin.RangedAttackGoalAccessor;
+import com.linearity.opentc4.mixin.accessors.RangedAttackGoalAccessor;
 import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 

@@ -1,9 +1,8 @@
 package thaumcraft.common.tiles.crafted.essentiabe;
 
-import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.mixinaccessors.clientbe.EssentiaReservoirBlockEntityClientAccessor;
+import com.linearity.annotations.Modifiable;
+import com.linearity.opentc4.mixinattachments.client.clientbe.EssentiaReservoirBlockEntityClientAccessor;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
-import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

@@ -1,7 +1,7 @@
 package thaumcraft.api.aspects.essentiabe;
 
 
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.annotations.UtilityLikeAbstraction;
 
 /**
  * @author Azanor

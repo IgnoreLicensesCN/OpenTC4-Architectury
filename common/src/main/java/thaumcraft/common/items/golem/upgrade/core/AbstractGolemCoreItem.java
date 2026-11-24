@@ -1,6 +1,6 @@
 package thaumcraft.common.items.golem.upgrade.core;
 
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.annotations.UtilityLikeAbstraction;
 import net.minecraft.world.item.Item;
 import thaumcraft.common.items.golem.upgrade.abstracts.IGolemCoreItem;
 

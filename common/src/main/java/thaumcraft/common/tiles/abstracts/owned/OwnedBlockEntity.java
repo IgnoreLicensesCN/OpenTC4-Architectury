@@ -1,7 +1,6 @@
 package thaumcraft.common.tiles.abstracts.owned;
 
 import com.linearity.opentc4.OpenTC4;
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;

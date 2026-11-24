@@ -1,6 +1,6 @@
 package thaumcraft.common.blocks.crafted.essentia.jars;
 
-import com.linearity.opentc4.annotations.RecommendedLogicalSide;
+import com.linearity.annotations.RecommendedLogicalSide;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

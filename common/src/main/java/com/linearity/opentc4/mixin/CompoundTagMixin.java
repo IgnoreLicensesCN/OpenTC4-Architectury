@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin;
 
-import com.linearity.opentc4.mixinaccessors.IAccessorCacheableTag;
+import com.linearity.opentc4.mixinattachments.IAccessorCacheableTag;
 import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.nbt.CompoundTag;

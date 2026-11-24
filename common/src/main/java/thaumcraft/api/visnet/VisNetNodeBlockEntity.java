@@ -1,6 +1,6 @@
 package thaumcraft.api.visnet;
 
-import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
+import com.linearity.opentc4.mixinattachments.CoordLookupOwnerLevel;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.collectionlike.coordlookups.CoordLookup;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;

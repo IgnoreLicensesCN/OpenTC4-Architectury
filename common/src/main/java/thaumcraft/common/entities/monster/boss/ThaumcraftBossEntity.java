@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.monster.boss;
 
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
 import it.unimi.dsi.fastutil.ints.Int2FloatMap;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 import net.minecraft.nbt.CompoundTag;

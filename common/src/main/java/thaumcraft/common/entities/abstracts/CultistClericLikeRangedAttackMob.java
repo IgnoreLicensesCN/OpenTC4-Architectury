@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.abstracts;
 
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.annotations.UtilityLikeAbstraction;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;

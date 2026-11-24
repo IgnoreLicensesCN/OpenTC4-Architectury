@@ -1,6 +1,6 @@
 package thaumcraft.api.research.interfaces;
 
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.annotations.UtilityLikeAbstraction;
 import net.minecraft.world.entity.LivingEntity;
 
 //i should say research clue is not limited to string now

@@ -1,7 +1,7 @@
 package thaumcraft.common.items.abstracts.wandabstraction.wand;
 
-import com.linearity.opentc4.annotations.ModifyingFakeFieldAsResult;
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.annotations.ModifyingFakeFieldAsResult;
+import com.linearity.annotations.UtilityLikeAbstraction;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.UnmodifiableView;
 

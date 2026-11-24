@@ -1,6 +1,6 @@
 package thaumcraft.common.runicshield;
 
-import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.annotations.Modifiable;
 import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;

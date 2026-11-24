@@ -1,6 +1,6 @@
 package com.linearity.opentc4.forge;
 
-import com.linearity.opentc4.annotations.StoleFrom;
+import com.linearity.annotations.StoleFrom;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

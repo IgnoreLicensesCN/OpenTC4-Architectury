@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.golems.configuration.providerimpl;
 
-import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
+import com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner;
 import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +11,7 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
+import static com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
 
 public class GolemConfigurationProviderImpl<T> extends GolemConfigurationProvider<T> {
     protected final CompoundTagAccessor<T> compoundTagAccessor;

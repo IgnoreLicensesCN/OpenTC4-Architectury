@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.goals.golem;
 
-import com.linearity.opentc4.annotations.StoleFrom;
+import com.linearity.annotations.StoleFrom;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;

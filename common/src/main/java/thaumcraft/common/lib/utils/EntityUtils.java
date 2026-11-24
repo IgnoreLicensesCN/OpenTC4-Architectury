@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.utils;
 
-import com.linearity.opentc4.annotations.forvalue.RadianValue;
-import com.linearity.opentc4.mixin.LivingEntityAccessor;
+import com.linearity.annotations.forvalue.RadianValue;
+import com.linearity.opentc4.mixin.accessors.LivingEntityAccessor;
 import com.linearity.opentc4.utils.vanilla1710.BiomeType;
 import com.linearity.opentc4.utils.vanilla1710.BiomeWithTypes;
 import dev.architectury.registry.registries.DeferredRegister;

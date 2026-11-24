@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.crafted;
 
-import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
+import com.linearity.opentc4.mixinattachments.CoordLookupOwnerLevel;
 import com.linearity.opentc4.utils.collectionlike.coordlookups.CoordLookup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

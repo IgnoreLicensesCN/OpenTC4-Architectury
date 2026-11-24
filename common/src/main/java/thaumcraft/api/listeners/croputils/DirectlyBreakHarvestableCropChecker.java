@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.croputils;
 
-import com.linearity.opentc4.mixin.IntegerPropertyAccessor;
+import com.linearity.opentc4.mixin.accessors.IntegerPropertyAccessor;
 import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import lombok.AllArgsConstructor;

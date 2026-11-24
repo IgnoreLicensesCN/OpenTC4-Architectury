@@ -2,7 +2,7 @@ package thaumcraft.common.tiles.crafted.vis.visnet;
 
 import com.linearity.colorannotation.annotation.RGBColor;
 import com.linearity.opentc4.Color;
-import com.linearity.opentc4.mixinaccessors.clientbe.VisNetRelayBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinattachments.client.clientbe.VisNetRelayBlockEntityClientAccessor;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -22,7 +22,6 @@ import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandI
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.crafted.noderelated.visnet.VisNetRelayBlock;
-import thaumcraft.common.lib.resourcelocations.VisNetNodeTypeResourceLocation;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 import java.util.List;

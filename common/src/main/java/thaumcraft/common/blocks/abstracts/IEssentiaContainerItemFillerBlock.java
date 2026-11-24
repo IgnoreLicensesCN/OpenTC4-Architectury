@@ -1,6 +1,6 @@
 package thaumcraft.common.blocks.abstracts;
 
-import com.linearity.opentc4.annotations.RecommendedLogicalSide;
+import com.linearity.annotations.RecommendedLogicalSide;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;

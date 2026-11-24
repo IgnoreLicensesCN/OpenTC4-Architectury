@@ -1,7 +1,7 @@
 package thaumcraft.common.items.abstracts.wandabstraction.focus;
 
-import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.annotations.ModifiableCopy;
+import com.linearity.annotations.Modifiable;
+import com.linearity.annotations.ModifiableCopy;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;

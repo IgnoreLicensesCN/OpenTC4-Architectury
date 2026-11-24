@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.monster.tainted;
 
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
-import com.linearity.opentc4.mixinaccessors.cliententity.TaintSporeEntityClientAccessor;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
+import com.linearity.opentc4.mixinattachments.client.cliententity.TaintSporeEntityClientAccessor;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -26,7 +26,6 @@ import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.monster.tainted.converted.TaintedSpiderEntity;
-import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 
 import java.util.ArrayList;

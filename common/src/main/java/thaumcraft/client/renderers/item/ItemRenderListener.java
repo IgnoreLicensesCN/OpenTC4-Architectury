@@ -1,6 +1,6 @@
 package thaumcraft.client.renderers.item;
 
-import com.linearity.opentc4.mixinaccessors.ItemRendererAccessor;
+import com.linearity.opentc4.mixin.client.accessors.ItemRendererAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;

@@ -1,6 +1,6 @@
 package thaumcraft.common.items.abstracts;
 
-import com.linearity.opentc4.annotations.forvalue.PercentageIntValue;
+import com.linearity.annotations.forvalue.PercentageIntValue;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;

@@ -1,6 +1,5 @@
 package thaumcraft.client.renderers.item;
 
-import com.linearity.opentc4.mixinaccessors.ItemRendererAccessor;
 import com.linearity.opentc4.OpenTC4CommonProxy;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;

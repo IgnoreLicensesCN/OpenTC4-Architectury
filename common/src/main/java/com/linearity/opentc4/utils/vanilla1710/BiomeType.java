@@ -1,6 +1,6 @@
 package com.linearity.opentc4.utils.vanilla1710;
 
-import com.linearity.opentc4.mixinaccessors.BiomeAccessor;
+import com.linearity.opentc4.mixinattachments.BiomeMixinAccessor;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -75,9 +75,9 @@ public class BiomeType {
     public static final BiomeType SPARSE = register("SPARSE", (biome,key) -> biome.getGenerationSettings().features().isEmpty());
     public static final BiomeType DENSE = register("DENSE", (biome,key) -> !biome.getGenerationSettings().features().isEmpty());
 
-    public static final BiomeType WET = register("WET", (biome,key) -> ((BiomeAccessor)(Object)biome).openTC4$getClimateSettings().opentc4$getDownfall() > 0.7f
+    public static final BiomeType WET = register("WET", (biome,key) -> ((BiomeMixinAccessor)(Object)biome).opentc4$getClimateSettings().downfall() > 0.7f
     );
-    public static final BiomeType DRY = register("DRY", (biome,key) -> ((BiomeAccessor)(Object)biome).openTC4$getClimateSettings().opentc4$getDownfall() < 0.3f);
+    public static final BiomeType DRY = register("DRY", (biome,key) -> ((BiomeMixinAccessor)(Object)biome).opentc4$getClimateSettings().downfall() < 0.3f);
 
     public static final BiomeType SAVANNA = register("SAVANNA", (biome,key) -> hasTreeType(biome.getGenerationSettings(),"acacia"));
     public static final BiomeType CONIFEROUS = register("CONIFEROUS", (biome,key) -> hasTreeType(biome.getGenerationSettings(),"spruce"));
@@ -88,7 +88,7 @@ public class BiomeType {
     public static final BiomeType LUSH = register("LUSH", (biome,key) ->
             {
                 boolean temp = biome.getBaseTemperature() > 0.5f;
-                boolean downfall = ((BiomeAccessor)(Object)biome).openTC4$getClimateSettings().opentc4$getDownfall() > 0.5f;
+                boolean downfall = ((BiomeMixinAccessor)(Object)biome).opentc4$getClimateSettings().downfall() > 0.5f;
                 return temp && downfall;
             }
     );
@@ -109,7 +109,7 @@ public class BiomeType {
     public static final BiomeType MUSHROOM = register("MUSHROOM", (biome,key) -> false);
     public static final BiomeType MAGICAL = register("MAGICAL", (biome,key) -> false);
 
-    public static final BiomeType OCEAN = register("OCEAN", (biome,key) -> ((BiomeAccessor)(Object)biome).openTC4$getClimateSettings().opentc4$getTemperature() < 0.8f && ((BiomeAccessor)(Object)biome).openTC4$getClimateSettings().opentc4$hasPrecipitation());
+    public static final BiomeType OCEAN = register("OCEAN", (biome,key) -> ((BiomeMixinAccessor)(Object)biome).opentc4$getClimateSettings().temperature() < 0.8f && ((BiomeMixinAccessor)(Object)biome).opentc4$getClimateSettings().hasPrecipitation());
     public static final BiomeType RIVER = register("RIVER", (biome,key) -> false);
 
     public static final BiomeType WATER = register("WATER", null, OCEAN, RIVER);

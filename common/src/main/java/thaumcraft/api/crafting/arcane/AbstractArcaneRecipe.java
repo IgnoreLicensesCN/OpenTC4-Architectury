@@ -1,7 +1,7 @@
 package thaumcraft.api.crafting.arcane;
 
 import com.linearity.opentc4.OpenTC4;
-import com.linearity.opentc4.annotations.JEILikeOnly;
+import com.linearity.annotations.JEILikeOnly;
 import com.linearity.opentc4.recipeclean.recipewrapper.CanMatchViaOutputSample;
 import com.linearity.opentc4.recipeclean.recipewrapper.IAspectCalculableRecipe;
 import net.minecraft.world.entity.player.Player;

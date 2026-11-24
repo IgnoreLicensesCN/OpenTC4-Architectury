@@ -1,6 +1,6 @@
 package com.linearity.opentc4.recipeclean.itemmatch;
 
-import com.linearity.opentc4.annotations.JEILikeOnly;
+import com.linearity.annotations.JEILikeOnly;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 

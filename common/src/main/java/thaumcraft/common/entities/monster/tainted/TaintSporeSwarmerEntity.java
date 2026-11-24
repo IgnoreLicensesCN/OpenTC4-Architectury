@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.monster.tainted;
 
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
-import com.linearity.opentc4.mixinaccessors.cliententity.TaintSporeSwarmerEntityClientAccessor;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
+import com.linearity.opentc4.mixinattachments.client.cliententity.TaintSporeSwarmerEntityClientAccessor;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -9,7 +9,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
@@ -19,7 +18,6 @@ import thaumcraft.client.fx.migrated.particles.FXSwarm;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.ThaumcraftEntities;
-import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 
 import java.util.ArrayList;

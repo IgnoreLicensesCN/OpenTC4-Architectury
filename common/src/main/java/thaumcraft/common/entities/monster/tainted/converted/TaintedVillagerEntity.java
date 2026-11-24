@@ -1,8 +1,8 @@
 package thaumcraft.common.entities.monster.tainted.converted;
 
 import com.google.common.collect.ImmutableList;
-import com.linearity.opentc4.mixin.BrainProviderAccessor;
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
+import com.linearity.opentc4.mixin.accessors.BrainProviderAccessor;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;

@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin.client.render;
 
-import com.linearity.opentc4.mixinaccessors.ItemRendererAccessor;
+import com.linearity.opentc4.mixin.client.accessors.ItemRendererAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,7 +18,7 @@ import static thaumcraft.client.renderers.item.RenderUtils.ITEM_RENDERERS;
 
 
 @Mixin(ItemRenderer.class)
-public class ItemRendererMixin implements ItemRendererAccessor {
+public class ItemRendererMixin {
 
     @Inject(method = "render",
             at = @At("HEAD"),
@@ -36,15 +36,6 @@ public class ItemRendererMixin implements ItemRendererAccessor {
                 }
             }
         }
-    }
-
-    @Shadow private void renderModelLists(BakedModel bakedModel, ItemStack itemStack, int i, int j, PoseStack poseStack, VertexConsumer vertexConsumer){
-        throw new RuntimeException("should not reach here");
-    }
-
-    @Override
-    public void opentc4$renderModelLists(BakedModel bakedModel, ItemStack itemStack, int i, int j, PoseStack poseStack, VertexConsumer vertexConsumer) {
-        renderModelLists(bakedModel,itemStack,i,j,poseStack,vertexConsumer);
     }
 }
 

@@ -2,7 +2,7 @@ package thaumcraft.common.blocks.abstracts;
 
 import com.linearity.opentc4.OpenTC4;
 import com.linearity.opentc4.PlatformUniqueUtils;
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.annotations.UtilityLikeAbstraction;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import dev.architectury.fluid.FluidStack;
 import net.minecraft.core.BlockPos;

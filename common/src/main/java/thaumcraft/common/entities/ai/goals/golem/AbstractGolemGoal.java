@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.goals.golem;
 
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.annotations.UtilityLikeAbstraction;
 import net.minecraft.world.entity.ai.goal.Goal;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.BaseGolemEntity;

@@ -1,5 +1,7 @@
 package com.linearity.opentc4.annotations;//package vazkii.botania.common.annotations;//yes i stole code
 
+import com.linearity.annotations.StoleFrom;
+
 import java.lang.annotation.*;
 
 /**

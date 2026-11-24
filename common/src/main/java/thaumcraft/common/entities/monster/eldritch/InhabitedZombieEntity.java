@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.monster.eldritch;
 
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;

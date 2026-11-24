@@ -1,8 +1,8 @@
 package thaumcraft.api.aspects.aspect;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.annotations.ShouldNotModify;
+import com.linearity.annotations.Modifiable;
+import com.linearity.annotations.ShouldNotModify;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import thaumcraft.api.aspects.Aspect;

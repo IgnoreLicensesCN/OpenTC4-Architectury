@@ -1,6 +1,6 @@
 package com.linearity.opentc4.utils;
 
-import com.linearity.opentc4.mixinaccessors.RecipeManagerAccessor;
+import com.linearity.opentc4.mixinattachments.RecipeManagerAccessor;
 import net.minecraft.world.item.crafting.Recipe;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketAddRecipesS2C;
 

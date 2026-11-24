@@ -1,7 +1,7 @@
 package thaumcraft.common.items.wands;
 
-import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.annotations.ModifiableCopy;
+import com.linearity.annotations.Modifiable;
+import com.linearity.annotations.ModifiableCopy;
 import io.wispforest.accessories.api.AccessoryItem;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;

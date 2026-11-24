@@ -56,8 +56,8 @@ import thaumcraft.common.lib.effects.ThaumcraftEffects;
 
 import java.util.IdentityHashMap;
 
-import static com.linearity.opentc4.mixin.DefaultAttributesAccessor.opentc4$getSuppliers;
-import static com.linearity.opentc4.mixin.DefaultAttributesAccessor.opentc4$setSuppliers;
+import static com.linearity.opentc4.mixin.accessors.DefaultAttributesAccessor.opentc4$getSuppliers;
+import static com.linearity.opentc4.mixin.accessors.DefaultAttributesAccessor.opentc4$setSuppliers;
 import static thaumcraft.common.entities.ThaumcraftEntities.Registry.ENTITIES;
 
 public class ThaumcraftEntities {

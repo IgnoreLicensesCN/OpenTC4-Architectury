@@ -1,7 +1,7 @@
 package com.linearity.opentc4.mixin;
 
 import com.google.common.collect.ImmutableMap;
-import com.linearity.opentc4.mixinaccessors.RecipeManagerAccessor;
+import com.linearity.opentc4.mixinattachments.RecipeManagerAccessor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;

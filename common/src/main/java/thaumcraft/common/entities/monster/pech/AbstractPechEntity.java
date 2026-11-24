@@ -1,9 +1,9 @@
 package thaumcraft.common.entities.monster.pech;
 
-import com.linearity.opentc4.annotations.RecommendedLogicalSide;
-import com.linearity.opentc4.annotations.StoleFrom;
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
+import com.linearity.annotations.RecommendedLogicalSide;
+import com.linearity.annotations.StoleFrom;
+import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;

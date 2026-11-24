@@ -1,6 +1,6 @@
 package com.linearity.opentc4.utils.compoundtag.accessors;
 
-import com.linearity.opentc4.mixinaccessors.IAccessorCacheableTag;
+import com.linearity.opentc4.mixinattachments.IAccessorCacheableTag;
 import net.minecraft.nbt.CompoundTag;
 
 //2026/10/18:if you want to access my tags,use this.I will cache some objects and save life with this.

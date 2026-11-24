@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin.client;
 
-import com.linearity.opentc4.annotations.StoleFrom;
+import com.linearity.annotations.StoleFrom;
 import com.linearity.opentc4.playerdata.AdditionalPlayerDataManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientPacketListener;

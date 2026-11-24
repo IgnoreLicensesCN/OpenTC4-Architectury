@@ -1,7 +1,7 @@
 package thaumcraft.common.blocks.abstracts;
 
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
+import com.linearity.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;

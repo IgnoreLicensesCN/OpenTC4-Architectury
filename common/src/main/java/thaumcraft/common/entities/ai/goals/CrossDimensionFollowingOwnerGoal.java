@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.goals;
 
-import com.linearity.opentc4.annotations.StoleFrom;
+import com.linearity.annotations.StoleFrom;
 import net.minecraft.sounds.SoundEvents;
 import thaumcraft.common.entities.abstracts.StayableEntity;
 import net.minecraft.core.BlockPos;

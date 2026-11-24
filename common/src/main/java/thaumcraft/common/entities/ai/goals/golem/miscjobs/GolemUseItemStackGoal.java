@@ -1,6 +1,5 @@
 package thaumcraft.common.entities.ai.goals.golem.miscjobs;
 
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -9,7 +8,6 @@ import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;

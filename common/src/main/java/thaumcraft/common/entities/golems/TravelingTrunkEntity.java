@@ -1,8 +1,7 @@
 package thaumcraft.common.entities.golems;
 
-import com.linearity.opentc4.annotations.StoleFrom;
-import com.linearity.opentc4.mixinaccessors.InteractionOverrideMob;
-import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
+import com.linearity.annotations.StoleFrom;
+import com.linearity.opentc4.mixinattachments.overrides.entity.mob.InteractionOverrideMob;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +39,6 @@ import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.StayableOwnableEntity;
 import thaumcraft.common.entities.ai.goals.CrossDimensionFollowingOwnerGoal;
 import thaumcraft.common.items.ThaumcraftItemInstances;
-import thaumcraft.common.items.golem.upgrade.abstracts.behavior.listeners.IGolemOnFeedListener;
 
 import java.util.EnumSet;
 

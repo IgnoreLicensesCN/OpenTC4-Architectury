@@ -1,11 +1,12 @@
 package thaumcraft.common.entities.golems;
 
 import com.google.common.collect.Sets;
-import com.linearity.opentc4.annotations.RecommendedLogicalSide;
+import com.linearity.annotations.RecommendedLogicalSide;
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
-import com.linearity.opentc4.mixinaccessors.InteractionOverrideMob;
-import com.linearity.opentc4.mixinaccessors.cliententity.BaseGolemEntityClientAccessor;
+import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
+import com.linearity.opentc4.mixinattachments.ILuckOwnerEntity;
+import com.linearity.opentc4.mixinattachments.overrides.entity.mob.InteractionOverrideMob;
+import com.linearity.opentc4.mixinattachments.client.cliententity.BaseGolemEntityClientAccessor;
 import com.linearity.opentc4.utils.collectionlike.parameterizedtypechaos.ClassToItemStackPairMap;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
 import com.linearity.opentc4.utils.collectionlike.ObjectIntPair;
@@ -73,7 +74,8 @@ public abstract class BaseGolemEntity
         extends AbstractGolemUpgradeApplicableEntity<BaseGolemEntity.IGolemUpgradeItem>
         implements
         RangedAttackMob,
-        InteractionOverrideMob {
+        InteractionOverrideMob,
+        ILuckOwnerEntity {
     public static final UUID SPEED_MODOFIER_UUID = UUID.fromString("6b9a6842-f707-498a-8a58-f0c2fa3d88f4");
     public AttributeModifier getSpeedModifierAttribute() {
         return new AttributeModifier(SPEED_MODOFIER_UUID,
@@ -512,6 +514,7 @@ public abstract class BaseGolemEntity
 
     public static AttributeSupplier.Builder createGolemAttributes() {
         return Mob.createMobAttributes()
+                .add(Attributes.LUCK)
                 .add(Attributes.MAX_HEALTH, 20)
                 .add(Attributes.ATTACK_DAMAGE, 2)
                 .add(Attributes.MOVEMENT_SPEED, 0.6)
@@ -913,5 +916,9 @@ public abstract class BaseGolemEntity
         if (interactionHand == InteractionHand.MAIN_HAND){
             this.level().broadcastEntityEvent(this,START_ACTION_TIMER);
         }
+    }
+
+    public float getLuck() {
+        return (float)this.getAttributeValue(Attributes.LUCK);
     }
 }

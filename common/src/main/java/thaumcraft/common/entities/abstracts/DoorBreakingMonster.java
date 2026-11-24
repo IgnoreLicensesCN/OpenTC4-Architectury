@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.abstracts;
 
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
+import com.linearity.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.*;

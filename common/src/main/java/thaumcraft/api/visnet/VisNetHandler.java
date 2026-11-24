@@ -1,7 +1,7 @@
 package thaumcraft.api.visnet;
 
 import com.linearity.opentc4.annotations.forvalue.CentiVisAmount;
-import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
+import com.linearity.opentc4.mixinattachments.CoordLookupOwnerLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;

@@ -1,7 +1,7 @@
 package thaumcraft.common.items.jars;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.annotations.RecommendedLogicalSide;
+import com.linearity.annotations.RecommendedLogicalSide;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.world.item.BlockItem;

@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.aspects.item.bonus.listeners;
 
-import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.annotations.Modifiable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;

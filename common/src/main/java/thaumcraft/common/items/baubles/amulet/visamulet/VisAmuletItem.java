@@ -1,6 +1,6 @@
 package thaumcraft.common.items.baubles.amulet.visamulet;
 
-import com.linearity.opentc4.annotations.ModifiableCopy;
+import com.linearity.annotations.ModifiableCopy;
 import io.wispforest.accessories.api.AccessoryItem;
 import io.wispforest.accessories.api.slot.SlotReference;
 import net.minecraft.ChatFormatting;

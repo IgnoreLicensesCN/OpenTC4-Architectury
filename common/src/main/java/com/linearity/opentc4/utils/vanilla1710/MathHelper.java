@@ -1,7 +1,7 @@
 package com.linearity.opentc4.utils.vanilla1710;
 
 import com.linearity.opentc4.annotations.forvalue.DegreeValue;
-import com.linearity.opentc4.annotations.forvalue.RadianValue;
+import com.linearity.annotations.forvalue.RadianValue;
 import net.minecraft.util.RandomSource;
 
 import java.util.Random;

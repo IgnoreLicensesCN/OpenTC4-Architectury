@@ -1,8 +1,8 @@
 package thaumcraft.common.entities.monster.tainted;
 
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
-import com.linearity.opentc4.mixinaccessors.SlimeAttackGoalAccessorGetter;
-import com.linearity.opentc4.mixinaccessors.SlimeMoveControlAccessorGetter;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
+import com.linearity.opentc4.mixinattachments.SlimeAttackGoalAccessorGetter;
+import com.linearity.opentc4.mixinattachments.SlimeMoveControlAccessorGetter;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.chat.Component;

@@ -1,11 +1,10 @@
 package thaumcraft.common.entities.golems;
 
 import com.linearity.opentc4.OpenTC4;
-import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.annotations.Modifiable;
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
-import com.linearity.opentc4.mixinaccessors.ItemCooldownOwnerEntity;
+import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
+import com.linearity.opentc4.mixinattachments.ItemCooldownOwnerEntity;
 import com.linearity.opentc4.utils.QueuedItemCooldowns;
 import com.linearity.opentc4.utils.collectionlike.AutoSortThreadSafeList;
 import com.linearity.opentc4.utils.collectionlike.UpgradePair;

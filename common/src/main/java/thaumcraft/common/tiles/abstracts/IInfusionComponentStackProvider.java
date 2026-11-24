@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.abstracts;
 
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
+import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;

@@ -1,7 +1,7 @@
 
 package thaumcraft.api.research.interfaces;
 
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.annotations.UtilityLikeAbstraction;
 import net.minecraft.world.entity.LivingEntity;
 import thaumcraft.common.lib.resourcelocations.ClueResourceLocation;
 import thaumcraft.api.research.ResearchAndScannedInfo;

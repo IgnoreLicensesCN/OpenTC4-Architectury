@@ -1,8 +1,8 @@
 package thaumcraft.api.listeners.aspects.entity.basic;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.annotations.ShouldNotModify;
+import com.linearity.annotations.Modifiable;
+import com.linearity.annotations.ShouldNotModify;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

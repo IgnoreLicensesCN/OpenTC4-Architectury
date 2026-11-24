@@ -1,6 +1,6 @@
 package thaumcraft.api;
 
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.annotations.UtilityLikeAbstraction;
 
 @UtilityLikeAbstraction(reason = "i'm just lazy")
 public interface IValueContainerBasedComparatorSignalProviderBlockEntity {

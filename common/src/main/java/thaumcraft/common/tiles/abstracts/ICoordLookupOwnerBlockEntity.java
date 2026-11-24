@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.abstracts;
 
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.annotations.UtilityLikeAbstraction;
 import com.linearity.opentc4.utils.collectionlike.coordlookups.CoordLookup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

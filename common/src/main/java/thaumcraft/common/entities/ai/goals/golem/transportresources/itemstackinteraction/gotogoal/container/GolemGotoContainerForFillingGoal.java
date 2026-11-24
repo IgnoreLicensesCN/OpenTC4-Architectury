@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.gotogoal.container;
 
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
+import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import net.minecraft.core.BlockPos;
@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.function.BiPredicate;
 
 import static com.linearity.opentc4.Consts.getEmptyWeakRef;
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
+import static com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.entities.golems.GolemHelper.getAmountNeededSmart;
 import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;

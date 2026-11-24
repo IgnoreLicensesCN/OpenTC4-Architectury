@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.golems;
 
-import com.linearity.opentc4.annotations.ReturnValueFieldOfSelf;
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
+import com.linearity.annotations.ReturnValueFieldOfSelf;
+import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import it.unimi.dsi.fastutil.ints.IntIterator;
@@ -22,13 +22,11 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.GolemPlaceItemStackToHomeGoalWithItemStackTickMark;
 import thaumcraft.common.lib.utils.InventoryUtils;
-import thaumcraft.common.tiles.junkbox.TileJarFillable;
 
 import java.lang.ref.WeakReference;
 import java.util.*;
@@ -37,7 +35,7 @@ import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
 import static com.linearity.opentc4.Consts.getEmptyWeakRef;
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getCachedObjectFrom;
+import static com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner.opentc4$getCachedObjectFrom;
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 
 public class GolemHelper {

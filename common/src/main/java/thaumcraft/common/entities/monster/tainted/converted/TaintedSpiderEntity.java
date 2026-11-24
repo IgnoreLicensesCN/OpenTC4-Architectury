@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.monster.tainted.converted;
 
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;

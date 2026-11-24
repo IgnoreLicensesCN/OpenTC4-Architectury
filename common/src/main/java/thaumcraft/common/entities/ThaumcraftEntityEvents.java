@@ -1,7 +1,7 @@
 package thaumcraft.common.entities;
 
-import com.linearity.opentc4.mixin.MobAccessor;
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
+import com.linearity.opentc4.mixin.accessors.MobAccessor;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

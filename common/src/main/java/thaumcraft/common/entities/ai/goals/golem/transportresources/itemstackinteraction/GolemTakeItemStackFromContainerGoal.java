@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction;
 
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
-import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
+import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
+import com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import net.minecraft.core.BlockPos;
@@ -13,7 +13,7 @@ import thaumcraft.common.entities.ai.goals.golem.AbstractGolemGoal;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getCachedObjectFrom;
+import static com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner.opentc4$getCachedObjectFrom;
 import static thaumcraft.common.entities.golems.GolemHelper.*;
 import static thaumcraft.common.entities.golems.configuration.GolemConfigurationKey.Default.PRECISE_OR_ANY_AMOUNT_CONFIG_KEY;
 

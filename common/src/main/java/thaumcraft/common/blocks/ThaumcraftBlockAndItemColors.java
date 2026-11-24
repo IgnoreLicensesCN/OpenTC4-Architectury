@@ -2,7 +2,7 @@ package thaumcraft.common.blocks;
 
 import com.google.common.collect.MapMaker;
 import com.linearity.opentc4.mixin.client.render.ModelPredicateProviderRegistryAccessor;
-import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
+import com.linearity.opentc4.mixinattachments.CoordLookupOwnerLevel;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;

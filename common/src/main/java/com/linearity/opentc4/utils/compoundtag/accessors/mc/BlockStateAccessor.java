@@ -1,6 +1,6 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.mc;
 
-import com.linearity.opentc4.mixinaccessors.IAccessorCacheableTag;
+import com.linearity.opentc4.mixinattachments.IAccessorCacheableTag;
 import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.CompoundTagAccessorImpl;
 import net.minecraft.core.HolderGetter;

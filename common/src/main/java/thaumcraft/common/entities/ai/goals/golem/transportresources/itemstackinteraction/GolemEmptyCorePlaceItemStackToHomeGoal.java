@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction;
 
-import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
+import com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner;
 import it.unimi.dsi.fastutil.bytes.ByteArraySet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import net.minecraft.core.BlockPos;
@@ -9,7 +9,7 @@ import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.golems.GolemHelper;
 
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.*;
+import static com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner.*;
 import static thaumcraft.common.entities.ai.goals.golem.transportresources.itemstackinteraction.GolemPlaceItemStackToHomeGoalWithItemStackTickMark.ItemStackSortingTickMarkFakeField.getOrCreateAndSetTickMarkFrom;
 import static thaumcraft.common.entities.golems.GolemHelper.getColorsMatching;
 

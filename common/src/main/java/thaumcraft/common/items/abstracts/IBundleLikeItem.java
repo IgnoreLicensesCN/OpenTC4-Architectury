@@ -1,10 +1,10 @@
 package thaumcraft.common.items.abstracts;
 
-import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.annotations.ModifiableCopy;
-import com.linearity.opentc4.annotations.StoleFrom;
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
+import com.linearity.annotations.Modifiable;
+import com.linearity.annotations.ModifiableCopy;
+import com.linearity.annotations.StoleFrom;
+import com.linearity.annotations.UtilityLikeAbstraction;
+import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;

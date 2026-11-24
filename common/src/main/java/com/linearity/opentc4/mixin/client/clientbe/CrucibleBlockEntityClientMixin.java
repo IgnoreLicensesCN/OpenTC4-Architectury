@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin.client.clientbe;
 
-import com.linearity.opentc4.mixinaccessors.clientbe.CrucibleBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinattachments.client.clientbe.CrucibleBlockEntityClientAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;

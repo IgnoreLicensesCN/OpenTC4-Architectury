@@ -1,10 +1,8 @@
 package thaumcraft.common.items.wands.foci;
 
-import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.annotations.RecommendedLogicalSide;
-import com.linearity.opentc4.mixinaccessors.DropExperienceBlockAccessor;
-import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
+import com.linearity.annotations.Modifiable;
+import com.linearity.opentc4.mixin.accessors.DropExperienceBlockAccessor;
+import com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner;
 import com.linearity.opentc4.utils.random.EasyLCGGenerator;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import dev.architectury.platform.Platform;
@@ -46,21 +44,19 @@ import thaumcraft.api.aspects.*;
 import thaumcraft.api.aspects.aspectlists.CentiVisList;
 import thaumcraft.api.aspects.aspectlists.unmodifiable.UnmodifiableCentiVisList;
 import thaumcraft.api.wands.focus.upgrade.FocusUpgradeType;
-import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.items.abstracts.wandabstraction.focus.IWandFocusItem;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.ICentiVisContainerItem;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.IWandFocusEngineItem;
 import thaumcraft.client.fx.migrated.beams.FXBeamWand;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
-import thaumcraft.common.items.golem.upgrade.core.EssentiaGolemCoreItem;
 import thaumcraft.common.items.wands.render.waveanimations.AbstractWandWaveAnimation;
 import thaumcraft.common.items.wands.render.waveanimations.ThaumcraftWandWaveAnimations;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
+import static com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
 import static com.linearity.opentc4.utils.consts.DirectionShuffles.DIRECTIONS_SHUFFLED;
 import static net.minecraft.world.level.block.Block.getDrops;
 import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CONSUMPTION_FOCUS;

@@ -1,10 +1,9 @@
 package com.linearity.opentc4.fabric;
 
-import com.linearity.opentc4.annotations.StoleFrom;
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
+import com.linearity.annotations.StoleFrom;
+import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
 import com.mojang.authlib.GameProfile;
 import net.fabricmc.fabric.api.entity.FakePlayer;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.base.SingleStackStorage;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.server.level.ServerLevel;
@@ -18,7 +17,7 @@ import com.linearity.opentc4.ITickEvent;
 import com.linearity.opentc4.PlatformUniqueUtils;
 import com.linearity.opentc4.fabric.client.ThaumcraftModelProvider;
 import com.linearity.opentc4.fabric.mixinaccessor.AttributeSupplierAccessor;
-import com.linearity.opentc4.mixin.DefaultAttributesAccessor;
+import com.linearity.opentc4.mixin.accessors.DefaultAttributesAccessor;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.CommandDispatcher;
 import dev.architectury.fluid.FluidStack;

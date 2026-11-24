@@ -1,6 +1,6 @@
 package thaumcraft.api.research.client.render;
 
-import com.linearity.opentc4.annotations.RecommendedLogicalSide;
+import com.linearity.annotations.RecommendedLogicalSide;
 import thaumcraft.common.lib.resourcelocations.ResearchCategoryResourceLocation;
 
 //sometimes we want research appear in many places like:

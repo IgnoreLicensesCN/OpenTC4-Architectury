@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin;
 
-import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
+import com.linearity.opentc4.mixinattachments.CoordLookupOwnerLevel;
 import com.linearity.opentc4.utils.collectionlike.coordlookups.CoordLookup;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;

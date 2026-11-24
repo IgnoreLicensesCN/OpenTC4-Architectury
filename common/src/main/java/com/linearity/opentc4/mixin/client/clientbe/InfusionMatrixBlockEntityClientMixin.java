@@ -1,6 +1,6 @@
 package com.linearity.opentc4.mixin.client.clientbe;
 
-import com.linearity.opentc4.mixinaccessors.clientbe.InfusionMatrixBlockEntityClientAccessor;
+import com.linearity.opentc4.mixinattachments.client.clientbe.InfusionMatrixBlockEntityClientAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;

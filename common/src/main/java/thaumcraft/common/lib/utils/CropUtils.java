@@ -1,6 +1,6 @@
 package thaumcraft.common.lib.utils;
 
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
+import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -9,10 +9,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.api.listeners.croputils.CropHarvester;
-import thaumcraft.api.listeners.croputils.DirectlyBreakHarvestableCropChecker;
-import thaumcraft.api.listeners.croputils.ReplantPlaceableCropItemGetter;
-import thaumcraft.api.listeners.croputils.UseHarvestableCropChecker;
 
 import java.util.UUID;
 

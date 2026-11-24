@@ -1,6 +1,6 @@
 package thaumcraft.common.entities;
 
-import com.linearity.opentc4.mixin.FallingBlockEntityAccessor;
+import com.linearity.opentc4.mixin.accessors.FallingBlockEntityAccessor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.GameRules;

@@ -1,0 +1,43 @@
+package com.linearity.opentc4.mixin.entity;
+
+import com.linearity.opentc4.mixinattachments.overrides.entity.mob.InteractionOverrideMob;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static thaumcraft.common.lib.utils.EntityUtils.makeChampionOnSpawn;
+
+@Mixin(Mob.class)
+public class MobMixin {
+    @Inject(method = "finalizeSpawn",at=@At("TAIL"))
+    public void opentc4$finalizeSpawn(ServerLevelAccessor serverLevelAccessor,
+                                      DifficultyInstance difficultyInstance,
+                                      MobSpawnType mobSpawnType,
+                                      SpawnGroupData spawnGroupData,
+                                      CompoundTag compoundTag,
+                                      CallbackInfoReturnable<SpawnGroupData> cir) {
+        makeChampionOnSpawn((Mob) (Object)this,serverLevelAccessor);
+    }
+
+    @Inject(
+            method = "interact",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    public void opentc4$interactionOverridden(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
+        if (this instanceof InteractionOverrideMob mob){
+            cir.setReturnValue(mob.thaumcraft$interact(player,interactionHand));
+        }
+    }
+
+}

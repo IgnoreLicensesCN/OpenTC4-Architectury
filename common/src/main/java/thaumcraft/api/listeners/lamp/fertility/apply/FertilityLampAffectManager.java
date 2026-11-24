@@ -1,6 +1,6 @@
 package thaumcraft.api.listeners.lamp.fertility.apply;
 
-import com.linearity.opentc4.annotations.ShouldNotModify;
+import com.linearity.annotations.ShouldNotModify;
 import com.linearity.opentc4.utils.collectionlike.ListenerManager;
 import com.linearity.opentc4.utils.collectionlike.parameterizedtypechaos.EntityCategoryToEntitiesMap;
 import com.linearity.opentc4.utils.entity.category.EntityCategory;

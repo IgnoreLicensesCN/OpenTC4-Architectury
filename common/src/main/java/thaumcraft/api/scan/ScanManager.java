@@ -1,6 +1,6 @@
 package thaumcraft.api.scan;
 
-import com.linearity.opentc4.annotations.ShouldNotModify;
+import com.linearity.annotations.ShouldNotModify;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

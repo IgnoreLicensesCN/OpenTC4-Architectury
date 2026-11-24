@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.monster.eldritch;
 
-import com.linearity.opentc4.mixinaccessors.cliententity.EldritchGuardianEntityClientAccessor;
+import com.linearity.opentc4.mixinattachments.client.cliententity.EldritchGuardianEntityClientAccessor;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;

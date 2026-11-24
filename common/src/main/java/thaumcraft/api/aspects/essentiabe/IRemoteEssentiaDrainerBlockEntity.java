@@ -1,7 +1,7 @@
 package thaumcraft.api.aspects.essentiabe;
 
-import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.mixinaccessors.CoordLookupOwnerLevel;
+import com.linearity.annotations.Modifiable;
+import com.linearity.opentc4.mixinattachments.CoordLookupOwnerLevel;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

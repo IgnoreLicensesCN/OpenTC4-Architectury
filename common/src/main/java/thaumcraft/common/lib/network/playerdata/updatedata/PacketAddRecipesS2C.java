@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.network.playerdata.updatedata;
 
-import com.linearity.opentc4.mixin.client.ClientPacketListenerAccessor;
-import com.linearity.opentc4.mixinaccessors.RecipeManagerAccessor;
+import com.linearity.opentc4.mixin.client.accessors.ClientPacketListenerAccessor;
+import com.linearity.opentc4.mixinattachments.RecipeManagerAccessor;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.BaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;

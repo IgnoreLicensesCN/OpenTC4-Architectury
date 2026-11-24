@@ -1,7 +1,7 @@
 package thaumcraft.common.items.abstracts.wandabstraction.wand;
 
-import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.annotations.ModifiableCopy;
+import com.linearity.annotations.Modifiable;
+import com.linearity.annotations.ModifiableCopy;
 import com.linearity.opentc4.annotations.forvalue.CentiVisAmount;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;

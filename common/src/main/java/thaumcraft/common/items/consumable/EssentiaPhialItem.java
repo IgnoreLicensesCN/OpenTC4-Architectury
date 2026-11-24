@@ -1,6 +1,6 @@
 package thaumcraft.common.items.consumable;
 
-import com.linearity.opentc4.mixinaccessors.ExtendedItemStack;
+import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;

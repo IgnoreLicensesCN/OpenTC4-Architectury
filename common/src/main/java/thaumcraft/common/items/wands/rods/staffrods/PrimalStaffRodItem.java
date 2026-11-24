@@ -1,6 +1,6 @@
 package thaumcraft.common.items.wands.rods.staffrods;
 
-import com.linearity.opentc4.annotations.Modifiable;
+import com.linearity.annotations.Modifiable;
 import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.world.entity.Entity;

@@ -1,6 +1,6 @@
 package thaumcraft.common.tiles.abstracts;
 
-import com.linearity.opentc4.annotations.UtilityLikeAbstraction;
+import com.linearity.annotations.UtilityLikeAbstraction;
 import com.linearity.opentc4.annotations.forvalue.VisAmount;
 import net.minecraft.world.item.ItemStack;
 import thaumcraft.api.aspects.Aspect;

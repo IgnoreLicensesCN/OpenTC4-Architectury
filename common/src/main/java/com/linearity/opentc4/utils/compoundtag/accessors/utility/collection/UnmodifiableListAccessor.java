@@ -1,5 +1,4 @@
 package com.linearity.opentc4.utils.compoundtag.accessors.utility.collection;
-import com.linearity.opentc4.mixinaccessors.IAccessorCacheableTag;
 import com.linearity.opentc4.utils.compoundtag.accessors.CacheableCompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.CompoundTagAccessor;
 import com.linearity.opentc4.utils.compoundtag.accessors.basic.ListTagAccessor;

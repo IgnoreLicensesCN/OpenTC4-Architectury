@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.ai.goals;
 
-import com.linearity.opentc4.mixin.GoalAccessor;
+import com.linearity.opentc4.mixin.accessors.GoalAccessor;
 import net.minecraft.world.entity.ai.goal.Goal;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

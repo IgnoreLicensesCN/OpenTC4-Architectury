@@ -1,10 +1,10 @@
 package thaumcraft.common.items.wands.wandtypes;
 
 import com.google.common.collect.MapMaker;
-import com.linearity.opentc4.annotations.Modifiable;
-import com.linearity.opentc4.annotations.ModifyingFakeFieldAsResult;
-import com.linearity.opentc4.annotations.ReturnValueFakeFieldOf;
-import com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner;
+import com.linearity.annotations.Modifiable;
+import com.linearity.annotations.ModifyingFakeFieldAsResult;
+import com.linearity.annotations.ReturnValueFakeFieldOf;
+import com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner;
 import com.linearity.opentc4.utils.LevelBlockEntityAccessing;
 import com.linearity.opentc4.utils.collectionlike.obj2intcalc.CalcCacheableCentiVisList;
 import org.jetbrains.annotations.Unmodifiable;
@@ -14,7 +14,7 @@ import thaumcraft.common.items.abstracts.wandabstraction.component.*;
 import thaumcraft.common.items.abstracts.wandabstraction.wand.*;
 import thaumcraft.common.items.abstracts.wandabstraction.wandinteractable.IWandInteractableBlockOrBlockEntity;
 import thaumcraft.common.items.abstracts.IAttackBlockListenerItem;
-import com.linearity.opentc4.annotations.forvalue.PercentageFloatValue;
+import com.linearity.annotations.forvalue.PercentageFloatValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -39,7 +39,7 @@ import java.util.function.Supplier;
 
 import static com.linearity.opentc4.Consts.WandCastingCompoundTagAccessors.*;
 import static com.linearity.opentc4.OpenTC4.platformUtils;
-import static com.linearity.opentc4.mixinaccessors.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
+import static com.linearity.opentc4.mixinattachments.IObjectCacheableFakeFieldOwner.opentc4$getOrCreateCachedObjectFrom;
 import static thaumcraft.api.wands.WandUtils.appendWandHoverText;
 
 //maybe just an example,you can also make you own one.

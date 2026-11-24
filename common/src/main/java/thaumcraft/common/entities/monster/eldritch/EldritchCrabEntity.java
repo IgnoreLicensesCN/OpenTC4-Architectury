@@ -1,7 +1,7 @@
 package thaumcraft.common.entities.monster.eldritch;
 
-import com.linearity.opentc4.annotations.StoleFrom;
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
+import com.linearity.annotations.StoleFrom;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -30,7 +30,6 @@ import thaumcraft.common.entities.monster.cultists.CultistEntity;
 
 import java.util.UUID;
 
-import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.CULTIST;
 import static thaumcraft.common.items.ThaumcraftItemInstances.CULTIST_PLATE_CHESTPLATE;
 
 public class EldritchCrabEntity extends Spider implements ISpiderWithoutSkeletonRiding, IClearGoalOnRemovedEntity {

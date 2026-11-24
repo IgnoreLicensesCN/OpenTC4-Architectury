@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.monster.tainted.converted;
 
-import com.linearity.opentc4.mixinaccessors.IClearGoalOnRemovedEntity;
+import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
