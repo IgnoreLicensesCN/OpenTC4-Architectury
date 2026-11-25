@@ -272,6 +272,15 @@ block_with_item_names = [
     [['%s%s','tc.adv','item.ItemGolemPlacer.6.name'],'advanced_iron_golem'],
     [['%s%s','tc.adv','item.ItemGolemPlacer.7.name'],'advanced_thaumium_golem'],
 
+    [['%s: %s','item.ItemGolemDecoration.name','item.ItemGolemDecoration.0.name'],'golem_tophat'],
+    [['%s: %s','item.ItemGolemDecoration.name','item.ItemGolemDecoration.1.name'],'golem_glasses'],
+    [['%s: %s','item.ItemGolemDecoration.name','item.ItemGolemDecoration.2.name'],'golem_bowtie'],
+    [['%s: %s','item.ItemGolemDecoration.name','item.ItemGolemDecoration.3.name'],'golem_fez'],
+    [['%s: %s','item.ItemGolemDecoration.name','item.ItemGolemDecoration.4.name'],'golem_dart_launcher'],
+    [['%s: %s','item.ItemGolemDecoration.name','item.ItemGolemDecoration.5.name'],'golem_visor'],
+    [['%s: %s','item.ItemGolemDecoration.name','item.ItemGolemDecoration.6.name'],'golem_iron_plating'],
+    [['%s: %s','item.ItemGolemDecoration.name','item.ItemGolemDecoration.7.name'],'golem_mace'],
+
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],
@@ -309,6 +318,8 @@ ruleset:list[typing.Callable[[str], bool]]= [
     lambda s: s.endswith("_staff_rod"),
     lambda s: s.endswith("_golem"),
     lambda s: s.endswith("_golem_core"),
+    lambda s: s.startswith("golem_upgrade_"),
+    lambda s: s.startswith("golem_"),
 ]
 
 def special_key_sort_weight(parts:list[str]):
