@@ -1150,4 +1150,7 @@ public class ThaumcraftItemInstances {
     public static UseGolemCoreItem USE_GOLEM_CORE() {
         return ThaumcraftItemsRegistry.SUPPLIER_USE_GOLEM_CORE.get();
     }
+    public static Item BLANK_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_BLANK_GOLEM_CORE.get();
+    }
 }

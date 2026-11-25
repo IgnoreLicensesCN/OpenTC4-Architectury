@@ -206,10 +206,10 @@ public class EntityGolemBase /*extends EntityGolem implements IEntityAdditionalS
 //         this.tasks.addTask(0, new AvoidCreeperGoal(this));
 //      }
 
-      switch (this.getCore()) {
-         case 11:
-            this.tasks.addTask(2, new AIFish(this));
-      }
+//      switch (this.getCore()) {
+//         case 11:
+//            this.tasks.addTask(2, new AIFish(this));
+//      }
 
 //      if (this.getCore() > -1) {
 //         this.tasks.addTask(5, new AIOpenDoor(this, true));

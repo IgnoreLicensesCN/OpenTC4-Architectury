@@ -241,6 +241,27 @@ block_with_item_names = [
     ['item.ItemGolemUpgrade.3.name','golem_upgrade_water'],
     ['item.ItemGolemUpgrade.4.name','golem_upgrade_order'],
     ['item.ItemGolemUpgrade.5.name','golem_upgrade_entropy'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.0.name',],'fill_golem_core'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.1.name',],'empty_golem_core'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.2.name',],'gather_golem_core'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.3.name',],'harvest_golem_core'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.4.name',],'guard_golem_core'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.5.name',],'liquid_golem_core'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.6.name',],'essentia_golem_core'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.7.name',],'harvest_log_golem_core'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.8.name',],'use_golem_core'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.9.name',],'butcher_golem_core'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.10.name',],'sort_golem_core'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.11.name',],'fishing_golem_core'],
+    [["%s: %s",'item.ItemGolemCore.name','item.ItemGolemCore.100.name',],'blank_golem_core'],
+    ['item.ItemGolemPlacer.0.name','straw_golem'],
+    ['item.ItemGolemPlacer.1.name','wood_golem'],
+    ['item.ItemGolemPlacer.2.name','tallow_golem'],
+    ['item.ItemGolemPlacer.3.name','clay_golem'],
+    ['item.ItemGolemPlacer.4.name','flesh_golem'],
+    ['item.ItemGolemPlacer.5.name','stone_golem'],
+    ['item.ItemGolemPlacer.6.name','iron_golem'],
+    ['item.ItemGolemPlacer.7.name','thaumium_golem'],
 
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
@@ -311,9 +332,28 @@ for fileName in os.listdir(language_file_folder):
             language_dict[force_add_key] = force_add_keys[force_add_key]
         for block_with_item_name_pair in block_with_item_names:
             key = block_with_item_name_pair[0]
-            if key not in language_dict.keys():
-                continue
-            value = language_dict[key]
+            value = ''
+            if isinstance(key,str):
+                if key not in language_dict.keys():
+                    continue
+                value = language_dict[key]
+            elif isinstance(key,list):
+                formatStr = key[0]
+                key = key[1:]
+                value = []
+                continueOuter = False
+                for keyItem in key:
+                    if keyItem not in language_dict.keys():
+                        continueOuter = True
+                        continue
+                    value.append(language_dict[keyItem])
+                if continueOuter:
+                    continue
+                # print(formatStr,value)
+                value = formatStr % tuple(value)
+                key = key[-1]
+
+
             remappedKey = block_with_item_name_pair[1]
             if isinstance(remappedKey, str):
                 # if key is not None:

@@ -1418,6 +1418,10 @@ public class ThaumcraftItemsRegistry {
             "use_golem_core",
             UseGolemCoreItem::new
     );
+    public static final RegistrySupplier<Item> SUPPLIER_BLANK_GOLEM_CORE = ITEMS.register(
+            "blank_golem_core",
+            () -> new Item(new Item.Properties())
+    );
     public static final Supplier<ItemStack> RANDOM_MANA_BEAN_SUPPLIER = new Supplier<>() {
         private final ThreadLocal<RandomSource> randomSourceThreadLocal = new ThreadLocal<>();
 
