@@ -1,10 +1,11 @@
 package thaumcraft.common.items;
+
 import net.minecraft.world.item.*;
-import thaumcraft.common.items.baubles.belt.HoverGirdleItem;
 import thaumcraft.common.items.baubles.amulet.EmergencyRunicAmuletItem;
 import thaumcraft.common.items.baubles.amulet.RunicAmuletItem;
 import thaumcraft.common.items.baubles.amulet.visamulet.ReinforcedVisAmuletItem;
 import thaumcraft.common.items.baubles.amulet.visamulet.VisAmuletItem;
+import thaumcraft.common.items.baubles.belt.HoverGirdleItem;
 import thaumcraft.common.items.baubles.belt.KineticRunicGirdleItem;
 import thaumcraft.common.items.baubles.belt.RunicGirdleItem;
 import thaumcraft.common.items.baubles.mundane.MundaneAmuletItem;
@@ -45,6 +46,7 @@ import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.golem.GolemBellItem;
 import thaumcraft.common.items.golem.golems.*;
 import thaumcraft.common.items.golem.golems.advanced.*;
+import thaumcraft.common.items.golem.upgrade.core.*;
 import thaumcraft.common.items.golem.upgrade.decoration.*;
 import thaumcraft.common.items.golem.upgrade.primal.*;
 import thaumcraft.common.items.jars.EssentiaJarBlockItem;
@@ -67,79 +69,104 @@ import thaumcraft.common.items.wands.wandcaps.*;
 import thaumcraft.common.items.wands.wandtypes.SceptreCastingItem;
 import thaumcraft.common.items.wands.wandtypes.StaffCastingItem;
 import thaumcraft.common.items.wands.wandtypes.WandCastingItem;
+
 public class ThaumcraftItemInstances {
     public static AlumentumItem ALUMENTUM() {
         return ThaumcraftItemsRegistry.SUPPLIER_ALUMENTUM.get();
     }//itemResource:0
+
     public static BlockItem NITOR() {
         return ThaumcraftItemsRegistry.SUPPLIER_NITOR.get();
     }//itemResource:1
+
     public static Item THAUMIUM_INGOT() {
         return ThaumcraftItemsRegistry.SUPPLIER_THAUMIUM_INGOT.get();
     }//itemResource:2 Thaumium Ingot
+
     public static Item QUICK_SILVER() {
         return ThaumcraftItemsRegistry.SUPPLIER_QUICK_SILVER.get();
     }//itemResource:3
+
     public static Item MAGIC_TALLOW() {
         return ThaumcraftItemsRegistry.SUPPLIER_MAGIC_TALLOW.get();
     }//itemResource:4
+
     public static Item AMBER_GEM() {
         return ThaumcraftItemsRegistry.SUPPLIER_AMBER_GEM.get();
     }//itemResource:6
+
     public static Item ENCHANTED_FABRIC() {
         return ThaumcraftItemsRegistry.SUPPLIER_ENCHANTED_FABRIC.get();
     }//itemResource:7
+
     public static Item VIS_FILTER() {
         return ThaumcraftItemsRegistry.SUPPLIER_VIS_FILTER.get();
     }//itemResource:8
+
     public static KnowledgeFragmentItem KNOWLEDGE_FRAGMENT() {
         return ThaumcraftItemsRegistry.SUPPLIER_KNOWLEDGE_FRAGMENT.get();
     }//itemResource:9
+
     public static Item MIRRORED_GLASS() {
         return ThaumcraftItemsRegistry.SUPPLIER_MIRRORED_GLASS.get();
     }//itemResource:10
+
     public static DegradableTaintedMaterialItem TAINTED_GOO() {
         return ThaumcraftItemsRegistry.SUPPLIER_TAINTED_GOO.get();
     }//itemResource:11
+
     public static DegradableTaintedMaterialItem TAINT_TENDRIL() {
         return ThaumcraftItemsRegistry.SUPPLIER_TAINT_TENDRIL.get();
     }//itemResource:12
+
     public static Item JAR_LABEL() {
         return ThaumcraftItemsRegistry.SUPPLIER_JAR_LABEL.get();
     }//itemResource:13
+
     public static Item SALIS_MUNDUS() {
         return ThaumcraftItemsRegistry.SUPPLIER_SALIS_MUNDUS.get();
     }//itemResource:14
+
     public static PrimalCharmItem PRIMAL_CHARM() {
         return ThaumcraftItemsRegistry.SUPPLIER_PRIMAL_CHARM.get();
     }//itemResource:15
+
     public static Item VOID_INGOT() {
         return ThaumcraftItemsRegistry.SUPPLIER_VOID_INGOT.get();
     }//itemResource:16
+
     public static Item VOID_SEED() {
         return ThaumcraftItemsRegistry.SUPPLIER_VOID_SEED.get();
     }//itemResource:17
+
     public static Item GOLD_COIN() {
         return ThaumcraftItemsRegistry.SUPPLIER_GOLD_COIN.get();
     }//itemResource:18
+
     public static EldritchEyeItem ELDRITCH_EYE() {
         return ThaumcraftItemsRegistry.SUPPLIER_ELDRITCH_EYE.get();
     }//itemEldritchObject:0
+
     public static CrimsonRitesItem CRIMSON_RITES() {
         return ThaumcraftItemsRegistry.SUPPLIER_CRIMSON_RITES.get();
     }//itemEldritchObject:1
+
     public static RunedTabletItem RUNED_TABLET() {
         return ThaumcraftItemsRegistry.SUPPLIER_RUNED_TABLET.get();
     }//itemEldritchObject:2
+
     public static PrimePearlItem PRIME_PEARL() {
         return ThaumcraftItemsRegistry.SUPPLIER_PRIME_PEARL.get();
     }//itemEldritchObject:3
+
     public static EldritchObeliskPlacerItem ELDRITCH_OBELISK_PLACER() {
         return ThaumcraftItemsRegistry.SUPPLIER_ELDRITCH_OBELISK_PLACER.get();
     }//itemEldritchObject:4
+
     public static ThaumometerItem THAUMOMETER() {
         return ThaumcraftItemsRegistry.SUPPLIER_THAUMOMETER_ITEM.get();
     }
+
     // Wand Caps
     public static CopperWandCapItem COPPER_WAND_CAP() {
         return ThaumcraftItemsRegistry.SUPPLIER_COPPER_WAND_CAP.get();
@@ -159,6 +186,7 @@ public class ThaumcraftItemInstances {
     public static VoidWandCapItem VOID_WAND_CAP() {
         return ThaumcraftItemsRegistry.SUPPLIER_VOID_WAND_CAP.get();
     }
+
     //wand rods
     public static BlazeWandRodItem BLAZE_WAND_ROD() {
         return ThaumcraftItemsRegistry.SUPPLIER_BLAZE_WAND_ROD.get();
@@ -775,6 +803,7 @@ public class ThaumcraftItemInstances {
     public static GogglesOfRevealingItem GOGGLES_OF_REVEALING() {
         return ThaumcraftItemsRegistry.SUPPLIER_GOGGLES_OF_REVEALING.get();
     }
+
     //        public static final RobeArmorItem ROBE_HELMET = Registry.SUPPLIER_ROBE_HELMET.get();
     public static RobeArmorItem ROBE_CHESTPLATE() {
         return ThaumcraftItemsRegistry.SUPPLIER_ROBE_CHESTPLATE.get();
@@ -854,16 +883,16 @@ public class ThaumcraftItemInstances {
     public static CompassStoneItem COMPASS_STONE() {
         return ThaumcraftItemsRegistry.SUPPLIER_COMPASS_STONE.get();
     }
-    public static Item CHICKEN_NUGGET(){
+    public static Item CHICKEN_NUGGET() {
         return ThaumcraftItemsRegistry.SUPPLIER_CHICKEN_NUGGET.get();
     }
-    public static Item BEEF_NUGGET(){
+    public static Item BEEF_NUGGET() {
         return ThaumcraftItemsRegistry.SUPPLIER_BEEF_NUGGET.get();
     }
-    public static Item PORK_NUGGET(){
+    public static Item PORK_NUGGET() {
         return ThaumcraftItemsRegistry.SUPPLIER_PORK_NUGGET.get();
     }
-    public static Item COD_NUGGET(){
+    public static Item COD_NUGGET() {
         return ThaumcraftItemsRegistry.SUPPLIER_COD_NUGGET.get();
     }
     public static Item TRIPLE_MEAT() {
@@ -977,7 +1006,7 @@ public class ThaumcraftItemInstances {
     public static FrostFocusItem FROST_FOCUS() {
         return ThaumcraftItemsRegistry.SUPPLIER_FROST_FOCUS.get();
     }
-    public static HellBatFocusItem HELL_BAT_FOCUS(){
+    public static HellBatFocusItem HELL_BAT_FOCUS() {
         return ThaumcraftItemsRegistry.SUPPLIER_HELL_BAT_FOCUS.get();
     }
     public static PechFocusItem PECH_FOCUS() {
@@ -1084,5 +1113,41 @@ public class ThaumcraftItemInstances {
     }
     public static GolemVisorItem GOLEM_VISOR() {
         return ThaumcraftItemsRegistry.SUPPLIER_GOLEM_VISOR.get();
+    }
+    public static ButcherGolemCoreItem BUTCHER_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_BUTCHER_GOLEM_CORE.get();
+    }
+    public static EmptyGolemCoreItem EMPTY_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_EMPTY_GOLEM_CORE.get();
+    }
+    public static EssentiaGolemCoreItem ESSENTIA_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_ESSENTIA_GOLEM_CORE.get();
+    }
+    public static FillGolemCoreItem FILL_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_FILL_GOLEM_CORE.get();
+    }
+    public static FishingGolemCoreItem FISHING_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_FISHING_GOLEM_CORE.get();
+    }
+    public static GatherGolemCoreItem GATHER_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_GATHER_GOLEM_CORE.get();
+    }
+    public static GuardGolemCoreItem GUARD_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_GUARD_GOLEM_CORE.get();
+    }
+    public static HarvestGolemCoreItem HARVEST_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_HARVEST_GOLEM_CORE.get();
+    }
+    public static HarvestLogGolemCoreItem HARVEST_LOG_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_HARVEST_LOG_GOLEM_CORE.get();
+    }
+    public static LiquidGolemCoreItem LIQUID_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_LIQUID_GOLEM_CORE.get();
+    }
+    public static SortGolemCoreItem SORT_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_SORT_GOLEM_CORE.get();
+    }
+    public static UseGolemCoreItem USE_GOLEM_CORE() {
+        return ThaumcraftItemsRegistry.SUPPLIER_USE_GOLEM_CORE.get();
     }
 }

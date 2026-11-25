@@ -1,5 +1,6 @@
 package com.linearity.opentc4.mixin.accessors;
 
+import com.linearity.opentc4.mixinattachments.DropExperienceBlockXpOwner;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -11,21 +12,9 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(DropExperienceBlock.class)
-public interface DropExperienceBlockAccessor {
+public interface DropExperienceBlockAccessor extends DropExperienceBlockXpOwner {
     @Accessor("xpRange")
     default IntProvider getXpRange(){
         throw new IllegalStateException("should not reach here");
-    }
-
-    @Unique
-    default int opentc4$getRandomXp(
-            BlockState state,
-            LevelReader level,
-            RandomSource randomSource,
-            BlockPos pos,
-            int fortuneLevel,
-            int silkTouchLevel
-    ) {
-        return silkTouchLevel == 0 ? getXpRange().sample(randomSource) : 0;
     }
 }

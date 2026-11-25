@@ -25,12 +25,12 @@ public class VillagerMixin implements ITaintConvertableEntity {
     }
 
     @Override
-    public boolean canConvertToTaintedMob() {
+    public boolean opentc4$canConvertToTaintedMob() {
         return usualCanConvertToTaintedMob((LivingEntity)(Object)this);
     }
 
     @Override
-    public void convertToTaintedMob() {
+    public void opentc4$convertToTaintedMob() {
         usualTaintedMobConversion((LivingEntity)(Object)this,TAINTED_VILLAGER());
     }
 }

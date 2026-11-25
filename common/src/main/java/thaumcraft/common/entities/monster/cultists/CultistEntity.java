@@ -1,6 +1,5 @@
 package thaumcraft.common.entities.monster.cultists;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -11,7 +10,6 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
@@ -22,9 +20,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.DoorBreakingMonster;
-import thaumcraft.common.entities.ai.goals.CultistHurtByTargetGoal;
-import thaumcraft.common.entities.ai.goals.NearestAttackableTargetGoalWithExclude;
-import thaumcraft.common.entities.ai.goals.ZombieLikeAttackGoal;
+import thaumcraft.common.entities.goals.CultistHurtByTargetGoal;
+import thaumcraft.common.entities.goals.NearestAttackableTargetGoalWithExclude;
+import thaumcraft.common.entities.goals.ZombieLikeAttackGoal;
 
 import static com.linearity.opentc4.Consts.CultistEntityTagAccessors.HOME_POS;
 import static net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED;

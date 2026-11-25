@@ -19,8 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.entities.abstracts.ITaintConvertableEntity;
 import thaumcraft.common.entities.abstracts.ITaintRecoverableMob;
-import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
-import thaumcraft.common.entities.ai.goals.MakeGrassTaintedGoal;
+import thaumcraft.common.entities.goals.DelayControllableMeleeAttackGoal;
+import thaumcraft.common.entities.goals.MakeGrassTaintedGoal;
 
 import static thaumcraft.common.entities.ThaumcraftEntities.*;
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.TAINTED_SHEEP;
@@ -87,12 +87,12 @@ public class TaintedSheepEntity extends Sheep implements Enemy, ITaintConvertabl
     }
 
     @Override
-    public boolean canConvertToTaintedMob() {
+    public boolean opentc4$canConvertToTaintedMob() {
         return false;
     }
 
     @Override
-    public void convertToTaintedMob() {
+    public void opentc4$convertToTaintedMob() {
 
     }
     @Override

@@ -37,7 +37,7 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.DoorBreakingMonster;
-import thaumcraft.common.entities.ai.goals.RangedAndMeleeAttackGoal;
+import thaumcraft.common.entities.goals.RangedAndMeleeAttackGoal;
 import thaumcraft.common.entities.monster.boss.EldritchWardenEntity;
 import thaumcraft.common.entities.monster.cultists.CultistEntity;
 import thaumcraft.common.entities.projectile.EldritchOrbEntity;

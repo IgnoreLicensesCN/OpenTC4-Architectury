@@ -11,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 import static thaumcraft.common.entities.ThaumcraftEntities.ThaumcraftEntityTypeInstances.SPECIAL_ITEM;
 
-//Oh if someone even kill everything like this(more than minecraft:item)you should kick their ass.
 //TODO:Render
+//Oh if someone even kill everything like this(more than minecraft:item)you should kick their ass.
 public class SpecialItemEntity extends ItemEntity {
     @Override
     public @NotNull EntityType<?> getType() {

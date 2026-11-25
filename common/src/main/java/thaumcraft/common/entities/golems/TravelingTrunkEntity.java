@@ -37,7 +37,7 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.StayableOwnableEntity;
-import thaumcraft.common.entities.ai.goals.CrossDimensionFollowingOwnerGoal;
+import thaumcraft.common.entities.goals.CrossDimensionFollowingOwnerGoal;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 
 import java.util.EnumSet;

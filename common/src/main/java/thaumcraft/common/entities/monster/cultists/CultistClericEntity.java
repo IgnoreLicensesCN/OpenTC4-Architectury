@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.entities.abstracts.CultistClericLikeRangedAttackMob;
-import thaumcraft.common.entities.ai.goals.CultistClericFocusAltarGoal;
+import thaumcraft.common.entities.goals.CultistClericFocusAltarGoal;
 import thaumcraft.common.items.ThaumcraftItemInstances;
 
 import static com.linearity.opentc4.Consts.CultistClericEntityTagAccessors.IS_RITUALIST;

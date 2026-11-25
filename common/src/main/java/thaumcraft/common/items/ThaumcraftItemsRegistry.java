@@ -43,6 +43,7 @@ import thaumcraft.common.items.equipment.voidequip.*;
 import thaumcraft.common.items.golem.GolemBellItem;
 import thaumcraft.common.items.golem.golems.*;
 import thaumcraft.common.items.golem.golems.advanced.*;
+import thaumcraft.common.items.golem.upgrade.core.*;
 import thaumcraft.common.items.golem.upgrade.decoration.*;
 import thaumcraft.common.items.golem.upgrade.primal.*;
 import thaumcraft.common.items.jars.*;
@@ -1356,6 +1357,66 @@ public class ThaumcraftItemsRegistry {
     public static final RegistrySupplier<GolemVisorItem> SUPPLIER_GOLEM_VISOR = ITEMS.register(
             "golem_visor",
             GolemVisorItem::new
+    );
+
+    public static final RegistrySupplier<ButcherGolemCoreItem> SUPPLIER_BUTCHER_GOLEM_CORE = ITEMS.register(
+            "butcher_golem_core",
+            ButcherGolemCoreItem::new
+    );
+
+    public static final RegistrySupplier<EmptyGolemCoreItem> SUPPLIER_EMPTY_GOLEM_CORE = ITEMS.register(
+            "empty_golem_core",
+            EmptyGolemCoreItem::new
+    );
+
+    public static final RegistrySupplier<EssentiaGolemCoreItem> SUPPLIER_ESSENTIA_GOLEM_CORE = ITEMS.register(
+            "essentia_golem_core",
+            EssentiaGolemCoreItem::new
+    );
+
+    public static final RegistrySupplier<FillGolemCoreItem> SUPPLIER_FILL_GOLEM_CORE = ITEMS.register(
+            "fill_golem_core",
+            FillGolemCoreItem::new
+    );
+
+    public static final RegistrySupplier<FishingGolemCoreItem> SUPPLIER_FISHING_GOLEM_CORE = ITEMS.register(
+            "fishing_golem_core",
+            FishingGolemCoreItem::new
+    );
+
+    public static final RegistrySupplier<GatherGolemCoreItem> SUPPLIER_GATHER_GOLEM_CORE = ITEMS.register(
+            "gather_golem_core",
+            GatherGolemCoreItem::new
+    );
+
+    public static final RegistrySupplier<GuardGolemCoreItem> SUPPLIER_GUARD_GOLEM_CORE = ITEMS.register(
+            "guard_golem_core",
+            GuardGolemCoreItem::new
+    );
+
+    public static final RegistrySupplier<HarvestGolemCoreItem> SUPPLIER_HARVEST_GOLEM_CORE = ITEMS.register(
+            "harvest_golem_core",
+            HarvestGolemCoreItem::new
+    );
+
+    public static final RegistrySupplier<HarvestLogGolemCoreItem> SUPPLIER_HARVEST_LOG_GOLEM_CORE = ITEMS.register(
+            "harvest_log_golem_core",
+            HarvestLogGolemCoreItem::new
+    );
+
+    public static final RegistrySupplier<LiquidGolemCoreItem> SUPPLIER_LIQUID_GOLEM_CORE = ITEMS.register(
+            "liquid_golem_core",
+            LiquidGolemCoreItem::new
+    );
+
+    public static final RegistrySupplier<SortGolemCoreItem> SUPPLIER_SORT_GOLEM_CORE = ITEMS.register(
+            "sort_golem_core",
+            SortGolemCoreItem::new
+    );
+
+    public static final RegistrySupplier<UseGolemCoreItem> SUPPLIER_USE_GOLEM_CORE = ITEMS.register(
+            "use_golem_core",
+            UseGolemCoreItem::new
     );
     public static final Supplier<ItemStack> RANDOM_MANA_BEAN_SUPPLIER = new Supplier<>() {
         private final ThreadLocal<RandomSource> randomSourceThreadLocal = new ThreadLocal<>();

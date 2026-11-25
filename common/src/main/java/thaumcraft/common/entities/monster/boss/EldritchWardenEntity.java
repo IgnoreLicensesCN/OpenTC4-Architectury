@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.warp.WarpInfo;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.ThaumcraftEntities;
-import thaumcraft.common.entities.ai.goals.RangedAndMeleeAttackGoal;
+import thaumcraft.common.entities.goals.RangedAndMeleeAttackGoal;
 import thaumcraft.common.entities.championmod.ChampionModifier;
 import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifiedNamingRuleOwner;
 import thaumcraft.common.entities.monster.cultists.CultistEntity;

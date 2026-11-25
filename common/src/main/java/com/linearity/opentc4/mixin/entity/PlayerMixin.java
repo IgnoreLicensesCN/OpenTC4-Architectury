@@ -1,37 +1,71 @@
 package com.linearity.opentc4.mixin.entity;
 
+import com.linearity.annotations.Modifiable;
 import com.linearity.opentc4.mixinattachments.*;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import thaumcraft.api.warp.WarpInfo;
-import thaumcraft.common.items.abstracts.IFlyingAbilityProviderWearing;
-import thaumcraft.common.items.abstracts.ISwordLikeItem;
 import thaumcraft.api.research.ResearchAndScannedInfo;
+import thaumcraft.api.warp.WarpInfo;
+import thaumcraft.common.items.abstracts.ISwordLikeItem;
 import thaumcraft.common.items.wands.WandCooldownManager;
 import thaumcraft.common.runicshield.RunicShieldHandler;
 import thaumcraft.common.runicshield.RunicShieldInfo;
 
-import static thaumcraft.common.lib.events.EventHandlerEntity.updateSpeedForHasteEnchantment;
+import java.util.*;
+import java.util.function.Supplier;
 
-@Mixin(value = Player.class,priority = 900)
+import static thaumcraft.common.entities.ThaumcraftEntityEvents.playerTickBefore;
+import static thaumcraft.common.entities.ThaumcraftEntityEvents.updateFishingHookForPlayer;
+
+@Mixin(value = Player.class, priority = 900)
 public abstract class PlayerMixin
         implements
         PlayerRunicShieldInfoMixinAccessor,
         PlayerWarpInfoMixinAccessor,
         PlayerResearchAndScannedInfoAccessor,
         PlayerWandCooldownManagerMixinAccessor,
-        ILuckOwnerEntity
-{
+        ILuckOwnerEntity,
+        FishingHookOwner {
+
+    @Shadow
+    @Nullable
+    public FishingHook fishing;
+
+    @Override
+    public void opentc4$onUpdateFishingHookOwning(FishingHook fishingHook) {
+        updateFishingHookForPlayer((Player)(Object) this,fishingHook);
+    }
+
+    @Unique
+    private final Set<Supplier<@Nullable FishingHook>> opentc4$fishingHooks = new IdentityHashMap<Supplier<@Nullable FishingHook>,Boolean>().keySet();
+
+    @Override
+    public @Modifiable @NotNull Set<Supplier<@Nullable FishingHook>> opentc4$getFishingHooks() {
+        if (fishing != null) {
+            opentc4$fishingHooks.add(((FishingHookWeakRefSupplierOwner)fishing).opentc4$getFishingHookWeakRefSupplier());
+        }
+        return opentc4$fishingHooks;
+    }
+
+    @Override
+    public void opentc4$maybeClearFishingHooksOnRemoved() {
+        opentc4$fishingHooks.clear();
+    }
+
     @Shadow
     public abstract float getLuck();
 
@@ -51,6 +85,7 @@ public abstract class PlayerMixin
 
     @Unique
     private RunicShieldInfo opentc4$playerRunicShieldInfo = new RunicShieldInfo();
+
     @Override
     public RunicShieldInfo opentc4$getPlayerRunicShieldInfo() {
         return opentc4$playerRunicShieldInfo;
@@ -73,6 +108,7 @@ public abstract class PlayerMixin
     public void opentc4$setWarpInfo(WarpInfo warpInfo) {
         this.openc4$warpInfo = warpInfo;
     }
+
     @Unique
     private final @NotNull WandCooldownManager openc4$wandCooldownManager = new WandCooldownManager();
 
@@ -86,8 +122,8 @@ public abstract class PlayerMixin
             at = @At("HEAD"),
             argsOnly = true
     )
-    private float opentc4$playerActuallyHurt$modifyDamageWithRunicShield(float damage, DamageSource damageSource){
-        var player = (Player)(Object)this;
+    private float opentc4$playerActuallyHurt$modifyDamageWithRunicShield(float damage, DamageSource damageSource) {
+        var player = (Player) (Object) this;
         return RunicShieldHandler.modifyDamageWithRunicShield(damage, damageSource, player);
     }
 
@@ -111,9 +147,8 @@ public abstract class PlayerMixin
             method = "tick",
             at = @At("HEAD")
     )
-    private void opentc4$playerTick(CallbackInfo ci){
-        var player = (Player)(Object)this;
-        IFlyingAbilityProviderWearing.FlyingAbilityProviderCheck.checkFlyingProviderForPlayer(player);
-        updateSpeedForHasteEnchantment(player);
+    private void opentc4$playerTick(CallbackInfo ci) {
+        var player = (Player) (Object) this;
+        playerTickBefore(player);
     }
 }

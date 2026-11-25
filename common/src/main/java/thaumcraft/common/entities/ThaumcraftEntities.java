@@ -20,7 +20,8 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.levelgen.Heightmap;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.entities.ai.goals.DelayControllableMeleeAttackGoal;
+import thaumcraft.common.entities.goals.DelayControllableMeleeAttackGoal;
+import thaumcraft.common.entities.golems.ThaumcraftFishingHook;
 import thaumcraft.common.entities.golems.TravelingTrunkEntity;
 import thaumcraft.common.entities.golems.typedgolems.*;
 import thaumcraft.common.entities.golems.typedgolems.advanced.*;
@@ -261,6 +262,9 @@ public class ThaumcraftEntities {
         }
         public static EntityType<AdvancedWoodGolemEntity> ADVANCED_WOOD_GOLEM() {
             return Registry.SUPPLIER_ADVANCED_WOOD_GOLEM.get();
+        }
+        public static EntityType<ThaumcraftFishingHook> THAUMCRAFT_FISHING_HOOK() {
+            return Registry.SUPPLIER_THAUMCRAFT_FISHING_HOOK.get();
         }
     }
 
@@ -749,6 +753,16 @@ public class ThaumcraftEntities {
                         .updateInterval(20)
                         .fireImmune()
                         .build("advanced_clay_golem")
+        );
+        public static final RegistrySupplier<EntityType<ThaumcraftFishingHook>> SUPPLIER_THAUMCRAFT_FISHING_HOOK = ENTITIES.register(
+                "thaumcraft_fishing_bobber",
+                () -> EntityType.Builder.<ThaumcraftFishingHook>of(ThaumcraftFishingHook::new, MobCategory.MISC)
+                        .noSave()
+                        .noSummon()
+                        .sized(0.25F, 0.25F)
+                        .clientTrackingRange(4)
+                        .updateInterval(5)
+                        .build("thaumcraft_fishing_bobber")
         );
     }
 

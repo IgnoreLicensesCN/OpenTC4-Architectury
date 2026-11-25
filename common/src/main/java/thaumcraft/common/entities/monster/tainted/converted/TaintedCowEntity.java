@@ -70,12 +70,12 @@ public class TaintedCowEntity extends Cow implements Enemy, ITaintConvertableEnt
     }
 
     @Override
-    public boolean canConvertToTaintedMob() {
+    public boolean opentc4$canConvertToTaintedMob() {
         return false;
     }
 
     @Override
-    public void convertToTaintedMob() {
+    public void opentc4$convertToTaintedMob() {
 
     }
     @Override

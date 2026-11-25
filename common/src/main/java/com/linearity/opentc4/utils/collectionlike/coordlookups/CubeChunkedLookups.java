@@ -8,8 +8,8 @@ import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -46,7 +46,7 @@ public class CubeChunkedLookups<StoreItem> implements CoordLookup<StoreItem> {
         var yKey = compressIntIntoChunk(pos.getY());
         itemsContaining.computeIfAbsent(xzKey, k -> new Int2ObjectOpenHashMap<>())
                 .computeIfAbsent(
-                        yKey, k -> ConcurrentHashMap.newKeySet()
+                        yKey, k -> new HashSet<>()
                 )
                 .add(value);
     }
@@ -89,7 +89,7 @@ public class CubeChunkedLookups<StoreItem> implements CoordLookup<StoreItem> {
     }
 
     protected int compressIntIntoChunk(int toCompress) {
-        return (toCompress >>> chunkSizeBits);
+        return (toCompress >> chunkSizeBits);
     }
 
     private static long packInt(int x, int z) {
@@ -107,7 +107,7 @@ public class CubeChunkedLookups<StoreItem> implements CoordLookup<StoreItem> {
         int centerX = cubeCenterPos.getX();
         int centerY = cubeCenterPos.getY();
         int centerZ = cubeCenterPos.getZ();
-        int xIndexStart = compressIntIntoChunk(centerY - halfLengthOfCube);
+        int xIndexStart = compressIntIntoChunk(centerX - halfLengthOfCube);
         int yIndexStart = compressIntIntoChunk(centerY - halfLengthOfCube);
         int zIndexStart = compressIntIntoChunk(centerZ - halfLengthOfCube);
         int xIndexEnd = compressIntIntoChunk(centerX + halfLengthOfCube);
@@ -139,7 +139,7 @@ public class CubeChunkedLookups<StoreItem> implements CoordLookup<StoreItem> {
             int centerX = cubeCenterPos.getX();
             int centerY = cubeCenterPos.getY();
             int centerZ = cubeCenterPos.getZ();
-            xIndexStart = lookups.compressIntIntoChunk(centerY - halfLengthOfCube);
+            xIndexStart = lookups.compressIntIntoChunk(centerX - halfLengthOfCube);
             int yIndexStart = lookups.compressIntIntoChunk(centerY - halfLengthOfCube);
             zIndexStart = lookups.compressIntIntoChunk(centerZ - halfLengthOfCube);
             xIndexEnd = lookups.compressIntIntoChunk(centerX + halfLengthOfCube);
@@ -205,7 +205,7 @@ public class CubeChunkedLookups<StoreItem> implements CoordLookup<StoreItem> {
         int centerX = cubeCenterPos.getX();
         int centerY = cubeCenterPos.getY();
         int centerZ = cubeCenterPos.getZ();
-        int xIndexStart = compressIntIntoChunk(centerY - rangeManhattan);
+        int xIndexStart = compressIntIntoChunk(centerX - rangeManhattan);
         int yIndexStart = compressIntIntoChunk(centerY - rangeManhattan);
         int zIndexStart = compressIntIntoChunk(centerZ - rangeManhattan);
         int xIndexEnd = compressIntIntoChunk(centerX + rangeManhattan);

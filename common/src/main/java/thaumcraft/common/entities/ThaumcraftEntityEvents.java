@@ -1,6 +1,9 @@
 package thaumcraft.common.entities;
 
 import com.linearity.opentc4.mixin.accessors.MobAccessor;
+import com.linearity.opentc4.mixinattachments.AvoidEntityMemoryLeakLevel;
+import com.linearity.opentc4.mixinattachments.FishingHookOwner;
+import com.linearity.opentc4.mixinattachments.FishingHookWeakRefSupplierOwner;
 import com.linearity.opentc4.mixinattachments.IClearGoalOnRemovedEntity;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import net.minecraft.ChatFormatting;
@@ -10,6 +13,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -27,6 +32,7 @@ import thaumcraft.common.entities.championmod.abstracts.modifier.ITickableChampi
 import thaumcraft.common.entities.championmod.impl.WardedChampionModifier;
 import thaumcraft.common.entities.golems.BaseGolemEntity;
 import thaumcraft.common.entities.monster.tainted.ThaumicSlimeEntity;
+import thaumcraft.common.items.abstracts.IFlyingAbilityProviderWearing;
 import thaumcraft.common.items.abstracts.ISpecialDamageCalculationEquipmentItem;
 import thaumcraft.common.items.abstracts.armorcomponents.IAttackOthersListenerArmor;
 import thaumcraft.common.items.abstracts.armorcomponents.IBeingAttackedListenerArmor;
@@ -44,18 +50,44 @@ import static thaumcraft.api.damage.type.DamageTypeCategories.InvulnerableTime.I
 import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.ELDRITCH;
 import static thaumcraft.common.items.ThaumcraftItemInstances.CRYSTAL_ESSENCE;
 import static thaumcraft.common.items.ThaumcraftItems.ItemTags.UNNATURAL_HUNGER_NEEDED;
+import static thaumcraft.common.lib.events.EventHandlerEntity.updateSpeedForHasteEnchantment;
 import static thaumcraft.common.lib.utils.EntityUtils.ThaumcraftAttributeCategoryInstances.*;
 
 public class ThaumcraftEntityEvents {
 
+    public static void playerTickBefore(Player player) {
+        IFlyingAbilityProviderWearing.FlyingAbilityProviderCheck.checkFlyingProviderForPlayer(player);
+        updateSpeedForHasteEnchantment(player);
+        updatePlayerFishingHooks(player);
+    }
+
+    public static void updatePlayerFishingHooks(Player player) {
+        var suppliers = ((FishingHookOwner) player).opentc4$getFishingHooks();
+        suppliers.removeIf(s -> s.get() == null);
+        if (player.fishing != null) {
+            suppliers.add(((FishingHookWeakRefSupplierOwner)player.fishing).opentc4$getFishingHookWeakRefSupplier());
+        }
+    }
+
+    public static void updateFishingHookForPlayer(Player player,FishingHook hook) {
+        player.fishing = hook;
+    }
+
     public static void onEntityRemoved(Entity self, Entity.RemovalReason removalReason){
         convertTaintMobOnRemoved(self,removalReason);
-        avoidMemoryLeakOnRemoved(self);
+        scheduleAvoidMemoryLeakOnRemoved(self);
     }
     public static void onEntityUnsetRemoved(Entity self){
         rebuildGoal(self);
     }
+
+    public static void scheduleAvoidMemoryLeakOnRemoved(Entity self){
+        if (self.level() instanceof AvoidEntityMemoryLeakLevel level){
+            level.opentc4$scheduleClearNextTick(self);
+        }
+    }
     public static void avoidMemoryLeakOnRemoved(Entity self){
+
         if (self instanceof IClearGoalOnRemovedEntity){
             if (self instanceof Mob mob){
                 ((MobAccessor)mob).getGoalSelector().removeAllGoals(_whatever -> true);
@@ -67,6 +99,12 @@ public class ThaumcraftEntityEvents {
             if (currentTarget == null || currentTarget.isRemoved()){
                 mob.setTarget(null);
             }
+        }
+        if (self instanceof PathfinderMob pathFinder){
+            pathFinder.getNavigation().stop();
+        }
+        if (self instanceof FishingHookOwner fishingHookOwner){
+            fishingHookOwner.opentc4$maybeClearFishingHooksOnRemoved();
         }
     }
     public static void rebuildGoal(Entity self){
@@ -81,8 +119,8 @@ public class ThaumcraftEntityEvents {
         if (self instanceof LivingEntity){
             if (removalReason == Entity.RemovalReason.KILLED){
                 var level = self.level();
-                if (self instanceof ITaintConvertableEntity taintConvertable && taintConvertable.canConvertToTaintedMob() && !level.isClientSide) {
-                    taintConvertable.convertToTaintedMob();
+                if (self instanceof ITaintConvertableEntity taintConvertable && taintConvertable.opentc4$canConvertToTaintedMob() && !level.isClientSide) {
+                    taintConvertable.opentc4$convertToTaintedMob();
                 } else {
                     if (!level.isClientSide){
                         var entity = new ThaumicSlimeEntity(level);

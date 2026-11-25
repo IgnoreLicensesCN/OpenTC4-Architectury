@@ -5,6 +5,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
@@ -19,6 +20,10 @@ public interface FishingHookAccessor {
     int getNibble();
     @Accessor("luck")
     int getLuck();
+    @Accessor("luck")
+    void setLuck(int luck);
+    @Accessor("lureSpeed")
+    void setLureSpeed(int lureSpeed);
     @Accessor("syncronizedRandom")
     RandomSource getSyncronizedRandom();
     @Accessor("life")
@@ -45,4 +50,6 @@ public interface FishingHookAccessor {
     boolean getBiting();
     @Invoker("catchingFish")
     void catchingFish(BlockPos blockPos);
+    @Invoker("retrieve")
+    int retrieve(ItemStack itemStack);
 }

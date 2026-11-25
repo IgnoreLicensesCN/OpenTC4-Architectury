@@ -69,12 +69,12 @@ public class TaintedSpiderEntity extends Spider implements ITaintConvertableEnti
     }
 
     @Override
-    public boolean canConvertToTaintedMob() {
+    public boolean opentc4$canConvertToTaintedMob() {
         return false;
     }
 
     @Override
-    public void convertToTaintedMob() {
+    public void opentc4$convertToTaintedMob() {
 
     }
     @Override

@@ -1,9 +1,12 @@
 package thaumcraft.common.entities.golems;
 
 import com.google.common.collect.Sets;
+import com.linearity.annotations.Modifiable;
 import com.linearity.annotations.RecommendedLogicalSide;
 import com.linearity.opentc4.datautils.EntityDataSerializerAdditions;
 import com.linearity.opentc4.mixinattachments.ExtendedItemStack;
+import com.linearity.opentc4.mixinattachments.FishingHookOwner;
+import com.linearity.opentc4.mixinattachments.FishingHookWeakRefSupplierOwner;
 import com.linearity.opentc4.mixinattachments.ILuckOwnerEntity;
 import com.linearity.opentc4.mixinattachments.overrides.entity.mob.InteractionOverrideMob;
 import com.linearity.opentc4.mixinattachments.client.cliententity.BaseGolemEntityClientAccessor;
@@ -39,12 +42,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.crafted.GolemFetterBlock;
 import thaumcraft.common.entities.golems.configuration.GolemConfigurationKey;
@@ -64,6 +69,7 @@ import thaumcraft.common.lib.resourcelocations.DecorationOccupiedTypeResourceLoc
 
 import java.util.*;
 import java.util.function.BiPredicate;
+import java.util.function.Supplier;
 
 import static com.linearity.opentc4.Consts.BaseGolemEntityTagAccessors.*;
 import static com.linearity.opentc4.utils.compoundtag.accessors.mc.BlockPosAccessor.NULL_POS_TO_WRITE;
@@ -75,7 +81,8 @@ public abstract class BaseGolemEntity
         implements
         RangedAttackMob,
         InteractionOverrideMob,
-        ILuckOwnerEntity {
+        ILuckOwnerEntity,
+        FishingHookOwner {
     public static final UUID SPEED_MODOFIER_UUID = UUID.fromString("6b9a6842-f707-498a-8a58-f0c2fa3d88f4");
     public AttributeModifier getSpeedModifierAttribute() {
         return new AttributeModifier(SPEED_MODOFIER_UUID,
@@ -182,6 +189,7 @@ public abstract class BaseGolemEntity
     @Override
     public void tick() {
         super.tick();
+        fishingHooks.removeIf(s -> s.get() == null);
         var level = level();
         if (!level.isClientSide) {
             checkRegen(level);
@@ -920,5 +928,20 @@ public abstract class BaseGolemEntity
 
     public float getLuck() {
         return (float)this.getAttributeValue(Attributes.LUCK);
+    }
+
+
+    public void opentc4$onUpdateFishingHookOwning(FishingHook fishingHook){
+        var supplier = ((FishingHookWeakRefSupplierOwner)fishingHook).opentc4$getFishingHookWeakRefSupplier();
+        fishingHooks.add(supplier);
+    };
+    protected Set<Supplier<@Nullable FishingHook>> fishingHooks = new IdentityHashMap<Supplier<@Nullable FishingHook>,Boolean>().keySet();
+    @Modifiable
+    public @NotNull Set<Supplier<@Nullable FishingHook>> opentc4$getFishingHooks() {
+        fishingHooks.removeIf(s -> s.get() == null);
+        return fishingHooks;
+    }
+    public void opentc4$maybeClearFishingHooksOnRemoved(){
+        fishingHooks.clear();
     }
 }

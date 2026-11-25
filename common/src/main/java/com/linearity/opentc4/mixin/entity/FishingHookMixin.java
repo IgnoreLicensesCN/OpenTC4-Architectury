@@ -1,10 +1,8 @@
 package com.linearity.opentc4.mixin.entity;
 
 import com.linearity.opentc4.mixinattachments.FishingHookMixinAccessor;
-import com.linearity.opentc4.mixinattachments.overrides.entity.fishinghook.FishingHookRecreateFromPacketOverride;
-import com.linearity.opentc4.mixinattachments.overrides.entity.fishinghook.FishingHookRetrieveOverride;
-import com.linearity.opentc4.mixinattachments.overrides.entity.fishinghook.FishingHookShouldStopFishingOverride;
-import com.linearity.opentc4.mixinattachments.overrides.entity.fishinghook.FishingHookTickOverride;
+import com.linearity.opentc4.mixinattachments.FishingHookWeakRefSupplierOwner;
+import com.linearity.opentc4.mixinattachments.overrides.entity.fishinghook.*;
 import com.linearity.opentc4.mixinattachments.supercallproviders.entity.FishingHookSuperAccessor;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -19,8 +17,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-@Mixin(value = FishingHook.class,priority = 1<<30)
-public abstract class FishingHookMixin extends Entity implements FishingHookSuperAccessor, FishingHookMixinAccessor {
+@Mixin(value = FishingHook.class,priority = Integer.MIN_VALUE/2)
+public abstract class FishingHookMixin extends Entity implements FishingHookSuperAccessor, FishingHookMixinAccessor, FishingHookWeakRefSupplierOwner {
+
+    @Unique
+    private final FishingHookWeakRefSupplier opentc4$selfSupplier = new FishingHookWeakRefSupplier((FishingHook)(Object) this);
+    @Override
+    public FishingHookWeakRefSupplier opentc4$getFishingHookWeakRefSupplier() {
+        return opentc4$selfSupplier;
+    }
 
     private FishingHookMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -63,6 +68,17 @@ public abstract class FishingHookMixin extends Entity implements FishingHookSupe
     }
 
     @WrapMethod(
+            method = "updateOwnerInfo"
+    )
+    private void opentc4$updateOwnerInfo(FishingHook fishingHook, Operation<Void> original) {
+        if (this instanceof FishingHookUpdateOwnerInfoOverride updateOwnerInfoOverride) {
+            updateOwnerInfoOverride.opentc4$fishingHook$updateOwnerInfo(original);
+            return;
+        }
+        original.call(fishingHook);
+    }
+
+    @WrapMethod(
             method = "recreateFromPacket"
     )
     public void opentc4$recreateFromPacket(ClientboundAddEntityPacket packet, Operation<Void> original){
@@ -99,4 +115,5 @@ public abstract class FishingHookMixin extends Entity implements FishingHookSupe
         }
         this.currentState = Enum.valueOf((Class) opentc4$fishHookStateEnumClass,currentState.name());
     }
+
 }

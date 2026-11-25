@@ -15,6 +15,7 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 
+//TODO:[maybe wont finished]clean up with this messy(if someone asks for their needed i may go faster on this part?)
 @InterfaceShouldAttachTo(FishingHook.class)
 public interface FishingHookTickOverride {
     default void opentc4$fishingHook$tick(Operation<Void> original) {

@@ -1,7 +1,9 @@
 package com.linearity.opentc4.mixin;
 
+import com.linearity.opentc4.mixinattachments.AvoidEntityMemoryLeakLevel;
 import com.linearity.opentc4.mixinattachments.CoordLookupOwnerLevel;
 import com.linearity.opentc4.utils.collectionlike.coordlookups.CoordLookup;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -11,11 +13,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Mixin(Level.class)
-public class LevelMixin implements CoordLookupOwnerLevel {
+public class LevelMixin implements CoordLookupOwnerLevel{
+
     @Unique
     public Map<CoordLookupTypeKey<?>, Set<CoordLookup<?>>> opentc4$coordLookups = new ConcurrentHashMap<>();
 

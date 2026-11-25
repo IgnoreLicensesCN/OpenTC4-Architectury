@@ -1,6 +1,6 @@
 package thaumcraft.common.entities.abstracts;
 
 public interface ITaintConvertableEntity {
-    boolean canConvertToTaintedMob();
-    void convertToTaintedMob();
+    boolean opentc4$canConvertToTaintedMob();
+    void opentc4$convertToTaintedMob();
 }

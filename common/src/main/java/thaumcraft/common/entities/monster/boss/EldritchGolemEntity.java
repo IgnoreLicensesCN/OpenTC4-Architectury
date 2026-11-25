@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.ThaumcraftEntities;
-import thaumcraft.common.entities.ai.goals.ZombieLikeAttackGoal;
+import thaumcraft.common.entities.goals.ZombieLikeAttackGoal;
 import thaumcraft.common.entities.championmod.ChampionModifier;
 import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifiedNamingRuleOwner;
 import thaumcraft.common.entities.projectile.golemorb.GolemOrbEntity;
