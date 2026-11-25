@@ -263,6 +263,15 @@ block_with_item_names = [
     ['item.ItemGolemPlacer.6.name','iron_golem'],
     ['item.ItemGolemPlacer.7.name','thaumium_golem'],
 
+    [['%s%s','tc.adv','item.ItemGolemPlacer.0.name'],'advanced_straw_golem'],
+    [['%s%s','tc.adv','item.ItemGolemPlacer.1.name'],'advanced_wood_golem'],
+    [['%s%s','tc.adv','item.ItemGolemPlacer.2.name'],'advanced_tallow_golem'],
+    [['%s%s','tc.adv','item.ItemGolemPlacer.3.name'],'advanced_clay_golem'],
+    [['%s%s','tc.adv','item.ItemGolemPlacer.4.name'],'advanced_flesh_golem'],
+    [['%s%s','tc.adv','item.ItemGolemPlacer.5.name'],'advanced_stone_golem'],
+    [['%s%s','tc.adv','item.ItemGolemPlacer.6.name'],'advanced_iron_golem'],
+    [['%s%s','tc.adv','item.ItemGolemPlacer.7.name'],'advanced_thaumium_golem'],
+
     # ['tc.research_name.RUNICARMOR',['tc.research_name.RUNICARMOR','runic_shield.thaumcraft.runic_armor']],
     # ['tc.research_name.RUNICCHARGED',['tc.research_name.RUNICCHARGED','runic_shield.thaumcraft.runic_charged']],
     # ['tc.research_name.RUNICEMERGENCY',['tc.research_name.RUNICEMERGENCY','runic_shield.thaumcraft.runic_emergency']],
@@ -298,6 +307,8 @@ ruleset:list[typing.Callable[[str], bool]]= [
     lambda s: s.endswith("_wand_cap"),
     lambda s: s.endswith("_wand_rod"),
     lambda s: s.endswith("_staff_rod"),
+    lambda s: s.endswith("_golem"),
+    lambda s: s.endswith("_golem_core"),
 ]
 
 def special_key_sort_weight(parts:list[str]):
