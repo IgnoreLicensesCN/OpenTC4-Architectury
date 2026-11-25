@@ -5,7 +5,9 @@ import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateRunicCapacityS2C;
 import thaumcraft.common.lib.network.playerdata.updatedata.PacketUpdateRunicChargeS2C;
@@ -13,6 +15,7 @@ import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 //put into Player
@@ -124,6 +127,12 @@ public class RunicShieldInfo {
             return owner.getRunicShieldInfo();
         }
         return null;
+    }
+    public static @NotNull RunicShieldInfo getFromLiving(Player player) {
+        if (player instanceof IRunicShieldInfoOwnerLivingEntity owner) {
+            return Objects.requireNonNull(owner.getRunicShieldInfo());
+        }
+        throw new IllegalArgumentException("player should have runic shield info");
     }
 
     public static void setForLiving(LivingEntity living, RunicShieldInfo info) {

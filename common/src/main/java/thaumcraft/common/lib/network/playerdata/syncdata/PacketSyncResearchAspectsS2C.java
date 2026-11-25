@@ -12,6 +12,8 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.api.research.ResearchAndScannedInfo;
 
+import static thaumcraft.common.lib.network.ByteBufUtil.writeAspect;
+
 public class PacketSyncResearchAspectsS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":sync_aspects";
     public static MessageType messageType;
@@ -26,7 +28,7 @@ public class PacketSyncResearchAspectsS2C extends ThaumcraftBaseS2CMessage {
     public void write(FriendlyByteBuf buf) {
         buf.writeInt(data.size());
         data.forEach((aspect,amount) -> {
-            buf.writeResourceLocation(aspect.aspectKey);
+            writeAspect(buf,aspect);
             buf.writeInt(amount);
         });
     }

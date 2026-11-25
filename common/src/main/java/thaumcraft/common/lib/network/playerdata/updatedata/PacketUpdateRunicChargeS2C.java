@@ -2,15 +2,16 @@ package thaumcraft.common.lib.network.playerdata.updatedata;
 
 import dev.architectury.networking.NetworkManager;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
 import dev.architectury.networking.simple.MessageType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.lib.resourcelocations.RunicShieldTypeResourceLocation;
 import thaumcraft.common.runicshield.RunicShieldInfo;
 import thaumcraft.common.runicshield.shieldtypes.AbstractRunicShieldType;
+
+import static thaumcraft.common.lib.network.ByteBufUtil.readRunicShieldsMap;
+import static thaumcraft.common.lib.network.ByteBufUtil.writeRunicShieldsMap;
 
 public class PacketUpdateRunicChargeS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":runic_charge";
@@ -23,25 +24,11 @@ public class PacketUpdateRunicChargeS2C extends ThaumcraftBaseS2CMessage {
     }
 
     public static void encode(PacketUpdateRunicChargeS2C msg, FriendlyByteBuf buf) {
-        buf.writeInt(msg.shieldCharged.size());
-        msg.shieldCharged.forEach((key, value) -> {
-            buf.writeResourceLocation(key.id);
-            buf.writeInt(value);
-        });
+        writeRunicShieldsMap(buf, msg.shieldCharged);
     }
 
     public static PacketUpdateRunicChargeS2C decode(FriendlyByteBuf buf) {
-        int size = buf.readInt();
-        Object2IntMap<AbstractRunicShieldType<?>> decoded = new Object2IntOpenHashMap<>(size);
-        for (int i = 0; i < size; i++) {
-            var key = buf.readResourceLocation();
-            var value = buf.readInt();
-            var type = AbstractRunicShieldType.RUNIC_SHIELD_TYPES_VIEW.get(RunicShieldTypeResourceLocation.of(key));
-            if (type != null) {
-                decoded.put(type,value);
-            }
-        }
-        return new PacketUpdateRunicChargeS2C(decoded);
+        return new PacketUpdateRunicChargeS2C(readRunicShieldsMap(buf));
     }
 
     @Override

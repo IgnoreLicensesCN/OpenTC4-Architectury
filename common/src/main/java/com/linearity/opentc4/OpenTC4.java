@@ -24,6 +24,7 @@ import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.entities.ThaumcraftEntities;
 import thaumcraft.common.items.ThaumcraftItemsRegistry;
 import thaumcraft.common.lib.network.gamedata.PacketRequestSyncItemAspectsC2S;
+import thaumcraft.common.lib.network.gamedata.PacketSyncPaletteS2C;
 import thaumcraft.common.lib.utils.CropUtils;
 import thaumcraft.common.lib.world.HolderCache;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
@@ -40,6 +41,8 @@ import thaumcraft.common.lib.world.registries.ThaumcraftWorldGenConfiguredFeatur
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.runicshield.ThaumcraftRunicShieldTypes;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+
+import static dev.architectury.event.events.common.PlayerEvent.PLAYER_JOIN;
 
 public final class OpenTC4 {
     //changed:throw duplicate -> log error(maybe override by kjs so i will need to provide a way)
@@ -114,6 +117,8 @@ public final class OpenTC4 {
 
         CropUtils.init();
         GolemEssentiaJarSearchingHelper.init();
+
+        PLAYER_JOIN.register(player -> new PacketSyncPaletteS2C().sendTo(player));
     }
 
     public static void onClientStarted() {

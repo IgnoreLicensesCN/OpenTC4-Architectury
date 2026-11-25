@@ -1,6 +1,9 @@
 package thaumcraft.api.aspects;
 
 import dev.architectury.registry.registries.RegistrySupplier;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -15,8 +18,10 @@ import java.util.*;
 
 public class Aspects {
     public static final LinkedHashMap<AspectResourceLocation, Aspect> ALL_ASPECTS = new LinkedHashMap<>();
-    static final Object2IntMap<AspectResourceLocation> ASPECT_PALETTE = new Object2IntOpenHashMap<>();
-    public static final Object2IntMap<AspectResourceLocation> ASPECT_PALETTE_VIEW = Object2IntMaps.unmodifiable(ASPECT_PALETTE);
+    static final Object2IntMap<AspectResourceLocation> ASPECT_WRITE_PALETTE = new Object2IntOpenHashMap<>();
+    public static final Object2IntMap<AspectResourceLocation> ASPECT_WRITE_PALETTE_VIEW = Object2IntMaps.unmodifiable(ASPECT_WRITE_PALETTE);
+    static final Int2ObjectMap<AspectResourceLocation> ASPECT_READ_PALETTE = new Int2ObjectOpenHashMap<>();
+    public static final Int2ObjectMap<AspectResourceLocation> ASPECT_READ_PALETTE_VIEW = Int2ObjectMaps.unmodifiable(ASPECT_READ_PALETTE);
     public static final LinkedHashMap<AspectResourceLocation, PrimalAspect> PRIMAL_ASPECTS = new LinkedHashMap<>();
     public static final List<PrimalAspect> PRIMAL_ASPECT_LIST = new ArrayList<>(6);
     public static final LinkedHashMap<AspectResourceLocation, CompoundAspect> COMPOUND_ASPECTS = new LinkedHashMap<>();

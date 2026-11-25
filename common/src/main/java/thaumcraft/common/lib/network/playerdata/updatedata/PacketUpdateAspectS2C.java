@@ -1,50 +1,43 @@
 package thaumcraft.common.lib.network.playerdata.updatedata;
 
-import com.linearity.opentc4.OpenTC4;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.networking.simple.MessageType;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.client.lib.PlayerNotifications;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.network.ThaumcraftBaseS2CMessage;
-import thaumcraft.common.lib.resourcelocations.AspectResourceLocation;
 import thaumcraft.api.research.ResearchAndScannedInfo;
 
+import static thaumcraft.common.lib.network.ByteBufUtil.readAspect;
+import static thaumcraft.common.lib.network.ByteBufUtil.writeAspect;
+
+@RequiredArgsConstructor
 public class PacketUpdateAspectS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":aspect_pool";
     public static MessageType messageType;
 
-    private final AspectResourceLocation key;
+    private final Aspect key;
     private final int amountChanged;
     private final int total;
     private static long lastSound = 0L;
     public static final long SOUND_DELAY = 100L;
 
-    public PacketUpdateAspectS2C(Aspect key, int amountChanged, int total){
-        this(key.getAspectKey(), amountChanged, total);
-    }
-    public PacketUpdateAspectS2C(AspectResourceLocation key, int amountChanged, int total) {
-        this.key = key;
-        this.amountChanged = amountChanged;
-        this.total = total;
-    }
-
     public static void encode(PacketUpdateAspectS2C msg, FriendlyByteBuf buf) {
-        buf.writeResourceLocation(msg.key);
+        writeAspect(buf, msg.key);
         buf.writeInt(msg.amountChanged);
         buf.writeInt(msg.total);
     }
 
     public static PacketUpdateAspectS2C decode(FriendlyByteBuf buf) {
-        ResourceLocation key = buf.readResourceLocation();
+        var key = readAspect(buf);
         int amount = buf.readInt();
         int total = buf.readInt();
-        return new PacketUpdateAspectS2C(AspectResourceLocation.of(key), amount, total);
+        return new PacketUpdateAspectS2C(key, amount, total);
     }
 
     @Override
@@ -59,18 +52,14 @@ public class PacketUpdateAspectS2C extends ThaumcraftBaseS2CMessage {
 
     @Override
     public void handle(NetworkManager.PacketContext context) {
-        Aspect aspect = Aspect.getAspect(this.key);
+        Aspect aspect = this.key;
         var player = Minecraft.getInstance().player;
         if (aspect != null && player != null) {
             var info = ResearchAndScannedInfo.getFromLiving(player);
-            if (info != null){
-                info.setResearchAspect(
-                        aspect,
-                        this.total
-                );
-            }else {
-                OpenTC4.LOGGER.error("Couldn't find ResearchAndScannedInfo for " + player.getGameProfile().getName() + " " + player.getUUID() + " " + player.getClass());
-            }
+            info.setResearchAspect(
+                    aspect,
+                    this.total
+            );
 
             if (this.amountChanged > 0) {
                 var text = Component.translatable(

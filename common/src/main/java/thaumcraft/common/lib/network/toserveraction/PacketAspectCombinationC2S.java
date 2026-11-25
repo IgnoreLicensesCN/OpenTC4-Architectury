@@ -19,6 +19,8 @@ import thaumcraft.api.research.ResearchAndScannedInfo;
 import thaumcraft.common.tiles.abstracts.IResearchAspectProviderBlockEntity;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+import static thaumcraft.common.lib.network.ByteBufUtil.readAspect;
+import static thaumcraft.common.lib.network.ByteBufUtil.writeAspect;
 
 public class PacketAspectCombinationC2S extends BaseC2SMessage {
    public static final String ID = Thaumcraft.MOD_ID + ":aspect_combination";
@@ -49,16 +51,16 @@ public class PacketAspectCombinationC2S extends BaseC2SMessage {
    @Override
    public void write(FriendlyByteBuf buf) {
       buf.writeBlockPos(tablePos);
-      buf.writeResourceLocation(aspect1.getAspectKey());
-      buf.writeResourceLocation(aspect2.getAspectKey());
+      writeAspect(buf,aspect1);
+      writeAspect(buf,aspect2);
       buf.writeBoolean(canUseProviderAspect1);
       buf.writeBoolean(canUseProviderAspect2);
    }
 
    public static PacketAspectCombinationC2S decode(FriendlyByteBuf buf) {
       var tablePos = buf.readBlockPos();
-      Aspect aspect1 = Aspect.getAspect(AspectResourceLocation.ofExisting(buf.readResourceLocation()));
-      Aspect aspect2 = Aspect.getAspect(AspectResourceLocation.ofExisting(buf.readResourceLocation()));
+      Aspect aspect1 = readAspect(buf);
+      Aspect aspect2 = readAspect(buf);
       boolean ab1 = buf.readBoolean();
       boolean ab2 = buf.readBoolean();
       return new PacketAspectCombinationC2S(tablePos,aspect1,aspect2,ab1,ab2);

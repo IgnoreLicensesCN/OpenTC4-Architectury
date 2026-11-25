@@ -7,6 +7,7 @@ import thaumcraft.common.lib.network.fx.*;
 import thaumcraft.common.lib.network.gamedata.PacketAddItemAspectsS2C;
 import thaumcraft.common.lib.network.gamedata.PacketRequestSyncItemAspectsC2S;
 import thaumcraft.common.lib.network.gamedata.PacketSyncItemAspectsS2C;
+import thaumcraft.common.lib.network.gamedata.PacketSyncPaletteS2C;
 import thaumcraft.common.lib.network.misc.*;
 import thaumcraft.common.lib.network.playerdata.updatedata.*;
 import thaumcraft.common.lib.network.toserveraction.*;
@@ -80,6 +81,8 @@ public class PacketHandler {
         PacketAddItemAspectsS2C.messageType = INSTANCE.registerS2C(PacketAddItemAspectsS2C.ID, PacketAddItemAspectsS2C::decode);
         PacketRequestSyncItemAspectsC2S.messageType = INSTANCE.registerC2S(PacketRequestSyncItemAspectsC2S.ID, PacketRequestSyncItemAspectsC2S::decode);
         PacketSetGolemConfigC2S.messageType = INSTANCE.registerC2S(PacketSetGolemConfigC2S.ID, PacketSetGolemConfigC2S::decode);
+
+        PacketSyncPaletteS2C.messageType = INSTANCE.registerS2C(PacketSyncPaletteS2C.ID, PacketSyncPaletteS2C::decode);
 
 //        int idx = 0;
 //      INSTANCE.registerMessage(PacketBiomeChange.class, PacketBiomeChange.class, idx++, Side.CLIENT);

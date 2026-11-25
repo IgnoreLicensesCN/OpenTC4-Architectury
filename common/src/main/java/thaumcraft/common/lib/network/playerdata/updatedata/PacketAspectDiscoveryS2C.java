@@ -15,6 +15,7 @@ import thaumcraft.api.research.ResearchAndScannedInfo;
 
 import static thaumcraft.api.research.client.ThaumcraftResearchCategories.BASICS;
 import static thaumcraft.api.research.ThaumcraftResearches.ASPECTS;
+import static thaumcraft.common.lib.network.ByteBufUtil.writeAspect;
 
 public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
     public static final String ID = Thaumcraft.MOD_ID + ":aspect_discovery";
@@ -28,7 +29,7 @@ public class PacketAspectDiscoveryS2C extends ThaumcraftBaseS2CMessage {
 
     @Override
     public void write(FriendlyByteBuf buf) {
-        buf.writeResourceLocation(aspect.aspectKey);
+        writeAspect(buf,aspect);
     }
 
     public static PacketAspectDiscoveryS2C decode(FriendlyByteBuf buf) {

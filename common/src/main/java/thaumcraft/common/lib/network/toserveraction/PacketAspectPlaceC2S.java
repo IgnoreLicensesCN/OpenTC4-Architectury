@@ -16,6 +16,7 @@ import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.tiles.abstracts.IResearchAspectPlaceableBlockEntity;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
+import static thaumcraft.common.lib.network.ByteBufUtil.writeAspect;
 
 //ResearchTableBlockEntity only packet
 public class PacketAspectPlaceC2S extends BaseC2SMessage {
@@ -30,7 +31,7 @@ public class PacketAspectPlaceC2S extends BaseC2SMessage {
    @Override
    public void write(FriendlyByteBuf buf) {
       buf.writeBlockPos(placeAspectToPos);
-      buf.writeResourceLocation(aspect.aspectKey);
+      writeAspect(buf,aspect);
       buf.writeByte(q);
       buf.writeByte(r);
    }

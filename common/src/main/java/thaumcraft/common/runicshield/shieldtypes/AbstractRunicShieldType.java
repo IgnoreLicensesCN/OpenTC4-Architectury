@@ -28,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static thaumcraft.api.damage.ThaumcraftDamageSources.Tags.BYPASS_RUNIC_SHIELD;
 import static thaumcraft.api.listeners.wandconsumption.ThaumcraftWandConsumptionTypes.CONSUMPTION_RECHARGE_RUNIC_SHIELD;
+import static thaumcraft.common.runicshield.ThaumcraftRunicShieldTypes.*;
 
 //TODO:[maybe wont finished] Attribute to calculate but maybe not so fine?maybe we dont need this kind
 public abstract class AbstractRunicShieldType<AdditionalInfoClass>
@@ -37,8 +38,10 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
     private static final Map<RunicShieldTypeResourceLocation, AbstractRunicShieldType<?>> RUNIC_SHIELD_TYPES = new ConcurrentHashMap<>();
     public static final @UnmodifiableView Map<RunicShieldTypeResourceLocation, AbstractRunicShieldType<?>> RUNIC_SHIELD_TYPES_VIEW
             = Collections.unmodifiableMap(RUNIC_SHIELD_TYPES);
+    private static int TOTAL_HASH = 0;
     public final RunicShieldTypeResourceLocation id;
     public final int priority;
+    public final int hash;
 
     public AbstractRunicShieldType(RunicShieldTypeResourceLocation shieldTypeResourceLocation, int priority) {
         if (!RUNIC_SHIELD_TYPES.containsKey(shieldTypeResourceLocation)) {
@@ -48,6 +51,11 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
         }
         this.id = shieldTypeResourceLocation;
         this.priority = priority;
+        this.hash = TOTAL_HASH;
+        TOTAL_HASH += 1;
+        RUNIC_SHIELD_WRITE_PALETTE.put(id,hash);
+        RUNIC_SHIELD_READ_PALETTE.put(hash,id);
+        RUNIC_SHIELD_TYPES.put(id,this);
     }
 
     private static final @Unmodifiable CentiVisList<Aspect> rechargeCost = UnmodifiableCentiVisList.of(
@@ -197,5 +205,10 @@ public abstract class AbstractRunicShieldType<AdditionalInfoClass>
             shieldName = Component.translatable("runic_shield.thaumcraft.runic_armor").withStyle(ChatFormatting.GOLD);
         }
         return shieldName;
+    }
+
+    @Override
+    public int hashCode() {
+        return hash;
     }
 }
