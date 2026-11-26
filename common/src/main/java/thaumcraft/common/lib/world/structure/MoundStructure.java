@@ -33,7 +33,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.config.ConfigBlocks;
 
 import java.util.Optional;
 import java.util.Set;
@@ -43,6 +42,7 @@ import static thaumcraft.api.listeners.worldgen.node.NodeGenerationManager.creat
 import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.CRATE_LOOT;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.URN_LOOT;
 import static thaumcraft.common.blocks.crafted.loot.DefaultAbstractLootBlock.DEFAULT_RARITY_PROPERTY;
+import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.ThaumcraftStructureTypeInstances.MOUND_STRUCTURE_PIECE;
 import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.ThaumcraftStructureTypeInstances.MOUND_STRUCTURE_TYPE;
 import static thaumcraft.common.lib.world.structure.StructureUtils.randomSourceFromChunkPosAndSeed;
 
@@ -183,20 +183,14 @@ public class MoundStructure extends Structure {
 
     public static class MoundStructurePiece extends StructurePiece {
 
-        public static final StructurePieceType TYPE = register("mound_piece", MoundStructurePiece::new);
 
         public MoundStructurePiece(StructurePieceSerializationContext structurePieceSerializationContext, CompoundTag tag) {
-            super(TYPE, tag);
-        }
-
-        private static StructurePieceType register(String id, StructurePieceType type) {
-            return Registry.register(
-                    BuiltInRegistries.STRUCTURE_PIECE, new ResourceLocation(Thaumcraft.MOD_ID, id), type);
+            super(MOUND_STRUCTURE_PIECE(), tag);
         }
 
         public MoundStructurePiece(BlockPos pos) {
             super(
-                    TYPE, 0, new BoundingBox(
+                    MOUND_STRUCTURE_PIECE(), 0, new BoundingBox(
                             pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 20, pos.getY() + 18,
                             pos.getZ() + 20
                     )

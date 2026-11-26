@@ -7,15 +7,15 @@ import java.util.Map;
 
 //TODO:[maybe wont finished]make better
 public class MazeThread implements Runnable {
-    int x;
-    int z;
+    int chunkX;
+    int chunkZ;
     int width;
     int height = 0;
     long seed = 0L;
 
-    public MazeThread(int x, int z, int width, int h, long seed) {
-        this.x = x;
-        this.z = z;
+    public MazeThread(int chunkX, int chunkZ, int width/*15 + level.random.nextInt(8) * 2*/, int h, long seed) {
+        this.chunkX = chunkX;
+        this.chunkZ = chunkZ;
         this.width = width;
         this.height = h;
         this.seed = seed;
@@ -24,11 +24,11 @@ public class MazeThread implements Runnable {
     public Map<CellLoc, CellState> labyrinth = new HashMap<>();
     @Override
     public void run() {
-        var centerCellLoc = new CellLoc(this.x, this.z);
-        var cellNN = new CellLoc(this.x - this.width, this.z - this.height);//N:Negative
-        var cellPP = new CellLoc(this.x + this.width, this.z + this.height);//P:Positive
-        var cellPN = new CellLoc(this.x + this.width, this.z - this.height);
-        var cellNP = new CellLoc(this.x - this.width, this.z + this.height);
+        var centerCellLoc = new CellLoc(this.chunkX, this.chunkZ);
+        var cellNN = new CellLoc(this.chunkX - this.width, this.chunkZ - this.height);//N:Negative
+        var cellPP = new CellLoc(this.chunkX + this.width, this.chunkZ + this.height);//P:Positive
+        var cellPN = new CellLoc(this.chunkX + this.width, this.chunkZ - this.height);
+        var cellNP = new CellLoc(this.chunkX - this.width, this.chunkZ + this.height);
         var cellLocs = new CellLoc[]{centerCellLoc,cellNN,cellPP,cellPN,cellNP};
         for (var cell : cellLocs) {
             labyrinth.put(cell,new CellState());
@@ -38,14 +38,14 @@ public class MazeThread implements Runnable {
             gen = new MazeGenerator(this.width, this.height, this.seed++);
         }
 
-        int col = this.x - (1 + this.width / 2);
-        int row = this.z - (1 + this.height / 2);
+        int col = this.chunkX - (1 + this.width / 2);
+        int row = this.chunkZ - (1 + this.height / 2);
 
         for (int a = 0; a < this.width; ++a) {
             for (int b = 0; b < this.height; ++b) {
-                if (gen.grid[b][a] != null) {
+                if (gen.cellGrid[b][a] != null) {
                     CellLoc loc = new CellLoc(a + col, b + row);
-                    labyrinth.put(loc,  gen.grid[b][a]);
+                    labyrinth.put(loc,  gen.cellGrid[b][a]);
                 }
             }
         }

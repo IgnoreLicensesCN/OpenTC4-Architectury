@@ -6,6 +6,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.world.dim.cell.CellState;
@@ -19,47 +20,47 @@ public class GenCommon {
    static ArrayList<ChunkPos> decoCommon = new ArrayList<>();
    static ArrayList<ChunkPos> crabSpawner = new ArrayList<>();
    static ArrayList<ChunkPos> decoUrn = new ArrayList<>();
-   static final int BEDROCK = 1;
+   static final int B = 1;//bedrock
    static final int BEDROCK_REPL = 99;
-   static final int STONE = 2;
-   static final int VOID = 8;
-   static final int AIR_REPL = 9;
-   static final int STAIR_DIRECTIONAL = 10;
+   static final int S = 2;//eldritch stone
+   static final int V = 8;//void block
+   static final int A = 9;//AIR_REPL
+   static final int STD = 10;//STAIR_DIRECTIONAL
    static final int STAIR_DIRECTIONAL_INV = 11;
    static final int SLAB = 12;
    static final int DOOR_BLOCK = 15;
    static final int DOOR_LOCK = 16;
    static final int VOID_DOOR = 17;
    static final int ROCK = 18;
-   static final int STONE_NOSPAWN = 19;
+   static final int SN = 19;//STONE_NOSPAWN
    static final int STONE_TRAPPED = 20;
    static final int CRUST = 21;
    static final int[][] PAT_CONNECT = new int[][]{
-           {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-           {1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 1},
-           {1, 8, 8, 2, 2, 2, 2, 2, 8, 8, 1},
-           {1, 8, 2, 5, 9, 9, 9, 6, 2, 8, 1},
-           {1, 8, 2, 9, 9, 9, 9, 9, 2, 8, 1},
-           {1, 8, 2, 9, 9, 9, 9, 9, 2, 8, 1},
-           {1, 8, 2, 9, 9, 9, 9, 9, 2, 8, 1},
-           {1, 8, 2, 3, 9, 9, 9, 4, 2, 8, 1},
-           {1, 8, 8, 2, 2, 2, 2, 2, 8, 8, 1},
-           {1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 1},
-           {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+           {0, B, B, B, B, B, B, B, B, B, 0},
+           {B, V, V, V, V, V, V, V, V, V, B},
+           {B, V, V, S, S, S, S, S, V, V, B},
+           {B, V, S, 5, A, A, A, 6, S, V, B},
+           {B, V, S, A, A, A, A, A, S, V, B},
+           {B, V, S, A, A, A, A, A, S, V, B},
+           {B, V, S, A, A, A, A, A, S, V, B},
+           {B, V, S, 3, A, A, A, 4, S, V, B},
+           {B, V, V, S, S, S, S, S, V, V, B},
+           {B, V, V, V, V, V, V, V, V, V, B},
+           {0, B, B, B, B, B, B, B, B, B, 0},
    };
 
-   static void placeBlock(Level world, int i, int j, int k, int l, CellState cellState) {
-      placeBlock(world, i, j, k, l, Direction.UNKNOWN, cellState);
+   static void placeBlock(Level world, int x, int y, int z, int blockToPlace, CellState cellState) {
+      placeBlock(world, x,y,z, blockToPlace, null, cellState);
    }
 
-   static void placeBlock(Level world, int x, int y, int z, int b, Direction dir, CellState cellState) {
+   static void placeBlock(Level world, int x, int y, int z, int blockToPlace, @Nullable Direction dir, CellState cellState) {
       Block block;
       int meta;
       label233: {
          block = null;
          meta = 0;
-         switch (b) {
-            case 1:
+         switch (blockToPlace) {
+            case B:
                if (world.isAirBlock(x, y, z)) {
                   block = Blocks.bedrock;
                }
@@ -147,16 +148,16 @@ public class GenCommon {
                block = ConfigBlocks.blockEldritch;
                meta = 4;
                break label233;
-            case 8:
+            case V:
                block = ConfigBlocks.blockEldritchNothing;
                break label233;
-            case 9:
+            case A:
                block = Blocks.air;
                decoCommon.remove(new ChunkPos(x, y, z));
                crabSpawner.remove(new ChunkPos(x, y, z));
                decoUrn.remove(new ChunkPos(x, y, z));
                break label233;
-            case 10:
+            case STD:
                block = ConfigBlocks.blockStairsEldritch;
                switch (dir) {
                   case NORTH:
@@ -214,7 +215,7 @@ public class GenCommon {
                   meta = 12;
                }
                break label233;
-            case 19:
+            case SN:
                if (world.getBlock(x, y, z) != ConfigBlocks.blockEldritchNothing) {
                   block = ConfigBlocks.blockCosmeticSolid;
                   meta = 13;

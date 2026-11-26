@@ -42,7 +42,7 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
             throw new RuntimeException("called doBossSpawn but level is null");
         }
         this.level.playSound(null,getBlockPos(), ThaumcraftSounds.ICE, SoundSource.BLOCKS, 1.0F, 1.0F);
-        if (!this.level.isClientSide) {
+        if (!this.level.isClientSide && level instanceof ServerLevel serverLevel) {
             final var pos = this.getBlockPos();
             final var posX = pos.getX();
             final var posY = pos.getY();
@@ -53,6 +53,8 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
             int centerz = posZ >> 4;
             int exit = 0;
 
+
+            serverLevel.structureManager().getStructureAt()
             for(int a = -2; a <= 2; ++a) {
                 for(int b = -2; b <= 2; ++b) {
                     CellState c = MazeHandler.getFromHashMap(new CellLoc(cx + a, cz + b));

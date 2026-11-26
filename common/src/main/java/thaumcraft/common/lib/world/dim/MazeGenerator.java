@@ -19,7 +19,7 @@ public class MazeGenerator {
     public final int zTotal;
     public final long seed;
     public final Random rand;
-    public final @Nullable CellState[][] grid;//[z][x]
+    public final @Nullable CellState[][] cellGrid;//[z][x]
     //element:
     //XXXX XXXX XXXX XXXX XXXX XXXX XXDD DDDD
     //D:Direction bits(Direction#ordinal())
@@ -43,11 +43,11 @@ public class MazeGenerator {
         this.zTotal = zTotal;
         this.seed = seed;
         this.rand = new Random(seed);
-        this.grid = new CellState[zTotal][xTotal];
+        this.cellGrid = new CellState[zTotal][xTotal];
     }
 
     protected final void clearGrid() {
-        for (CellState[] inner : this.grid) {
+        for (CellState[] inner : this.cellGrid) {
             for (int x = 0; x < inner.length; x++) {
                 inner[x] = new CellState();
             }
@@ -72,8 +72,8 @@ public class MazeGenerator {
         var centerZ = getCenterZ();
         int nearCenterX = getCenterX() + pickedDir.getStepX();
         int nearCenterZ = getCenterZ() + pickedDir.getStepZ();
-        if (this.grid[nearCenterZ][nearCenterX] == null) {
-            this.grid[nearCenterZ][nearCenterX] = new CellState();
+        if (this.cellGrid[nearCenterZ][nearCenterX] == null) {
+            this.cellGrid[nearCenterZ][nearCenterX] = new CellState();
         }
         connectTo(centerX,centerZ,pickedDir,c -> true);
         cellsToExpand.clear();
@@ -95,32 +95,32 @@ public class MazeGenerator {
         return xzInMazeRange(x, z);
     }
 
-    public boolean generate() {
-        clearGrid();
+    protected CellLoc initCorner(){
         int pickedCornerX = this.rand.nextBoolean() ? 0 : this.xTotal - 2;
         int pickedCornerZ = this.rand.nextBoolean() ? 0 : this.zTotal - 2;
 
-        assert this.grid[pickedCornerZ][pickedCornerX] != null;
-        assert this.grid[pickedCornerZ][pickedCornerX + 1] != null;
-        assert this.grid[pickedCornerZ + 1][pickedCornerX] != null;
-        assert this.grid[pickedCornerZ + 1][pickedCornerX + 1] != null;
-        setCellFeature(this.grid[pickedCornerZ][pickedCornerX],PORTAL);
-        setCellFeature(this.grid[pickedCornerZ][pickedCornerX + 1],BOSS_ROOM);
-        setCellFeature(this.grid[pickedCornerZ + 1][pickedCornerX],BOSS_ROOM_2);
-        setCellFeature(this.grid[pickedCornerZ + 1][pickedCornerX + 1],BOSS_ROOM_3);
-
+        assert this.cellGrid[pickedCornerZ][pickedCornerX] != null;
+        assert this.cellGrid[pickedCornerZ][pickedCornerX + 1] != null;
+        assert this.cellGrid[pickedCornerZ + 1][pickedCornerX] != null;
+        assert this.cellGrid[pickedCornerZ + 1][pickedCornerX + 1] != null;
+        setCellFeature(this.cellGrid[pickedCornerZ][pickedCornerX],PORTAL);
+        setCellFeature(this.cellGrid[pickedCornerZ][pickedCornerX + 1],BOSS_ROOM);
+        setCellFeature(this.cellGrid[pickedCornerZ + 1][pickedCornerX],BOSS_ROOM_2);
+        setCellFeature(this.cellGrid[pickedCornerZ + 1][pickedCornerX + 1],BOSS_ROOM_3);
+        return new CellLoc(pickedCornerX,pickedCornerZ);
+    }
+    public boolean generate() {
+        clearGrid();
+        
+        var cornerPicked = initCorner();
+        
         int centerX = 1 + this.xTotal / 2;
         int centerZ = 1 + this.zTotal / 2;
-        setCellFeature(this.grid[centerZ][centerX],NONE);
-
+        setCellFeature(this.cellGrid[centerZ][centerX],NONE);
 
 //        blockItself();
 
-        var picked = pickNearCenterPosAtStart();
-
-        int nearCenterX = picked.x;
-        int nearCenterZ = picked.z;
-        var xArrayInRandomZ = this.grid[nearCenterZ];
+        pickNearCenterPosAtStart();
 
 
         //cells.size():1
@@ -133,11 +133,11 @@ public class MazeGenerator {
 //        ensureAllNotNull();//since we dont have #blockItself();
         expandCenter(centerX, centerZ);
         //getWayFromCornerToAlreadyExpandedPath
-        if (!getWayFromCornerToAlreadyExpandedPath(pickedCornerX, pickedCornerZ)) {
+        if (!getWayFromCornerToAlreadyExpandedPath(cornerPicked)) {
             return false;
         }
 //        recoverInvalid();//since we dont mark invalid
-        List<thaumcraft.common.lib.world.dim.CellLoc> deadEnds = getDeadEnds();
+        List<CellLoc> deadEnds = getDeadEnds();
         if (deadEnds.isEmpty()) {
             return false;
         }
@@ -150,7 +150,7 @@ public class MazeGenerator {
     protected void placeFeatureOnAnyPath() {
         for (int aa = 0; aa < this.zTotal; ++aa) {
             for (int bb = 0; bb < this.xTotal; ++bb) {
-                CellState c = this.grid[aa][bb];
+                CellState c = this.cellGrid[aa][bb];
                 boolean hasAnyDir = false;
                 for (var dir : Direction.Plane.HORIZONTAL) {
                     if (c != null && cellConnectedTo(c,dir)) {
@@ -165,18 +165,18 @@ public class MazeGenerator {
         }
     }
 
-    protected void placeKeyRoom(List<thaumcraft.common.lib.world.dim.CellLoc> deadEnds) {
-        thaumcraft.common.lib.world.dim.CellLoc ll = deadEnds.remove(this.rand.nextInt(deadEnds.size()));
-        CellState c = this.grid[ll.z][ll.x];
+    protected void placeKeyRoom(List<CellLoc> deadEnds) {
+        CellLoc ll = deadEnds.remove(this.rand.nextInt(deadEnds.size()));
+        CellState c = this.cellGrid[ll.z][ll.x];
         setCellFeature(c,KEY_ROOM);
     }
 
-    protected void placeFeatureOnDeadEnds(List<thaumcraft.common.lib.world.dim.CellLoc> deadEnds) {
+    protected void placeFeatureOnDeadEnds(List<CellLoc> deadEnds) {
         int places = deadEnds.size() / 2;
         for (var runs = 0;runs < places; runs++) {
             int rInternal = this.rand.nextInt(deadEnds.size());
-            thaumcraft.common.lib.world.dim.CellLoc llInternal = deadEnds.get(rInternal);
-            CellState cInternal = this.grid[llInternal.z][llInternal.x];
+            CellLoc llInternal = deadEnds.get(rInternal);
+            CellState cInternal = this.cellGrid[llInternal.z][llInternal.x];
             if (getCellFeature(cInternal) == NONE) {
                 setCellFeature(cInternal, FEATURE_SET_A[this.rand.nextInt(FEATURE_SET_A.length)]);
                 deadEnds.remove(rInternal);
@@ -185,30 +185,24 @@ public class MazeGenerator {
         }
     }
 
-    protected @NotNull List<thaumcraft.common.lib.world.dim.CellLoc> getDeadEnds() {
-        var deadEndsAndCouldBe = getDeadEndsAndCouldBeDeadEnds();
-        var deadEnds = deadEndsAndCouldBe[0];
-        var couldBeDeadEnds = deadEndsAndCouldBe[1];
-
-        if (deadEnds.isEmpty()) {
-            if (!couldBeDeadEnds.isEmpty()) {
-                var pickedDeadEnd = couldBeDeadEnds.remove(rand.nextInt(couldBeDeadEnds.size()));
-                for (var dir : Direction.Plane.HORIZONTAL) {
-                    connectTo(pickedDeadEnd.x,pickedDeadEnd.z,dir,c -> !c.isEmpty() && !getCellFeature(c).preventInitCorePathConnection);
-                }
-                deadEnds.add(pickedDeadEnd);
+    protected @Nullable CellLoc convertOneToDeadEnd(List<CellLoc> couldBeDeadEnds) {
+        if (!couldBeDeadEnds.isEmpty()) {
+            var pickedDeadEnd = couldBeDeadEnds.remove(rand.nextInt(couldBeDeadEnds.size()));
+            for (var dir : Direction.Plane.HORIZONTAL) {
+                connectTo(pickedDeadEnd.x,pickedDeadEnd.z,dir,c -> !c.isEmpty() && !getCellFeature(c).preventInitCorePathConnection);
             }
+            return pickedDeadEnd;
         }
-        return deadEnds;
+        return null;
     }
 
-    protected @NotNull List<thaumcraft.common.lib.world.dim.CellLoc>[] getDeadEndsAndCouldBeDeadEnds() {
-        List<thaumcraft.common.lib.world.dim.CellLoc> deadEndsLoc = new ArrayList<>();
-        List<thaumcraft.common.lib.world.dim.CellLoc> couldBeDeadEndsLoc = new ArrayList<>();
+    protected @NotNull List<CellLoc> getDeadEnds() {
+        List<CellLoc> deadEndsLoc = new ArrayList<>();
+        List<CellLoc> couldBeDeadEndsLoc = new ArrayList<>();
 
         for (int aa = 0; aa < this.zTotal; ++aa) {
             for (int bb = 0; bb < this.xTotal; ++bb) {
-                CellState c = this.grid[aa][bb];
+                CellState c = this.cellGrid[aa][bb];
                 int exits = 0;
                 int nearRoom = 0;
                 for (var dir : Direction.Plane.HORIZONTAL) {
@@ -217,29 +211,35 @@ public class MazeGenerator {
                     }
 
                     if (xzInMazeRange(aa, bb,dir)) {
-                        var nearRoomInMaze = this.grid[aa + dir.getStepX()][bb + dir.getStepZ()];
+                        var nearRoomInMaze = this.cellGrid[aa + dir.getStepX()][bb + dir.getStepZ()];
                         if (nearRoomInMaze != null && !getCellFeature(nearRoomInMaze).preventInitCorePathConnection) {
                             nearRoom++;
                         }
                     }
                 }
                 if (exits == 1 && getCellFeature(c) == NONE) {
-                    deadEndsLoc.add(new thaumcraft.common.lib.world.dim.CellLoc(aa, bb));
+                    deadEndsLoc.add(new CellLoc(aa, bb));
                 }
                 if (c != null && c.isEmpty()) {
                     if (nearRoom > 0){
-                        couldBeDeadEndsLoc.add(new thaumcraft.common.lib.world.dim.CellLoc(aa, bb));
+                        couldBeDeadEndsLoc.add(new CellLoc(aa, bb));
                     }
                 }
             }
         }
-        return new List[]{deadEndsLoc, couldBeDeadEndsLoc};
+        if (deadEndsLoc.isEmpty()) {
+            var converted = convertOneToDeadEnd(couldBeDeadEndsLoc);
+            if (converted != null) {
+                deadEndsLoc.add(converted);
+            }
+        }
+        return deadEndsLoc;
     }
 
     protected void recoverInvalid() {
         for (int aa = 0; aa < this.zTotal; ++aa) {
             for (int bb = 0; bb < this.xTotal; ++bb) {
-                CellState c = this.grid[aa][bb];
+                CellState c = this.cellGrid[aa][bb];
                 if (c != null && getCellFeature(c) == INVALID) {
                     setCellFeature(c,NONE);
                 }
@@ -248,7 +248,9 @@ public class MazeGenerator {
     }
 
     //BFS
-    protected boolean getWayFromCornerToAlreadyExpandedPath(int pickedCornerX, int pickedCornerZ) {
+    protected boolean getWayFromCornerToAlreadyExpandedPath(CellLoc cornerLoc) {
+        int pickedCornerX = cornerLoc.x;
+        int pickedCornerZ = cornerLoc.z;
         var traceBack = new Direction[zTotal][xTotal];
         ArrayDeque<CellLoc> neighboursToCheck = new ArrayDeque<>();
         neighboursToCheck.add(new CellLoc(pickedCornerX, pickedCornerZ));
@@ -263,7 +265,7 @@ public class MazeGenerator {
                         && traceBack[nextZ][nextX] == null
                         && !(nextX == pickedCornerX && nextZ == pickedCornerZ)
                 ) {
-                    CellState next = grid[nextZ][nextX];
+                    CellState next = cellGrid[nextZ][nextX];
                     if (next == null) {
                         continue;
                     }
@@ -325,8 +327,8 @@ public class MazeGenerator {
     private void ensureAllNotNull() {
         for (int aa = 0; aa < this.zTotal; ++aa) {
             for (int bb = 0; bb < this.xTotal; ++bb) {
-                if (this.grid[aa][bb] == null) {
-                    this.grid[aa][bb] = new CellState();
+                if (this.cellGrid[aa][bb] == null) {
+                    this.cellGrid[aa][bb] = new CellState();
                 }
             }
         }
@@ -336,14 +338,14 @@ public class MazeGenerator {
         if (!xzInMazeRange(x, z, dir)) {
             return false;
         }
-        var nearXZ = this.grid[z + dir.getStepZ()][x + dir.getStepX()];
+        var nearXZ = this.cellGrid[z + dir.getStepZ()][x + dir.getStepX()];
         if (nearXZ == null) {
             return false;
         }
         if (!cellPredicate.test(nearXZ)) {
             return false;
         }
-        addCellConnectedDirection(this.grid[z][x],dir);
+        addCellConnectedDirection(this.cellGrid[z][x],dir);
         addCellConnectedDirection(nearXZ,dir.getOpposite());
         return true;
     }
@@ -389,8 +391,8 @@ public class MazeGenerator {
 
             for (int a = qq; a < qq + w; ++a) {
                 for (int b = ww; b < ww + w; ++b) {
-                    if (this.grid[b][a].isEmpty()) {
-                        this.grid[b][a] = null;
+                    if (this.cellGrid[b][a].isEmpty()) {
+                        this.cellGrid[b][a] = null;
                     }
                 }
             }

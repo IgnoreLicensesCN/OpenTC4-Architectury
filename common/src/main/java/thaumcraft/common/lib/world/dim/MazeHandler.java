@@ -232,7 +232,6 @@ public class MazeHandler {
    }
 
    private static void generatePassage(Level world, Random random, int cx, int cz, int y, CellState cellState) {
-       random.nextInt(1);
        GenPassage.generateDefaultPassage(world, random, cx, cz, y, cellState);
    }
 }

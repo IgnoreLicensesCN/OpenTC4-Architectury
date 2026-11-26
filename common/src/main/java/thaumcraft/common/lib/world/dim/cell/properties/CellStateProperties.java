@@ -47,7 +47,7 @@ public class CellStateProperties {
         registerCellFeature(CellFeature.LIBRARY_ROOM);//8
         registerCellFeature(CellFeature.PASSAGE);
         registerCellFeature(CellFeature.PASSAGE_1);//10
-        registerCellFeature(CellFeature.PASSAGE_2);
+        registerCellFeature(CellFeature.PASSAGE_WITH_TRAP);
         registerCellFeature(CellFeature.PASSAGE_3);//12
         registerCellFeature(CellFeature.PASSAGE_4);
         registerCellFeature(CellFeature.PASSAGE_5);

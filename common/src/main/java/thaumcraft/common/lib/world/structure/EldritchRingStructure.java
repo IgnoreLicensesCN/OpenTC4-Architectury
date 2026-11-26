@@ -3,9 +3,7 @@ package thaumcraft.common.lib.world.structure;
 import com.linearity.opentc4.Consts;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.*;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -25,9 +23,7 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.lib.world.dim.MazeThread;
 import thaumcraft.common.lib.world.registries.ThaumcraftStructures;
 
@@ -42,6 +38,7 @@ import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances
 import static thaumcraft.common.blocks.ThaumcraftBlocks.setCultistBanner;
 import static thaumcraft.common.blocks.worldgenerated.eldritch.EldritchAltarBlock.IS_SPAWNER;
 import static thaumcraft.common.blocks.worldgenerated.eldritch.EldritchAltarBlock.SPAWNER_TYPE;
+import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.ThaumcraftStructureTypeInstances.ELDRITCH_RING_STRUCTURE_PIECE;
 import static thaumcraft.common.lib.world.structure.MoundStructure.couldGenMountStructureViaCoords;
 import static thaumcraft.common.lib.world.structure.StructureUtils.randomSourceFromChunkPosAndSeed;
 
@@ -104,9 +101,10 @@ public class EldritchRingStructure extends Structure {
 
         var width = 11 + random.nextInt(6) * 2;
         var height = 11 + random.nextInt(6) * 2;
-        if (MazeHandler.mazesInRange(context.chunkPos().x, context.chunkPos().z, width, height)){
-            return Optional.empty();
-        }
+//        we will make eldritch ring goto nearest eldritch portal.
+//        if (MazeHandler.mazesInRange(context.chunkPos().x, context.chunkPos().z, width, height)){
+//            return Optional.empty();
+//        }
         if (!(
                 this.LocationIsValidSpawn(context, pos.offset(-3,0,-3))
                         && this.LocationIsValidSpawn(context, pos)
@@ -177,27 +175,21 @@ public class EldritchRingStructure extends Structure {
     }
 
     public static class EldritchRingStructurePiece extends StructurePiece {
-        public static final StructurePieceType TYPE = register("eldritch_ring_piece", EldritchRingStructure.EldritchRingStructurePiece::new);
 
         private final int width;
         private final int height;
 
-        public EldritchRingStructurePiece(StructurePieceSerializationContext structurePieceSerializationContext, CompoundTag tag) {
-            super(TYPE, tag);
+        public EldritchRingStructurePiece(StructurePieceSerializationContext context, CompoundTag tag) {
+            super(ELDRITCH_RING_STRUCTURE_PIECE(), tag);
             this.width = Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.readIntFromCompoundTag(tag);
             this.height = Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.readIntFromCompoundTag(tag);
         }
 
-        private static StructurePieceType register(String id, StructurePieceType type) {
-            return Registry.register(
-                    BuiltInRegistries.STRUCTURE_PIECE, new ResourceLocation(Thaumcraft.MOD_ID, id), type);
-        }
-
         public EldritchRingStructurePiece(BlockPos pos,int width,int height) {
             super(
-                    TYPE, 0, new BoundingBox(
-                            pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 18, pos.getY() + 15,
-                            pos.getZ() + 18
+                    ELDRITCH_RING_STRUCTURE_PIECE(), 0, new BoundingBox(
+                            pos.getX()-1, pos.getY()-1, pos.getZ()-1, pos.getX() + width, pos.getY() + height,
+                            pos.getZ() + width
                     )
             );
             this.width = width;
@@ -217,14 +209,13 @@ public class EldritchRingStructure extends Structure {
             Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.writeIntToCompoundTag(compoundTag,this.height);
         }
 
-        //TODO:impl blockEldritch and blockCosmeticSolid then back here
         @Override
         public void postProcess(WorldGenLevel level,
                                 StructureManager structureManager, ChunkGenerator chunkGenerator,
                                 RandomSource random,
                                 BoundingBox boundingBox,
                                 ChunkPos chunkPos,
-                                BlockPos blockPos) {
+                                BlockPos centerXZMinY) {
             for (int xOffset = -3; xOffset <= 3; xOffset++) {
                 for (int zOffset = -3; zOffset <= 3; zOffset++) {
                     boolean xNotOnEdge = (xOffset!=-3 && xOffset!=3);
@@ -232,7 +223,7 @@ public class EldritchRingStructure extends Structure {
 
                     if (xNotOnEdge || zNotOnEdge) {
                         for(int yOffset = -4; yOffset < 5; ++yOffset) {
-                            var solidPos = blockPos.offset(xOffset,yOffset,zOffset);
+                            var solidPos = centerXZMinY.offset(xOffset,yOffset,zOffset);
                             if (yOffset > 0) {
                                 level.setBlock(solidPos,Blocks.AIR.defaultBlockState(),3);
                             }
@@ -248,29 +239,29 @@ public class EldritchRingStructure extends Structure {
 
                         //center pillar
                         if (xOffset==0 && zOffset==0) {
-                            level.setBlock(blockPos.above(1), ELDRITCH_ALTAR().defaultBlockState(), 3);//TODO:Meta->Block
-                            level.setBlock(blockPos.offset(xOffset,0,zOffset), ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TILE().defaultBlockState(), 3);
+                            level.setBlock(centerXZMinY.above(1), ELDRITCH_ALTAR().defaultBlockState(), 3);
+                            level.setBlock(centerXZMinY.offset(xOffset,0,zOffset), ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TILE().defaultBlockState(), 3);
                             int r = random.nextInt(10);
-                            BlockEntity te = getExistingBlockEntity(level, blockPos.offset(xOffset, 1, zOffset));
+                            BlockEntity te = getExistingBlockEntity(level, centerXZMinY.offset(xOffset, 1, zOffset));
 
                             switch (r) {
                                 case 1:
                                 case 2:
                                 case 3:
                                 case 4:
-                                    level.setBlock(blockPos.above(1),
+                                    level.setBlock(centerXZMinY.above(1),
                                             ELDRITCH_ALTAR().defaultBlockState()
                                                     .setValue(IS_SPAWNER,true)
                                                     .setValue(SPAWNER_TYPE,0)
                                             , 3);
                                     for (var dir:Direction.Plane.HORIZONTAL) {
-                                        var pickPos = blockPos.offset(-dir.getStepX() *3, 1, dir.getStepZ() *3);
+                                        var pickPos = centerXZMinY.offset(-dir.getStepX() *3, 1, dir.getStepZ() *3);
                                         setCultistBanner(level,pickPos,dir);
                                     }
                                 case 5:
                                 case 6:
                                 case 7:
-                                    level.setBlock(blockPos.above(1),
+                                    level.setBlock(centerXZMinY.above(1),
                                             ELDRITCH_ALTAR().defaultBlockState()
                                                     .setValue(IS_SPAWNER,true)
                                                     .setValue(SPAWNER_TYPE,1)
@@ -278,9 +269,9 @@ public class EldritchRingStructure extends Structure {
                                 default:
                                     break;
                             }
-                            level.setBlock(blockPos.above(3),ELDRITCH_OBELISK_WITH_TICKER().defaultBlockState(), 3);
+                            level.setBlock(centerXZMinY.above(3),ELDRITCH_OBELISK_WITH_TICKER().defaultBlockState(), 3);
                             for (int i=0;i<4;i++){
-                                level.setBlock(blockPos.above(4+i),ELDRITCH_OBELISK().defaultBlockState(), 3);
+                                level.setBlock(centerXZMinY.above(4+i),ELDRITCH_OBELISK().defaultBlockState(), 3);
                             }
                         }
                         else {
@@ -302,19 +293,19 @@ public class EldritchRingStructure extends Structure {
                             if (oneEdgeWhileAnotherOdd //&& notDiagonal
                             ) {
                                 level.setBlock(
-                                        blockPos.offset(xOffset, 0, zOffset),
+                                        centerXZMinY.offset(xOffset, 0, zOffset),
                                         ThaumcraftBlocks.ThaumcraftBlockInstances.OBSIDIAN_TILE().defaultBlockState(), 3
                                 );
-                                level.setBlock(blockPos.above(), ELDRITCH_CAPSTONE().defaultBlockState(), 3);
+                                level.setBlock(centerXZMinY.above(), ELDRITCH_CAPSTONE().defaultBlockState(), 3);
                             }
                         }
                     }
                 }
             }
 
-            createRandomNodeAt(level, blockPos.above(2), random, false, true, false);
-            Thread t = new Thread(new MazeThread(chunkPos.x, chunkPos.z, this.width, this.height, random.nextLong()));
-            t.start();
+            createRandomNodeAt(level, centerXZMinY.above(2), random, false, true, false);
+//            Thread t = new Thread(new MazeThread(chunkPos.x, chunkPos.z, this.width, this.height, random.nextLong()));
+//            t.start();
         }
 
     }
