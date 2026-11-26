@@ -28,6 +28,7 @@ import thaumcraft.common.lib.network.gamedata.PacketSyncPaletteS2C;
 import thaumcraft.common.lib.utils.CropUtils;
 import thaumcraft.common.lib.world.HolderCache;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
+import thaumcraft.common.lib.world.dim.cell.properties.CellStateProperties;
 import thaumcraft.common.lootbag.ThaumcraftLootBags;
 import thaumcraft.common.menu.ThaumcraftGUI;
 import thaumcraft.common.items.ThaumcraftItems;
@@ -117,6 +118,7 @@ public final class OpenTC4 {
 
         CropUtils.init();
         GolemEssentiaJarSearchingHelper.init();
+        CellStateProperties.init();
 
         PLAYER_JOIN.register(player -> new PacketSyncPaletteS2C().sendTo(player));
     }
@@ -138,6 +140,8 @@ public final class OpenTC4 {
 
         ThaumcraftItemsRegistry.onDatapackReloaded();
         GolemHelper.onDatapackReloaded();
+
+        CellStateProperties.onDatapackReloaded();
 
         //TODO:Recipes init here
     }

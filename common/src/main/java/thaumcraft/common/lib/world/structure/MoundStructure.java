@@ -40,6 +40,9 @@ import java.util.Set;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.api.listeners.worldgen.node.NodeGenerationManager.createRandomNodeAt;
+import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.CRATE_LOOT;
+import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.URN_LOOT;
+import static thaumcraft.common.blocks.crafted.loot.DefaultAbstractLootBlock.DEFAULT_RARITY_PROPERTY;
 import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.ThaumcraftStructureTypeInstances.MOUND_STRUCTURE_TYPE;
 import static thaumcraft.common.lib.world.structure.StructureUtils.randomSourceFromChunkPosAndSeed;
 
@@ -194,10 +197,10 @@ public class MoundStructure extends Structure {
         public MoundStructurePiece(BlockPos pos) {
             super(
                     TYPE, 0, new BoundingBox(
-                            pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 18, pos.getY() + 15,
-                            pos.getZ() + 18
+                            pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 20, pos.getY() + 18,
+                            pos.getZ() + 20
                     )
-            ); // 示例 16x16x16
+            );
 
         }
 
@@ -228,16 +231,21 @@ public class MoundStructure extends Structure {
 
                 float rr = randomSource.nextFloat();
                 int md = rr < 0.1F ? 2 : (rr < 0.33F ? 1 : 0);
-                //TODO:separate md
                 level.setBlock(
-                        startPos.offset(9, 1, 7), randomSource.nextFloat() < 0.3F
-                                ? ConfigBlocks.blockLootCrate : ConfigBlocks.blockLootUrn, md, 3
+                        startPos.offset(9, 1, 7),
+                        (randomSource.nextFloat() < 0.3F ? CRATE_LOOT() : URN_LOOT())
+                                .defaultBlockState().setValue(DEFAULT_RARITY_PROPERTY,md),
+                        3,
+                        512
                 );
                 rr = randomSource.nextFloat();
                 md = rr < 0.1F ? 2 : (rr < 0.33F ? 1 : 0);
                 level.setBlock(
-                        startPos.offset(9, 1, 11), randomSource.nextFloat() < 0.3F
-                                ? ConfigBlocks.blockLootCrate : ConfigBlocks.blockLootUrn, md, 3
+                        startPos.offset(9, 1, 11),
+                        (randomSource.nextFloat() < 0.3F ? CRATE_LOOT() : URN_LOOT())
+                                .defaultBlockState().setValue(DEFAULT_RARITY_PROPERTY,md),
+                        3,
+                        512
                 );
                 if (randomSource.nextInt(3) == 0) {
                     level.setBlock(chestPos, Blocks.TRAPPED_CHEST.defaultBlockState(), 3);
@@ -246,10 +254,9 @@ public class MoundStructure extends Structure {
                     level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
                 }
 
-                level.setBlock(chestPos, Blocks.CHEST.defaultBlockState(), 3);
                 var blockEntity = getExistingBlockEntity(level, chestPos);
                 if (blockEntity instanceof ChestBlockEntity chest) {
-                    ResourceLocation lootTable = BuiltInLootTables.SIMPLE_DUNGEON; // 或你自己的
+                    ResourceLocation lootTable = BuiltInLootTables.SIMPLE_DUNGEON;
                     chest.setLootTable(lootTable, randomSource.nextLong());
                 }
 

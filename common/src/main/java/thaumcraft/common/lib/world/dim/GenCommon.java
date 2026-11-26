@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.BlockUtils;
+import thaumcraft.common.lib.world.dim.cell.CellState;
 import thaumcraft.common.tiles.junkbox.TileCrystal;
 import thaumcraft.common.tiles.junkbox.TileEldritchCrabSpawner;
 
@@ -47,11 +48,11 @@ public class GenCommon {
            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
    };
 
-   static void placeBlock(Level world, int i, int j, int k, int l, Cell cell) {
-      placeBlock(world, i, j, k, l, Direction.UNKNOWN, cell);
+   static void placeBlock(Level world, int i, int j, int k, int l, CellState cellState) {
+      placeBlock(world, i, j, k, l, Direction.UNKNOWN, cellState);
    }
 
-   static void placeBlock(Level world, int x, int y, int z, int b, Direction dir, Cell cell) {
+   static void placeBlock(Level world, int x, int y, int z, int b, Direction dir, CellState cellState) {
       Block block;
       int meta;
       label233: {
@@ -64,14 +65,14 @@ public class GenCommon {
                }
                break label233;
             case 2:
-               if (cell.feature == 7 && world.getRandom().nextInt(3) == 0) {
+               if (cellState.feature == 7 && world.getRandom().nextInt(3) == 0) {
                   break;
                }
 
                if (world.getBlock(x, y, z) != ConfigBlocks.blockEldritchNothing) {
                   if (world.getRandom().nextInt(25) == 0) {
-                     boolean crab = cell.feature == 7 || world.getRandom().nextInt(50) == 0;
-                     if ((!crab || cell.feature != 0) && (!crab || cell.feature != 7)) {
+                     boolean crab = cellState.feature == 7 || world.getRandom().nextInt(50) == 0;
+                     if ((!crab || cellState.feature != 0) && (!crab || cellState.feature != 7)) {
                         decoCommon.add(new ChunkPos(x, y, z));
                      } else {
                         crabSpawner.add(new ChunkPos(x, y, z));
@@ -240,8 +241,8 @@ public class GenCommon {
                block = ConfigBlocks.blockEldritch;
                meta = 4;
             } else if (world.getRandom().nextInt(25) == 0) {
-               boolean crab = cell.feature == 7 || (cell.feature == 12 && world.getRandom().nextBoolean() || world.getRandom().nextInt(25) == 0);
-               if (crab && cell.feature == 0 || crab && cell.feature == 7 || crab && cell.feature == 12) {
+               boolean crab = cellState.feature == 7 || (cellState.feature == 12 && world.getRandom().nextBoolean() || world.getRandom().nextInt(25) == 0);
+               if (crab && cellState.feature == 0 || crab && cellState.feature == 7 || crab && cellState.feature == 12) {
                   crabSpawner.add(new ChunkPos(x, y, z));
                }
             }
@@ -321,51 +322,51 @@ public class GenCommon {
       return false;
    }
 
-   static void generateConnections(Level world, Random random, int cx, int cz, int y, Cell cell, int depth, boolean justthetip) {
+   static void generateConnections(Level world, Random random, int cx, int cz, int y, CellState cellState, int depth, boolean justthetip) {
       int x = cx * 16;
       int z = cz * 16;
-      if (cell.north) {
+      if (cellState.north) {
          for(int d = 0; d <= depth; ++d) {
             for(int w = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); w < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++w) {
                for(int h = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); h < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++h) {
                   if (d != depth || !justthetip || PAT_CONNECT[h][w] != 8) {
-                     placeBlock(world, x + 3 + w, y + 10 - h, z + d, PAT_CONNECT[h][w], Direction.NORTH, cell);
+                     placeBlock(world, x + 3 + w, y + 10 - h, z + d, PAT_CONNECT[h][w], Direction.NORTH, cellState);
                   }
                }
             }
          }
       }
 
-      if (cell.south) {
+      if (cellState.south) {
          for(int d = 0; d <= depth; ++d) {
             for(int w = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); w < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++w) {
                for(int h = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); h < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++h) {
                   if (d != depth || !justthetip || PAT_CONNECT[h][w] != 8) {
-                     placeBlock(world, x + 3 + w, y + 10 - h, z + 16 - d, PAT_CONNECT[h][w], Direction.SOUTH, cell);
+                     placeBlock(world, x + 3 + w, y + 10 - h, z + 16 - d, PAT_CONNECT[h][w], Direction.SOUTH, cellState);
                   }
                }
             }
          }
       }
 
-      if (cell.east) {
+      if (cellState.east) {
          for(int d = 0; d <= depth; ++d) {
             for(int w = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); w < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++w) {
                for(int h = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); h < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++h) {
                   if (d != depth || !justthetip || PAT_CONNECT[h][w] != 8) {
-                     placeBlock(world, x + 16 - d, y + 10 - h, z + 3 + w, PAT_CONNECT[h][w], Direction.EAST, cell);
+                     placeBlock(world, x + 16 - d, y + 10 - h, z + 3 + w, PAT_CONNECT[h][w], Direction.EAST, cellState);
                   }
                }
             }
          }
       }
 
-      if (cell.west) {
+      if (cellState.west) {
          for(int d = 0; d <= depth; ++d) {
             for(int w = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); w < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++w) {
                for(int h = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); h < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++h) {
                   if (d != depth || !justthetip || PAT_CONNECT[h][w] != 8) {
-                     placeBlock(world, x + d, y + 10 - h, z + 3 + w, PAT_CONNECT[h][w], Direction.WEST, cell);
+                     placeBlock(world, x + d, y + 10 - h, z + 3 + w, PAT_CONNECT[h][w], Direction.WEST, cellState);
                   }
                }
             }

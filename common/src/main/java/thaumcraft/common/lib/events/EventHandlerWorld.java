@@ -189,7 +189,7 @@ public class EventHandlerWorld /*implements IFuelHandler*/ {
 //      if (world.dimension() == Config.dimensionOuterId && player != null && !player.capabilities.isCreativeMode) {
 //         int xx = x >> 4;
 //         int zz = z >> 4;
-//         Cell c = MazeHandler.getFromHashMap(new CellLoc(xx, zz));
+//         CellState c = MazeHandler.getFromHashMap(new CellLoc(xx, zz));
 //         if (c != null && c.feature >= 2 && c.feature <= 5) {
 //            ArrayList<Entity> list = EntityUtils.getEntitiesInRange(world, x, y, z, null, EntityThaumcraftBoss.class, 32.0F);
 //             return list != null && !list.isEmpty();

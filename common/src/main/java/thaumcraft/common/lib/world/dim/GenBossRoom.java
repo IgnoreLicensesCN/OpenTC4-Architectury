@@ -3,6 +3,7 @@ package thaumcraft.common.lib.world.dim;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
+import thaumcraft.common.lib.world.dim.cell.CellState;
 import thaumcraft.common.tiles.junkbox.TileEldritchLock;
 
 import java.util.Random;
@@ -18,21 +19,21 @@ public class GenBossRoom extends GenCommon {
            {0, 2, 2, 2, 2, 2, 0},
    };
 
-   static void generateRoom(Level world, Random random, int cx, int cz, int y, Cell cell) {
+   static void generateRoom(Level world, Random random, int cx, int cz, int y, CellState cellState) {
       int x = cx * 16;
       int z = cz * 16;
-      switch (cell.feature) {
+      switch (cellState.feature) {
          case 2:
-            Gen2x2.generateUpperLeft(world, random, cx, cz, 50, cell);
+            Gen2x2.generateUpperLeft(world, random, cx, cz, 50, cellState);
             break;
          case 3:
-            Gen2x2.generateUpperRight(world, random, cx, cz, 50, cell);
+            Gen2x2.generateUpperRight(world, random, cx, cz, 50, cellState);
             break;
          case 4:
-            Gen2x2.generateLowerLeft(world, random, cx, cz, 50, cell);
+            Gen2x2.generateLowerLeft(world, random, cx, cz, 50, cellState);
             break;
          case 5:
-            Gen2x2.generateLowerRight(world, random, cx, cz, 50, cell);
+            Gen2x2.generateLowerRight(world, random, cx, cz, 50, cellState);
       }
 
       for(int a = 0; a < 7; ++a) {
@@ -40,25 +41,25 @@ public class GenBossRoom extends GenCommon {
             int xx = 0;
             int zz = 0;
             Direction dir = Direction.UNKNOWN;
-            if (cell.north) {
+            if (cellState.north) {
                xx = x + 5 + a;
                zz = z + 3;
                dir = Direction.NORTH;
             }
 
-            if (cell.south) {
+            if (cellState.south) {
                xx = x + 5 + a;
                zz = z + 13;
                dir = Direction.SOUTH;
             }
 
-            if (cell.east) {
+            if (cellState.east) {
                xx = x + 13;
                zz = z + 5 + a;
                dir = Direction.EAST;
             }
 
-            if (cell.west) {
+            if (cellState.west) {
                xx = x + 3;
                zz = z + 5 + a;
                dir = Direction.WEST;
@@ -66,17 +67,17 @@ public class GenBossRoom extends GenCommon {
 
             switch (PAT_DOORWAY[a][b]) {
                case 1:
-                  placeBlock(world, xx, y + 2 + b, zz, 16, cell);
+                  placeBlock(world, xx, y + 2 + b, zz, 16, cellState);
                   BlockEntity t = world.getBlockEntity(xx, y + 2 + b, zz);
                   if (t instanceof TileEldritchLock) {
                      ((TileEldritchLock)t).setFacing((byte)dir.ordinal());
                   }
                   break;
                case 2:
-                  placeBlock(world, xx, y + 2 + b, zz, 15, cell);
+                  placeBlock(world, xx, y + 2 + b, zz, 15, cellState);
                   break;
                case 9:
-                  placeBlock(world, xx, y + 2 + b, zz, 17, cell);
+                  placeBlock(world, xx, y + 2 + b, zz, 17, cellState);
             }
          }
       }

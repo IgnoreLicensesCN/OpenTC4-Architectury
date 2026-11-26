@@ -3,6 +3,7 @@ package thaumcraft.common.lib.world.dim;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
+import thaumcraft.common.lib.world.dim.cell.CellState;
 
 import java.util.Map;
 import java.util.Random;
@@ -10,32 +11,33 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.linearity.opentc4.Consts.MazeHandlerCompoundTagAccessors.*;
 
+@Deprecated(forRemoval = true)
 public class MazeHandler {
-   public static ConcurrentHashMap<CellLoc,Short> labyrinth = new ConcurrentHashMap<>();
+   public static ConcurrentHashMap<CellLoc, CellState> labyrinth = new ConcurrentHashMap<>();
 
-   public static synchronized void putToHashMap(CellLoc key, Cell cell) {
-      labyrinth.put(key, cell.pack());
+//   public static synchronized void putToHashMap(CellLoc key, CellState cell) {
+//      labyrinth.put(key, cell.pack());
+//   }
+//
+//   public static synchronized void putToHashMapRaw(CellLoc key, short cell) {
+//      labyrinth.put(key, cell);
+//   }
+
+   public static synchronized CellState getFromHashMap(CellLoc key) {
+      return labyrinth.get(key);
    }
 
-   public static synchronized void putToHashMapRaw(CellLoc key, short cell) {
-      labyrinth.put(key, cell);
-   }
-
-   public static synchronized Cell getFromHashMap(CellLoc key) {
-      return labyrinth.containsKey(key) ? new Cell(labyrinth.get(key)) : null;
-   }
-
-   public static synchronized void removeFromHashMap(CellLoc key) {
-      labyrinth.remove(key);
-   }
-
-   public static synchronized short getFromHashMapRaw(CellLoc key) {
-      return labyrinth.containsKey(key) ? labyrinth.get(key) : 0;
-   }
-
-   public static synchronized void clearHashMap() {
-      labyrinth.clear();
-   }
+//   public static synchronized void removeFromHashMap(CellLoc key) {
+//      labyrinth.remove(key);
+//   }
+//
+//   public static synchronized short getFromHashMapRaw(CellLoc key) {
+//      return labyrinth.containsKey(key) ? labyrinth.get(key) : 0;
+//   }
+//
+//   public static synchronized void clearHashMap() {
+//      labyrinth.clear();
+//   }
 
 //   private static void readNBT(CompoundTag nbt) {
 //      ListTag tagList = MAZE_HANDLER_CELLS_ACCESSOR.readFromCompoundTagWithHolderGetter(nbt);
@@ -63,11 +65,11 @@ public class MazeHandler {
             continue;
          }
          CellLoc loc = entry.getKey();
-         CompoundTag cell = new CompoundTag();
-         MAZE_HANDLER_CELL_LOC_X_ACCESSOR.writeIntToCompoundTag(cell,loc.x);
-         MAZE_HANDLER_CELL_LOC_Z_ACCESSOR.writeIntToCompoundTag(cell,loc.z);
-         MAZE_HANDLER_CELL_INFO_ACCESSOR.writeShortToCompoundTag(cell,v);
-         tagList.add(cell);
+         CompoundTag tag = new CompoundTag();
+         MAZE_HANDLER_CELL_LOC_X_ACCESSOR.writeIntToCompoundTag(tag,loc.x);
+         MAZE_HANDLER_CELL_LOC_Z_ACCESSOR.writeIntToCompoundTag(tag,loc.z);
+         MAZE_HANDLER_CELL_INFO_ACCESSOR.writeShortToCompoundTag(tag,v);
+         tagList.add(tag);
       }
 
       MAZE_HANDLER_CELLS_ACCESSOR.writeToCompoundTag(nbt,tagList);
@@ -193,26 +195,26 @@ public class MazeHandler {
 
    public static void generateEldritch(Level world, Random random, int cx, int cz) {
       CellLoc loc = new CellLoc(cx, cz);
-      Cell cell = getFromHashMap(loc);
-      if (cell != null) {
-         switch (cell.feature) {
+      CellState cellState = getFromHashMap(loc);
+      if (cellState != null) {
+         switch (cellState.feature) {
             case 1:
-               GenPortal.generatePortal(world, random, cx, cz, 50, cell);
+               GenPortal.generatePortal(world, random, cx, cz, 50, cellState);
                break;
             case 2:
             case 3:
             case 4:
             case 5:
-               GenBossRoom.generateRoom(world, random, cx, cz, 50, cell);
+               GenBossRoom.generateRoom(world, random, cx, cz, 50, cellState);
                break;
             case 6:
-               GenKeyRoom.generateRoom(world, random, cx, cz, 50, cell);
+               GenKeyRoom.generateRoom(world, random, cx, cz, 50, cellState);
                break;
             case 7:
-               GenNestRoom.generateRoom(world, random, cx, cz, 50, cell);
+               GenNestRoom.generateRoom(world, random, cx, cz, 50, cellState);
                break;
             case 8:
-               GenLibraryRoom.generateRoom(world, random, cx, cz, 50, cell);
+               GenLibraryRoom.generateRoom(world, random, cx, cz, 50, cellState);
                break;
             case 9:
             case 10:
@@ -221,7 +223,7 @@ public class MazeHandler {
             case 13:
             case 14:
             default:
-               generatePassage(world, random, cx, cz, 50, cell);
+               generatePassage(world, random, cx, cz, 50, cellState);
          }
 
          GenCommon.processDecorations(world);
@@ -229,8 +231,8 @@ public class MazeHandler {
 
    }
 
-   private static void generatePassage(Level world, Random random, int cx, int cz, int y, Cell cell) {
+   private static void generatePassage(Level world, Random random, int cx, int cz, int y, CellState cellState) {
        random.nextInt(1);
-       GenPassage.generateDefaultPassage(world, random, cx, cz, y, cell);
+       GenPassage.generateDefaultPassage(world, random, cx, cz, y, cellState);
    }
 }

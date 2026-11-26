@@ -41,7 +41,7 @@ import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModified
 import thaumcraft.common.entities.championmod.abstracts.entity.IChampionModifierAttachRuleOwner;
 import thaumcraft.common.entities.championmod.abstracts.entity.IRandomChampionModifierPickRuleOwner;
 import thaumcraft.common.entities.monster.boss.ThaumcraftBossEntity;
-import thaumcraft.common.lib.world.dim.Cell;
+import thaumcraft.common.lib.world.dim.cell.CellState;
 import thaumcraft.common.lib.world.dim.CellLoc;
 import thaumcraft.common.lib.world.dim.MazeHandler;
 
@@ -565,7 +565,7 @@ public class EntityUtils {
         if (world.dimension() == Config.dimensionOuter) {
             int xx = blockPos.getX() >> 4;
             int zz = blockPos.getZ() >> 4;
-            Cell c = MazeHandler.getFromHashMap(new CellLoc(xx, zz));
+            CellState c = MazeHandler.getFromHashMap(new CellLoc(xx, zz));
             return c != null && (c.feature == 6 || c.feature == 8);
         }
 

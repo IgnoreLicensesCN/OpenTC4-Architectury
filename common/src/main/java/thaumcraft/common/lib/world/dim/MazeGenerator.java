@@ -1,105 +1,382 @@
 package thaumcraft.common.lib.world.dim;
 
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import org.apache.commons.lang3.ArrayUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import thaumcraft.common.lib.world.dim.cell.CellState;
+
 import java.util.*;
+import java.util.function.Predicate;
 
+import static thaumcraft.common.lib.world.dim.CellFeature.*;
+import static thaumcraft.common.lib.world.dim.cell.CellState.*;
+
+//TODO:[maybe wont finished]Language candy(from kt?) for better performance...but readable first
 public class MazeGenerator {
-    int width = 0;
-    int height = 0;
-    long seed = 0L;
-    Random rand = null;
-    public int[][] grid;
-    public static final int N = 1;
-    public static final int S = 2;
-    public static final int E = 4;
-    public static final int W = 8;
-    public static final int A = 16;
-    public static final int B = 32;
+    public final int xTotal;
+    public final int zTotal;
+    public final long seed;
+    public final Random rand;
+    public final @Nullable CellState[][] grid;//[z][x]
+    //element:
+    //XXXX XXXX XXXX XXXX XXXX XXXX XXDD DDDD
+    //D:Direction bits(Direction#ordinal())
 
-    public static int getOPP(int in) {
-        switch (in) {
-            case 1:
-                return 2;
-            case 2:
-                return 1;
-            case 3:
-            case 5:
-            case 6:
-            case 7:
-            default:
-                return -99;
-            case 4:
-                return 8;
-            case 8:
-                return 4;
-        }
+
+    public static final byte BIT8 = 1;//portal
+    public static final byte BIT9 = 1 << 1;//boss
+    public static final byte BIT10 = 1 << 2;
+    public static final byte BIT11 = 1 << 3;
+    public static final byte BIT12 = 1 << 4;
+    public static final byte BIT13 = 1 << 5;
+    public static final byte BIT14 = 1 << 6;
+    public static final byte BITS_25344 = 99;
+
+    public static Direction getOpposite(Direction in) {
+        return in.getOpposite();
     }
 
-    public static int getDX(int in) {
-        switch (in) {
-            case 1:
-                return 0;
-            case 2:
-                return 0;
-            case 3:
-            case 5:
-            case 6:
-            case 7:
-            default:
-                return -99;
-            case 4:
-                return 1;
-            case 8:
-                return -1;
-        }
-    }
-
-    public static int getDY(int in) {
-        switch (in) {
-            case 1:
-                return -1;
-            case 2:
-                return 1;
-            case 3:
-            case 5:
-            case 6:
-            case 7:
-            default:
-                return -99;
-            case 4:
-                return 0;
-            case 8:
-                return 0;
-        }
-    }
-
-    public MazeGenerator(int width, int height, long seed) {
-        this.width = width;
-        this.height = height;
+    public MazeGenerator(int xTotal, int zTotal, long seed) {
+        this.xTotal = xTotal;
+        this.zTotal = zTotal;
         this.seed = seed;
         this.rand = new Random(seed);
-        this.grid = new int[height][width];
+        this.grid = new CellState[zTotal][xTotal];
+    }
 
-        for (int y = 0; y < height; ++y) {
-            for (int x = 0; x < width; ++x) {
-                this.grid[y][x] = 0;
+    protected final void clearGrid() {
+        for (CellState[] inner : this.grid) {
+            for (int x = 0; x < inner.length; x++) {
+                inner[x] = new CellState();
             }
         }
+    }
 
+    protected int getCenterX() {
+        return 1 + this.xTotal / 2;
+    }
+
+    protected int getCenterZ() {
+        return 1 + this.zTotal / 2;
+    }
+
+    protected Direction pickRandomDirection() {
+        return Direction.Plane.HORIZONTAL.getRandomDirection(RandomSource.create(rand.nextLong()));
+    }
+
+    protected CellLoc pickNearCenterPosAtStart() {
+        var pickedDir = pickRandomDirection();
+        var centerX = getCenterX();
+        var centerZ = getCenterZ();
+        int nearCenterX = getCenterX() + pickedDir.getStepX();
+        int nearCenterZ = getCenterZ() + pickedDir.getStepZ();
+        if (this.grid[nearCenterZ][nearCenterX] == null) {
+            this.grid[nearCenterZ][nearCenterX] = new CellState();
+        }
+        connectTo(centerX,centerZ,pickedDir,c -> true);
+        cellsToExpand.clear();
+        var picked = new CellLoc(nearCenterX, nearCenterZ);
+        cellsToExpand.add(picked);
+        return picked;
+    }
+
+    protected List<CellLoc> cellsToExpand = new ArrayList<>();
+
+    protected boolean xzInMazeRange(int x, int z) {
+        return 0 < x && x < this.xTotal - 1
+                && 0 < z && z < this.zTotal - 1;
+    }
+
+    protected boolean xzInMazeRange(int x, int z, Direction dir) {
+        x += dir.getStepX();
+        z += dir.getStepZ();
+        return xzInMazeRange(x, z);
     }
 
     public boolean generate() {
-        int bx = this.rand.nextBoolean()?0:this.width - 2;
-        int by = this.rand.nextBoolean()?0:this.height - 2;
+        clearGrid();
+        int pickedCornerX = this.rand.nextBoolean() ? 0 : this.xTotal - 2;
+        int pickedCornerZ = this.rand.nextBoolean() ? 0 : this.zTotal - 2;
 
-        this.grid[by][bx] = 512;
-        this.grid[by][bx + 1] = 768;
-        this.grid[by + 1][bx] = 1024;
-        this.grid[by + 1][bx + 1] = 1280;
-        int px = 1 + this.width / 2;
-        int py = 1 + this.height / 2;
-        this.grid[py][px] = 256;
-        ArrayList<Loc> cells = new ArrayList<>();
-        int l = (this.width + this.height) / 4;
+        assert this.grid[pickedCornerZ][pickedCornerX] != null;
+        assert this.grid[pickedCornerZ][pickedCornerX + 1] != null;
+        assert this.grid[pickedCornerZ + 1][pickedCornerX] != null;
+        assert this.grid[pickedCornerZ + 1][pickedCornerX + 1] != null;
+        setCellFeature(this.grid[pickedCornerZ][pickedCornerX],PORTAL);
+        setCellFeature(this.grid[pickedCornerZ][pickedCornerX + 1],BOSS_ROOM);
+        setCellFeature(this.grid[pickedCornerZ + 1][pickedCornerX],BOSS_ROOM_2);
+        setCellFeature(this.grid[pickedCornerZ + 1][pickedCornerX + 1],BOSS_ROOM_3);
+
+        int centerX = 1 + this.xTotal / 2;
+        int centerZ = 1 + this.zTotal / 2;
+        setCellFeature(this.grid[centerZ][centerX],NONE);
+
+
+//        blockItself();
+
+        var picked = pickNearCenterPosAtStart();
+
+        int nearCenterX = picked.x;
+        int nearCenterZ = picked.z;
+        var xArrayInRandomZ = this.grid[nearCenterZ];
+
+
+        //cells.size():1
+
+        if (!expandFirstRound()) {
+            return false;
+        }
+        //====================================================================================
+
+//        ensureAllNotNull();//since we dont have #blockItself();
+        expandCenter(centerX, centerZ);
+        //getWayFromCornerToAlreadyExpandedPath
+        if (!getWayFromCornerToAlreadyExpandedPath(pickedCornerX, pickedCornerZ)) {
+            return false;
+        }
+//        recoverInvalid();//since we dont mark invalid
+        List<thaumcraft.common.lib.world.dim.CellLoc> deadEnds = getDeadEnds();
+        if (deadEnds.isEmpty()) {
+            return false;
+        }
+        placeKeyRoom(deadEnds);
+        placeFeatureOnDeadEnds(deadEnds);
+        placeFeatureOnAnyPath();
+        return true;
+    }
+
+    protected void placeFeatureOnAnyPath() {
+        for (int aa = 0; aa < this.zTotal; ++aa) {
+            for (int bb = 0; bb < this.xTotal; ++bb) {
+                CellState c = this.grid[aa][bb];
+                boolean hasAnyDir = false;
+                for (var dir : Direction.Plane.HORIZONTAL) {
+                    if (c != null && cellConnectedTo(c,dir)) {
+                        hasAnyDir = true;
+                        break;
+                    }
+                }
+                if (c != null && getCellFeature(c) == NONE && hasAnyDir && this.rand.nextInt(25) == 0) {
+                    setCellFeature(c, FEATURE_SET_B[this.rand.nextInt(FEATURE_SET_B.length)]);
+                }
+            }
+        }
+    }
+
+    protected void placeKeyRoom(List<thaumcraft.common.lib.world.dim.CellLoc> deadEnds) {
+        thaumcraft.common.lib.world.dim.CellLoc ll = deadEnds.remove(this.rand.nextInt(deadEnds.size()));
+        CellState c = this.grid[ll.z][ll.x];
+        setCellFeature(c,KEY_ROOM);
+    }
+
+    protected void placeFeatureOnDeadEnds(List<thaumcraft.common.lib.world.dim.CellLoc> deadEnds) {
+        int places = deadEnds.size() / 2;
+        for (var runs = 0;runs < places; runs++) {
+            int rInternal = this.rand.nextInt(deadEnds.size());
+            thaumcraft.common.lib.world.dim.CellLoc llInternal = deadEnds.get(rInternal);
+            CellState cInternal = this.grid[llInternal.z][llInternal.x];
+            if (getCellFeature(cInternal) == NONE) {
+                setCellFeature(cInternal, FEATURE_SET_A[this.rand.nextInt(FEATURE_SET_A.length)]);
+                deadEnds.remove(rInternal);
+                ++rInternal;
+            }
+        }
+    }
+
+    protected @NotNull List<thaumcraft.common.lib.world.dim.CellLoc> getDeadEnds() {
+        var deadEndsAndCouldBe = getDeadEndsAndCouldBeDeadEnds();
+        var deadEnds = deadEndsAndCouldBe[0];
+        var couldBeDeadEnds = deadEndsAndCouldBe[1];
+
+        if (deadEnds.isEmpty()) {
+            if (!couldBeDeadEnds.isEmpty()) {
+                var pickedDeadEnd = couldBeDeadEnds.remove(rand.nextInt(couldBeDeadEnds.size()));
+                for (var dir : Direction.Plane.HORIZONTAL) {
+                    connectTo(pickedDeadEnd.x,pickedDeadEnd.z,dir,c -> !c.isEmpty() && !getCellFeature(c).preventInitCorePathConnection);
+                }
+                deadEnds.add(pickedDeadEnd);
+            }
+        }
+        return deadEnds;
+    }
+
+    protected @NotNull List<thaumcraft.common.lib.world.dim.CellLoc>[] getDeadEndsAndCouldBeDeadEnds() {
+        List<thaumcraft.common.lib.world.dim.CellLoc> deadEndsLoc = new ArrayList<>();
+        List<thaumcraft.common.lib.world.dim.CellLoc> couldBeDeadEndsLoc = new ArrayList<>();
+
+        for (int aa = 0; aa < this.zTotal; ++aa) {
+            for (int bb = 0; bb < this.xTotal; ++bb) {
+                CellState c = this.grid[aa][bb];
+                int exits = 0;
+                int nearRoom = 0;
+                for (var dir : Direction.Plane.HORIZONTAL) {
+                    if (c != null && cellConnectedTo(c,dir)) {
+                        exits++;
+                    }
+
+                    if (xzInMazeRange(aa, bb,dir)) {
+                        var nearRoomInMaze = this.grid[aa + dir.getStepX()][bb + dir.getStepZ()];
+                        if (nearRoomInMaze != null && !getCellFeature(nearRoomInMaze).preventInitCorePathConnection) {
+                            nearRoom++;
+                        }
+                    }
+                }
+                if (exits == 1 && getCellFeature(c) == NONE) {
+                    deadEndsLoc.add(new thaumcraft.common.lib.world.dim.CellLoc(aa, bb));
+                }
+                if (c != null && c.isEmpty()) {
+                    if (nearRoom > 0){
+                        couldBeDeadEndsLoc.add(new thaumcraft.common.lib.world.dim.CellLoc(aa, bb));
+                    }
+                }
+            }
+        }
+        return new List[]{deadEndsLoc, couldBeDeadEndsLoc};
+    }
+
+    protected void recoverInvalid() {
+        for (int aa = 0; aa < this.zTotal; ++aa) {
+            for (int bb = 0; bb < this.xTotal; ++bb) {
+                CellState c = this.grid[aa][bb];
+                if (c != null && getCellFeature(c) == INVALID) {
+                    setCellFeature(c,NONE);
+                }
+            }
+        }
+    }
+
+    //BFS
+    protected boolean getWayFromCornerToAlreadyExpandedPath(int pickedCornerX, int pickedCornerZ) {
+        var traceBack = new Direction[zTotal][xTotal];
+        ArrayDeque<CellLoc> neighboursToCheck = new ArrayDeque<>();
+        neighboursToCheck.add(new CellLoc(pickedCornerX, pickedCornerZ));
+        while (!neighboursToCheck.isEmpty()) {
+            CellLoc toCheck = neighboursToCheck.poll();
+            Direction[] directions1 = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
+            ArrayUtils.shuffle(directions1, this.rand);
+            for (var dir : directions1) {
+                var nextX = toCheck.x + dir.getStepX();
+                var nextZ = toCheck.z + dir.getStepZ();
+                if (xzInMazeRange(nextX, nextZ)
+                        && traceBack[nextZ][nextX] == null
+                        && !(nextX == pickedCornerX && nextZ == pickedCornerZ)
+                ) {
+                    CellState next = grid[nextZ][nextX];
+                    if (next == null) {
+                        continue;
+                    }
+                    if (getCellFeature(next).preventInitCorePathConnection) {
+                        continue;
+                    }
+                    traceBack[nextZ][nextX] = dir;
+                    if (cellHasConnectedDirection(next)) {
+                        connectTo(toCheck.x, toCheck.z, dir, c -> true);
+                        int cx = toCheck.x;
+                        int cz = toCheck.z;
+                        while (traceBack[cz][cx] != null) {
+                            Direction backDir = traceBack[cz][cx].getOpposite();
+                            connectTo(cz, cx, backDir, c -> true);
+                            cx += backDir.getStepX();
+                            cz += backDir.getStepZ();
+                        }
+                        return true;
+                    }
+                    neighboursToCheck.add(new CellLoc(nextX, nextZ));
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean connectPickedConnerWithoutSearching(Direction[] directions, int pickedCornerX, int pickedCornerZ) {
+        boolean connected = false;
+        label338:
+        for (int xOffset = 0; xOffset < 2; ++xOffset) {
+            for (int zOffset = 0; zOffset < 2; ++zOffset) {
+                for (var dir : directions) {
+                    var pickedX = pickedCornerX + xOffset;
+                    var pickedZ = pickedCornerZ + zOffset;
+                    if (connectTo(
+                            pickedX, pickedZ, dir, c -> !c.isEmpty()
+                                    && getCellFeature(c) == NONE
+                    )
+                    ) {
+                        connected = true;
+                        break label338;
+                    }
+                }
+            }
+        }
+        return connected;
+    }
+
+    protected void expandCenter(int centerX, int centerZ) {
+        Direction[] directions = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
+        ArrayUtils.shuffle(directions, this.rand);
+        for (var dir : directions) {
+            if (this.rand.nextBoolean()) {
+                connectTo(centerX, centerZ, dir, c -> !c.isEmpty());
+            }
+        }
+    }
+
+    private void ensureAllNotNull() {
+        for (int aa = 0; aa < this.zTotal; ++aa) {
+            for (int bb = 0; bb < this.xTotal; ++bb) {
+                if (this.grid[aa][bb] == null) {
+                    this.grid[aa][bb] = new CellState();
+                }
+            }
+        }
+    }
+
+    protected boolean connectTo(int x, int z, Direction dir, Predicate<@NotNull CellState> cellPredicate) {
+        if (!xzInMazeRange(x, z, dir)) {
+            return false;
+        }
+        var nearXZ = this.grid[z + dir.getStepZ()][x + dir.getStepX()];
+        if (nearXZ == null) {
+            return false;
+        }
+        if (!cellPredicate.test(nearXZ)) {
+            return false;
+        }
+        addCellConnectedDirection(this.grid[z][x],dir);
+        addCellConnectedDirection(nearXZ,dir.getOpposite());
+        return true;
+    }
+
+    protected boolean expandFirstRound() {
+        boolean success = false;
+        Direction[] directions = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
+        while (!cellsToExpand.isEmpty()) {
+            int index = this.getNextIndex(cellsToExpand.size());
+            int x = cellsToExpand.get(index).x;
+            int z = cellsToExpand.get(index).z;
+            ArrayUtils.shuffle(directions, this.rand);
+            boolean carved = false;
+
+            for (var dir : directions) {
+                if (connectTo(x, z, dir, CellState::isEmpty)) {
+                    cellsToExpand.add(new CellLoc(x, z, dir));
+                    carved = true;
+                    success = true;
+                    break;
+                }
+            }
+
+            if (!carved) {
+                cellsToExpand.remove(index);
+            }
+        }
+        return success;
+    }
+
+    protected void blockItself() {
+        //foolish idea...
+        int l = (this.xTotal + this.zTotal) / 4;
 
         for (int z = 0; z < l; ++z) {
             int w = 1 + this.rand.nextInt(3);
@@ -107,263 +384,20 @@ public class MazeGenerator {
                 --l;
             }
 
-            int qq = this.rand.nextInt(this.width - w);
-            int ww = this.rand.nextInt(this.height - w);
+            int qq = this.rand.nextInt(this.xTotal - w);
+            int ww = this.rand.nextInt(this.zTotal - w);
 
             for (int a = qq; a < qq + w; ++a) {
                 for (int b = ww; b < ww + w; ++b) {
-                    if (this.grid[b][a] == 0) {
-                        this.grid[b][a] = -1;
+                    if (this.grid[b][a].isEmpty()) {
+                        this.grid[b][a] = null;
                     }
                 }
-            }
-        }
-
-        List<Integer> directions = Arrays.asList(1, 2, 4, 8);
-        Collections.shuffle(directions, this.rand);
-        int xx = px + getDX(directions.get(0));
-        int yy = py + getDY(directions.get(0));
-        int[] var10000 = this.grid[py];
-        var10000[px] |= directions.get(0);
-        if (this.grid[yy][xx] < 0) {
-            this.grid[yy][xx] = 0;
-        }
-
-        var10000 = this.grid[yy];
-        var10000[xx] |= getOPP(directions.get(0));
-        cells.add(new Loc(xx, yy));
-        boolean success = false;
-
-        while (!cells.isEmpty()) {
-            int index = this.getNextIndex(cells.size());
-            int x = cells.get(index).x;
-            int y = cells.get(index).y;
-            Collections.shuffle(directions, this.rand);
-            boolean carved = false;
-
-            for (int dir : directions) {
-                int nx = x + getDX(dir);
-                int ny = y + getDY(dir);
-                if (0 < nx && nx < this.width - 1 && 0 < ny && ny < this.height - 1) {
-                    if (this.grid[ny][nx] == 0) {
-                        var10000 = this.grid[y];
-                        var10000[x] |= dir;
-                        var10000 = this.grid[ny];
-                        var10000[nx] |= getOPP(dir);
-                        cells.add(new Loc(nx, ny));
-                        carved = true;
-                    }
-
-                    if (carved) {
-                        success = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!carved) {
-                cells.remove(index);
-            }
-        }
-
-        if (!success) {
-            return false;
-        } else {
-            for (int aa = 0; aa < this.height; ++aa) {
-                for (int bb = 0; bb < this.width; ++bb) {
-                    if (this.grid[aa][bb] < 0) {
-                        this.grid[aa][bb] = 0;
-                    }
-                }
-            }
-
-            Collections.shuffle(directions, this.rand);
-
-            for (int dir : directions) {
-                int nx = px + getDX(dir);
-                int ny = py + getDY(dir);
-                if (0 < nx && nx < this.width - 1 && 0 < ny && ny < this.height - 1 && this.grid[ny][nx] > 0 && this.rand.nextBoolean()) {
-                    var10000 = this.grid[ny];
-                    var10000[nx] |= getOPP(dir);
-                    var10000 = this.grid[py];
-                    var10000[px] |= dir;
-                }
-            }
-
-            Collections.shuffle(directions, this.rand);
-            boolean connected = false;
-
-            label338:
-            for (int ax = 0; ax < 2; ++ax) {
-                for (int ay = 0; ay < 2; ++ay) {
-                    for (int dir : directions) {
-                        int nx = bx + ax + getDX(dir);
-                        int ny = by + ay + getDY(dir);
-                        if (0 < nx && nx < this.width - 1 && 0 < ny && ny < this.height - 1 && this.grid[ny][nx] > 0 && (new Cell((short) this.grid[ny][nx])).feature == 0) {
-                            var10000 = this.grid[ny];
-                            var10000[nx] |= getOPP(dir);
-                            var10000 = this.grid[by + ay];
-                            var10000[bx + ax] |= dir;
-                            connected = true;
-                            break label338;
-                        }
-                    }
-                }
-            }
-
-            if (!connected) {
-                List<Integer> directions2 = Arrays.asList(1, 2, 4, 8);
-                Collections.shuffle(directions2, this.rand);
-                success = false;
-
-                label314:
-                for (int ax = 0; ax < 2; ++ax) {
-                    for (int ay = 0; ay < 2; ++ay) {
-                        for (int dir2 : directions2) {
-                            int qx = bx + ax + getDX(dir2);
-                            int qy = by + ay + getDY(dir2);
-                            if (0 < qx && qx < this.width - 1 && 0 < qy && qy < this.height - 1 && this.grid[qy][qx] == 0) {
-                                cells.add(new Loc(qx, qy));
-
-                                while (!cells.isEmpty()) {
-                                    int index = this.getNextIndex(cells.size());
-                                    int x = cells.get(index).x;
-                                    int y = cells.get(index).y;
-                                    Collections.shuffle(directions, this.rand);
-                                    boolean carved = false;
-
-                                    for (int dir : directions) {
-                                        int nx = x + getDX(dir);
-                                        int ny = y + getDY(dir);
-                                        if (0 < nx && nx < this.width - 1 && 0 < ny && ny < this.height - 1) {
-                                            if (this.grid[ny][nx] == 0) {
-                                                var10000 = this.grid[y];
-                                                var10000[x] |= dir;
-                                                var10000 = this.grid[y];
-                                                var10000[x] |= 25344;
-                                                var10000 = this.grid[ny];
-                                                var10000[nx] |= getOPP(dir);
-                                                var10000 = this.grid[ny];
-                                                var10000[nx] |= 25344;
-                                                cells.add(new Loc(nx, ny));
-                                                carved = true;
-                                            } else if ((new Cell((short) this.grid[ny][nx])).feature == 0) {
-                                                var10000 = this.grid[y];
-                                                var10000[x] |= dir;
-                                                var10000 = this.grid[ny];
-                                                var10000[nx] |= getOPP(dir);
-                                                var10000 = this.grid[qy];
-                                                var10000[qx] |= getOPP(dir2);
-                                                var10000 = this.grid[by + ay];
-                                                var10000[bx + ax] |= dir2;
-                                                success = true;
-                                                break label314;
-                                            }
-
-                                            if (carved) {
-                                                break;
-                                            }
-                                        }
-                                    }
-
-                                    if (!carved) {
-                                        cells.remove(index);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (!success) {
-                    return false;
-                }
-            }
-
-            for (int aa = 0; aa < this.height; ++aa) {
-                for (int bb = 0; bb < this.width; ++bb) {
-                    Cell c = new Cell((short) this.grid[aa][bb]);
-                    if (c.feature == 99) {
-                        c.feature = 0;
-                        this.grid[aa][bb] = c.pack();
-                    }
-                }
-            }
-
-            ArrayList<CellLoc> deadEndsloc = new ArrayList<>();
-
-            for (int aa = 0; aa < this.height; ++aa) {
-                for (int bb = 0; bb < this.width; ++bb) {
-                    Cell c = new Cell((short) this.grid[aa][bb]);
-                    int exits = (c.north ? 1 : 0) + (c.south ? 1 : 0) + (c.east ? 1 : 0) + (c.west ? 1 : 0);
-                    if (exits == 1 && c.feature == 0) {
-                        deadEndsloc.add(new CellLoc(aa, bb));
-                    }
-                }
-            }
-
-            if (deadEndsloc.isEmpty()) {
-                return false;
-            } else {
-                int r = this.rand.nextInt(deadEndsloc.size());
-                CellLoc ll = deadEndsloc.get(r);
-                Cell c = new Cell((short) this.grid[ll.x][ll.z]);
-                c.feature = 6;
-                this.grid[ll.x][ll.z] = c.pack();
-                deadEndsloc.remove(r);
-                if (!deadEndsloc.isEmpty()) {
-                    r = 0;
-
-                    while (r < deadEndsloc.size() / 2) {
-                        int rInternal = this.rand.nextInt(deadEndsloc.size());
-                        CellLoc llInternal = deadEndsloc.get(rInternal);
-                        Cell cInternal = new Cell((short) this.grid[llInternal.x][llInternal.z]);
-                        if (cInternal.feature == 0) {
-                            cInternal.feature = (byte) (7 + this.rand.nextInt(3));
-                            this.grid[llInternal.x][llInternal.z] = cInternal.pack();
-                            deadEndsloc.remove(rInternal);
-                            ++rInternal;
-                        }
-                    }
-                }
-
-                for (int aa = 0; aa < this.height; ++aa) {
-                    for (int bb = 0; bb < this.width; ++bb) {
-                        c = new Cell((short) this.grid[aa][bb]);
-                        if (c.feature == 0 && (c.north || c.south || c.west || c.east) && this.rand.nextInt(25) == 0) {
-                            switch (this.rand.nextInt(8)) {
-                                case 0:
-                                    c.feature = 8;
-                                    break;
-                                case 1:
-                                    c.feature = 10;
-                                    break;
-                                case 2:
-                                case 3:
-                                    c.feature = 11;
-                                    break;
-                                case 4:
-                                case 5:
-                                    c.feature = 12;
-                                    break;
-                                case 6:
-                                    c.feature = 13;
-                                    break;
-                                case 7:
-                                    c.feature = 14;
-                            }
-
-                            this.grid[aa][bb] = c.pack();
-                        }
-                    }
-                }
-
-                return true;
             }
         }
     }
 
-    private int getNextIndex(int ceil) {
+    protected int getNextIndex(int ceil) {
         float r = this.rand.nextFloat();
         if (r <= 0.45F) {
             return ceil - 1;
@@ -372,67 +406,72 @@ public class MazeGenerator {
         }
     }
 
-    public void print() {
-        HashMap<Integer, String[]> tiles = new HashMap<>();
-        tiles.put(0, new String[]{"...", "...", "..."});
-        tiles.put(1, new String[]{"# #", "# #", "###"});
-        tiles.put(2, new String[]{"###", "# #", "# #"});
-        tiles.put(4, new String[]{"###", "#  ", "###"});
-        tiles.put(8, new String[]{"###", "  #", "###"});
-        tiles.put(3, new String[]{"# #", "# #", "# #"});
-        tiles.put(9, new String[]{"# #", "  #", "###"});
-        tiles.put(5, new String[]{"# #", "#  ", "###"});
-        tiles.put(10, new String[]{"###", "  #", "# #"});
-        tiles.put(6, new String[]{"###", "#  ", "# #"});
-        tiles.put(12, new String[]{"###", "   ", "###"});
-        tiles.put(7, new String[]{"# #", "#  ", "# #"});
-        tiles.put(11, new String[]{"# #", "  #", "# #"});
-        tiles.put(13, new String[]{"# #", "   ", "###"});
-        tiles.put(14, new String[]{"###", "   ", "# #"});
-        tiles.put(15, new String[]{"# #", "   ", "# #"});
-        tiles.put(19, new String[]{"#-#", " A ", "#-#"});
-        tiles.put(28, new String[]{"# #", "|A|", "# #"});
-        tiles.put(35, new String[]{"#-#", " B ", "#-#"});
-        tiles.put(44, new String[]{"# #", "|B|", "# #"});
-
-        for (int y = 0; y < this.height; ++y) {
-            for (int q = 0; q < 3; ++q) {
-                for (int x = 0; x < this.width; ++x) {
-                    Cell c = new Cell((short) this.grid[y][x]);
-                    if (tiles.containsKey(this.grid[y][x])) {
-                        System.out.print(((String[]) tiles.get(this.grid[y][x]))[q]);
-                    } else if (c.feature == 1) {
-                        if ((q != 0 || !c.north) && (q != 2 || !c.south)) {
-                            if (q == 1 && c.west && !c.east) {
-                                System.out.print("-PP");
-                            } else if (q == 1 && c.east && !c.west) {
-                                System.out.print("PP-");
-                            } else if (q == 1 && c.east && c.west) {
-                                System.out.print("-P-");
-                            } else {
-                                System.out.print("PPP");
-                            }
-                        } else {
-                            System.out.print("P|P");
-                        }
-                    } else if (c.feature > 1) {
-                        System.out.print("FFF");
-                    }
-                }
-
-                System.out.println();
-            }
-        }
-
-    }
-
-    private static class Loc {
-        int x;
-        int y;
-
-        public Loc(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
+//    public void print() {
+//        HashMap<CellState, String[]> tiles = new HashMap<>();
+//        tiles.put(new CellState(), new String[]{"...", "...", "..."});
+//        tiles.put(new CellState(Direction.NORTH), new String[]{"# #", "# #", "###"});
+//        tiles.put(new CellState(Direction.SOUTH), new String[]{"###", "# #", "# #"});
+//        tiles.put(new CellState(Direction.EAST), new String[]{"###", "#  ", "###"});
+//        tiles.put(new CellState(Direction.WEST), new String[]{"###", "  #", "###"});
+//        tiles.put(new CellState(Direction.NORTH, Direction.SOUTH), new String[]{"# #", "# #", "# #"});
+//        tiles.put(new CellState(Direction.NORTH, Direction.WEST), new String[]{"# #", "  #", "###"});
+//        tiles.put(new CellState(Direction.NORTH, Direction.EAST), new String[]{"# #", "#  ", "###"});
+//        tiles.put(new CellState(Direction.SOUTH, Direction.WEST), new String[]{"###", "  #", "# #"});
+//        tiles.put(new CellState(Direction.SOUTH, Direction.EAST), new String[]{"###", "#  ", "# #"});
+//        tiles.put(new CellState(Direction.WEST, Direction.EAST), new String[]{"###", "   ", "###"});
+//        tiles.put(new CellState(Direction.NORTH, Direction.SOUTH, Direction.EAST), new String[]{"# #", "#  ", "# #"});
+//        tiles.put(new CellState(Direction.NORTH, Direction.SOUTH, Direction.WEST), new String[]{"# #", "  #", "# #"});
+//        tiles.put(new CellState(Direction.NORTH, Direction.WEST, Direction.EAST), new String[]{"# #", "   ", "###"});
+//        tiles.put(new CellState(Direction.SOUTH, Direction.WEST, Direction.EAST), new String[]{"###", "   ", "# #"});
+//        tiles.put(new CellState(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST), new String[]{"# #", "   ", "# #"});
+//        tiles.put(new CellState(NONE, Direction.NORTH, Direction.SOUTH), new String[]{"#-#", " A ", "#-#"});
+//        tiles.put(new CellState(NONE, Direction.WEST, Direction.EAST), new String[]{"# #", "|A|", "# #"});
+//        tiles.put(new CellState(PORTAL, Direction.NORTH, Direction.SOUTH), new String[]{"#-#", " B ", "#-#"});
+//        tiles.put(new CellState(PORTAL, Direction.WEST, Direction.EAST), new String[]{"# #", "|B|", "# #"});
+//
+//        for (int y = 0; y < this.zTotal; ++y) {
+//            for (var q : FEATURE_SET_C) {
+//                for (int x = 0; x < this.xTotal; ++x) {
+//                    CellState c = this.grid[y][x];
+//                    if (c != null && tiles.containsKey(c)) {
+////                        TODO:What is this?
+////                        System.out.print(((String[]) tiles.get(c))[q.ordinal()]);
+//                    } else if (c != null && c.feature == PORTAL) {
+//                        if ((q != NONE
+//                                ||
+//                                !c.availableDirs.contains(Direction.NORTH))
+//                                && (q != PORTAL || !c.availableDirs.contains(Direction.SOUTH))
+//                        ) {
+//                            if (q == NONE
+//                                    && c.availableDirs.contains(Direction.WEST)
+//                                    && !c.availableDirs.contains(Direction.EAST)
+//                            ) {
+//                                System.out.print("-PP");
+//                            } else if (q == NONE
+//                                    && c.availableDirs.contains(Direction.EAST)
+//                                    && !c.availableDirs.contains(Direction.WEST)
+//                            ) {
+//                                System.out.print("PP-");
+//                            } else if (
+//                                    q == NONE
+//                                            && c.availableDirs.contains(Direction.WEST)
+//                                            && c.availableDirs.contains(Direction.EAST)
+//                            ) {
+//                                System.out.print("-P-");
+//                            } else {
+//                                System.out.print("PPP");
+//                            }
+//                        } else {
+//                            System.out.print("P|P");
+//                        }
+//                    } else if (c != null && c.feature != NONE) {
+//                        System.out.print("FFF");
+//                    }
+//                }
+//
+//                System.out.println();
+//            }
+//        }
+//
+//    }
 }

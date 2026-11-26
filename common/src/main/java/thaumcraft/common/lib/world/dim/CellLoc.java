@@ -1,5 +1,7 @@
 package thaumcraft.common.lib.world.dim;
 
+import net.minecraft.core.Direction;
+
 public class CellLoc implements Comparable<CellLoc> {
    public int x;
    public int z;
@@ -11,6 +13,10 @@ public class CellLoc implements Comparable<CellLoc> {
       this.x = x;
       this.z = z;
    }
+   public CellLoc(int x, int z,Direction dir){
+      this.x = x + dir.getStepX();
+      this.z = z + dir.getStepZ();
+   }
 
    public CellLoc(CellLoc c) {
       this.x = c.x;
@@ -18,11 +24,10 @@ public class CellLoc implements Comparable<CellLoc> {
    }
 
    public boolean equals(Object o) {
-      if (!(o instanceof CellLoc)) {
+      if (!(o instanceof CellLoc chunkcoordinates)) {
          return false;
       } else {
-         CellLoc chunkcoordinates = (CellLoc)o;
-         return this.x == chunkcoordinates.x && this.z == chunkcoordinates.z;
+          return this.x == chunkcoordinates.x && this.z == chunkcoordinates.z;
       }
    }
 

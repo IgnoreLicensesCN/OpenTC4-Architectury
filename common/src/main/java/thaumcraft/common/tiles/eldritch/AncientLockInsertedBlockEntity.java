@@ -12,6 +12,7 @@ import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.lib.network.fx.PacketFXBlockSparkleS2C;
 import thaumcraft.common.lib.world.dim.*;
+import thaumcraft.common.lib.world.dim.cell.CellState;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 
 public class AncientLockInsertedBlockEntity extends BlockEntity {
@@ -54,7 +55,7 @@ public class AncientLockInsertedBlockEntity extends BlockEntity {
 
             for(int a = -2; a <= 2; ++a) {
                 for(int b = -2; b <= 2; ++b) {
-                    Cell c = MazeHandler.getFromHashMap(new CellLoc(cx + a, cz + b));
+                    CellState c = MazeHandler.getFromHashMap(new CellLoc(cx + a, cz + b));
                     if (c != null && c.feature == 2) {
                         centerx = cx + a;
                         centerz = cz + b;

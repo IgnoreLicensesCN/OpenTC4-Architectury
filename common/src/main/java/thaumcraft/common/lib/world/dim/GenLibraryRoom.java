@@ -3,11 +3,12 @@ package thaumcraft.common.lib.world.dim;
 import net.minecraft.world.level.Level;
 import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.lib.world.dim.cell.CellState;
 
 import java.util.Random;
 
 public class GenLibraryRoom extends GenCommon {
-   static void generateRoom(Level world, Random random, int cx, int cz, int y, Cell cell) {
+   static void generateRoom(Level world, Random random, int cx, int cz, int y, CellState cellState) {
       int x = cx * 16;
       int z = cz * 16;
 
@@ -15,7 +16,7 @@ public class GenLibraryRoom extends GenCommon {
          for(int b = 1; b <= 15; ++b) {
             for(int c = 0; c < 13; ++c) {
                if (a == 1 || a == 15 || b == 1 || b == 15) {
-                  placeBlock(world, x + a, y + c, z + b, 1, cell);
+                  placeBlock(world, x + a, y + c, z + b, 1, cellState);
                }
             }
          }
@@ -24,8 +25,8 @@ public class GenLibraryRoom extends GenCommon {
       for(int a = 2; a <= 14; ++a) {
          for(int b = 2; b <= 14; ++b) {
             for(int c = 1; c < 12; ++c) {
-               if ((a == 2 || a == 14 || b == 2 || b == 14) && (a != 2 || b <= 3 || b >= 12 || !cell.west || c >= 10) && (a != 14 || b <= 3 || b >= 12 || !cell.east || c >= 10) && (b != 2 || a <= 3 || a >= 12 || !cell.north || c >= 10) && (b != 14 || a <= 3 || a >= 12 || !cell.south || c >= 10)) {
-                  placeBlock(world, x + a, y + c, z + b, 8, cell);
+               if ((a == 2 || a == 14 || b == 2 || b == 14) && (a != 2 || b <= 3 || b >= 12 || !cellState.west || c >= 10) && (a != 14 || b <= 3 || b >= 12 || !cellState.east || c >= 10) && (b != 2 || a <= 3 || a >= 12 || !cellState.north || c >= 10) && (b != 14 || a <= 3 || a >= 12 || !cellState.south || c >= 10)) {
+                  placeBlock(world, x + a, y + c, z + b, 8, cellState);
                }
             }
          }
@@ -35,7 +36,7 @@ public class GenLibraryRoom extends GenCommon {
          for(int b = 3; b <= 13; ++b) {
             for(int c = 2; c < 11; ++c) {
                if (a == 3 || a == 13 || b == 3 || b == 13) {
-                  placeBlock(world, x + a, y + c, z + b, 2, cell);
+                  placeBlock(world, x + a, y + c, z + b, 2, cellState);
                }
             }
          }
@@ -43,16 +44,16 @@ public class GenLibraryRoom extends GenCommon {
 
       for(int a = 2; a <= 14; ++a) {
          for(int b = 2; b <= 14; ++b) {
-            placeBlock(world, x + a, y - 1, z + b, 1, cell);
-            placeBlock(world, x + a, y, z + b, 8, cell);
-            placeBlock(world, x + a, y + 1, z + b, 2, cell);
-            placeBlock(world, x + a, y + 12, z + b, 1, cell);
-            placeBlock(world, x + a, y + 11, z + b, 8, cell);
-            placeBlock(world, x + a, y + 10, z + b, 2, cell);
+            placeBlock(world, x + a, y - 1, z + b, 1, cellState);
+            placeBlock(world, x + a, y, z + b, 8, cellState);
+            placeBlock(world, x + a, y + 1, z + b, 2, cellState);
+            placeBlock(world, x + a, y + 12, z + b, 1, cellState);
+            placeBlock(world, x + a, y + 11, z + b, 8, cellState);
+            placeBlock(world, x + a, y + 10, z + b, 2, cellState);
             if (a > 3 && a < 13 && b > 3 && b < 13) {
                if (a <= 5 && b <= 5 || a <= 5 && b >= 11 || a >= 11 && b <= 5 || a >= 11 && b >= 11) {
-                  placeBlock(world, x + a, y + 2, z + b, 2, cell);
-                  placeBlock(world, x + a, y + 9, z + b, 2, cell);
+                  placeBlock(world, x + a, y + 2, z + b, 2, cellState);
+                  placeBlock(world, x + a, y + 9, z + b, 2, cellState);
                }
 
                if (a == 5 && b == 5 || a == 5 && b == 11 || a == 11 && b == 5 || a == 11 && b == 11) {
@@ -64,14 +65,14 @@ public class GenLibraryRoom extends GenCommon {
       }
 
       for(int g = 0; g < 5; ++g) {
-         placeBlock(world, x + 6 + g, y + 2, z + 4, 10, Direction.NORTH, cell);
-         placeBlock(world, x + 6 + g, y + 2, z + 12, 10, Direction.SOUTH, cell);
-         placeBlock(world, x + 12, y + 2, z + 6 + g, 10, Direction.EAST, cell);
-         placeBlock(world, x + 4, y + 2, z + 6 + g, 10, Direction.WEST, cell);
-         placeBlock(world, x + 6 + g, y + 9, z + 4, 11, Direction.NORTH, cell);
-         placeBlock(world, x + 6 + g, y + 9, z + 12, 11, Direction.SOUTH, cell);
-         placeBlock(world, x + 12, y + 9, z + 6 + g, 11, Direction.EAST, cell);
-         placeBlock(world, x + 4, y + 9, z + 6 + g, 11, Direction.WEST, cell);
+         placeBlock(world, x + 6 + g, y + 2, z + 4, 10, Direction.NORTH, cellState);
+         placeBlock(world, x + 6 + g, y + 2, z + 12, 10, Direction.SOUTH, cellState);
+         placeBlock(world, x + 12, y + 2, z + 6 + g, 10, Direction.EAST, cellState);
+         placeBlock(world, x + 4, y + 2, z + 6 + g, 10, Direction.WEST, cellState);
+         placeBlock(world, x + 6 + g, y + 9, z + 4, 11, Direction.NORTH, cellState);
+         placeBlock(world, x + 6 + g, y + 9, z + 12, 11, Direction.SOUTH, cellState);
+         placeBlock(world, x + 12, y + 9, z + 6 + g, 11, Direction.EAST, cellState);
+         placeBlock(world, x + 4, y + 9, z + 6 + g, 11, Direction.WEST, cellState);
       }
 
       world.setBlock(x + 5, y + 4, z + 5, ConfigBlocks.blockEldritch, 5, 3);
@@ -96,6 +97,6 @@ public class GenLibraryRoom extends GenCommon {
       world.setBlock(x + 8, y + 9, z + 8, ConfigBlocks.blockCosmeticSolid, 15, 3);
       world.setBlock(x + 8, y + 8, z + 8, ConfigBlocks.blockEldritch, 5, 3);
       world.setBlock(x + 8, y + 7, z + 8, ConfigBlocks.blockSlabStone, 9, 3);
-      GenCommon.generateConnections(world, random, cx, cz, y, cell, 3, true);
+      GenCommon.generateConnections(world, random, cx, cz, y, cellState, 3, true);
    }
 }
