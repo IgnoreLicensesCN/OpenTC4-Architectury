@@ -5,13 +5,15 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class HolderCache<RegistryClass> {
 
-    private final Map<Level, Map<ResourceKey<RegistryClass>, Holder<RegistryClass>>> holderCacheForResKey = new MapMaker().weakKeys().makeMap();
+    private final Map<LevelReader, Map<ResourceKey<RegistryClass>, Holder<RegistryClass>>> holderCacheForResKey = new MapMaker().weakKeys().makeMap();
     private final ResourceKey<Registry<RegistryClass>> registry;
 
     private static final Map<ResourceKey<Registry<?>>,HolderCache<?>> allInstancesMap = new MapMaker().weakKeys().makeMap();
@@ -19,7 +21,7 @@ public class HolderCache<RegistryClass> {
         this.registry = registry;
     }
 
-    public Holder<RegistryClass> getHolder(Level level, ResourceKey<RegistryClass> key) {
+    public Holder<RegistryClass> getHolder(LevelReader level, ResourceKey<RegistryClass> key) {
         return holderCacheForResKey
                 .computeIfAbsent(level, k -> new ConcurrentHashMap<>())
                 .computeIfAbsent(key,_key -> level.registryAccess().registryOrThrow(registry).getHolderOrThrow(_key));

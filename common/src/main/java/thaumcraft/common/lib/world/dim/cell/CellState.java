@@ -3,7 +3,7 @@ package thaumcraft.common.lib.world.dim.cell;
 import com.linearity.annotations.UtilityLikeAbstraction;
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Nullable;
-import thaumcraft.common.lib.world.dim.CellFeature;
+import thaumcraft.common.lib.world.dim.cell.features.CellFeature;
 import thaumcraft.common.lib.world.dim.cell.properties.CellStateProperty;
 
 import java.util.HashMap;

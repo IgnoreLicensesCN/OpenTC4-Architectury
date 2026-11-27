@@ -122,11 +122,9 @@ public class Consts {
                 new UnmodifiableObject2IntMapAccessor<>(WAND_UPGRADE,new FocusUpgradeTypeTagAccessor(WAND_UPGRADE));
     }
 
-    public static class EldritchRingMapToMazeSize{
-        private static final String WIDTH = "width";
-        public static final IntTagAccessor WIDTH_ACCESSOR = new IntTagAccessor(WIDTH);
-        private static final String HEIGHT = "height";
-        public static final IntTagAccessor HEIGHT_ACCESSOR = new IntTagAccessor(HEIGHT);
+    public static class StructureInfoAccessor {
+        public static final IntTagAccessor WIDTH_ACCESSOR = new IntTagAccessor("width");
+        public static final IntTagAccessor HEIGHT_ACCESSOR = new IntTagAccessor("height");
     }
 
     public static class OwnedBlockEntityTagAccessors {

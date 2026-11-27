@@ -4,8 +4,6 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
@@ -32,7 +30,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import org.jetbrains.annotations.NotNull;
-import thaumcraft.common.Thaumcraft;
 
 import java.util.Optional;
 import java.util.Set;
@@ -184,7 +181,7 @@ public class MoundStructure extends Structure {
     public static class MoundStructurePiece extends StructurePiece {
 
 
-        public MoundStructurePiece(StructurePieceSerializationContext structurePieceSerializationContext, CompoundTag tag) {
+        public MoundStructurePiece(StructurePieceSerializationContext context, CompoundTag tag) {
             super(MOUND_STRUCTURE_PIECE(), tag);
         }
 

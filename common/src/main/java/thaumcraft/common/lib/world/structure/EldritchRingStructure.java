@@ -24,7 +24,6 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.lib.world.dim.MazeThread;
 import thaumcraft.common.lib.world.registries.ThaumcraftStructures;
 
 import java.util.HashSet;
@@ -181,8 +180,8 @@ public class EldritchRingStructure extends Structure {
 
         public EldritchRingStructurePiece(StructurePieceSerializationContext context, CompoundTag tag) {
             super(ELDRITCH_RING_STRUCTURE_PIECE(), tag);
-            this.width = Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.readIntFromCompoundTag(tag);
-            this.height = Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.readIntFromCompoundTag(tag);
+            this.width = Consts.StructureInfoAccessor.WIDTH_ACCESSOR.readIntFromCompoundTag(tag);
+            this.height = Consts.StructureInfoAccessor.HEIGHT_ACCESSOR.readIntFromCompoundTag(tag);
         }
 
         public EldritchRingStructurePiece(BlockPos pos,int width,int height) {
@@ -199,14 +198,14 @@ public class EldritchRingStructure extends Structure {
 
         public EldritchRingStructurePiece(StructurePieceType type, CompoundTag nbt) {
             super(type, nbt);
-            this.width = Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.readIntFromCompoundTag(nbt);
-            this.height = Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.readIntFromCompoundTag(nbt);
+            this.width = Consts.StructureInfoAccessor.WIDTH_ACCESSOR.readIntFromCompoundTag(nbt);
+            this.height = Consts.StructureInfoAccessor.HEIGHT_ACCESSOR.readIntFromCompoundTag(nbt);
         }
 
         @Override
         protected void addAdditionalSaveData(StructurePieceSerializationContext structurePieceSerializationContext, CompoundTag compoundTag) {
-            Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.writeIntToCompoundTag(compoundTag,this.width);
-            Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.writeIntToCompoundTag(compoundTag,this.height);
+            Consts.StructureInfoAccessor.WIDTH_ACCESSOR.writeIntToCompoundTag(compoundTag,this.width);
+            Consts.StructureInfoAccessor.HEIGHT_ACCESSOR.writeIntToCompoundTag(compoundTag,this.height);
         }
 
         @Override

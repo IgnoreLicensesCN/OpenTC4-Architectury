@@ -1,5 +1,6 @@
 package thaumcraft.common.blocks;
 
+import com.google.common.collect.ImmutableSet;
 import com.linearity.colorannotation.annotation.RGBColor;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -9,6 +10,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.item.BannerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -58,6 +60,8 @@ import thaumcraft.common.blocks.worldgenerated.taint.*;
 import thaumcraft.common.lib.world.treegrower.GreatwoodTreeGrower;
 import thaumcraft.common.lib.world.treegrower.SilverwoodTreeGrower;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
+
+import java.util.Set;
 
 import static com.linearity.opentc4.utils.LevelBlockEntityAccessing.getExistingBlockEntity;
 import static thaumcraft.common.items.ThaumcraftItems.getCultistBannerStack;
@@ -1535,14 +1539,26 @@ public class ThaumcraftBlocks {
                         "frost_focus_particle_provider",
                         () -> new Block(BlockBehaviour.Properties.copy(Blocks.GLASS))
                 );
-
-        static {
+        public static void init(){
             BLOCKS.register();
         }
     }
 
     public static void init() {
+        Registry.init();
         ThaumcraftFluids.init();
+        PoiTypeRegistry.init();
+    }
+
+    public static class PoiTypeRegistry {
+        public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(Thaumcraft.MOD_ID, Registries.POINT_OF_INTEREST_TYPE);
+        public static final RegistrySupplier<PoiType> POI_ELDRITCH_PORTAL = POI_TYPES.register(
+                "poi_eldritch_portal",
+                () -> new PoiType(ImmutableSet.copyOf(ThaumcraftBlockInstances.ELDRITCH_PORTAL().getStateDefinition().getPossibleStates()),0,1)
+        );
+        public static void init(){
+            POI_TYPES.register();
+        }
     }
 
     //stole from mc source
@@ -1639,6 +1655,9 @@ public class ThaumcraftBlocks {
         public static final TagKey<Block> NOT_BREAK_HARVESTABLE = TagKey.create(
                 Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "not_break_harvestable")
         );
+        public static final TagKey<Block> ELDRITCH_BLOCK = TagKey.create(
+                Registries.BLOCK,new ResourceLocation(Thaumcraft.MOD_ID, "eldritch_block")
+        );//for maze generation
     }
 
     //rotation:

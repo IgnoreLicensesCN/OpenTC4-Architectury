@@ -17,8 +17,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
-import thaumcraft.common.lib.world.dim.MazeHandler;
-import thaumcraft.common.lib.world.dim.MazeThread;
 import thaumcraft.common.tiles.ThaumcraftBlockEntities;
 import thaumcraft.common.tiles.eldritch.EldritchAltarBlockEntity;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
@@ -80,19 +78,19 @@ public class EldritchAltarBlock extends SuppressedWarningBlock implements Entity
         return null;
     }
 
-    public boolean checkForMaze(Level level, BlockState state, BlockPos pos) {
-        int w = 15 + level.random.nextInt(8) * 2;
-        int h = 15 + level.random.nextInt(8) * 2;
-        int x = pos.getX();
-        int z = pos.getZ();
-        if (!MazeHandler.mazesInRange(x >> 4, z >> 4, w, h)) {
-            Thread t = new Thread(new MazeThread(x >> 4, z >> 4, w, h, level.random.nextLong()));
-            t.start();
-            return false;
-        } else {
-            return true;
-        }
-    }
+//    public boolean checkForMaze(Level level, BlockState state, BlockPos pos) {
+//        int w = 15 + level.random.nextInt(8) * 2;
+//        int h = 15 + level.random.nextInt(8) * 2;
+//        int x = pos.getX();
+//        int z = pos.getZ();
+//        if (!MazeHandler.mazesInRange(x >> 4, z >> 4, w, h)) {
+//            Thread t = new Thread(new MazeThread(x >> 4, z >> 4, w, h, level.random.nextLong()));
+//            t.start();
+//            return false;
+//        } else {
+//            return true;
+//        }
+//    }
 
     public boolean addEye(Level level, BlockState state, BlockPos pos){
         int eyes = state.getValue(ELDRITCH_ALTAR_EYES);
@@ -102,7 +100,7 @@ public class EldritchAltarBlock extends SuppressedWarningBlock implements Entity
         if (newEyeCount >= AS_SPAWNER_REQUIRES_EYE){
             setState.setValue(IS_SPAWNER, true);
             setState.setValue(SPAWNER_TYPE,1);
-            checkForMaze(level,state,pos);
+//            checkForMaze(level,state,pos);
         }
         return level.setBlock(pos,setState, 3);
     }

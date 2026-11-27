@@ -25,6 +25,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 import static thaumcraft.common.lib.world.dim.cell.CellState.cellHasConnectedDirection;
+import static thaumcraft.common.lib.world.dim.cell.CellState.getCellFeature;
 import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.ThaumcraftStructureTypeInstances.MAZE_STRUCTURE_PIECE;
 import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.ThaumcraftStructureTypeInstances.MAZE_STRUCTURE_TYPE;
 
@@ -48,16 +49,7 @@ public class MazeStructure extends Structure {
         var random = generationContext.random();
         var x = generationContext.chunkPos().x;
         var z = generationContext.chunkPos().z;
-        var xLong = ((long)x) + (1L<<32);
-        var zLong = ((long)z) + (1L<<32);
-        var xScaled = xLong / MAZE_MAX_CHUNK_SIZE;
-        var zScaled = zLong / MAZE_MIN_CHUNK_SIZE;
-        var xPrepareBack = xScaled - OFFSET_BACK;
-        var zPrepareBack = zScaled - OFFSET_BACK;
-        var xScaledBack = (int)(xPrepareBack * MAZE_MAX_CHUNK_SIZE);
-        var zScaledBack = (int)(zPrepareBack * MAZE_MIN_CHUNK_SIZE);
-
-        var pickedPos = new BlockPos(xScaledBack * 16, MAZE_AT_Y, zScaledBack * 16);
+        var pickedPos = getPosBelongsToMazePos(x,z);
 
         return Optional.of(new GenerationStub(
                 pickedPos, builder -> builder.addPiece(
@@ -69,13 +61,37 @@ public class MazeStructure extends Structure {
         )));
     }
 
+    public static BlockPos getPosBelongsToMazePos(int x,int z){
+        var xLong = ((long)x) + (1L<<32);
+        var zLong = ((long)z) + (1L<<32);
+        var xScaled = xLong / MAZE_MAX_CHUNK_SIZE;
+        var zScaled = zLong / MAZE_MIN_CHUNK_SIZE;
+        var xPrepareBack = xScaled - OFFSET_BACK;
+        var zPrepareBack = zScaled - OFFSET_BACK;
+        var xScaledBack = (int)(xPrepareBack * MAZE_MAX_CHUNK_SIZE);
+        var zScaledBack = (int)(zPrepareBack * MAZE_MIN_CHUNK_SIZE);
+
+        return new BlockPos(xScaledBack * 16, MAZE_AT_Y, zScaledBack * 16);
+    }
+
     @Override
     public @NotNull StructureType<?> type() {
         return MAZE_STRUCTURE_TYPE();
     }
 
     @Override
-    public StructureStart generate(RegistryAccess registryAccess, ChunkGenerator chunkGenerator, BiomeSource biomeSource, RandomState randomState, StructureTemplateManager structureTemplateManager, long l, ChunkPos chunkPos, int i, LevelHeightAccessor levelHeightAccessor, Predicate<Holder<Biome>> predicate) {
+    public @NotNull StructureStart generate(
+            RegistryAccess registryAccess,
+            ChunkGenerator chunkGenerator,
+            BiomeSource biomeSource,
+            RandomState randomState,
+            StructureTemplateManager structureTemplateManager,
+            long l,
+            ChunkPos chunkPos,
+            int i,
+            LevelHeightAccessor levelHeightAccessor,
+            Predicate<Holder<Biome>> predicate
+    ) {
         //TODO
         return super.generate(registryAccess, chunkGenerator, biomeSource, randomState, structureTemplateManager, l, chunkPos, i, levelHeightAccessor, predicate);
     }
@@ -84,13 +100,13 @@ public class MazeStructure extends Structure {
     public static class MazeStructurePiece extends StructurePiece {
 //        public static final StructurePieceType TYPE = register("maze_piece", EldritchRingStructure.EldritchRingStructurePiece::new);
 
-        private final int width;
-        private final int height;
+        protected final int width;
+        protected final int height;
 
-        public MazeStructurePiece(StructurePieceSerializationContext structurePieceSerializationContext, CompoundTag tag) {
+        public MazeStructurePiece(StructurePieceSerializationContext context, CompoundTag tag) {
             super(MAZE_STRUCTURE_PIECE(), tag);
-            this.width = Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.readIntFromCompoundTag(tag);
-            this.height = Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.readIntFromCompoundTag(tag);
+            this.width = Consts.StructureInfoAccessor.WIDTH_ACCESSOR.readIntFromCompoundTag(tag);
+            this.height = Consts.StructureInfoAccessor.HEIGHT_ACCESSOR.readIntFromCompoundTag(tag);
         }
 
         public MazeStructurePiece(BlockPos pos,int width,int height) {
@@ -107,14 +123,14 @@ public class MazeStructure extends Structure {
 
         public MazeStructurePiece(StructurePieceType type, CompoundTag nbt) {
             super(type, nbt);
-            this.width = Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.readIntFromCompoundTag(nbt);
-            this.height = Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.readIntFromCompoundTag(nbt);
+            this.width = Consts.StructureInfoAccessor.WIDTH_ACCESSOR.readIntFromCompoundTag(nbt);
+            this.height = Consts.StructureInfoAccessor.HEIGHT_ACCESSOR.readIntFromCompoundTag(nbt);
         }
 
         @Override
         protected void addAdditionalSaveData(StructurePieceSerializationContext structurePieceSerializationContext, CompoundTag compoundTag) {
-            Consts.EldritchRingMapToMazeSize.WIDTH_ACCESSOR.writeIntToCompoundTag(compoundTag,this.width);
-            Consts.EldritchRingMapToMazeSize.HEIGHT_ACCESSOR.writeIntToCompoundTag(compoundTag,this.height);
+            Consts.StructureInfoAccessor.WIDTH_ACCESSOR.writeIntToCompoundTag(compoundTag,this.width);
+            Consts.StructureInfoAccessor.HEIGHT_ACCESSOR.writeIntToCompoundTag(compoundTag,this.height);
         }
 
         @Override
@@ -136,15 +152,42 @@ public class MazeStructure extends Structure {
             var cellGrid = mazeGen.cellGrid;
             for (int z=0;z<cellGrid.length;z++){
                 for (int x=0;x<cellGrid[z].length;x++){
-                    placeGrid(cellGrid[z][x],x,z,centerXZMinY,width,height,boundingBox);
+                    placeGrid(level,structureManager,chunkGenerator,random,boundingBox,chunkPos,cellGrid[z][x],x,z,centerXZMinY,width,height);
+                }
+            }
+            for (int z=0;z<cellGrid.length;z++){
+                for (int x=0;x<cellGrid[z].length;x++){
+                    placeGridAfter(level,structureManager,chunkGenerator,random,boundingBox,chunkPos,cellGrid[z][x],x,z,centerXZMinY,width,height);
                 }
             }
         }
 
-        protected void placeGrid(CellState cellState, int gridX, int gridZ, BlockPos centerXZMinY, int width, int height, BoundingBox boundingBox) {
-            if (cellState == null){return;}
-            if (!cellHasConnectedDirection(cellState)){return;}
+        protected void placeGrid(WorldGenLevel level,
+                                 StructureManager structureManager,
+                                 ChunkGenerator chunkGenerator,
+                                 RandomSource random,
+                                 BoundingBox boundingBox,
+                                 ChunkPos chunkPos,
+                                 CellState cellState, int gridX, int gridZ, BlockPos centerXZMinY, int width, int height) {
+            if (shouldIgnoreCell(cellState)) return;
+            getCellFeature(cellState).placeFeatureAt(level,random,gridX,gridZ,centerXZMinY.getY(),cellState);
+        }
+        protected void placeGridAfter(WorldGenLevel level,
+                                 StructureManager structureManager,
+                                 ChunkGenerator chunkGenerator,
+                                 RandomSource random,
+                                 BoundingBox boundingBox,
+                                 ChunkPos chunkPos,
+                                 CellState cellState, int gridX, int gridZ, BlockPos centerXZMinY, int width, int height) {
+            if (shouldIgnoreCell(cellState)) return;
+            getCellFeature(cellState).placeFeatureAfter(level,random,gridX,gridZ,centerXZMinY.getY(),cellState);
+        }
 
+        public static boolean shouldIgnoreCell(CellState cellState) {
+            if (cellState == null){
+                return true;
+            }
+            return !cellHasConnectedDirection(cellState);
         }
 
     }

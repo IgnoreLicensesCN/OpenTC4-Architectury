@@ -941,6 +941,7 @@ public abstract class BaseGolemEntity
         fishingHooks.removeIf(s -> s.get() == null);
         return fishingHooks;
     }
+
     public void opentc4$maybeClearFishingHooksOnRemoved(){
         fishingHooks.clear();
     }

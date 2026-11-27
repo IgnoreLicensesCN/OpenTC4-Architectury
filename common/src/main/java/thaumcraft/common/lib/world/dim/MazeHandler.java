@@ -198,9 +198,9 @@ public class MazeHandler {
       CellState cellState = getFromHashMap(loc);
       if (cellState != null) {
          switch (cellState.feature) {
-            case 1:
-               GenPortal.generatePortal(world, random, cx, cz, 50, cellState);
-               break;
+//            case 1:
+//               GenPortal.generatePortal(world, random, cx, cz, 50, cellState);
+//               break;
             case 2:
             case 3:
             case 4:
@@ -216,14 +216,14 @@ public class MazeHandler {
             case 8:
                GenLibraryRoom.generateRoom(world, random, cx, cz, 50, cellState);
                break;
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            default:
-               generatePassage(world, random, cx, cz, 50, cellState);
+//            case 9:
+//            case 10:
+//            case 11:
+//            case 12:
+//            case 13:
+//            case 14:
+//            default:
+//               generatePassage(world, random, cx, cz, 50, cellState);
          }
 
          GenCommon.processDecorations(world);

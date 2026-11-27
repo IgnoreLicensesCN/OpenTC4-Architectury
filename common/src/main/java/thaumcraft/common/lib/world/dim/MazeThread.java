@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 //TODO:[maybe wont finished]make better
+@Deprecated(forRemoval = true)
 public class MazeThread implements Runnable {
     int chunkX;
     int chunkZ;

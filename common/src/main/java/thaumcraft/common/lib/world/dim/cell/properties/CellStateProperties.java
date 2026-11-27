@@ -1,7 +1,7 @@
 package thaumcraft.common.lib.world.dim.cell.properties;
 
 import net.minecraft.core.Direction;
-import thaumcraft.common.lib.world.dim.CellFeature;
+import thaumcraft.common.lib.world.dim.cell.features.CellFeature;
 
 import java.util.*;
 
@@ -26,7 +26,14 @@ public class CellStateProperties {
     public static void registerCellFeature(CellFeature feature) {
         CELL_FEATURES.add(feature);
     }
+
+    private static boolean inited = false;
     public static void init(){
+        if (inited) {
+            return;
+        }
+        inited = true;
+        CellFeature.init();
         registerCellStateProperty(CONNECT_NORTH);
         registerCellStateProperty(CONNECT_SOUTH);
         registerCellStateProperty(CONNECT_EAST);
@@ -38,19 +45,19 @@ public class CellStateProperties {
         registerCellStateProperty(CELL_FEATURE);
         registerCellFeature(CellFeature.NONE);
         registerCellFeature(CellFeature.PORTAL);
-        registerCellFeature(CellFeature.BOSS_ROOM);
-        registerCellFeature(CellFeature.BOSS_ROOM_1);
-        registerCellFeature(CellFeature.BOSS_ROOM_2);
-        registerCellFeature(CellFeature.BOSS_ROOM_3);
+        registerCellFeature(CellFeature.BOSS_ROOM_UPPER_LEFT);
+        registerCellFeature(CellFeature.BOSS_ROOM_BOTTOM_LEFT);
+        registerCellFeature(CellFeature.BOSS_ROOM_UPPER_RIGHT);
+        registerCellFeature(CellFeature.BOSS_ROOM_BOTTOM_RIGHT);
         registerCellFeature(CellFeature.KEY_ROOM);
         registerCellFeature(CellFeature.NEST_ROOM);
         registerCellFeature(CellFeature.LIBRARY_ROOM);//8
         registerCellFeature(CellFeature.PASSAGE);
         registerCellFeature(CellFeature.PASSAGE_1);//10
         registerCellFeature(CellFeature.PASSAGE_WITH_TRAP);
-        registerCellFeature(CellFeature.PASSAGE_3);//12
-        registerCellFeature(CellFeature.PASSAGE_4);
-        registerCellFeature(CellFeature.PASSAGE_5);
+        registerCellFeature(CellFeature.CRAB_SPAWNER_PASSAGE);//12
+        registerCellFeature(CellFeature.FIBRE_PASSAGE);
+        registerCellFeature(CellFeature.MIND_SPIDER_SPAWNER_PASSAGE);
         registerCellFeature(CellFeature.INVALID);//99
     }
 

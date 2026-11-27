@@ -1,5 +1,6 @@
 package thaumcraft.common.lib.world.dim;
 
+import com.linearity.opentc4.utils.WrappedRandomSource;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import org.apache.commons.lang3.ArrayUtils;
@@ -10,15 +11,15 @@ import thaumcraft.common.lib.world.dim.cell.CellState;
 import java.util.*;
 import java.util.function.Predicate;
 
-import static thaumcraft.common.lib.world.dim.CellFeature.*;
+import static thaumcraft.common.lib.world.dim.cell.features.CellFeature.*;
 import static thaumcraft.common.lib.world.dim.cell.CellState.*;
 
 //TODO:[maybe wont finished]Language candy(from kt?) for better performance...but readable first
+//TODO:[maybe wont finished]api to extend generations
 public class MazeGenerator {
     public final int xTotal;
     public final int zTotal;
-    public final long seed;
-    public final Random rand;
+    public final WrappedRandomSource rand;
     public final @Nullable CellState[][] cellGrid;//[z][x]
     //element:
     //XXXX XXXX XXXX XXXX XXXX XXXX XXDD DDDD
@@ -39,10 +40,12 @@ public class MazeGenerator {
     }
 
     public MazeGenerator(int xTotal, int zTotal, long seed) {
+        this(xTotal,zTotal,RandomSource.create(seed));
+    }
+    public MazeGenerator(int xTotal, int zTotal, RandomSource rand) {
         this.xTotal = xTotal;
         this.zTotal = zTotal;
-        this.seed = seed;
-        this.rand = new Random(seed);
+        this.rand = new WrappedRandomSource(rand);
         this.cellGrid = new CellState[zTotal][xTotal];
     }
 
@@ -103,10 +106,10 @@ public class MazeGenerator {
         assert this.cellGrid[pickedCornerZ][pickedCornerX + 1] != null;
         assert this.cellGrid[pickedCornerZ + 1][pickedCornerX] != null;
         assert this.cellGrid[pickedCornerZ + 1][pickedCornerX + 1] != null;
-        setCellFeature(this.cellGrid[pickedCornerZ][pickedCornerX],PORTAL);
-        setCellFeature(this.cellGrid[pickedCornerZ][pickedCornerX + 1],BOSS_ROOM);
-        setCellFeature(this.cellGrid[pickedCornerZ + 1][pickedCornerX],BOSS_ROOM_2);
-        setCellFeature(this.cellGrid[pickedCornerZ + 1][pickedCornerX + 1],BOSS_ROOM_3);
+        setCellFeature(this.cellGrid[pickedCornerZ][pickedCornerX], BOSS_ROOM_UPPER_LEFT);
+        setCellFeature(this.cellGrid[pickedCornerZ + 1][pickedCornerX], BOSS_ROOM_UPPER_RIGHT);
+        setCellFeature(this.cellGrid[pickedCornerZ + 1][pickedCornerX + 1], BOSS_ROOM_BOTTOM_RIGHT);
+        setCellFeature(this.cellGrid[pickedCornerZ][pickedCornerX + 1], BOSS_ROOM_BOTTOM_LEFT);
         return new CellLoc(pickedCornerX,pickedCornerZ);
     }
     public boolean generate() {
@@ -159,7 +162,7 @@ public class MazeGenerator {
                     }
                 }
                 if (c != null && getCellFeature(c) == NONE && hasAnyDir && this.rand.nextInt(25) == 0) {
-                    setCellFeature(c, FEATURE_SET_B[this.rand.nextInt(FEATURE_SET_B.length)]);
+                    setCellFeature(c, FEATURE_SET_B.getRandom(rand));
                 }
             }
         }
@@ -178,7 +181,7 @@ public class MazeGenerator {
             CellLoc llInternal = deadEnds.get(rInternal);
             CellState cInternal = this.cellGrid[llInternal.z][llInternal.x];
             if (getCellFeature(cInternal) == NONE) {
-                setCellFeature(cInternal, FEATURE_SET_A[this.rand.nextInt(FEATURE_SET_A.length)]);
+                setCellFeature(cInternal, FEATURE_SET_A.getRandom(rand));
                 deadEnds.remove(rInternal);
                 ++rInternal;
             }
@@ -189,7 +192,7 @@ public class MazeGenerator {
         if (!couldBeDeadEnds.isEmpty()) {
             var pickedDeadEnd = couldBeDeadEnds.remove(rand.nextInt(couldBeDeadEnds.size()));
             for (var dir : Direction.Plane.HORIZONTAL) {
-                connectTo(pickedDeadEnd.x,pickedDeadEnd.z,dir,c -> !c.isEmpty() && !getCellFeature(c).preventInitCorePathConnection);
+                connectTo(pickedDeadEnd.x,pickedDeadEnd.z,dir,c -> !c.isEmpty() && !getCellFeature(c).preventInitCorePathConnection());
             }
             return pickedDeadEnd;
         }
@@ -212,7 +215,7 @@ public class MazeGenerator {
 
                     if (xzInMazeRange(aa, bb,dir)) {
                         var nearRoomInMaze = this.cellGrid[aa + dir.getStepX()][bb + dir.getStepZ()];
-                        if (nearRoomInMaze != null && !getCellFeature(nearRoomInMaze).preventInitCorePathConnection) {
+                        if (nearRoomInMaze != null && !getCellFeature(nearRoomInMaze).preventInitCorePathConnection()) {
                             nearRoom++;
                         }
                     }
@@ -269,7 +272,7 @@ public class MazeGenerator {
                     if (next == null) {
                         continue;
                     }
-                    if (getCellFeature(next).preventInitCorePathConnection) {
+                    if (getCellFeature(next).preventInitCorePathConnection()) {
                         continue;
                     }
                     traceBack[nextZ][nextX] = dir;
@@ -436,7 +439,6 @@ public class MazeGenerator {
 //                for (int x = 0; x < this.xTotal; ++x) {
 //                    CellState c = this.grid[y][x];
 //                    if (c != null && tiles.containsKey(c)) {
-////                        TODO:What is this?
 ////                        System.out.print(((String[]) tiles.get(c))[q.ordinal()]);
 //                    } else if (c != null && c.feature == PORTAL) {
 //                        if ((q != NONE

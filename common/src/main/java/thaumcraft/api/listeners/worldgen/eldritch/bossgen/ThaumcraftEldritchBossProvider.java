@@ -106,24 +106,25 @@ public class ThaumcraftEldritchBossProvider {
             int y = 50;
             int z = cz * 16 + 16;
             int x2 = 0;
-            int z2 = 0;
-            switch (exit) {
-                case 2:
+            int z2 = switch (exit) {
+                case 0 -> {
                     x2 = 8;
-                    z2 = 8;
-                    break;
-                case 3:
+                    yield 8;
+                }
+                case 1 -> {
                     x2 = -8;
-                    z2 = 8;
-                    break;
-                case 4:
+                    yield 8;
+                }
+                case 2 -> {
                     x2 = 8;
-                    z2 = -8;
-                    break;
-                case 5:
+                    yield -8;
+                }
+                case 3 -> {
                     x2 = -8;
-                    z2 = -8;
-            }
+                    yield -8;
+                }
+                default -> 0;
+            };
 
             GenCommon.genObelisk(level, x + x2, y + 4, z + z2);
             GenCommon.genObelisk(level, x - x2, y + 4, z + z2);
@@ -163,7 +164,7 @@ public class ThaumcraftEldritchBossProvider {
             level.addFreshEntity(boss);
         }
 
-        public static void spawnCultistBossRoom(Level level,BlockPos lockPos,int cx, int cz, int exit) {
+        public static void spawnCultistBossRoom(Level level,BlockPos lockPos,int cx, int cz, int exitIndex) {
             if (level == null){
                 return;
             }
@@ -202,7 +203,7 @@ public class ThaumcraftEldritchBossProvider {
             level.addFreshEntity(boss);
         }
 
-        public static void spawnWardenBossRoom(Level level,BlockPos lockPos,int cx, int cz, int exit) {
+        public static void spawnWardenBossRoom(Level level,BlockPos lockPos,int cx, int cz, int exitIndex) {
             if (level == null) {
                 return;
             }
@@ -217,20 +218,20 @@ public class ThaumcraftEldritchBossProvider {
             int z = cz * 16 + 16;
             int x2 = x;
             int z2 = z;
-            z2 = switch (exit) {
-                case 2 -> {
+            z2 = switch (exitIndex) {
+                case 0 -> {
                     x2 = x + 8;
                     yield z + 8;
                 }
-                case 3 -> {
+                case 1 -> {
                     x2 = x - 8;
                     yield z + 8;
                 }
-                case 4 -> {
+                case 2 -> {
                     x2 = x + 8;
                     yield z - 8;
                 }
-                case 5 -> {
+                case 3 -> {
                     x2 = x - 8;
                     yield z - 8;
                 }

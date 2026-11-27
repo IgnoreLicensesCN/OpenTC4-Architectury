@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 import dev.architectury.platform.Platform;
 import dev.architectury.utils.Env;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.entity.Entity;
@@ -269,18 +270,18 @@ public class BlockUtils {
       return world.func_147447_a(var13, var23, par3, !par3, false);
    }
 
-   public static boolean isBlockAdjacentToAtleast(IBlockAccess world, int x, int y, int z, Block id, int md, int amount) {
-      return isBlockAdjacentToAtleast(world, x, y, z, id, md, amount, 1);
+   public static boolean isBlockAdjacentToAtleast(BlockGetter world, int x, int y, int z, TagKey<Block> tag, int amount) {
+      return isBlockAdjacentToAtleast(world, x, y, z, tag/*, md*/, amount, 1);
    }
 
-   public static boolean isBlockAdjacentToAtleast(IBlockAccess world, int x, int y, int z, Block id, int md, int amount, int range) {
+   public static boolean isBlockAdjacentToAtleast(BlockGetter world, int x, int y, int z, TagKey<Block> tag, int amount, int range) {
       int count = 0;
-
+      var mutable = new BlockPos.MutableBlockPos();
       for(int xx = -range; xx <= range; ++xx) {
          for(int yy = -range; yy <= range; ++yy) {
             for(int zz = -range; zz <= range; ++zz) {
                if (xx != 0 || yy != 0 || zz != 0) {
-                  if (world.getBlock(x + xx, y + yy, z + zz) == id && (md == 32767 || world.getBlockMetadata(x + xx, y + yy, z + zz) == md)) {
+                  if (world.getBlockState(mutable.set(x + xx, y + yy, z + zz)).is(tag)) {
                      ++count;
                   }
 
@@ -302,12 +303,13 @@ public class BlockUtils {
        );
    }
 
-   public static int countExposedSides(Level world, int x, int y, int z) {
+   public static int countExposedSides(BlockGetter world, int x, int y, int z) {
       int count = 0;
 
-      for(Direction dir : Direction.VALID_DIRECTIONS) {
-         if (world.isAirBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ)) {
-            ++count;
+      var mutablePos = new BlockPos.MutableBlockPos(x, y, z);
+      for(Direction dir : Direction.values()) {
+         if (world.getBlockState(mutablePos.set(x,y,z).move(dir)).isAir()){
+            count += 1;
          }
       }
 
@@ -323,7 +325,7 @@ public class BlockUtils {
               || !world.getBlockState(pos.east()).isCollisionShapeFullBlock(world, pos);
    }
 
-   public static boolean isAdjacentToSolidBlock(Level world, BlockPos pos) {
+   public static boolean isAdjacentToSolidBlock(BlockGetter world, BlockPos pos) {
       for(int a = 0; a < 6; ++a) {
          Direction d = Direction.values()[a];
          var consideringPos = pos.relative(d);

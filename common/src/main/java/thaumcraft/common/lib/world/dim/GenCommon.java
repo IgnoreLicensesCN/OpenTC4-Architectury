@@ -1,5 +1,7 @@
 package thaumcraft.common.lib.world.dim;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -15,6 +17,9 @@ import thaumcraft.common.tiles.junkbox.TileEldritchCrabSpawner;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK;
+import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_OBELISK_WITH_TICKER;
 
 public class GenCommon {
    static ArrayList<ChunkPos> decoCommon = new ArrayList<>();
@@ -256,12 +261,13 @@ public class GenCommon {
 
    }
 
-   public static void genObelisk(Level world, int x, int y, int z) {
-      world.setBlock(x, y, z, ConfigBlocks.blockEldritch, 1, 3);
-      world.setBlock(x, y + 1, z, ConfigBlocks.blockEldritch, 2, 3);
-      world.setBlock(x, y + 2, z, ConfigBlocks.blockEldritch, 2, 3);
-      world.setBlock(x, y + 3, z, ConfigBlocks.blockEldritch, 2, 3);
-      world.setBlock(x, y + 4, z, ConfigBlocks.blockEldritch, 2, 3);
+   public static void genObelisk(LevelWriter world, int x, int y, int z) {
+      var mutable = new BlockPos.MutableBlockPos(x, y, z);
+      world.setBlock(mutable.move(Direction.UP), ELDRITCH_OBELISK_WITH_TICKER().defaultBlockState(), 2, 3);
+      world.setBlock(mutable.move(Direction.UP), ELDRITCH_OBELISK().defaultBlockState(), 2, 3);
+      world.setBlock(mutable.move(Direction.UP), ELDRITCH_OBELISK().defaultBlockState(), 2, 3);
+      world.setBlock(mutable.move(Direction.UP), ELDRITCH_OBELISK().defaultBlockState(), 2, 3);
+      world.setBlock(mutable.move(Direction.UP), ELDRITCH_OBELISK().defaultBlockState(), 2, 3);
    }
 
    static void processDecorations(Level world) {
@@ -276,7 +282,8 @@ public class GenCommon {
 
       for(ChunkPos cc : decoCommon) {
          int exp = BlockUtils.countExposedSides(world, cc.posX, cc.posY, cc.posZ);
-         if (exp > 0 && (exp == 1 || !isBedrockShowing(world, cc.posX, cc.posY, cc.posZ)) && !BlockUtils.isBlockAdjacentToAtleast(world, cc.posX, cc.posY, cc.posZ, ConfigBlocks.blockEldritch, 32767, 1)) {
+         if (exp > 0 && (exp == 1 || !isBedrockShowing(world, cc.posX, cc.posY, cc.posZ))
+                 && !BlockUtils.isBlockAdjacentToAtleast(world, cc.posX, cc.posY, cc.posZ, ConfigBlocks.blockEldritch, 32767, 1)) {
             int meta = world.getRandom().nextInt(3) != 0 ? 4 : (world.getRandom().nextInt(8) != 0 ? 5 : 10);
             world.setBlock(cc.posX, cc.posY, cc.posZ, ConfigBlocks.blockEldritch, meta, 3);
             if (meta == 4 && world.getRandom().nextInt(12) == 0) {
@@ -315,7 +322,9 @@ public class GenCommon {
 
    static boolean isBedrockShowing(Level world, int x, int y, int z) {
       for(Direction dir : Direction.VALID_DIRECTIONS) {
-         if (!world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ).isOpaqueCube() && (world.getBlock(x + dir.getOpposite().offsetX, y + dir.getOpposite().offsetY, z + dir.getOpposite().offsetZ) == Blocks.bedrock || world.getBlock(x + dir.getOpposite().offsetX, y + dir.getOpposite().offsetY, z + dir.getOpposite().offsetZ) == ConfigBlocks.blockEldritchNothing)) {
+         var block = world.getBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ);
+         if (!block.isOpaqueCube()
+                 && (world.getBlock(x + dir.getOpposite().offsetX, y + dir.getOpposite().offsetY, z + dir.getOpposite().offsetZ) == Blocks.bedrock || world.getBlock(x + dir.getOpposite().offsetX, y + dir.getOpposite().offsetY, z + dir.getOpposite().offsetZ) == ConfigBlocks.blockEldritchNothing)) {
             return true;
          }
       }
@@ -323,56 +332,56 @@ public class GenCommon {
       return false;
    }
 
-   static void generateConnections(Level world, Random random, int cx, int cz, int y, CellState cellState, int depth, boolean justthetip) {
-      int x = cx * 16;
-      int z = cz * 16;
-      if (cellState.north) {
-         for(int d = 0; d <= depth; ++d) {
-            for(int w = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); w < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++w) {
-               for(int h = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); h < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++h) {
-                  if (d != depth || !justthetip || PAT_CONNECT[h][w] != 8) {
-                     placeBlock(world, x + 3 + w, y + 10 - h, z + d, PAT_CONNECT[h][w], Direction.NORTH, cellState);
-                  }
-               }
-            }
-         }
-      }
-
-      if (cellState.south) {
-         for(int d = 0; d <= depth; ++d) {
-            for(int w = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); w < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++w) {
-               for(int h = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); h < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++h) {
-                  if (d != depth || !justthetip || PAT_CONNECT[h][w] != 8) {
-                     placeBlock(world, x + 3 + w, y + 10 - h, z + 16 - d, PAT_CONNECT[h][w], Direction.SOUTH, cellState);
-                  }
-               }
-            }
-         }
-      }
-
-      if (cellState.east) {
-         for(int d = 0; d <= depth; ++d) {
-            for(int w = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); w < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++w) {
-               for(int h = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); h < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++h) {
-                  if (d != depth || !justthetip || PAT_CONNECT[h][w] != 8) {
-                     placeBlock(world, x + 16 - d, y + 10 - h, z + 3 + w, PAT_CONNECT[h][w], Direction.EAST, cellState);
-                  }
-               }
-            }
-         }
-      }
-
-      if (cellState.west) {
-         for(int d = 0; d <= depth; ++d) {
-            for(int w = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); w < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++w) {
-               for(int h = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); h < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++h) {
-                  if (d != depth || !justthetip || PAT_CONNECT[h][w] != 8) {
-                     placeBlock(world, x + d, y + 10 - h, z + 3 + w, PAT_CONNECT[h][w], Direction.WEST, cellState);
-                  }
-               }
-            }
-         }
-      }
-
-   }
+//   static void generateConnections(Level world, Random random, int cx, int cz, int y, CellState cellState, int depth, boolean justthetip) {
+//      int x = cx * 16;
+//      int z = cz * 16;
+//      if (cellState.north) {
+//         for(int d = 0; d <= depth; ++d) {
+//            for(int w = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); w < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++w) {
+//               for(int h = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); h < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++h) {
+//                  if (d != depth || !justthetip || PAT_CONNECT[h][w] != 8) {
+//                     placeBlock(world, x + 3 + w, y + 10 - h, z + d, PAT_CONNECT[h][w], Direction.NORTH, cellState);
+//                  }
+//               }
+//            }
+//         }
+//      }
+//
+//      if (cellState.south) {
+//         for(int d = 0; d <= depth; ++d) {
+//            for(int w = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); w < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++w) {
+//               for(int h = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); h < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++h) {
+//                  if (d != depth || !justthetip || PAT_CONNECT[h][w] != 8) {
+//                     placeBlock(world, x + 3 + w, y + 10 - h, z + 16 - d, PAT_CONNECT[h][w], Direction.SOUTH, cellState);
+//                  }
+//               }
+//            }
+//         }
+//      }
+//
+//      if (cellState.east) {
+//         for(int d = 0; d <= depth; ++d) {
+//            for(int w = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); w < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++w) {
+//               for(int h = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); h < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++h) {
+//                  if (d != depth || !justthetip || PAT_CONNECT[h][w] != 8) {
+//                     placeBlock(world, x + 16 - d, y + 10 - h, z + 3 + w, PAT_CONNECT[h][w], Direction.EAST, cellState);
+//                  }
+//               }
+//            }
+//         }
+//      }
+//
+//      if (cellState.west) {
+//         for(int d = 0; d <= depth; ++d) {
+//            for(int w = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); w < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++w) {
+//               for(int h = d == depth && justthetip ? 2 : (d == depth - 1 && justthetip ? 1 : 0); h < (d == depth && justthetip ? 9 : (d == depth - 1 && justthetip ? 10 : 11)); ++h) {
+//                  if (d != depth || !justthetip || PAT_CONNECT[h][w] != 8) {
+//                     placeBlock(world, x + d, y + 10 - h, z + 3 + w, PAT_CONNECT[h][w], Direction.WEST, cellState);
+//                  }
+//               }
+//            }
+//         }
+//      }
+//
+//   }
 }

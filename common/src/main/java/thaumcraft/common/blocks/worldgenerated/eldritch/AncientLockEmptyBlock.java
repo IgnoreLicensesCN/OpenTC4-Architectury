@@ -14,20 +14,30 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
+import thaumcraft.common.lib.world.dim.cell.features.AbstractBossRoom;
 
 public class AncientLockEmptyBlock extends SuppressedWarningBlock {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
+    //     0     1
+    //   ----------
+    // 7 |    |    | 2
+    //   ----------
+    // 6 |    |    | 3
+    //   ----------
+    //     5    4
+
     public AncientLockEmptyBlock(Properties properties) {
         super(properties);
     }
+
     public AncientLockEmptyBlock() {
         super(BlockBehaviour.Properties.of()
-                .strength(-1,Float.MAX_VALUE)
+                .strength(-1, Float.MAX_VALUE)
                 .sound(SoundType.STONE)
                 .mapColor(MapColor.COLOR_BLACK)
                 .lightLevel(s -> 5)
                 .requiresCorrectToolForDrops());
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.DOWN));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.DOWN).setValue(AbstractBossRoom.BOSS_ROOM_INDEX, 0));
     }
 
     @Override
@@ -42,10 +52,16 @@ public class AncientLockEmptyBlock extends SuppressedWarningBlock {
     }
 
     public void insertRunedTablet(Level level, BlockState state, BlockPos pos) {
-        if (state.getBlock() != this){return;}
+        if (state.getBlock() != this) {
+            return;
+        }
         level.setBlock(
                 pos,
-                ThaumcraftBlocks.ThaumcraftBlockInstances.ANCIENT_LOCK_INSERTED().defaultBlockState().setValue(FACING,state.getValue(FACING)),
+                ThaumcraftBlocks.ThaumcraftBlockInstances.ANCIENT_LOCK_INSERTED()
+                        .defaultBlockState()
+                        .setValue(FACING, state.getValue(FACING))
+                        .setValue(AbstractBossRoom.BOSS_ROOM_INDEX, state.getValue(AbstractBossRoom.BOSS_ROOM_INDEX))
+                ,
                 3
         );
     }
