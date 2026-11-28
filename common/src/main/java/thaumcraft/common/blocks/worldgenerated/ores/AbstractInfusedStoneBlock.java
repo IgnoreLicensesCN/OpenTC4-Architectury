@@ -18,20 +18,22 @@ public abstract class AbstractInfusedStoneBlock extends DropExperienceBlock {
     public final @RGBColor int rgbColor;
     public final int particleColorIndex;
 
-    public AbstractInfusedStoneBlock(Properties properties,@RGBColor int rgbColor, int particleColorIndex) {
-        super(properties, INFUSED_STONE_EXP_DROP);
+    public AbstractInfusedStoneBlock(Properties properties,IntProvider expDrop,@RGBColor int rgbColor, int particleColorIndex){
+        super(properties, expDrop);
         this.rgbColor = rgbColor;
         this.particleColorIndex = particleColorIndex;
     }
+    public AbstractInfusedStoneBlock(Properties properties,@RGBColor int rgbColor, int particleColorIndex) {
+        this(properties, INFUSED_STONE_EXP_DROP,rgbColor,particleColorIndex);
+    }
 
     public AbstractInfusedStoneBlock(@RGBColor int rgbColor,int particleColorIndex) {
-        super(BlockBehaviour.Properties.copy(Blocks.COPPER_ORE)
+        this(BlockBehaviour.Properties.copy(Blocks.COPPER_ORE)
                 .sound(SoundType.STONE)
                 .strength(1.5f,5.f),
-                INFUSED_STONE_EXP_DROP
+                rgbColor,
+                particleColorIndex
         );
-        this.rgbColor = rgbColor;
-        this.particleColorIndex = particleColorIndex;
     }
 
 

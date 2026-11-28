@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 39393939,
+    "separation": 6,
+    "spacing": 18
+  },
+  "structures": [
+    {
+      "structure": "thaumcraft:eldritch_ring",
+      "weight": 1
+    }
+  ]
+}

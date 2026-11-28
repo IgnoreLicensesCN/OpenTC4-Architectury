@@ -6,4 +6,7 @@ public class AirInfusedStoneBlock extends AbstractInfusedStoneBlock {
     public AirInfusedStoneBlock() {
         super(Aspects.AIR.color,1);
     }
+    public AirInfusedStoneBlock(Properties properties) {
+        super(properties,Aspects.AIR.color,1);
+    }
 }

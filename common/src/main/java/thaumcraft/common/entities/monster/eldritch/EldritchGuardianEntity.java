@@ -49,6 +49,7 @@ import static com.linearity.opentc4.Consts.EldritchGuardianEntityTagAccessors.HO
 import static net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED;
 import static thaumcraft.common.entities.ThaumcraftEntities.EntityTags.ELDRITCH;
 import static thaumcraft.common.items.ThaumcraftItemInstances.WISP_ESSENCE;
+import static thaumcraft.common.lib.world.ThaumcraftWorlds.OUTER;
 
 public class EldritchGuardianEntity extends DoorBreakingMonster implements RangedAttackMob {
     protected int homeRange = 8;
@@ -157,7 +158,7 @@ public class EldritchGuardianEntity extends DoorBreakingMonster implements Range
         var level = this.level();
         if (!level.isClientSide){
             var difficulty = level.getDifficulty();
-            if (level.dimension() != Config.dimensionOuterId
+            if (!level.dimension().equals(OUTER)
                     && (this.tickCount == 0 || this.tickCount % 100 == 0)
                     && difficulty != Difficulty.EASY
             ) {
@@ -253,7 +254,7 @@ public class EldritchGuardianEntity extends DoorBreakingMonster implements Range
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         var result = super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
-        if (this.level().dimension() == Config.dimensionOuterId) {
+        if (this.level().dimension().equals(OUTER)) {
             int bh = (int)this.getAttribute(Attributes.MAX_HEALTH).getBaseValue() / 2;
             this.setAbsorptionAmount(this.getAbsorptionAmount() + (float)bh);
         }

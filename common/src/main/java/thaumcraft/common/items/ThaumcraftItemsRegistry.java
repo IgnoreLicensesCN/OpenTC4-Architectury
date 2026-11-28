@@ -380,6 +380,38 @@ public class ThaumcraftItemsRegistry {
             "entropy_infused_stone",
             () -> new BlockItem(ThaumcraftBlocks.ThaumcraftBlockInstances.ENTROPY_INFUSED_STONE(), new Item.Properties())
     );
+    public static final RegistrySupplier<BlockItem> SUPPLIER_DEEPSLATE_CINNABAR_ORE = ITEMS.register(
+            "deepslate_cinnabar_ore",
+            () -> new BlockItem(ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_CINNABAR_ORE(), new Item.Properties())
+    );
+    public static final RegistrySupplier<BlockItem> SUPPLIER_DEEPSLATE_AMBER_ORE = ITEMS.register(
+            "deepslate_amber_ore",
+            () -> new BlockItem(ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_AMBER_ORE(), new Item.Properties())
+    );
+    public static final RegistrySupplier<BlockItem> SUPPLIER_DEEPSLATE_AIR_INFUSED_STONE = ITEMS.register(
+            "deepslate_air_infused_stone",
+            () -> new BlockItem(ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_AIR_INFUSED_STONE(), new Item.Properties())
+    );
+    public static final RegistrySupplier<BlockItem> SUPPLIER_DEEPSLATE_FIRE_INFUSED_STONE = ITEMS.register(
+            "deepslate_fire_infused_stone",
+            () -> new BlockItem(ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_FIRE_INFUSED_STONE(), new Item.Properties())
+    );
+    public static final RegistrySupplier<BlockItem> SUPPLIER_DEEPSLATE_WATER_INFUSED_STONE = ITEMS.register(
+            "deepslate_water_infused_stone",
+            () -> new BlockItem(ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_WATER_INFUSED_STONE(), new Item.Properties())
+    );
+    public static final RegistrySupplier<BlockItem> SUPPLIER_DEEPSLATE_EARTH_INFUSED_STONE = ITEMS.register(
+            "deepslate_earth_infused_stone",
+            () -> new BlockItem(ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_EARTH_INFUSED_STONE(), new Item.Properties())
+    );
+    public static final RegistrySupplier<BlockItem> SUPPLIER_DEEPSLATE_ORDER_INFUSED_STONE = ITEMS.register(
+            "deepslate_order_infused_stone",
+            () -> new BlockItem(ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_ORDER_INFUSED_STONE(), new Item.Properties())
+    );
+    public static final RegistrySupplier<BlockItem> SUPPLIER_DEEPSLATE_ENTROPY_INFUSED_STONE = ITEMS.register(
+            "deepslate_entropy_infused_stone",
+            () -> new BlockItem(ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_ENTROPY_INFUSED_STONE(), new Item.Properties())
+    );
     public static final RegistrySupplier<BlockItem> SUPPLIER_AMBER_BLOCK = ITEMS.register(
             "amber_block",
             () -> new BlockItem(ThaumcraftBlocks.ThaumcraftBlockInstances.AMBER_BLOCK(), new Item.Properties())

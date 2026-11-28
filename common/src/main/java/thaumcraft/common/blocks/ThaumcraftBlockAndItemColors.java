@@ -146,6 +146,63 @@ public class ThaumcraftBlockAndItemColors {
                     return 0xFFFFFF;
                 }, ThaumcraftBlocks.ThaumcraftBlockInstances.ENTROPY_INFUSED_STONE()
         );
+
+
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i)
+                        -> {
+                    if (i == 0) {
+                        return ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_AIR_INFUSED_STONE().rgbColor;
+                    }
+                    return 0xFFFFFF;
+                }, ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_AIR_INFUSED_STONE()
+        );
+
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i)
+                        -> {
+                    if (i == 0) {
+                        return ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_FIRE_INFUSED_STONE().rgbColor;
+                    }
+                    return 0xFFFFFF;
+                }, ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_FIRE_INFUSED_STONE()
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i)
+                        -> {
+                    if (i == 0) {
+                        return ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_WATER_INFUSED_STONE().rgbColor;
+                    }
+                    return 0xFFFFFF;
+                }, ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_WATER_INFUSED_STONE()
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i)
+                        -> {
+                    if (i == 0) {
+                        return ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_EARTH_INFUSED_STONE().rgbColor;
+                    }
+                    return 0xFFFFFF;
+                }, ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_EARTH_INFUSED_STONE()
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i)
+                        -> {
+                    if (i == 0) {
+                        return ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_ORDER_INFUSED_STONE().rgbColor;
+                    }
+                    return 0xFFFFFF;
+                }, ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_ORDER_INFUSED_STONE()
+        );
+        blockColors.register(
+                (blockState, blockAndTintGetter, blockPos, i)
+                        -> {
+                    if (i == 0) {
+                        return ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_ENTROPY_INFUSED_STONE().rgbColor;
+                    }
+                    return 0xFFFFFF;
+                }, ThaumcraftBlocks.ThaumcraftBlockInstances.DEEPSLATE_ENTROPY_INFUSED_STONE()
+        );
         blockColors.register(
                 (blockState, blockAndTintGetter, blockPos, i) -> ThaumcraftBlocks.ThaumcraftBlockInstances.WHITE_TALLOW_CANDLE().color,
                 ThaumcraftBlocks.ThaumcraftBlockInstances.WHITE_TALLOW_CANDLE()

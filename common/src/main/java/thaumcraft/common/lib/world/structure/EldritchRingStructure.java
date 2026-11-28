@@ -116,7 +116,7 @@ public class EldritchRingStructure extends Structure {
 
         return Optional.of(new GenerationStub(
                 pos, builder -> builder.addPiece(
-                new EldritchRingStructure.EldritchRingStructurePiece(pos,width,height)
+                new EldritchRingStructure.EldritchRingStructurePiece(pos)
         )));
     }
 
@@ -173,38 +173,27 @@ public class EldritchRingStructure extends Structure {
     }
 
     public static class EldritchRingStructurePiece extends StructurePiece {
-
-        private final int width;
-        private final int height;
-
         public EldritchRingStructurePiece(StructurePieceSerializationContext context, CompoundTag tag) {
             super(ELDRITCH_RING_STRUCTURE_PIECE(), tag);
-            this.width = Consts.StructureInfoAccessor.WIDTH_ACCESSOR.readIntFromCompoundTag(tag);
-            this.height = Consts.StructureInfoAccessor.HEIGHT_ACCESSOR.readIntFromCompoundTag(tag);
         }
 
-        public EldritchRingStructurePiece(BlockPos pos,int width,int height) {
+        public EldritchRingStructurePiece(BlockPos pos) {
             super(
                     ELDRITCH_RING_STRUCTURE_PIECE(), 0, new BoundingBox(
-                            pos.getX()-1, pos.getY()-1, pos.getZ()-1, pos.getX() + width, pos.getY() + height,
-                            pos.getZ() + width
+                            pos.getX()-1, pos.getY()-1, pos.getZ()-1,
+                            pos.getX() + 16, pos.getY() + 16, pos.getZ() + 16
                     )
             );
-            this.width = width;
-            this.height = height;
         }
 
 
         public EldritchRingStructurePiece(StructurePieceType type, CompoundTag nbt) {
             super(type, nbt);
-            this.width = Consts.StructureInfoAccessor.WIDTH_ACCESSOR.readIntFromCompoundTag(nbt);
-            this.height = Consts.StructureInfoAccessor.HEIGHT_ACCESSOR.readIntFromCompoundTag(nbt);
         }
 
         @Override
         protected void addAdditionalSaveData(StructurePieceSerializationContext structurePieceSerializationContext, CompoundTag compoundTag) {
-            Consts.StructureInfoAccessor.WIDTH_ACCESSOR.writeIntToCompoundTag(compoundTag,this.width);
-            Consts.StructureInfoAccessor.HEIGHT_ACCESSOR.writeIntToCompoundTag(compoundTag,this.height);
+
         }
 
         @Override

@@ -2,7 +2,6 @@ package thaumcraft.common.lib.world.dim.cell.features;
 
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;

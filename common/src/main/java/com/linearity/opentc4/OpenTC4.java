@@ -27,6 +27,7 @@ import thaumcraft.common.lib.network.gamedata.PacketRequestSyncItemAspectsC2S;
 import thaumcraft.common.lib.network.gamedata.PacketSyncPaletteS2C;
 import thaumcraft.common.lib.utils.CropUtils;
 import thaumcraft.common.lib.world.HolderCache;
+import thaumcraft.common.lib.world.ThaumcraftWorlds;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeTags;
 import thaumcraft.common.lib.world.dim.cell.properties.CellStateProperties;
 import thaumcraft.common.lootbag.ThaumcraftLootBags;
@@ -109,6 +110,7 @@ public final class OpenTC4 {
         ThaumcraftEnchantments.init();
         ThaumcraftWorldGenConfiguredFeatures.init();
         ThaumcraftStructures.init();
+        ThaumcraftWorlds.init();
         ThaumcraftGUI.init();
 
         EventListeners.init();

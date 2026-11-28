@@ -4,6 +4,7 @@ import com.linearity.opentc4.utils.vanilla1710.BiomeType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
+import org.jetbrains.annotations.Nullable;
 import thaumcraft.api.aspects.Aspect;
 
 import java.util.HashMap;
@@ -45,10 +46,10 @@ public class BiomeHandler {
       return average / count;
    }
 
-   public static Aspect getRandomBiomeTag(Biome biome, RandomSource random) {
+   public static @Nullable Aspect getRandomBiomeTag(Biome biome, RandomSource random) {
       return getRandomBiomeTag(getBiomeResKey(biome), random);
    }
-   public static Aspect getRandomBiomeTag(ResourceKey<Biome> biomeResKey, RandomSource random) {
+   public static @Nullable Aspect getRandomBiomeTag(ResourceKey<Biome> biomeResKey, RandomSource random) {
       BiomeType[] types = getBiomeTypes(biomeResKey).toArray(new BiomeType[0]);
       BiomeType type = types[random.nextInt(types.length)];
       BiomeInfo info = biomeInfo.get(type);

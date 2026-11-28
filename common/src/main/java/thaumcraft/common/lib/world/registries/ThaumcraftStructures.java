@@ -5,12 +5,15 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.lib.world.structure.EldritchRingStructure;
 import thaumcraft.common.lib.world.structure.MazeStructure;
 import thaumcraft.common.lib.world.structure.MoundStructure;
+import thaumcraft.common.lib.world.structure.placement.PeriodicStructurePlacement;
 
 import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.RegistryStructure.STRUCTURE_PIECES;
+import static thaumcraft.common.lib.world.registries.ThaumcraftStructures.RegistryStructurePlacementTypes.STRUCTURE_PLACEMENT_TYPES;
 
 public class ThaumcraftStructures {
     public static class ThaumcraftStructureTypeInstances {
@@ -35,6 +38,15 @@ public class ThaumcraftStructures {
         public static StructurePieceType ELDRITCH_RING_STRUCTURE_PIECE() {
             return RegistryStructure.SUPPLIER_ELDRITCH_RING_PIECE.get();
         }
+
+    }
+    public static class RegistryStructurePlacementTypes {
+        public static final DeferredRegister<StructurePlacementType<?>> STRUCTURE_PLACEMENT_TYPES = DeferredRegister.create(Thaumcraft.MOD_ID,Registries.STRUCTURE_PLACEMENT);
+        public static RegistrySupplier<StructurePlacementType<PeriodicStructurePlacement>> SUPPLIER_PERIODIC =
+                STRUCTURE_PLACEMENT_TYPES.register(
+                "periodic_placement",
+                () -> () -> PeriodicStructurePlacement.CODEC
+        );
 
     }
 
@@ -77,5 +89,6 @@ public class ThaumcraftStructures {
     public static void init() {
         RegistryStructure.STRUCTURE_TYPES.register();
         STRUCTURE_PIECES.register();
+        STRUCTURE_PLACEMENT_TYPES.register();
     }
 }

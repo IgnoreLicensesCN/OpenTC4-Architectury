@@ -10,9 +10,11 @@ import net.minecraft.world.entity.player.Player;
 import com.linearity.opentc4.utils.vanilla1710.MathHelper;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
+import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.client.fx.bolt.FXLightningBolt;
 import thaumcraft.client.lib.UtilsFX;
 import thaumcraft.common.lib.utils.BlockUtils;
@@ -81,7 +83,14 @@ public class ModelHoverHarness extends ModelBiped {
          if (timeShock < currenttime) {
             timeShock = currenttime + 50L + (long)entity.level().rand.nextInt(50);
             this.timingShock.put(entity.getEntityId(), timeShock);
-            HitResult mop = BlockUtils.getTargetBlock(entity.level(), entity.posX, entity.posY - (double)0.45F - (double)mod, entity.posZ, ((Player)entity).renderYawOffset - 90.0F - (float)entity.level().rand.nextInt(180), (float)(-80 + entity.level().rand.nextInt(160)), false, 6.0F);
+            var startVec = new Vec3(entity.getX(),entity.getY() - (entity.getBbHeight()*0.225F),entity.getZ());
+            var random = ((Player) entity).getRandom();
+            HitResult mop = ThaumcraftApiHelper.rayTraceIgnoringSource(
+                    entity.level(), startVec, startVec.add(random.nextFloat() * 12 - 6,random.nextFloat() * 12 - 6,random.nextFloat() * 12 - 6), true);
+//            HitResult mop = BlockUtils.getTargetBlock(
+//                    entity.level(), entity.posX, entity.posY - (double)0.45F - (double)mod, entity.posZ,
+//                    ((Player)entity).renderYawOffset - 90.0F - (float)entity.level().rand.nextInt(180), (float)(-80 + entity.level().rand.nextInt(160)),
+//                    false, 6.0F);
             if (mop != null) {
                double px = mop.hitVec.xCoord;
                double py = mop.hitVec.yCoord;

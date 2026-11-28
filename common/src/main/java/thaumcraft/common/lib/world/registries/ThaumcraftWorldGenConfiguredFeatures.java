@@ -8,6 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biomes;
@@ -26,10 +27,19 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import org.jetbrains.annotations.NotNull;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.Aspects;
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
+import thaumcraft.common.lib.world.biomes.BiomeHandler;
 import thaumcraft.common.lib.world.feature.GreatwoodTreeFeature;
 import thaumcraft.common.lib.world.feature.SilverwoodTreeFeature;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+
+import static net.minecraft.tags.BiomeTags.IS_OVERWORLD;
 
 public class ThaumcraftWorldGenConfiguredFeatures {
     public static class Features {
@@ -261,6 +271,71 @@ public class ThaumcraftWorldGenConfiguredFeatures {
                                     GenerationStep.Decoration.VEGETAL_DECORATION,
                                     PlacedFeatureRegistry.CINDER_PEARL_PLACED_KEY
                             )
+            );
+
+            Map<Aspect,String> m = Map.of(
+                    Aspects.AIR,"air",
+                    Aspects.FIRE,"fire",
+                    Aspects.ORDER,"order",
+                    Aspects.ENTROPY,"entropy",
+                    Aspects.EARTH,"earth",
+                    Aspects.WATER,"water"
+            );
+            BiomeModifications.addProperties(
+                    context -> {
+                        var key = context.getKey();
+                        return key.isPresent() && (
+                                context.hasTag(IS_OVERWORLD)
+                        );
+                    },
+                    (context, properties) -> {
+                        var resLoc = context.getKey().orElse(new ResourceLocation("idk","what"));
+                        var random = RandomSource.create(resLoc.toString().hashCode());
+                        Aspect tag = BiomeHandler.getRandomBiomeTag(ResourceKey.create(Registries.BIOME,resLoc), random);
+                        var s = m.get(tag);
+                        if (s != null) {
+                            properties.getGenerationProperties()
+                                    .addFeature(
+                                            GenerationStep.Decoration.UNDERGROUND_ORES,
+                                            ResourceKey.create(Registries.PLACED_FEATURE, Objects.requireNonNull(ResourceLocation.tryBuild(Thaumcraft.MOD_ID, "infused_stone_" + s + "_small")))
+                                    )
+                                    .addFeature(
+                                            GenerationStep.Decoration.UNDERGROUND_ORES,
+                                            ResourceKey.create(Registries.PLACED_FEATURE, Objects.requireNonNull(ResourceLocation.tryBuild(Thaumcraft.MOD_ID, "infused_stone_" + s + "_middle")))
+                                    )
+                                    .addFeature(
+                                            GenerationStep.Decoration.UNDERGROUND_ORES,
+                                            ResourceKey.create(Registries.PLACED_FEATURE, Objects.requireNonNull(ResourceLocation.tryBuild(Thaumcraft.MOD_ID, "infused_stone_" + s + "_upper")))
+                                    );
+                        }
+                    }
+            );
+
+            BiomeModifications.addProperties(
+                    context -> {
+                        var key = context.getKey();
+                        return key.isPresent() && (
+                                context.hasTag(IS_OVERWORLD)
+                        );
+                    },
+                    (context, properties) ->
+                            properties.getGenerationProperties()
+                                    .addFeature(
+                                            GenerationStep.Decoration.UNDERGROUND_ORES,
+                                            ResourceKey.create(Registries.PLACED_FEATURE, Objects.requireNonNull(ResourceLocation.tryBuild(Thaumcraft.MOD_ID,"ore_amber")))
+                                    )
+                                    .addFeature(
+                                            GenerationStep.Decoration.UNDERGROUND_ORES,
+                                            ResourceKey.create(Registries.PLACED_FEATURE, Objects.requireNonNull(ResourceLocation.tryBuild(Thaumcraft.MOD_ID,"ore_amber_lower")))
+                                    )
+                                    .addFeature(
+                                            GenerationStep.Decoration.UNDERGROUND_ORES,
+                                            ResourceKey.create(Registries.PLACED_FEATURE, Objects.requireNonNull(ResourceLocation.tryBuild(Thaumcraft.MOD_ID,"ore_cinnabar")))
+                                    )
+                                    .addFeature(
+                                            GenerationStep.Decoration.UNDERGROUND_ORES,
+                                            ResourceKey.create(Registries.PLACED_FEATURE, Objects.requireNonNull(ResourceLocation.tryBuild(Thaumcraft.MOD_ID,"ore_cinnabar_lower")))
+                                    )
             );
         }
     }

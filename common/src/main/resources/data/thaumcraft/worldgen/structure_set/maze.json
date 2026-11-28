@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "thaumcraft:periodic_placement",
+    "salt": 20070831,
+    "period_chunk_x": 32,
+    "period_chunk_z": 32
+  },
+  "structures": [
+    {
+      "structure": "thaumcraft:maze",
+      "weight": 1
+    }
+  ]
+}

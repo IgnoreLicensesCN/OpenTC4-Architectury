@@ -30,6 +30,7 @@ import static com.linearity.opentc4.utils.consts.EntityTypeTests.ENTITY_TEST;
 import static net.minecraft.world.level.Level.OVERWORLD;
 import static thaumcraft.api.research.ThaumcraftResearches.ENTER_OUTER;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.PoiTypeRegistry.POI_ELDRITCH_PORTAL;
+import static thaumcraft.common.lib.world.ThaumcraftWorlds.OUTER;
 import static thaumcraft.common.lib.world.structure.MazeStructure.MAZE_MAX_CHUNK_SIZE;
 
 public class EldritchPortalBlockEntity extends TileThaumcraft {
@@ -49,7 +50,7 @@ public class EldritchPortalBlockEntity extends TileThaumcraft {
         return OVERWORLD;//TODO:[maybe wont finished]config this
     }
     public ResourceKey<Level> dimensionTo() {
-        //TODO:ResourceKey Outer
+        return OUTER;
     }
 
     public void serverTick() {

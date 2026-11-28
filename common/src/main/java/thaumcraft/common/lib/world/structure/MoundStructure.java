@@ -99,11 +99,11 @@ public class MoundStructure extends Structure {
                 .getMaxBuildHeight()) {
             return Optional.empty();
         }
-        if (!(LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(9, 9, 9))
-                && LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.above(9))//i, j + 9, k)
-                && LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(18, 9, 0))
-                && LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(18, 9, 18))
-                && LocationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(0, 9, 18)))) {
+        if (!(locationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(9, 9, 9))
+                && locationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.above(9))//i, j + 9, k)
+                && locationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(18, 9, 0))
+                && locationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(18, 9, 18))
+                && locationIsValidSpawn(chunkGen, heightAccessor, randomState, pos.offset(0, 9, 18)))) {
             return Optional.empty();
         }
 
@@ -132,7 +132,7 @@ public class MoundStructure extends Structure {
             Blocks.TALL_GRASS
     );
 
-    public static boolean LocationIsValidSpawn(ChunkGenerator chunkGen, LevelHeightAccessor heightAccessor, RandomState randomState, BlockPos pos) {
+    public static boolean locationIsValidSpawn(ChunkGenerator chunkGen, LevelHeightAccessor heightAccessor, RandomState randomState, BlockPos pos) {
 //        int distanceToAir = 0;
 //
 //

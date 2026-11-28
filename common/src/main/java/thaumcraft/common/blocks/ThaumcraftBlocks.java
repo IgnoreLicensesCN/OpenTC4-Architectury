@@ -260,6 +260,13 @@ public class ThaumcraftBlocks {
         public static Block AMBER_ORE() {
             return Registry.SUPPLIER_AMBER_ORE.get();
         }
+        public static Block DEEPSLATE_CINNABAR_ORE() {
+            return Registry.SUPPLIER_DEEPSLATE_CINNABAR_ORE.get();
+        }
+
+        public static Block DEEPSLATE_AMBER_ORE() {
+            return Registry.SUPPLIER_DEEPSLATE_AMBER_ORE.get();
+        }
 
         public static AirInfusedStoneBlock AIR_INFUSED_STONE() {
             return Registry.SUPPLIER_AIR_INFUSED_STONE.get();
@@ -284,6 +291,30 @@ public class ThaumcraftBlocks {
         public static EntropyInfusedStoneBlock ENTROPY_INFUSED_STONE() {
             return Registry.SUPPLIER_ENTROPY_INFUSED_STONE.get();
         }
+        public static AirInfusedStoneBlock DEEPSLATE_AIR_INFUSED_STONE() {
+            return Registry.SUPPLIER_DEEPSLATE_AIR_INFUSED_STONE.get();
+        }
+
+        public static FireInfusedStoneBlock DEEPSLATE_FIRE_INFUSED_STONE() {
+            return Registry.SUPPLIER_DEEPSLATE_FIRE_INFUSED_STONE.get();
+        }
+
+        public static WaterInfusedStoneBlock DEEPSLATE_WATER_INFUSED_STONE() {
+            return Registry.SUPPLIER_DEEPSLATE_WATER_INFUSED_STONE.get();
+        }
+
+        public static EarthInfusedStoneBlock DEEPSLATE_EARTH_INFUSED_STONE() {
+            return Registry.SUPPLIER_DEEPSLATE_EARTH_INFUSED_STONE.get();
+        }
+
+        public static OrderInfusedStoneBlock DEEPSLATE_ORDER_INFUSED_STONE() {
+            return Registry.SUPPLIER_DEEPSLATE_ORDER_INFUSED_STONE.get();
+        }
+
+        public static EntropyInfusedStoneBlock DEEPSLATE_ENTROPY_INFUSED_STONE() {
+            return Registry.SUPPLIER_DEEPSLATE_ENTROPY_INFUSED_STONE.get();
+        }
+
 
         public static Block AMBER_BLOCK() {
             return Registry.SUPPLIER_AMBER_BLOCK.get();
@@ -944,13 +975,27 @@ public class ThaumcraftBlocks {
                 () -> new Block(
                         BlockBehaviour.Properties.copy(Blocks.IRON_ORE)
                                 .sound(SoundType.STONE)
-                                .strength(1.5f, 5.f)
+                )
+        );
+        public static final RegistrySupplier<Block> SUPPLIER_DEEPSLATE_CINNABAR_ORE = BLOCKS.register(
+                "deepslate_cinnabar_ore",
+                () -> new Block(
+                        BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)
+                                .sound(SoundType.STONE)
                 )
         );
         public static final RegistrySupplier<DropExperienceBlock> SUPPLIER_AMBER_ORE = BLOCKS.register(
                 "amber_ore",
                 () -> new DropExperienceBlock(
                         BlockBehaviour.Properties.copy(Blocks.GOLD_ORE)
+                                .sound(SoundType.STONE),
+                        UniformInt.of(1, 4)
+                )
+        );
+        public static final RegistrySupplier<DropExperienceBlock> SUPPLIER_DEEPSLATE_AMBER_ORE = BLOCKS.register(
+                "deepslate_amber_ore",
+                () -> new DropExperienceBlock(
+                        BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_GOLD_ORE)
                                 .sound(SoundType.STONE)
                                 .strength(1.5f, 5.f), UniformInt.of(1, 4)
                 )
@@ -978,6 +1023,30 @@ public class ThaumcraftBlocks {
         public static final RegistrySupplier<EntropyInfusedStoneBlock> SUPPLIER_ENTROPY_INFUSED_STONE = BLOCKS.register(
                 "entropy_infused_stone",
                 EntropyInfusedStoneBlock::new
+        );
+        public static final RegistrySupplier<AirInfusedStoneBlock> SUPPLIER_DEEPSLATE_AIR_INFUSED_STONE = BLOCKS.register(
+                "deepslate_air_infused_stone",
+                () -> new AirInfusedStoneBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE))
+        );
+        public static final RegistrySupplier<FireInfusedStoneBlock> SUPPLIER_DEEPSLATE_FIRE_INFUSED_STONE = BLOCKS.register(
+                "deepslate_fire_infused_stone",
+                () -> new FireInfusedStoneBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE))
+        );
+        public static final RegistrySupplier<WaterInfusedStoneBlock> SUPPLIER_DEEPSLATE_WATER_INFUSED_STONE = BLOCKS.register(
+                "deepslate_water_infused_stone",
+                () -> new WaterInfusedStoneBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE))
+        );
+        public static final RegistrySupplier<EarthInfusedStoneBlock> SUPPLIER_DEEPSLATE_EARTH_INFUSED_STONE = BLOCKS.register(
+                "deepslate_earth_infused_stone",
+                () -> new EarthInfusedStoneBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE))
+        );
+        public static final RegistrySupplier<OrderInfusedStoneBlock> SUPPLIER_DEEPSLATE_ORDER_INFUSED_STONE = BLOCKS.register(
+                "deepslate_order_infused_stone",
+                () -> new OrderInfusedStoneBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE))
+        );
+        public static final RegistrySupplier<EntropyInfusedStoneBlock> SUPPLIER_DEEPSLATE_ENTROPY_INFUSED_STONE = BLOCKS.register(
+                "deepslate_entropy_infused_stone",
+                () -> new EntropyInfusedStoneBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE))
         );
         public static final RegistrySupplier<Block> SUPPLIER_AMBER_BLOCK = BLOCKS.register(
                 "amber_block",
