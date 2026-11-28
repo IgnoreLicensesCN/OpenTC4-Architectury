@@ -280,7 +280,6 @@ public class EldritchGuardianEntity extends DoorBreakingMonster implements Range
 
     //TODO:Spawn ignores light level
 
-
     @Override
     protected void dropCustomDeathLoot(DamageSource damageSource, int i, boolean bl) {
         super.dropCustomDeathLoot(damageSource, i, bl);

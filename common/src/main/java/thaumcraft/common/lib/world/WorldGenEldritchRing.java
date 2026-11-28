@@ -7,7 +7,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.core.Direction;
 import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.lib.world.dim.MazeHandler;
 import thaumcraft.common.tiles.junkbox.TileBanner;
 import thaumcraft.common.tiles.junkbox.TileEldritchAltar;
 
@@ -26,7 +25,7 @@ public class WorldGenEldritchRing extends WorldGenerator {
       return new Block[]{Blocks.stone, Blocks.sand, Blocks.packed_ice, Blocks.grass, Blocks.gravel, Blocks.dirt};
    }
 
-   public boolean LocationIsValidSpawn(Level world, int i, int j, int k) {
+   public boolean locationIsValidSpawn(Level world, int i, int j, int k) {
       int distanceToAir = 0;
 
       for(Block checkID = world.getBlock(i, j, k); checkID != Blocks.air; checkID = world.getBlock(i, j + distanceToAir, k)) {
@@ -58,12 +57,12 @@ public class WorldGenEldritchRing extends WorldGenerator {
    }
 
    public boolean generate(Level world, Random rand, int i, int j, int k) {
-      if (this.LocationIsValidSpawn(world, i - 3, j, k - 3)
-              && this.LocationIsValidSpawn(world, i, j, k)
-              && this.LocationIsValidSpawn(world, i + 3, j, k)
-              && this.LocationIsValidSpawn(world, i + 3, j, k + 3)
-              && this.LocationIsValidSpawn(world, i, j, k + 3)
-              && !MazeHandler.mazesInRange(this.chunkX, this.chunkZ, this.width, this.height)
+      if (this.locationIsValidSpawn(world, i - 3, j, k - 3)
+              && this.locationIsValidSpawn(world, i, j, k)
+              && this.locationIsValidSpawn(world, i + 3, j, k)
+              && this.locationIsValidSpawn(world, i + 3, j, k + 3)
+              && this.locationIsValidSpawn(world, i, j, k + 3)
+//              && !MazeHandler.mazesInRange(this.chunkX, this.chunkZ, this.width, this.height)
       ) {
          Block replaceBlock = world.getBiomeGenForCoords(i, k).topBlock;
 

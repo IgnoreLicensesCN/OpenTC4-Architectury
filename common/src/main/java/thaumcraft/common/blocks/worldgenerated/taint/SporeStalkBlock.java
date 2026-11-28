@@ -3,6 +3,7 @@ package thaumcraft.common.blocks.worldgenerated.taint;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.config.Config;
@@ -24,6 +25,7 @@ public class SporeStalkBlock extends AbstractTaintFibreBlock{
             world.setBlockAndUpdate(blockPos, ThaumcraftBlocks.ThaumcraftBlockInstances.MATURE_SPORE_STALK().defaultBlockState());
             var spore = new TaintSporeEntity(world);
             spore.setPos(blockPos.getCenter().add(0,1,0));
+            spore.finalizeSpawn(world,world.getCurrentDifficultyAt(spore.blockPosition()), MobSpawnType.CONVERSION,null,null);
             world.addFreshEntity(spore);
         }
     }

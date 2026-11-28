@@ -14,7 +14,7 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 import thaumcraft.common.blocks.ThaumcraftBlocks;
 import thaumcraft.common.blocks.abstracts.SuppressedWarningBlock;
-import thaumcraft.common.lib.world.dim.cell.features.AbstractBossRoom;
+import thaumcraft.common.lib.world.dim.cell.features.bossroom.AbstractBossRoom;
 
 public class AncientLockEmptyBlock extends SuppressedWarningBlock {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);

@@ -108,6 +108,9 @@ public class TaintacleEntity extends Monster implements IMobAttackDamageTypeRepl
                             spawnAtPos.getX() + 2 * random.nextFloat() - 1, spawnAtPos.getY(),
                             spawnAtPos.getZ() + 2 * random.nextFloat() - 1
                     );
+                    if (level instanceof ServerLevelAccessor serverLevelAccessor && smallTaintacle instanceof Mob mob){
+                        mob.finalizeSpawn(serverLevelAccessor,level.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.TRIGGERED,null,null);
+                    }
                     level.addFreshEntity(smallTaintacle);
                 }
 

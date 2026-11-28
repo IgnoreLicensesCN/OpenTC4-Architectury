@@ -1,4 +1,4 @@
-package thaumcraft.common.lib.world.dim.cell.features;
+package thaumcraft.common.lib.world.dim.cell.features.bossroom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -7,6 +7,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import thaumcraft.common.lib.world.dim.cell.CellState;
+import thaumcraft.common.lib.world.dim.cell.features.CellFeature;
 
 import static net.minecraft.world.level.block.StairBlock.FACING;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.*;
@@ -107,9 +108,7 @@ public abstract class AbstractBossRoom extends CellFeature {
                 world.setBlock(mutable.set(x + xOffset, y + 1, z + zOffset),S,3);
                 world.setBlock(mutable.set(x + xOffset, y +13, z + zOffset),B,3);
                 world.setBlock(mutable.set(x + xOffset, y + 12, z + zOffset),V,3);
-                if (random.nextInt(25) == 0){
-                    placeDecorationAt(world,random,mutable.set(x + xOffset, y + 11, z + zOffset),cellState);
-                }
+                placeDecorationAt(world,random,mutable.set(x + xOffset, y + 11, z + zOffset),cellState);
                 world.setBlock(mutable.set(x + xOffset, y + 11, z + zOffset),S,3);
             }
         }

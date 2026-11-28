@@ -165,7 +165,7 @@ public class CultistPortalEntity extends ThaumcraftBossEntity {
         }
         cultist.restrictTo(blockPosition(), 32);
         if (this.level() instanceof ServerLevelAccessor serverLevelAccessor){
-            cultist.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(blockPosition()), MobSpawnType.SPAWNER,null,null);
+            cultist.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(blockPosition()), MobSpawnType.EVENT,null,null);
         }
         this.level().addFreshEntity(cultist);
         cultist.playSound(ThaumcraftSounds.WAND_FAIL, 1.0F, 1.0F);
@@ -187,6 +187,7 @@ public class CultistPortalEntity extends ThaumcraftBossEntity {
                     0.5D, 0.5D, 0.5D,
                     0.0D
             );
+            cultist.finalizeSpawn(serverLevel,serverLevel.getCurrentDifficultyAt(cultist.blockPosition()), MobSpawnType.EVENT,null,null);
         }
         cultist.restrictTo(blockPosition(), 32);
         this.level().addFreshEntity(cultist);

@@ -4,7 +4,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import thaumcraft.common.lib.world.dim.cell.CellState;
-import thaumcraft.common.lib.world.dim.cell.features.AbstractBossRoom;
 
 public class BossRoomBottomLeft extends AbstractBossRoom {
     public static final BossRoomBottomLeft INSTANCE = new BossRoomBottomLeft(true);

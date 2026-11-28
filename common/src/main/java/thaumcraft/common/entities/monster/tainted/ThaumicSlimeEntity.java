@@ -9,10 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -20,6 +17,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.ThaumcraftEntities;
@@ -118,6 +116,9 @@ public class ThaumicSlimeEntity extends Slime implements IClearGoalOnRemovedEnti
                     slime.setInvulnerable(this.isInvulnerable());
                     slime.setSize(1, true);
                     slime.moveTo(this.getX() + g, this.getY() + 0.5, this.getZ() + h, this.random.nextFloat() * 360.0F, 0.0F);
+                    if (this.level() instanceof ServerLevelAccessor serverLevelAccessor) {
+                        slime.finalizeSpawn(serverLevelAccessor, serverLevelAccessor.getCurrentDifficultyAt(slime.blockPosition()), MobSpawnType.TRIGGERED, null, null);
+                    }
                     this.level().addFreshEntity(slime);
                 }
             }
@@ -213,6 +214,9 @@ public class ThaumicSlimeEntity extends Slime implements IClearGoalOnRemovedEnti
                         slime.spitCounter = 101;
                         if (!level.isClientSide) {
                             var slimeThrown = new ThaumicSlimeEntity(level, slime, livingEntity);
+                            if (level instanceof ServerLevelAccessor serverLevelAccessor) {
+                                slime.finalizeSpawn(serverLevelAccessor, serverLevelAccessor.getCurrentDifficultyAt(slime.blockPosition()), MobSpawnType.TRIGGERED, null, null);
+                            }
                             level.addFreshEntity(slimeThrown);
                         }
 

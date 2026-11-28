@@ -6,7 +6,7 @@ public class WorldGenMound /*extends WorldGenerator*/ {
 //      return new Block[]{Blocks.stone, Blocks.GRASS.defaultBlockState(), Blocks.DIRT.defaultBlockState()};
 //   }
 //
-//   public static boolean LocationIsValidSpawn(Level world, int i, int j, int k) {
+//   public static boolean locationIsValidSpawn(Level world, int i, int j, int k) {
 //      int distanceToAir = 0;
 //
 //      for(Block checkID = world.getBlock(i, j, k); checkID != Blocks.AIR.defaultBlockState(); checkID = world.getBlock(i, j + distanceToAir, k)) {
@@ -41,11 +41,11 @@ public class WorldGenMound /*extends WorldGenerator*/ {
 //      return generateStatic(world, rand, i, j, k);
 //   }
 //   public static boolean generateStatic(Level world, Random rand, int i, int j, int k) {
-//      if (LocationIsValidSpawn(world, i + 9, j + 9, k + 9)
-//              && LocationIsValidSpawn(world, i, j + 9, k)
-//              && LocationIsValidSpawn(world, i + 18, j + 9, k)
-//              && LocationIsValidSpawn(world, i + 18, j + 9, k + 18)
-//              && LocationIsValidSpawn(world, i, j + 9, k + 18))
+//      if (locationIsValidSpawn(world, i + 9, j + 9, k + 9)
+//              && locationIsValidSpawn(world, i, j + 9, k)
+//              && locationIsValidSpawn(world, i + 18, j + 9, k)
+//              && locationIsValidSpawn(world, i + 18, j + 9, k + 18)
+//              && locationIsValidSpawn(world, i, j + 9, k + 18))
 //      {
 //         world.setBlock(i, j + 8, k + 4, Blocks.DIRT.defaultBlockState());
 //         world.setBlock(i, j + 8, k + 5, Blocks.DIRT.defaultBlockState());

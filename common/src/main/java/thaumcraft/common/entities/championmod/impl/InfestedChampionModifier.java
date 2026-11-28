@@ -2,6 +2,8 @@ package thaumcraft.common.entities.championmod.impl;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.ServerLevelAccessor;
 import thaumcraft.common.ClientFXUtils;
 import thaumcraft.common.ThaumcraftSounds;
 import thaumcraft.common.entities.championmod.ChampionModifier;
@@ -39,6 +41,9 @@ public class InfestedChampionModifier extends ChampionModifier implements IClien
             );
             spider.setXRot(random.nextFloat() * 360.0F);
             spider.setYRot(0);
+            if (level instanceof ServerLevelAccessor serverLevelAccessor){
+                spider.finalizeSpawn(serverLevelAccessor, level.getCurrentDifficultyAt(spider.blockPosition()), MobSpawnType.EVENT, null, null);
+            }
             level.addFreshEntity(spider);
             victim.playSound(ThaumcraftSounds.GORE, 0.5F, 1.0F);
         }

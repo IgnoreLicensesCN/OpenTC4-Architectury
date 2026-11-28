@@ -43,7 +43,7 @@ import thaumcraft.common.entities.championmod.abstracts.entity.IRandomChampionMo
 import thaumcraft.common.entities.monster.boss.ThaumcraftBossEntity;
 import thaumcraft.common.lib.world.dim.cell.CellState;
 import thaumcraft.common.lib.world.dim.CellLoc;
-import thaumcraft.common.lib.world.dim.MazeHandler;
+
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -562,12 +562,12 @@ public class EntityUtils {
     }
 
     private static boolean opentc4$isDangerousLocation(Level world, BlockPos blockPos) {
-        if (world.dimension() == Config.dimensionOuter) {
-            int xx = blockPos.getX() >> 4;
-            int zz = blockPos.getZ() >> 4;
-            CellState c = MazeHandler.getFromHashMap(new CellLoc(xx, zz));
-            return c != null && (c.feature == 6 || c.feature == 8);
-        }
+//        if (world.dimension() == Config.dimensionOuter) {
+//            int xx = blockPos.getX() >> 4;
+//            int zz = blockPos.getZ() >> 4;
+//            CellState c = MazeHandler.getFromHashMap(new CellLoc(xx, zz));
+//            return c != null && (c.feature == 6 || c.feature == 8);
+//        }
 
         return false;
     }

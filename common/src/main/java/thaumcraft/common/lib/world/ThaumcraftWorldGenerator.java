@@ -38,8 +38,7 @@ import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.Utils;
 import thaumcraft.common.lib.world.biomes.BiomeGenTaint;
 import thaumcraft.common.lib.world.biomes.BiomeHandler;
-import thaumcraft.common.lib.world.dim.MazeHandler;
-import thaumcraft.common.lib.world.dim.MazeThread;
+
 import thaumcraft.common.tiles.abstracts.AbstractNodeBlockEntity;
 
 import java.util.ArrayList;
@@ -100,10 +99,8 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
     }
 
     public void worldGeneration(Random random, int chunkX, int chunkZ, Level world, boolean newGen) {
-        if (world.dimension() == Config.dimensionOuterId) {
-            MazeHandler.generateEldritch(world, random, chunkX, chunkZ);
-            world.getChunkFromChunkCoords(chunkX, chunkZ).setChunkModified();
-        } else {
+        
+        {
             switch (world.dimension()) {
                 case -1:
                     this.generateNether(world, random, chunkX, chunkZ, newGen);
@@ -473,8 +470,8 @@ public class ThaumcraftWorldGenerator implements IWorldGenerator {
                     if (stonering.generate(world, random, randPosX, randPosY, randPosZ)) {
                         auraGen = true;
                         createRandomNodeAt(world, randPosX, randPosY + 2, randPosZ, random, false, true, false);
-                        Thread t = new Thread(new MazeThread(chunkX, chunkZ, w, h, random.nextLong()));
-                        t.start();
+//                        Thread t = new Thread(new MazeThread(chunkX, chunkZ, w, h, random.nextLong()));
+//                        t.start();
                     }
                 }
                     else

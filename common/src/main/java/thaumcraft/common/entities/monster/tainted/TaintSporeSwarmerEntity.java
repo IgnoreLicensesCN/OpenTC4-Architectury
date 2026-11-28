@@ -9,10 +9,12 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.client.fx.migrated.particles.FXSwarm;
 import thaumcraft.common.ClientFXUtils;
@@ -110,6 +112,9 @@ public class TaintSporeSwarmerEntity extends Monster implements IClearGoalOnRemo
                 var swarm = new TaintSporeEntity(level);
                 swarm.setPos(this.position().add(0,0.5,0));
                 swarm.setXRot(random.nextFloat() * 360.0F);
+                if (level instanceof ServerLevelAccessor serverLevelAccessor){
+                    swarm.finalizeSpawn(serverLevelAccessor,level.getCurrentDifficultyAt(swarm.blockPosition()), MobSpawnType.TRIGGERED,null,null);
+                }
                 level.addFreshEntity(swarm);
             }
             level.broadcastEntityEvent(this, (byte)6);

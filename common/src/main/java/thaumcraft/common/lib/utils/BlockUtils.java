@@ -270,18 +270,18 @@ public class BlockUtils {
       return world.func_147447_a(var13, var23, par3, !par3, false);
    }
 
-   public static boolean isBlockAdjacentToAtleast(BlockGetter world, int x, int y, int z, TagKey<Block> tag, int amount) {
-      return isBlockAdjacentToAtleast(world, x, y, z, tag/*, md*/, amount, 1);
+   public static boolean isBlockAdjacentToAtleast(BlockGetter world, BlockPos pos, TagKey<Block> tag, int amount) {
+      return isBlockAdjacentToAtleast(world, pos, tag/*, md*/, amount, 1);
    }
 
-   public static boolean isBlockAdjacentToAtleast(BlockGetter world, int x, int y, int z, TagKey<Block> tag, int amount, int range) {
+   public static boolean isBlockAdjacentToAtleast(BlockGetter world, BlockPos pos, TagKey<Block> tag, int amount, int range) {
       int count = 0;
       var mutable = new BlockPos.MutableBlockPos();
       for(int xx = -range; xx <= range; ++xx) {
          for(int yy = -range; yy <= range; ++yy) {
             for(int zz = -range; zz <= range; ++zz) {
                if (xx != 0 || yy != 0 || zz != 0) {
-                  if (world.getBlockState(mutable.set(x + xx, y + yy, z + zz)).is(tag)) {
+                  if (world.getBlockState(mutable.setWithOffset(pos,xx,yy,zz)).is(tag)) {
                      ++count;
                   }
 
@@ -303,12 +303,12 @@ public class BlockUtils {
        );
    }
 
-   public static int countExposedSides(BlockGetter world, int x, int y, int z) {
+   public static int countExposedSides(BlockGetter world, BlockPos pos) {
       int count = 0;
 
-      var mutablePos = new BlockPos.MutableBlockPos(x, y, z);
+      var mutablePos = new BlockPos.MutableBlockPos().set(pos);
       for(Direction dir : Direction.values()) {
-         if (world.getBlockState(mutablePos.set(x,y,z).move(dir)).isAir()){
+         if (world.getBlockState(mutablePos.setWithOffset(pos,dir)).isAir()){
             count += 1;
          }
       }

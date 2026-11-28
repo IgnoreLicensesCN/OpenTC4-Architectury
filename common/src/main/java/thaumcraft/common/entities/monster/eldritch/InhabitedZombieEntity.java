@@ -112,6 +112,9 @@ public class InhabitedZombieEntity extends Zombie implements ITaintConvertableEn
             crab.setXRot(getXRot());
             crab.setYRot(getYRot());
             crab.setHelm(true);
+            if (level instanceof ServerLevelAccessor serverLevelAccessor){
+                crab.finalizeSpawn(serverLevelAccessor,level.getCurrentDifficultyAt(crab.blockPosition()), MobSpawnType.CONVERSION,null,null);
+            }
             level.addFreshEntity(crab);
             if ((this.isAlwaysExperienceDropper() || this.lastHurtByPlayerTime > 0)
                     && this.shouldDropLoot()

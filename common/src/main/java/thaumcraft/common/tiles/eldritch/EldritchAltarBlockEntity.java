@@ -96,7 +96,7 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
 
             var pickPos = altarPos.offset(xx,-1,zz);
             if (this.level instanceof ServerLevelAccessor serverLevelAccessor){
-                cleric.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(pickPos.above()), MobSpawnType.SPAWNER,null,null);
+                cleric.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(pickPos.above()), MobSpawnType.CHUNK_GENERATION,null,null);
             }
             if (level.getBlockState(pickPos).isFaceSturdy(level,pickPos, Direction.UP)) {
                 cleric.setPos(pickPos.above().getCenter());
@@ -105,6 +105,10 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
                         && !this.level.containsAnyLiquid(bb)) {
                     cleric.restrictTo(altarPos, 8);
 //                    cleric.spawnExplosionParticle();
+
+                    if (this.level instanceof ServerLevelAccessor serverLevelAccessor){
+                        cleric.finalizeSpawn(serverLevelAccessor, serverLevelAccessor.getCurrentDifficultyAt(cleric.blockPosition()), MobSpawnType.CHUNK_GENERATION, null, null);
+                    }
                     if (this.level.addFreshEntity(cleric)) {
                         ++success;
                         cleric.setIsRitualist(true);
@@ -170,7 +174,7 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
                         knight.restrictTo(selfPos, 16);
 
                         if (this.level instanceof ServerLevelAccessor serverLevelAccessor){
-                            knight.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(pickPos), MobSpawnType.SPAWNER,null,null);
+                            knight.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(pickPos), MobSpawnType.CHUNK_GENERATION,null,null);
                         }
                         this.level.addFreshEntity(knight);
                     }
@@ -198,6 +202,7 @@ public class EldritchAltarBlockEntity extends TileThaumcraft {
                         level.random
                 )){
                     eg.restrictTo(getBlockPos(),16);
+                    eg.finalizeSpawn(serverLevelAccessor, serverLevelAccessor.getCurrentDifficultyAt(eg.blockPosition()), MobSpawnType.SPAWNER, null, null);
                     this.level.addFreshEntity(eg);
                 }
             }

@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelWriter;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -37,9 +38,9 @@ public class CellFeature {
     public static BossRoomUpperRight BOSS_ROOM_UPPER_RIGHT;
     public static BossRoomBottomRight BOSS_ROOM_BOTTOM_RIGHT;
     public static BossRoomBottomLeft BOSS_ROOM_BOTTOM_LEFT;
-    public static CellFeature KEY_ROOM = new CellFeature(true);
-    public static CellFeature NEST_ROOM = new CellFeature(false);
-    public static CellFeature LIBRARY_ROOM = new CellFeature(false);//8
+    public static KeyRoom KEY_ROOM;
+    public static NestRoom NEST_ROOM;//7
+    public static LibraryRoom LIBRARY_ROOM;//8
     public static CellFeature PASSAGE = new CellFeature(false);
     public static CellFeature PASSAGE_1 = new CellFeature(false);//10
     public static PassageWithTrap PASSAGE_WITH_TRAP;
@@ -98,18 +99,28 @@ public class CellFeature {
             default -> Rotation.NONE;
         };
     }
-    public static @Nullable BlockState getCrabSpawnerForPlacement(WorldGenLevel world, RandomSource random, int x, int y, int z, CellState cellState){
-        int exp = BlockUtils.countExposedSides(world, x,y,z);
-        var pos = new BlockPos.MutableBlockPos(x, y, z);
-        if (exp == 1 && !BlockUtils.isBlockAdjacentToAtleast(world, x,y,z, ELDRITCH_BLOCK, 1)) {
+    public static @Nullable BlockState getCrabSpawnerForPlacement(WorldGenLevel world, RandomSource random, BlockPos pos, CellState cellState){
+        int exp = BlockUtils.countExposedSides(world, pos);
+        var mutable = new BlockPos.MutableBlockPos().set(pos);
+        if (exp == 1 && !BlockUtils.isBlockAdjacentToAtleast(world, pos, ELDRITCH_BLOCK, 1)) {
             for (var dir:Direction.values()) {
-                if (world.getBlockState(pos.set(x,y,z).move(dir)).isAir()){
+                if (world.getBlockState(mutable.setWithOffset(pos,dir)).isAir()){
                     return ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_CRAB_SPAWNER().defaultBlockState().setValue(FACING,dir);
                 }
             }
         }
         return null;
     }
+
+    public static void genObelisk(LevelWriter world, int x, int y, int z) {
+       var mutable = new BlockPos.MutableBlockPos(x, y, z);
+       world.setBlock(mutable.move(Direction.UP), ELDRITCH_OBELISK_WITH_TICKER().defaultBlockState(), 2, 3);
+       world.setBlock(mutable.move(Direction.UP), ELDRITCH_OBELISK().defaultBlockState(), 2, 3);
+       world.setBlock(mutable.move(Direction.UP), ELDRITCH_OBELISK().defaultBlockState(), 2, 3);
+       world.setBlock(mutable.move(Direction.UP), ELDRITCH_OBELISK().defaultBlockState(), 2, 3);
+       world.setBlock(mutable.move(Direction.UP), ELDRITCH_OBELISK().defaultBlockState(), 2, 3);
+    }
+
     public void generateConnections(WorldGenLevel world, RandomSource random, int cx, int cz, int y, CellState cellState, int depth, boolean collapseConnection){
         generateConnectionDefault(world, cx, cz, y, depth, collapseConnection);
     }
@@ -172,14 +183,20 @@ public class CellFeature {
     public void specialPlacement(WorldGenLevel world, RandomSource random, int x, int y, int z, CellState cellState){
 
     }
+    public static void placeLowerEdge(WorldGenLevel world, RandomSource random, int x, int y, int z, CellState cellState){
+        var mutable = new BlockPos.MutableBlockPos(x, y, z);
+        for(int g = 0; g < 5; ++g) {
+            world.setBlock(mutable.set( x + 6 + g, y + 2, z + 4),STAIR_LD.rotate(rotationFromNorth(Direction.NORTH)), 3);
+            world.setBlock(mutable.set( x + 6 + g, y + 2, z + 12),STAIR_LD.rotate(rotationFromNorth(Direction.SOUTH)), 3);
+            world.setBlock(mutable.set( x + 12, y + 2, z + 6 + g),STAIR_LD.rotate(rotationFromNorth(Direction.EAST)), 3);
+            world.setBlock(mutable.set( x + 4, y + 2, z + 6 + g),STAIR_LD.rotate(rotationFromNorth(Direction.WEST)), 3);
+        }
+    }
 
     public @Nullable BlockState getTrapStone(WorldGenLevel world, RandomSource random, int x, int y, int z, CellState cellState){
         return null;
     }
 
-    public void placeFeatureBefore(WorldGenLevel world, RandomSource random, int cx, int cz, int y, CellState cellState){
-
-    }
     public void placeFeatureAt(WorldGenLevel world, RandomSource random, int cx, int cz, int y, CellState cellState){
         int x = cx * 16;
         int z = cz * 16;
@@ -234,31 +251,66 @@ public class CellFeature {
     public void placeFeatureAfter(WorldGenLevel world, RandomSource random, int cx, int cz, int y, CellState cellState){
 
     }
-    protected void placeDecorationAt(WorldGenLevel world, RandomSource random, BlockPos pos, CellState cellState){
-        int exp = BlockUtils.countExposedSides(world, pos.getX(),pos.getY(),pos.getZ());
-        if (exp > 0 && (exp == 1 || !isBedrockShowing(world,  pos.getX(),pos.getY(),pos.getZ()))
-                && !BlockUtils.isBlockAdjacentToAtleast(world,  pos.getX(),pos.getY(),pos.getZ(),
-                ELDRITCH_BLOCK,
-                1
-        )) {
-            var state = random.nextInt(3) != 0 ? G : (random.nextInt(8) != 0 ? GL : T);
-            world.setBlock(pos, state, 3);
-            if (state == G && random.nextInt(12) == 0) {
-                var mutable = new BlockPos.MutableBlockPos();
-                for (var dir:Direction.values()){
-                    if (world.getBlockState(mutable.setWithOffset(pos,dir)).isAir()){
-                        world.setBlock(mutable,STRANGE_CRYSTALS().defaultBlockState().setValue(FACING,dir),3);
-                        break;
+    public void generateRoomOuter(WorldGenLevel world, RandomSource random, int cx, int cz, int y, CellState cellState){
+        int x = cx * 16;
+        int z = cz * 16;
+        var mutable = new BlockPos.MutableBlockPos();
+        for (int a = 1; a <= 15; ++a) {
+            for (int b = 1; b <= 15; ++b) {
+                for (int c = 0; c < 13; ++c) {
+                    if (a == 1 || a == 15 || b == 1 || b == 15) {
+                        world.setBlock(mutable.set(x + a, y + c, z + b), B, 3);
+                    }
+                }
+            }
+        }
+
+        for (int a = 2; a <= 14; ++a) {
+            for (int b = 2; b <= 14; ++b) {
+                for (int c = 1; c < 12; ++c) {
+                    if ((a == 2 || a == 14 || b == 2 || b == 14)
+                            && (a != 2 || b <= 3 || b >= 12 || !cellConnectedTo(cellState,Direction.WEST) || c >= 10)
+                            && (a != 14 || b <= 3 || b >= 12 || !cellConnectedTo(cellState,Direction.EAST) || c >= 10)
+                            && (b != 2 || a <= 3 || a >= 12 || !cellConnectedTo(cellState,Direction.NORTH) || c >= 10)
+                            && (b != 14 || a <= 3 || a >= 12 || !cellConnectedTo(cellState,Direction.SOUTH) || c >= 10)) {
+                        world.setBlock(mutable.set(x + a, y + c, z + b), V, 3);
                     }
                 }
             }
         }
     }
-    public static boolean isBedrockShowing(BlockGetter world, int x, int y, int z) {
-        var mutable = new BlockPos.MutableBlockPos(x, y, z);
+
+    protected void placeDecorationAt(WorldGenLevel world, RandomSource random, BlockPos pos, CellState cellState){
+        if (!world.getBlockState(pos).is(V.getBlock())) {
+            if (random.nextInt(25) == 0){
+                int exp = BlockUtils.countExposedSides(world, pos);
+                if (exp > 0 && (exp == 1 || !isBedrockShowing(world,  pos))
+                        && !BlockUtils.isBlockAdjacentToAtleast(world,  pos,
+                        ELDRITCH_BLOCK,
+                        1
+                )) {
+                    var state = random.nextInt(3) != 0 ? G : (random.nextInt(8) != 0 ? GL : T);
+                    world.setBlock(pos, state, 3);
+                    if (state == G && random.nextInt(12) == 0) {
+                        var mutable = new BlockPos.MutableBlockPos();
+                        for (var dir:Direction.values()){
+                            if (world.getBlockState(mutable.setWithOffset(pos,dir)).isAir()){
+                                world.setBlock(mutable,STRANGE_CRYSTALS().defaultBlockState().setValue(FACING,dir),3);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }else {
+                world.setBlock(pos,S,3);
+            }
+        }
+    }
+    public static boolean isBedrockShowing(BlockGetter world, BlockPos pos) {
+        var mutable = new BlockPos.MutableBlockPos();
         for(Direction dir : Direction.values()) {
-            var state = world.getBlockState(mutable.set(x, y, z).move(dir));
-            var stateOpposite = world.getBlockState(mutable.set(x, y, z).move(dir.getOpposite()));
+            var state = world.getBlockState(mutable.setWithOffset(pos,dir));
+            var stateOpposite = world.getBlockState(mutable.setWithOffset(pos,dir.getOpposite()));
             if (!state.isCollisionShapeFullBlock(world, mutable)
                     && (stateOpposite.is(Blocks.BEDROCK) || stateOpposite.is(ELDRITCH_VOID()))) {
                 return true;
@@ -368,215 +420,6 @@ public class CellFeature {
 
     }
 
-
-    @Deprecated(forRemoval = true)
-    protected void placeBlock(WorldGenLevel world, int x, int y, int z, int blockToPlace, CellState cellState) {
-        placeBlock(world, x,y,z, blockToPlace, null, cellState);
-    }
-    @Deprecated(forRemoval = true)
-    protected void placeBlock(WorldGenLevel world, int x, int y, int z, int blockToPlace, @Nullable Direction dir, CellState cellState) {
-//        Block block;
-//        int meta;
-        label233: {
-            block = null;
-            meta = 0;
-            switch (blockToPlace) {
-                case B:
-                    if (world.isAirBlock(x, y, z)) {
-                        block = Blocks.bedrock;
-                    }
-                    break label233;
-                case 2:
-                    if (cellState.feature == 7 && world.getRandom().nextInt(3) == 0) {
-                        break;
-                    }
-
-                    if (world.getBlock(x, y, z) != ConfigBlocks.blockEldritchNothing) {
-                        if (world.getRandom().nextInt(25) == 0) {
-                            boolean crab = cellState.feature == 7 || world.getRandom().nextInt(50) == 0;
-                            if ((!crab || cellState.feature != 0) && (!crab || cellState.feature != 7)) {
-                                decoCommon.add(new ChunkPos(x, y, z));
-                            } else {
-                                crabSpawner.add(new ChunkPos(x, y, z));
-                            }
-                        }
-
-                        block = ConfigBlocks.blockCosmeticSolid;
-                        meta = 11;
-                    }
-                    break label233;
-                case 3:
-                    if ((double)world.getRandom().nextFloat() < 0.005) {
-                        decoUrn.add(new ChunkPos(x, y, z));
-                    }
-
-                    block = ConfigBlocks.blockStairsEldritch;
-                    switch (dir.ordinal()) {
-                        case 2:
-                        case 3:
-                            meta = 1;
-                            break label233;
-                        case 4:
-                        case 5:
-                            meta = 3;
-                        default:
-                            break label233;
-                    }
-                case 4:
-                    if ((double)world.getRandom().nextFloat() < 0.005) {
-                        decoUrn.add(new ChunkPos(x, y, z));
-                    }
-
-                    block = ConfigBlocks.blockStairsEldritch;
-                    switch (dir.ordinal()) {
-                        case 2:
-                        case 3:
-                            meta = 0;
-                            break label233;
-                        case 4:
-                        case 5:
-                            meta = 2;
-                        default:
-                            break label233;
-                    }
-                case 5:
-                    block = ConfigBlocks.blockStairsEldritch;
-                    switch (dir.ordinal()) {
-                        case 2:
-                        case 3:
-                            meta = 5;
-                            break label233;
-                        case 4:
-                        case 5:
-                            meta = 7;
-                        default:
-                            break label233;
-                    }
-                case 6:
-                    block = ConfigBlocks.blockStairsEldritch;
-                    switch (dir.ordinal()) {
-                        case 2:
-                        case 3:
-                            meta = 4;
-                            break label233;
-                        case 4:
-                        case 5:
-                            meta = 6;
-                        default:
-                            break label233;
-                    }
-                case 7:
-                    block = ConfigBlocks.blockEldritch;
-                    meta = 4;
-                    break label233;
-                case V:
-                    block = ConfigBlocks.blockEldritchNothing;
-                    break label233;
-                case A:
-                    block = Blocks.air;
-                    decoCommon.remove(new ChunkPos(x, y, z));
-                    crabSpawner.remove(new ChunkPos(x, y, z));
-                    decoUrn.remove(new ChunkPos(x, y, z));
-                    break label233;
-                case STD:
-                    block = ConfigBlocks.blockStairsEldritch;
-                    switch (dir) {
-                        case NORTH:
-                            meta = 3;
-                            break label233;
-                        case SOUTH:
-                            meta = 2;
-                            break label233;
-                        case EAST:
-                            meta = 0;
-                            break label233;
-                        case WEST:
-                            meta = 1;
-                        default:
-                            break label233;
-                    }
-                case 11:
-                    block = ConfigBlocks.blockStairsEldritch;
-                    switch (dir) {
-                        case NORTH:
-                            meta = 7;
-                            break label233;
-                        case SOUTH:
-                            meta = 6;
-                            break label233;
-                        case EAST:
-                            meta = 4;
-                            break label233;
-                        case WEST:
-                            meta = 5;
-                        default:
-                            break label233;
-                    }
-                case 15:
-                    block = ConfigBlocks.blockEldritch;
-                    meta = 7;
-                    decoCommon.remove(new ChunkPos(x, y, z));
-                    crabSpawner.remove(new ChunkPos(x, y, z));
-                    decoUrn.remove(new ChunkPos(x, y, z));
-                    break label233;
-                case 16:
-                    block = ConfigBlocks.blockEldritch;
-                    meta = 8;
-                    decoCommon.remove(new ChunkPos(x, y, z));
-                    crabSpawner.remove(new ChunkPos(x, y, z));
-                    decoUrn.remove(new ChunkPos(x, y, z));
-                    break label233;
-                case 17:
-                    block = ConfigBlocks.blockAiry;
-                    meta = 12;
-                    break label233;
-                case 18:
-                    if (world.getBlock(x, y, z) != ConfigBlocks.blockEldritchNothing) {
-                        block = ConfigBlocks.blockCosmeticSolid;
-                        meta = 12;
-                    }
-                    break label233;
-                case SN:
-                    if (world.getBlock(x, y, z) != ConfigBlocks.blockEldritchNothing) {
-                        block = ConfigBlocks.blockCosmeticSolid;
-                        meta = 13;
-                    }
-                    break label233;
-                case T:
-                    if (world.getBlock(x, y, z) != ConfigBlocks.blockEldritchNothing) {
-                        block = ConfigBlocks.blockEldritch;
-                        meta = 10;
-                    }
-                    break label233;
-                case 21:
-                    break;
-                case 99:
-                    block = Blocks.bedrock;
-                default:
-                    break label233;
-            }
-
-            if (world.getBlock(x, y, z) != ConfigBlocks.blockEldritchNothing) {
-                block = ConfigBlocks.blockCosmeticSolid;
-                meta = 14;
-                if (world.getRandom().nextInt(25) == 0) {
-                    block = ConfigBlocks.blockEldritch;
-                    meta = 4;
-                } else if (world.getRandom().nextInt(25) == 0) {
-                    boolean crab = cellState.feature == 7 || (cellState.feature == 12 && world.getRandom().nextBoolean() || world.getRandom().nextInt(25) == 0);
-                    if (crab && cellState.feature == 0 || crab && cellState.feature == 7 || crab && cellState.feature == 12) {
-                        crabSpawner.add(new ChunkPos(x, y, z));
-                    }
-                }
-            }
-        }
-
-        if (block != null) {
-            world.setBlock(x, y, z, block, meta, block != ConfigBlocks.blockEldritchNothing && block != Blocks.bedrock && block != Blocks.air ? 3 : 0);
-        }
-
-    }
-
     private final boolean preventInitCorePathConnection;
     public static final WeightedRandomCollection<CellFeature> FEATURE_SET_A = new WeightedRandomCollection<>();
     public static final WeightedRandomCollection<CellFeature> FEATURE_SET_B = new WeightedRandomCollection<>();
@@ -601,6 +444,9 @@ public class CellFeature {
         BOSS_ROOM_UPPER_RIGHT = BossRoomUpperRight.INSTANCE;
         BOSS_ROOM_BOTTOM_LEFT = BossRoomBottomLeft.INSTANCE;
         BOSS_ROOM_BOTTOM_RIGHT = BossRoomBottomRight.INSTANCE;
+        KEY_ROOM = KeyRoom.INSTANCE;
+        NEST_ROOM = NestRoom.INSTANCE;
+        LIBRARY_ROOM = LibraryRoom.INSTANCE;
 
         PASSAGE_WITH_TRAP = PassageWithTrap.INSTANCE;
         CRAB_SPAWNER_PASSAGE = CrabSpawnerPassage.INSTANCE;

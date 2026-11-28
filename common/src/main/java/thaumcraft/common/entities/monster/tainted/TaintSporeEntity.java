@@ -13,12 +13,14 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 import thaumcraft.client.fx.migrated.particles.FXSwarm;
@@ -165,6 +167,9 @@ public class TaintSporeEntity extends Monster implements IClearGoalOnRemovedEnti
                         )
                 );
                 spider.setXRot(random.nextFloat() * 360F);
+                if (level instanceof ServerLevelAccessor serverLevelAccessor){
+                    spider.finalizeSpawn(serverLevelAccessor,level.getCurrentDifficultyAt(spider.blockPosition()), MobSpawnType.TRIGGERED,null,null);
+                }
                 level.addFreshEntity(spider);
             }
 

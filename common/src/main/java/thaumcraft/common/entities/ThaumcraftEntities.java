@@ -942,7 +942,6 @@ public class ThaumcraftEntities {
             if (taintedSelf instanceof LivingEntity living && notTainted instanceof LivingEntity notTaintedLiving){
                 living.setHealth(living.getMaxHealth() *(notTaintedLiving.getHealth() / notTaintedLiving.getMaxHealth()));
             }
-
             level.addFreshEntity(taintedSelf);
             notTainted.discard();
         }else {

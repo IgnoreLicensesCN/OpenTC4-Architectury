@@ -105,13 +105,12 @@ public class EldritchRingStructure extends Structure {
 //            return Optional.empty();
 //        }
         if (!(
-                this.LocationIsValidSpawn(context, pos.offset(-3,0,-3))
-                        && this.LocationIsValidSpawn(context, pos)
-                        && this.LocationIsValidSpawn(context, pos.offset(3,0,0))
-                        && this.LocationIsValidSpawn(context, pos.offset(3,0,3))
-                        && this.LocationIsValidSpawn(context, pos.offset(0,0,3))
+                this.locationIsValidSpawn(context, pos.offset(-3,0,-3))
+                        && this.locationIsValidSpawn(context, pos)
+                        && this.locationIsValidSpawn(context, pos.offset(3,0,0))
+                        && this.locationIsValidSpawn(context, pos.offset(3,0,3))
+                        && this.locationIsValidSpawn(context, pos.offset(0,0,3))
                 )){
-
             return Optional.empty();
         }
 
@@ -136,7 +135,7 @@ public class EldritchRingStructure extends Structure {
             addAll(List.of(Blocks.SNOW, Blocks.TALL_GRASS));
         }
     };
-    public boolean LocationIsValidSpawn(GenerationContext context, BlockPos pos) {
+    public boolean locationIsValidSpawn(GenerationContext context, BlockPos pos) {
         var chunkGen = context.chunkGenerator();
         var heightAccessor = context.heightAccessor();
         var randomState = context.randomState();

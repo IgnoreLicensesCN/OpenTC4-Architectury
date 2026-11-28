@@ -22,7 +22,7 @@ import thaumcraft.common.lib.utils.BlockUtils;
 import thaumcraft.common.lib.utils.EntityUtils;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeIDs;
 import thaumcraft.common.lib.world.biomes.ThaumcraftBiomeLookups;
-import thaumcraft.common.lib.world.dim.GenCommon;
+import thaumcraft.common.lib.world.dim.cell.features.CellFeature;
 
 import static net.minecraft.world.level.block.SlabBlock.TYPE;
 import static thaumcraft.api.listeners.worldgen.eldritch.bossgen.ThaumcraftEldritchBossProvider.Impl.Util.genStairPedestal;
@@ -126,9 +126,9 @@ public class ThaumcraftEldritchBossProvider {
                 default -> 0;
             };
 
-            GenCommon.genObelisk(level, x + x2, y + 4, z + z2);
-            GenCommon.genObelisk(level, x - x2, y + 4, z + z2);
-            GenCommon.genObelisk(level, x + x2, y + 4, z - z2);
+            CellFeature.genObelisk(level, x + x2, y + 4, z + z2);
+            CellFeature.genObelisk(level, x - x2, y + 4, z + z2);
+            CellFeature.genObelisk(level, x + x2, y + 4, z - z2);
             level.setBlockAndUpdate(new BlockPos(x + x2, y + 2, z + z2), ELDRITCH_CAPSTONE().defaultBlockState());
             level.setBlockAndUpdate(new BlockPos(x - x2, y + 2, z + z2), ELDRITCH_CAPSTONE().defaultBlockState());
             level.setBlockAndUpdate(new BlockPos(x + x2, y + 2, z - z2), ELDRITCH_CAPSTONE().defaultBlockState());
@@ -159,7 +159,7 @@ public class ThaumcraftEldritchBossProvider {
             boss.setYRot(f1);
 
             if (level instanceof ServerLevelAccessor serverLevelAccessor){
-                boss.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(boss.blockPosition()), MobSpawnType.SPAWNER,null,null);
+                boss.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(boss.blockPosition()), MobSpawnType.EVENT,null,null);
             }
             level.addFreshEntity(boss);
         }
@@ -198,7 +198,7 @@ public class ThaumcraftEldritchBossProvider {
             var boss = new CultistPortalEntity(level);
             boss.setPos(x + 0.5F, y + 2, z + 0.5F);
             if (level instanceof ServerLevelAccessor serverLevelAccessor){
-                boss.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(boss.blockPosition()), MobSpawnType.SPAWNER,null,null);
+                boss.finalizeSpawn(serverLevelAccessor,serverLevelAccessor.getCurrentDifficultyAt(boss.blockPosition()), MobSpawnType.EVENT,null,null);
             }
             level.addFreshEntity(boss);
         }
@@ -238,8 +238,8 @@ public class ThaumcraftEldritchBossProvider {
                 default -> z2;
             };
 
-            GenCommon.genObelisk(level, x2, y + 4, z);
-            GenCommon.genObelisk(level, x, y + 4, z2);
+            CellFeature.genObelisk(level, x2, y + 4, z);
+            CellFeature.genObelisk(level, x, y + 4, z2);
             level.setBlockAndUpdate(new BlockPos(x2, y + 2, z), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_CAPSTONE().defaultBlockState());
             level.setBlockAndUpdate(new BlockPos(x, y + 2, z2), ThaumcraftBlocks.ThaumcraftBlockInstances.ELDRITCH_CAPSTONE().defaultBlockState());
 
@@ -336,26 +336,31 @@ public class ThaumcraftEldritchBossProvider {
             var boss1 = level.getDifficulty() != Difficulty.HARD ? new TaintacleEntity(level) : new GiantTaintacleEntity(level);
             boss1.setPos(x + 0.5F, y + 3, z + 0.5F);
             EntityUtils.makeChampion(boss1, true);
+            boss1.finalizeSpawn(serverLevel,serverLevel.getCurrentDifficultyAt(boss1.blockPosition()), MobSpawnType.EVENT,null,null);
             level.addFreshEntity(boss1);
 
             var boss2 = level.random.nextBoolean() ? new TaintacleEntity(level) : new GiantTaintacleEntity(level);
             boss2.setPos(x + 3.5F, y + 3, z + 3.5F);
             EntityUtils.makeChampion(boss2, true);
+            boss2.finalizeSpawn(serverLevel,serverLevel.getCurrentDifficultyAt(boss2.blockPosition()), MobSpawnType.EVENT,null,null);
             level.addFreshEntity(boss2);
 
             var boss3 = boss2 instanceof GiantTaintacleEntity ? new TaintacleEntity(level) : new GiantTaintacleEntity(level);
             boss3.setPos(x - 2.5F, y + 3, z + 3.5F);
             EntityUtils.makeChampion(boss3, true);
+            boss3.finalizeSpawn(serverLevel,serverLevel.getCurrentDifficultyAt(boss3.blockPosition()), MobSpawnType.EVENT,null,null);
             level.addFreshEntity(boss3);
 
             var boss4 = level.random.nextBoolean() ? new TaintacleEntity(level) : new GiantTaintacleEntity(level);
             boss4.setPos(x + 3.5F, y + 3, z - 2.5F);
             EntityUtils.makeChampion(boss4, true);
+            boss4.finalizeSpawn(serverLevel,serverLevel.getCurrentDifficultyAt(boss4.blockPosition()), MobSpawnType.EVENT,null,null);
             level.addFreshEntity(boss4);
 
             var boss5 = boss4 instanceof GiantTaintacleEntity ? new TaintacleEntity(level) : new GiantTaintacleEntity(level);
             boss5.setPos(x - 2.5F, y + 3, z - 2.5F);
             EntityUtils.makeChampion(boss5, true);
+            boss5.finalizeSpawn(serverLevel,serverLevel.getCurrentDifficultyAt(boss5.blockPosition()), MobSpawnType.EVENT,null,null);
             level.addFreshEntity(boss5);
 
         }

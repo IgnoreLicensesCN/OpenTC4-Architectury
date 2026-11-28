@@ -10,8 +10,6 @@ import thaumcraft.common.lib.world.dim.cell.CellState;
 import static net.minecraft.world.level.block.StairBlock.FACING;
 import static thaumcraft.common.blocks.ThaumcraftBlocks.ThaumcraftBlockInstances.*;
 import static thaumcraft.common.blocks.worldgenerated.eldritch.EldritchAltarBlock.ELDRITCH_ALTAR_EYES;
-import static thaumcraft.common.lib.world.dim.GenCommon.genObelisk;
-import static thaumcraft.common.lib.world.dim.cell.CellState.cellConnectedTo;
 
 public class PortalRoom extends CellFeature {
     public static final PortalRoom INSTANCE = new PortalRoom(true);
@@ -23,29 +21,8 @@ public class PortalRoom extends CellFeature {
         int x = cx * 16;
         int z = cz * 16;
         var mutable = new BlockPos.MutableBlockPos();
-        for (int xOffset = 1; xOffset <= 15; ++xOffset) {
-            for (int zOffset = 1; zOffset <= 15; ++zOffset) {
-                for (int yOffset = 0; yOffset < 13; ++yOffset) {
-                    if (xOffset == 1 || xOffset == 15 || zOffset == 1 || zOffset == 15) {
-                        world.setBlock(mutable.set(x + xOffset, y + yOffset, z + zOffset), B, 3);
-                    }
-                }
-            }
-        }
-        for (int xOffset = 2; xOffset <= 14; ++xOffset) {
-            for (int zOffset = 2; zOffset <= 14; ++zOffset) {
-                for (int yOffset = 1; yOffset < 12; ++yOffset) {
-                    if ((xOffset == 2 || xOffset == 14 || zOffset == 2 || zOffset == 14)
-                            && (xOffset != 2 || zOffset <= 3 || zOffset >= 12 || !cellConnectedTo(cellState, Direction.WEST) || yOffset >= 10)
-                            && (xOffset != 14 || zOffset <= 3 || zOffset >= 12 || !cellConnectedTo(cellState, Direction.EAST) || yOffset >= 10)
-                            && (zOffset != 2 || xOffset <= 3 || xOffset >= 12 || !cellConnectedTo(cellState, Direction.NORTH) || yOffset >= 10)
-                            && (zOffset != 14 || xOffset <= 3 || xOffset >= 12 || !cellConnectedTo(cellState, Direction.SOUTH) || yOffset >= 10)
-                    ) {
-                        world.setBlock(mutable.set(x + xOffset, y + yOffset, z + zOffset), V, 3);
-                    }
-                }
-            }
-        }
+        generateRoomOuter(world, random, x, y, z, cellState);
+
         for (int xOffset = 3; xOffset <= 13; ++xOffset) {
             for (int zOffset = 3; zOffset <= 13; ++zOffset) {
                 for (int yOffset = 2; yOffset < 11; ++yOffset) {
